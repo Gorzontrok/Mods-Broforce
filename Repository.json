@@ -1,0 +1,7 @@
+{
+    "Releases":
+    [
+        {"Id": "SkeletonDeadFaceMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Show-Avatar-FaceHugger/releases/latest/download/Avatar_FaceHugger.zip"},
+        {"Id": "AvatarFaceHuggerMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Show-Avatar-FaceHugger/releases/latest/download/Avatar_FaceHugger.zip"}
+    ]
+}
