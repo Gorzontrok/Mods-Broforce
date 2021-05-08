@@ -2,7 +2,7 @@
     "Releases":
     [
         {"Id": "SkeletonDeadFaceMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/releases/download/SkeletonDeadFace/SkeletonDeadFace.zip"},
-        {"Id": "AvatarFaceHuggerMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/releases/download/AvatarFaceHugger/Avatar_FaceHugger.zip"},
+        {"Id": "AvatarFaceHuggerMod", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/releases/download/AvatarFaceHugger/Avatar_FaceHugger.zip"},
         {"Id": "ExpendaBrosInGame", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/releases/download/ExpendablesBrosInGame/ExpendablesBrosInGame.zip"}
     ]
 }
