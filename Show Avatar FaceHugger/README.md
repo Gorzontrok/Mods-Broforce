@@ -3,5 +3,5 @@
  Like this :
  ![](.img/showcase.png?raw=true)
 
-## Check my other mods :
- * [Expendables Bros In Game](https://github.com/Gorzon38/Expendables-Bros-In-Game)
+## Installation :
+ For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/AvatarFaceHugger)
