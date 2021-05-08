@@ -18,11 +18,7 @@ If you have rescue all of the Bros of Broforce you already have them ! :D
 Except Brondfly, maybe.. 
 
 ## Installation :
-The installation guide can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2434812447).  
-For the latest Release it's [here](https://github.com/Gorzon38/Expendables-Bros-In-Game/releases/latest).
+For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/ExpendablesBrosInGame).
 
 ### Know Issue :
-* The Image of Rescue is Rambro.  
-
-#### Check my other mods :
- * [Show Face Hugger](https://github.com/Gorzon38/Show-Avatar-FaceHugger)
+* The Image of Rescue is Rambro.
