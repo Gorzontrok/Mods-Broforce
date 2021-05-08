@@ -4,4 +4,6 @@
  ![](.img/showcase.png?raw=true)
 
 ## Installation :
- For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/AvatarFaceHugger)
+ For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/AvatarFaceHugger)  
+  
+[NexusMods page](https://www.nexusmods.com/broforce/mods/4)

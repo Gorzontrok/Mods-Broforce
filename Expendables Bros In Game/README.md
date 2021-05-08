@@ -22,3 +22,6 @@ For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/rel
 
 ### Know Issue :
 * The Image of Rescue is Rambro.
+  
+  
+  [NexusMods Page](https://www.nexusmods.com/broforce/mods/3)
