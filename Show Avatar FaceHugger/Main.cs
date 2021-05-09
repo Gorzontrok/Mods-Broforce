@@ -81,6 +81,8 @@ namespace Avatar_FaceHugger_Mod
             __instance.showFaceHugger = true;
             __instance.avatar.SetLowerLeftPixel(new Vector2(__instance.faceHugger1.lowerLeftPixel.x, 1f));
             __instance.faceHugger1.gameObject.SetActive(true);
+
+            //Add a bubble
             
         }
     }

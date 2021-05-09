@@ -77,7 +77,7 @@ namespace SkeletonDeadFace
                 Traverse.Create(typeof(PlayerHUD)).Field("SetToDead").SetValue(true); //Change the value "SetToDead" to true
 
                 //Set sprite
-                string filePath = "./Mods/SkeletonFace/skeletonFace.png";
+                string filePath = "./Mods/SkeletonDeadFaceMod/skeletonFace.png";
 
                 SpriteSM sprite = Main.Setup(filePath, ref __instance); // SpriteSM require otherwise he won't work
                 
