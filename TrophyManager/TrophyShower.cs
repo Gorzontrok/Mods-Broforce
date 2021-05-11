@@ -8,5 +8,15 @@ using TrophyManager;
 
 public class AchievementShower : MonoBehaviour
 {
-    
+    public static Rect windowRect = new Rect(20, 20, 120, 50);
+
+
+    public static void trophyWindows(int windowID)
+    {
+        windowRect = GUILayout.Window(0, windowRect, trophyWindows, "My Window");
+        if (GUILayout.Button("Hello World"))
+        {
+            Main.Log("Got a click");
+        }
+    }
 }
