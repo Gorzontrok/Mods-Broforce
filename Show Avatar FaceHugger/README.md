@@ -7,3 +7,6 @@
  For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/AvatarFaceHugger)  
   
 [NexusMods page](https://www.nexusmods.com/broforce/mods/4)
+
+## Know issue :
+ * Sprite look transparent sometimes.

@@ -1,5 +1,5 @@
 # Skeleton Dead Face
- Repace all of the dead avatar to the skeleton one.  
+ Repace all of the dead avatar to the skeleton one from Expendabros.  
  ![](.img/showcase.png?raw=true)
 
 ## Installation :
