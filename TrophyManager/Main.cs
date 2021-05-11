@@ -67,16 +67,16 @@ namespace TrophyManager
 
             //--------'Who turn of the light' trophy
             GUILayout.BeginHorizontal();
-            GUILayout.Label(CheckTrophyDoneForImage("WhoTurnOffTheLight"), GUILayout.Width(86), GUILayout.Height(86));
+            GUILayout.Label(CheckTrophyDoneForImage("Who Turn Off The Light"), GUILayout.Width(86), GUILayout.Height(86));
             GUILayout.BeginVertical();
-            GUILayout.TextField("Who turn off the light !?", styleT_Name);
-            GUILayout.TextArea("Decapitate " + TrophyDico.trophyMax["Who turn off the light"] + " enemies\n\nenemies decapitate: " + settings.decapitatedCount + " times", GUILayout.ExpandWidth(true));
+            GUILayout.TextField("Who Turn Off The Light !?", styleT_Name);
+            GUILayout.TextArea("Decapitate " + TrophyDico.trophyMax["Who Turn Off The Light"] + " enemies\n\nenemies decapitate: " + settings.decapitatedCount + " times", GUILayout.ExpandWidth(true));
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
             //--------------------------------------
             //--------'Next Time Try With Two Eyes' trophy
             GUILayout.BeginHorizontal();
-            GUILayout.Label(CheckTrophyDoneForImage("DoYoulikeMyMuscle"), GUILayout.Width(86), GUILayout.Height(86));
+            GUILayout.Label(CheckTrophyDoneForImage("Do You Like My Muscle"), GUILayout.Width(86), GUILayout.Height(86));
             GUILayout.BeginVertical();
             GUILayout.TextField("Do you like my muscle ?", styleT_Name);
             GUILayout.TextArea("Make " + TrophyDico.trophyMax["Do you like my muscle ?"] + " enemies blind.\n\nenemies blind: " + settings.blindCount + " times", GUILayout.ExpandWidth(true));
@@ -85,7 +85,7 @@ namespace TrophyManager
             //--------------------------------------
             //--------'Next Time Try With Two Eyes' trophy
             GUILayout.BeginHorizontal();
-            GUILayout.Label(CheckTrophyDoneForImage("*BOOM*YouAreNowInvisible."), GUILayout.Width(86), GUILayout.Height(86));
+            GUILayout.Label(CheckTrophyDoneForImage("*BOOM* You Are Now Invisible."), GUILayout.Width(86), GUILayout.Height(86));
             GUILayout.BeginVertical();
             GUILayout.TextField("*BOOM* you are now invisible.", styleT_Name);
             GUILayout.TextArea("Make " + TrophyDico.trophyMax["*BOOM* you are now invisible."] + " enemies explode.\n\nenemies blow up: " + settings.explodeCount + " times", GUILayout.ExpandWidth(true));
@@ -94,7 +94,7 @@ namespace TrophyManager
             //--------------------------------------
             //--------'For MURICA !' trophy
             GUILayout.BeginHorizontal();
-            GUILayout.Label(CheckTrophyDoneForImage("ForMURICA"), GUILayout.Width(86), GUILayout.Height(86));
+            GUILayout.Label(CheckTrophyDoneForImage("For MURICA"), GUILayout.Width(86), GUILayout.Height(86));
             GUILayout.BeginVertical();
             GUILayout.TextField("For MURICA !", styleT_Name);
             GUILayout.TextArea("Kill " + TrophyDico.trophyMax["For MURICA !"] + " enemies.\n\nEnemies kills: " + settings.killCount, GUILayout.ExpandWidth(true));
@@ -102,6 +102,15 @@ namespace TrophyManager
             GUILayout.EndHorizontal();
             //--------------------------------------
         }
+        /*
+        static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
+        {
+            if()
+            {
+
+            }
+        }*/
+
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
         {
             settings.Save(modEntry);
@@ -173,22 +182,26 @@ namespace TrophyManager
         public static Texture CheckTrophyDoneForImage(string trophy)
         {
             Texture img;
-            string trophyName = trophy.ToLower();
             if (TrophyDico.trophyDone.ContainsKey(trophy))
             {
                 if (TrophyDico.trophyDone[trophy])
                 {
-                    img = texConvert("/t_m_" + trophyName + ".png");
+                    img = texConvert("/t_m_" + trophy + ".png");
                 }
                 else
                 {
-                    img = texConvert("/t_" + trophyName + ".png");
+                    img = texConvert("/t_" + trophy + ".png");
                 }
-                if (img == null & TrophyDico.trophyDone[trophy])
+
+                if (img == null)
                 {
-                    return texConvert("/m_imgMissing.png");
+                    if(TrophyDico.trophyDone[trophy])
+                    {
+                        return texConvert("/m_imgMissing.png");
+
+                    }
+                    return texConvert("/imgMissing.png");
                 }
-                else { return texConvert("/imgMissing.png"); }
                 return img;
             }
             else
@@ -255,8 +268,7 @@ namespace TrophyManager
         }
 
     }
-    //WhoTurnOffTheLight        Trophy
-    [HarmonyPatch(typeof(Mook), "IsDecapitated")] // Work 👍
+    [HarmonyPatch(typeof(Mook), "IsDecapitated")]
     static class WhoTurnOffTheLight_TrophyPatch
     {
         public static void Postfix(ref bool __result)
@@ -269,8 +281,8 @@ namespace TrophyManager
 
         }
     }
-    //DoYouLikeMyMuscle             Trophy
-    [HarmonyPatch(typeof(Mook), "StopBeingBlind", new Type[] { })]// Work 👍
+
+    [HarmonyPatch(typeof(Mook), "StopBeingBlind", new Type[] { })] //The function is not call so don't work
     static class DoYouLikeMyMuscle_TrophyPatch
     {
         public static void Prefix(Mook __instance)
@@ -286,8 +298,7 @@ namespace TrophyManager
         }
     }
 
-    //BoomYouAreNowInvisible        Trophy
-    [HarmonyPatch(typeof(TestVanDammeAnim), "CreateGibs", new Type[] {typeof(float), typeof(float)})]// Work.. Sometimes.. 👎
+    [HarmonyPatch(typeof(TestVanDammeAnim), "CreateGibs", new Type[] {typeof(float), typeof(float)})]
     static class BoomYouAreNowInvisible_TrophyPatch
     {
         public static void Prefix(ref float xI, ref float yI)
@@ -303,9 +314,9 @@ namespace TrophyManager
             }
         }
     }
-    
-//KILL TROPHY
-    [HarmonyPatch(typeof(Mook), "OnDestroy", new Type[] { })]// Work 👍
+    //KILL TROPHY
+
+    [HarmonyPatch(typeof(Mook), "OnDestroy", new Type[] { })]
     static class KillTrophy_TrophyPatch
     {
         public static void Prefix(Mook __instance)
