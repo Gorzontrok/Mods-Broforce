@@ -4,3 +4,4 @@
 
 ## Installation :
  For the latest release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/SkeletonDeadFace)
+ [NexusMods Page](https://www.nexusmods.com/broforce/mods/5)

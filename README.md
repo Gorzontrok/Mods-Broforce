@@ -12,4 +12,5 @@
    * [Trophy Manager (beta)](https://github.com/Gorzon38/Broforce-Mods/tree/main/TrophyManager)
 
 ## Installation :
-The installation guide can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2434812447).  
+All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
+The installation guide can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2434812447).

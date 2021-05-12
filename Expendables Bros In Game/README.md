@@ -21,7 +21,7 @@ Except Brondfly, maybe..
 For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/ExpendablesBrosInGame).  
 [NexusMods Page](https://www.nexusmods.com/broforce/mods/3)
 
-### Know Issue :
+## Know Issue :
 * The Image of Rescue is Rambro.
   
   
