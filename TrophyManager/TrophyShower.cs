@@ -10,6 +10,7 @@ public class AchievementShower : MonoBehaviour
 {
     public static Rect windowRect = new Rect(20, 20, 120, 50);
 
+    // I want to made a notification that show on screen
 
     public static void trophyWindows(int windowID)
     {
