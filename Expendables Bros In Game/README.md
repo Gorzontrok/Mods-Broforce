@@ -18,10 +18,10 @@ If you have rescue all of the Bros of Broforce you already have them ! :D
 Except Brondfly, maybe.. 
 
 ## Installation :
-For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/ExpendablesBrosInGame).
+For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/ExpendablesBrosInGame).  
+[NexusMods Page](https://www.nexusmods.com/broforce/mods/3)
 
 ### Know Issue :
 * The Image of Rescue is Rambro.
   
   
-  [NexusMods Page](https://www.nexusmods.com/broforce/mods/3)
