@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
+using System.Runtime;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,7 @@ namespace TrophyManager
         public static NetworkedUnit NU;
 
         public static string progressionPath = "./Mods/TrophyManagerMod/";
+        public static string trophyFolderPath = progressionPath + "/Trophy";
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
@@ -43,6 +45,16 @@ namespace TrophyManager
             return true;
         }
 
+        public class TrophyInfo
+        {
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public string ImagePath { get; set; }
+            public int MaxCount { get; set; }
+            public int Progression { get; set; }
+            public bool IsComplete { get; set; }
+        }
+
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
             var styleT_Name = GUI.skin.textField;
@@ -54,83 +66,39 @@ namespace TrophyManager
             {
                 ResetTrophy();
             }
-            if (GUILayout.Button("Check Trophy", GUILayout.Width(100)))
-            {
-                CheckTrophy();
-            }
-            if (GUILayout.Button("Check Trophy File", GUILayout.Width(100)))
-            {
-                GetTrophyFile();
-            }
-            GUILayout.EndHorizontal();
 
-            /*try
-            {
+            try
+            {       //Draw automatically all of the trophy
+                var trophy = new TrophyInfo();
                 foreach (KeyValuePair<string, object[]> Trophy in TrophyDico.trophyIntObjective)
                 {
                     string Name = Trophy.Key;
                     object[] info = Trophy.Value;
-                    foreach (object[] item in info)
-                    {
-                        string description = info[0].ToString();
-                        string imgPath = info[1].ToString();
-                        //bool IsMade = info[2];
-                    }
+
+                        trophy.Description = info[0].ToString();
+                        trophy.ImagePath = info[1].ToString();
+                        trophy.IsComplete = (bool)info[2];
+                        trophy.MaxCount = (int)info[3];
+                        trophy.Progression = (int)info[4];
+
+                    info[2] = CheckTrophy(trophy.Progression, trophy.MaxCount, trophy.IsComplete, Name);
+                    trophy.IsComplete = CheckTrophy(trophy.Progression, trophy.MaxCount, (bool)info[2], Name);
+
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label(CheckTrophyDoneForImage(Name), GUILayout.Width(86), GUILayout.Height(86));
+                    GUILayout.Label(CheckTrophyDoneForImage(trophy.ImagePath, trophy.IsComplete), GUILayout.Width(86), GUILayout.Height(86));
+                    GUILayout.BeginVertical();
+                    GUILayout.TextField(Name, styleT_Name);
+                    GUILayout.TextArea(trophy.Description + "\n\nProgression : " + trophy.Progression + "/" + trophy.MaxCount, GUILayout.ExpandWidth(true));
+                    GUILayout.EndVertical();
+                    GUILayout.EndHorizontal();
                 }
 
             }
             catch (Exception ex)
             {
                 Main.Log(ex.ToString());
-            }*/
-
-            //--------'Who turn of the light' trophy
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(CheckTrophyDoneForImage("Who Turn Off The Light"), GUILayout.Width(86), GUILayout.Height(86));
-            GUILayout.BeginVertical();
-            GUILayout.TextField("Who Turn Off The Light !?", styleT_Name);
-            GUILayout.TextArea("Decapitate " + TrophyDico.trophyMax["Who Turn Off The Light"] + " enemies\n\nenemies decapitate: " + settings.decapitatedCount + " times", GUILayout.ExpandWidth(true));
-            GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-            //--------------------------------------
-            //--------'Next Time Try With Two Eyes' trophy
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(CheckTrophyDoneForImage("Do You Like My Muscle"), GUILayout.Width(86), GUILayout.Height(86));
-            GUILayout.BeginVertical();
-            GUILayout.TextField("Do you like my muscle ?", styleT_Name);
-            GUILayout.TextArea("Make " + TrophyDico.trophyMax["Do you like my muscle ?"] + " enemies blind.\n\nenemies blind: " + settings.blindCount + " times", GUILayout.ExpandWidth(true));
-            GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-            //--------------------------------------
-            //--------'Next Time Try With Two Eyes' trophy
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(CheckTrophyDoneForImage("*BOOM* You Are Now Invisible."), GUILayout.Width(86), GUILayout.Height(86));
-            GUILayout.BeginVertical();
-            GUILayout.TextField("*BOOM* you are now invisible.", styleT_Name);
-            GUILayout.TextArea("Make " + TrophyDico.trophyMax["*BOOM* you are now invisible."] + " enemies explode.\n\nenemies blow up: " + settings.explodeCount + " times", GUILayout.ExpandWidth(true));
-            GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-            //--------------------------------------
-            //--------'For MURICA !' trophy
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(CheckTrophyDoneForImage("For MURICA"), GUILayout.Width(86), GUILayout.Height(86));
-            GUILayout.BeginVertical();
-            GUILayout.TextField("For MURICA !", styleT_Name);
-            GUILayout.TextArea("Kill " + TrophyDico.trophyMax["For MURICA !"] + " enemies.\n\nEnemies kills: " + settings.killCount, GUILayout.ExpandWidth(true));
-            GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-            //--------------------------------------
-        }
-        /*
-        static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
-        {
-            if()
-            {
-
             }
-        }*/
+        }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
         {
@@ -148,112 +116,80 @@ namespace TrophyManager
             mod.Logger.Log(str);
         }
 
-        public class TrophyInfo
+
+        // START OF FUNCTION FOR THE MOD
+        //-----------------------------
+        public static Texture texConvert(string imgFile) //Convert the image of the trophy to a Texture2D
         {
-            public string Name { get; set; }
-            public string Description { get; set; }
-            public string MaxCount { get; set; }
-            public string Image { get; set; }
-        }
-
-        public static void GetTrophyFile() //WIP for automate add trophy for avoid the shit in the OnGui()
-        {                                          //Make it like the manager 🤷‍
-            try
-            {
-                foreach(KeyValuePair<string, object[]> Trophy in TrophyDico.trophyIntObjective)
-                {
-                    foreach(object info in Trophy.Value)
-                    {
-                        Main.Log(info.ToString());
-                    }
-                }
-
-            }catch(Exception ex)
-            {
-                Main.Log(ex.ToString());
-            }
-
-        }
-
-        public static Texture texConvert(string imgFile)
-        {
-            Texture2D tex;
+            Texture2D texture;
             byte[] fileData;
 
-            string t_imgPath = progressionPath + "/Trophy" + imgFile;
+            string t_imgPath = progressionPath + "/Trophy/" + imgFile;
+            fileData = File.ReadAllBytes(t_imgPath);
 
-            if (File.Exists(t_imgPath))
-            {
-                fileData = File.ReadAllBytes(t_imgPath);
-
-                tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
-                tex.LoadImage(fileData);
-                return tex;
-            }
-            return null;
-
+            texture = new Texture2D(2, 2, TextureFormat.ARGB32, false);
+            texture.LoadImage(fileData);
+            return texture;
         }
 
-        public static Texture CheckTrophyDoneForImage(string trophy)
+        public static Texture CheckTrophyDoneForImage(string ImagePath, bool IsDone)
         {
-            Texture img;
-            if (TrophyDico.trophyDone.ContainsKey(trophy))
+            Texture image;
+            string imgTrophyDone = "m_";
+            try
             {
-                try
+                if (IsDone)
                 {
-                    if (TrophyDico.trophyDone[trophy])
+                    if (File.Exists(trophyFolderPath + imgTrophyDone + ImagePath))
                     {
-                        img = texConvert("/t_m_" + trophy + ".png");
-                        if (img == null)
-                            img = texConvert("/m_imgMissing.png");
+                        image = texConvert(imgTrophyDone + ImagePath);
                     }
                     else
                     {
-                        img = texConvert("/t_" + trophy + ".png");
-                        if (img == null)
-                            img = texConvert("/imgMissing.png");
-
+                        image = texConvert(imgTrophyDone + "imgMissing.png");
                     }
-                    return img;
-
                 }
-                catch (Exception ex)
+                else
                 {
-                    Main.Log(ex.ToString());
-                }
-            }
-            else
-            {
-                return texConvert("/imgMissing.png");
-            }
-            return null;
-        }
-
-        public static void CheckTrophy()//Function to check trophy
-        {
-            foreach (KeyValuePair<string, bool> IsClaim in TrophyDico.trophyDone) // Check if trophy is already claim
-            {
-                if (!IsClaim.Value)
-                {
-                    foreach (KeyValuePair<string, int> Progression in TrophyDico.trophyProgress)//Check the current Progress
+                    if (File.Exists(trophyFolderPath + ImagePath))
                     {
-                        foreach (KeyValuePair<string, int> Max in TrophyDico.trophyMax) //Check the max value to have for be done
-                        {
-                            if ((Max.Key == Progression.Key) && (Progression.Key == IsClaim.Key) && (Max.Value <= Progression.Value))// If the max
-                            {
-                                Main.Log("'" + Progression.Key + "' trophy is done !");
-                                TrophyDico.trophyDone[Progression.Key] = true;
-                            }
-                        }
+                        image = texConvert(imgTrophyDone + ImagePath);
                     }
+                    image = texConvert("imgMissing.png");
                 }
+
+                if (image == null)
+                    image = texConvert("error.png");
             }
+            catch (Exception ex)
+            {
+                Main.Log(ex.ToString());
+                image = texConvert("error.png");
+            }
+            return image;
         }
 
-        public static void ResetTrophy()
+        public static bool CheckTrophy(int Progression, int Objective, bool IsClaim, string Name)//Function to check trophy
+        {
+            if (IsClaim)
+                return true;
+
+            if (!IsClaim)
+            {
+                if (Progression >= Objective)
+                {
+                    Main.Log("'" + Name + "' trophy is done !");
+                    return true;
+                }
+                return false;
+            }
+
+            return false;
+        }
+
+        public static void ResetTrophy() //Doesn't work anymore
         {
             string[] directoryFiles_xml = Directory.GetFiles(progressionPath, "*.xml");
-            string[] directoryFiles_cache = Directory.GetFiles(progressionPath, "*.cache");
 
             foreach (string file in directoryFiles_xml)
             {
@@ -297,6 +233,7 @@ namespace TrophyManager
         }
 
     }
+
     //Who turn off the light TROPHY
     [HarmonyPatch(typeof(Mook), "IsDecapitated")]
     static class WhoTurnOffTheLight_TrophyPatch
@@ -306,7 +243,7 @@ namespace TrophyManager
             if (__result)
             {
                 Main.settings.decapitatedCount++;
-                Main.CheckTrophy();
+                //Main.CheckTrophy();
             }
 
         }
@@ -318,7 +255,7 @@ namespace TrophyManager
         public static void Postfix()
         {
             Main.settings.blindCount++;
-            Main.CheckTrophy();
+            //Main.CheckTrophy();
         }
     }
     //Explode TROPHY
@@ -330,7 +267,7 @@ namespace TrophyManager
             try
             {
                 Main.settings.explodeCount++;
-                Main.CheckTrophy();
+               // Main.CheckTrophy();
             }
             catch(Exception ex)
             {
@@ -348,7 +285,7 @@ namespace TrophyManager
             try
             {
                 Main.settings.killCount++;
-                Main.CheckTrophy();
+               // Main.CheckTrophy();
 
             }
             catch (Exception ex)
@@ -367,7 +304,7 @@ namespace TrophyManager
             try
             {
                 Main.settings.villagerCount++;
-                Main.CheckTrophy();
+                //Main.CheckTrophy();
 
             }
             catch (Exception ex)
@@ -386,7 +323,7 @@ namespace TrophyManager
             try
             {
                 Main.settings.ennemiOnRopeCount++;
-                Main.CheckTrophy();
+                //Main.CheckTrophy();
 
             }
             catch (Exception ex)
@@ -404,7 +341,7 @@ namespace TrophyManager
             try
             {
                 Main.settings.doorKillCount++;
-                Main.CheckTrophy();
+                //Main.CheckTrophy();
 
             }
             catch (Exception ex)
@@ -423,7 +360,7 @@ namespace TrophyManager
             try
             {
                 Main.settings.shieldThrowCount++;
-                Main.CheckTrophy();
+                //Main.CheckTrophy();
 
             }
             catch (Exception ex)
@@ -441,7 +378,7 @@ namespace TrophyManager
             try
             {
                 Main.settings.recoverInseminationCount++;
-                Main.CheckTrophy();
+                //Main.CheckTrophy();
 
             }
             catch (Exception ex)
@@ -459,7 +396,7 @@ namespace TrophyManager
             try
             {
                 Main.settings.assassinationCount++;
-                Main.CheckTrophy();
+                //Main.CheckTrophy();
 
             }
             catch (Exception ex)
