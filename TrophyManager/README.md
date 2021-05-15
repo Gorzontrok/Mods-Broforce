@@ -4,14 +4,15 @@
  [Latest Release](https://github.com/Gorzon38/Broforce-Mods/releases/tag/TrophyManager)
 
 ## What's Done ?
- For the momment i add 4 simple trophy. Some trophy have not yet image.
+ * For the momment i add 7 simple trophy. Some trophy have not yet image.
+ * An "automatic" GUI.
 
 ## Planned feature :
-* let everyone add their trophy.
-* gui upgrade.
-* more trophy.
+* Let everyone add their trophy.
+* More trophy.
+* Icon for each Trophy.
 
 ##
  If you have some idea of achievement you can send me your idea and the image of the trophy, if you want to make one.  
- For the image, it need to be 86x86 and name it 't_NAMEHERE.png'  
- And for image when complete use the same and you can add the 't_m_template.png' on it and name it 't_m_NAMEHERE.png'
+ For the image, it need to be 86x86 and name it 'NAMEHERE.png'  
+ And for image when complete use the same and you can add the 'm_template.png' on it and name it 'm_NAMEHERE.png'
