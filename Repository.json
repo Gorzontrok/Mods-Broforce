@@ -1,8 +1,9 @@
 {
     "Releases":
     [
-        {"Id": "SkeletonDeadFaceMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/releases/download/SkeletonDeadFace/SkeletonDeadFace.zip"},
-        {"Id": "AvatarFaceHuggerMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/releases/download/AvatarFaceHugger/Avatar_FaceHugger.zip"},
-        {"Id": "ExpendaBrosInGame", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/releases/download/ExpendablesBrosInGame/ExpendablesBrosInGame.zip"}
+        {"Id": "SkeletonDeadFaceMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/raw/main/SkeletonDeadFace/Realease/SkeletonDeadFace.zip"},
+        {"Id": "AvatarFaceHuggerMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/raw/main/AvatarFaceHugger/Realease/Avatar_FaceHugger.zip"},
+        {"Id": "ExpendaBrosInGame", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/raw/main/ExpendablesBrosInGame/Realease/ExpendablesBrosInGame.zip"},
+        {"Id": "TrophyManagerMod", "Version": "0.5.0", "DownloadUrl": "https://github.com/Gorzon38/Broforce-Mods/raw/main/TrophyManager/Realease/TrophyManager.zip"}
     ]
 }
