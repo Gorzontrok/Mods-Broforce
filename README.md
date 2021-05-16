@@ -20,12 +20,12 @@
 All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
 The installation guide can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2434812447).  
 
-**Français :**   
+**Français :**  
 Tout les mods ont besoin de [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
-Le guide d'installation est [ici](https://steamcommunity.com/sharedfiles/filedetails/?id=2434812447) (*en anglais*).
+Le guide d'installation est [ici](https://steamcommunity.com/sharedfiles/filedetails/?id=2489196482).
 
 ## Modding :
 If you are looking for how to made mod. I recommend you to see the [template of alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods).  
 
-**Français :**   
+**Français :**  
 Si vous souhaitez faire des mods je vous recommande d'allez voir les [exemples d'alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods) (*en anglais*).
