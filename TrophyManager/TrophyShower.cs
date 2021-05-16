@@ -10,5 +10,6 @@ public class AchievementShower
 {
 
     // I want to made a notification that show on screen
+    //Yea i don't know how to do it..
 
 }

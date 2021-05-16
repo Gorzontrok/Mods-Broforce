@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
-using System.Runtime;
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityModManagerNet;
 
 namespace TrophyManager
@@ -16,22 +14,26 @@ namespace TrophyManager
         public static bool enabled;
         public static Settings settings;
 
+        //Need to declare them for the patches with Harmony
         public static Component comp;
         public static BroforceObject BO;
         public static TestVanDammeAnim TVDA;
         public static NetworkedUnit NU;
 
-        public static string progressionPath = "./Mods/TrophyManagerMod/";
-        public static string trophyFolderPath = progressionPath + "/Trophy";
+        //Path needed in some function
+        public static string modPath = "./Mods/TrophyManagerMod/";
+        public static string trophyFolderPath = modPath + "Trophy/";
+
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             mod = modEntry;
+
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
-            //modEntry.OnUpdate = OnUpdate;
             settings = Settings.Load<Settings>(modEntry);
+
             var harmony = new Harmony(modEntry.Info.Id);
             try
             {
@@ -57,19 +59,23 @@ namespace TrophyManager
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
+            //Bold the name of the trophy
             var styleT_Name = GUI.skin.textField;
             styleT_Name.fontSize = 20;
             styleT_Name.fontStyle = FontStyle.Bold;
+            //-------
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Reset", GUILayout.Width(100)))
             {
-                ResetTrophy();
+                ResetTrophy();//Like the function doesn't work, he doesn't work either
             }
+            GUILayout.EndHorizontal();
 
             try
             {       //Draw automatically all of the trophy
-                var trophy = new TrophyInfo();
+
+                var trophy = new TrophyInfo();//Don't know if i really need it but i made it
                 foreach (KeyValuePair<string, object[]> Trophy in TrophyDico.trophyIntObjective)
                 {
                     string Name = Trophy.Key;
@@ -85,10 +91,10 @@ namespace TrophyManager
                     trophy.IsComplete = CheckTrophy(trophy.Progression, trophy.MaxCount, (bool)info[2], Name);
 
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label(CheckTrophyDoneForImage(trophy.ImagePath, trophy.IsComplete), GUILayout.Width(86), GUILayout.Height(86));
+                    GUILayout.Label(CheckTrophyDoneForImage(trophy.ImagePath, trophy.IsComplete), GUILayout.Width(86), GUILayout.Height(86)); // Show the image of the trophy
                     GUILayout.BeginVertical();
-                    GUILayout.TextField(Name, styleT_Name);
-                    GUILayout.TextArea(trophy.Description + "\n\nProgression : " + trophy.Progression + "/" + trophy.MaxCount, GUILayout.ExpandWidth(true));
+                    GUILayout.TextField(Name, styleT_Name);// Show the name of the Trophy
+                    GUILayout.TextArea(trophy.Description + "\n\nProgression : " + trophy.Progression + "/" + trophy.MaxCount, GUILayout.ExpandWidth(true));// Show the progression in the description field
                     GUILayout.EndVertical();
                     GUILayout.EndHorizontal();
                 }
@@ -124,7 +130,7 @@ namespace TrophyManager
             Texture2D texture;
             byte[] fileData;
 
-            string t_imgPath = progressionPath + "/Trophy/" + imgFile;
+            string t_imgPath = modPath + "/Trophy/" + imgFile;
             fileData = File.ReadAllBytes(t_imgPath);
 
             texture = new Texture2D(2, 2, TextureFormat.ARGB32, false);
@@ -142,24 +148,31 @@ namespace TrophyManager
                 {
                     if (File.Exists(trophyFolderPath + imgTrophyDone + ImagePath))
                     {
-                        image = texConvert(imgTrophyDone + ImagePath);
+                        image = texConvert(imgTrophyDone + ImagePath); //Get the image of done
                     }
                     else
                     {
-                        image = texConvert(imgTrophyDone + "imgMissing.png");
+                        image = texConvert(imgTrophyDone + "imgMissing.png"); //otherwise get the image missing
                     }
                 }
                 else
                 {
                     if (File.Exists(trophyFolderPath + ImagePath))
                     {
-                        image = texConvert(imgTrophyDone + ImagePath);
+                        image = texConvert(imgTrophyDone + ImagePath);// Get the image
+
                     }
-                    image = texConvert("imgMissing.png");
+                    else
+                    {
+                        image = texConvert("imgMissing.png");//Otherwise get the image Missing
+                    }
                 }
 
                 if (image == null)
-                    image = texConvert("error.png");
+                {
+                    image = texConvert("error.png"); //if it show we have a problem 👏
+                    Main.Log("Error");
+                }
             }
             catch (Exception ex)
             {
@@ -169,14 +182,14 @@ namespace TrophyManager
             return image;
         }
 
-        public static bool CheckTrophy(int Progression, int Objective, bool IsClaim, string Name)//Function to check trophy
+        public static bool CheckTrophy(int Progression, int Objective, bool IsClaim, string Name)//Function to check trophy and return the stat of it
         {
             if (IsClaim)
                 return true;
 
             if (!IsClaim)
             {
-                if (Progression >= Objective)
+                if (Progression >= Objective)// if he can be claim
                 {
                     Main.Log("'" + Name + "' trophy is done !");
                     return true;
@@ -189,11 +202,12 @@ namespace TrophyManager
 
         public static void ResetTrophy() //Doesn't work anymore
         {
-            string[] directoryFiles_xml = Directory.GetFiles(progressionPath, "*.xml");
+            //This function delete the Settings.xml, where the Progression is save.
+            string[] directoryFiles_xml = Directory.GetFiles(modPath, "*.xml");
 
             foreach (string file in directoryFiles_xml)
             {
-                if (file == progressionPath + "Settings.xml")
+                if (file == modPath + "Settings.xml")
                 {
                     try
                     {
@@ -231,7 +245,6 @@ namespace TrophyManager
         {
             Save(this, modEntry);
         }
-
     }
 
     //Who turn off the light TROPHY
@@ -296,7 +309,7 @@ namespace TrophyManager
     }
 
     //Guerrilla TROPHY
-    [HarmonyPatch(typeof(Villager), "ActivateGun", new Type[] { })]
+    [HarmonyPatch(typeof(VillagerAI), "EnterMinionMode", new Type[] { })]
     static class GuerillaTrophy_TrophyPatch
     {
         public static void Postfix()
@@ -388,7 +401,7 @@ namespace TrophyManager
         }
     }
     //assassination TROPHY
-    [HarmonyPatch(typeof(Mook), "AnimateAssassinated", new Type[] {  })]
+    [HarmonyPatch(typeof(Mook), "AnimateAssasinated", new Type[] {  })]
     static class AssassinationTrophy_TrophyPatch
     {
         public static void Postfix()

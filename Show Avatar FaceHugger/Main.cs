@@ -16,28 +16,31 @@ namespace Avatar_FaceHugger_Mod
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             mod = modEntry;
+
+            modEntry.OnGUI = OnGUI;
+            modEntry.OnSaveGUI = OnSaveGUI;
+            modEntry.OnToggle = OnToggle;
+            settings = Settings.Load<Settings>(modEntry);
+            var harmony = new Harmony(modEntry.Info.Id);
+
             try
             {
-                    modEntry.OnGUI = OnGUI;
-                    modEntry.OnSaveGUI = OnSaveGUI;
-                    modEntry.OnToggle = OnToggle;
-                    settings = Settings.Load<Settings>(modEntry);
-                    var harmony = new Harmony(modEntry.Info.Id);
-                    var assembly = Assembly.GetExecutingAssembly();
-                    harmony.PatchAll(assembly);
+                 var assembly = Assembly.GetExecutingAssembly();
+                 harmony.PatchAll(assembly);
             }
             catch (Exception ex)
             {
                 mod.Logger.Log(ex.ToString());
             }
+
             return true;
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
-            GUILayout.BeginHorizontal();
-            settings.facehuggerEnabled = GUILayout.Toggle(settings.facehuggerEnabled, "Enable FaceHugger", GUILayout.ExpandWidth(false));
-            GUILayout.EndVertical();
+            //GUILayout.BeginHorizontal();
+            // OPTION FOR THE BUBBLE
+            //GUILayout.EndVertical();
         }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
@@ -54,12 +57,11 @@ namespace Avatar_FaceHugger_Mod
         {
             mod.Logger.Log(str);
         }
-
     }
 
     public class Settings : UnityModManager.ModSettings
     {
-        public bool facehuggerEnabled;
+        public bool bubbleEnabled;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
@@ -73,17 +75,16 @@ namespace Avatar_FaceHugger_Mod
     {
         static void Prefix(PlayerHUD __instance)
         {
-            if (!Main.settings.facehuggerEnabled) //If facehugger not enabled
-                return;                           //Do nothing
+            if (!Main.enabled) //If facehugger not enabled
+                return;        //Do nothing
 
             //Otherwise show the facehugger when alien on head of the Bro
             //This code is just the opposite of HideFaceHugger()
             __instance.showFaceHugger = true;
-            __instance.avatar.SetLowerLeftPixel(new Vector2(__instance.faceHugger1.lowerLeftPixel.x, 1f));
+            __instance.avatar.SetLowerLeftPixel(new Vector2(__instance.faceHugger1.lowerLeftPixel.x, 1f)); //For some reason he makes the avatar transparent.
             __instance.faceHugger1.gameObject.SetActive(true);
 
             //Add a bubble
-            
         }
     }
 }
