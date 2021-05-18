@@ -1,11 +1,13 @@
 # Broforce Mods
  Here's my mods for Broforce.  
  The `.img/` folder are just for showcase image. And are not in the zip mod.  
- The `Release/` folder are the latest release and the update of the mods.  
+ The `Release/` folder are the latest release and the update of the mods.
 
  **Français :**  
  Ici se trouve mes mods pour Broforce. Les dossier `.img/` contiennent les image d'"exemple" de mes mods, il n'est pas inclus dans le zip du mod.  
  Le dossier `Release/` contient le dernier zip du mod.
+
+ Contact : Gorzon#4430
 
 ## Mods :
  * Bros :
