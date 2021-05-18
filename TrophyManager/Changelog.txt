@@ -1,0 +1,10 @@
+V0.3.0
+  - Added 3 Trophy : "Jesus will be proud.", "Guerrilla.", "D-D-D-DOOR KILL !" .
+  - "Automatic" GUI, it's now easier to add Trophy.
+  - Rename the file in the Trophy folder.
+
+v0.2.0
+  - Added 3 Trophy : "Do you like my muscle ?", "*BOOM* you are now invisible.", "For MURICA !" .
+
+v0.1.0
+  - Beta Release.

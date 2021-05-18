@@ -1,0 +1,7 @@
+V1.1.0
+  - Remove a spam log line.
+  - Added an option to enable Brondfly.
+  - The Option for enable the Expendables rework.
+
+v1.0.0
+  - Initial Release.
