@@ -51,6 +51,7 @@ namespace TrophyManager
         {
             public string Name { get; set; }
             public string Description { get; set; }
+            public string FolderPath { get; set; }
             public string ImagePath { get; set; }
             public int MaxCount { get; set; }
             public int Progression { get; set; }
@@ -74,7 +75,6 @@ namespace TrophyManager
 
             try
             {       //Draw automatically all of the trophy
-
                 var trophy = new TrophyInfo();//Don't know if i really need it but i made it
                 foreach (KeyValuePair<string, object[]> Trophy in TrophyDico.trophyIntObjective)
                 {
@@ -82,23 +82,23 @@ namespace TrophyManager
                     object[] info = Trophy.Value;
 
                         trophy.Description = info[0].ToString();
-                        trophy.ImagePath = info[1].ToString();
-                        trophy.IsComplete = (bool)info[2];
-                        trophy.MaxCount = (int)info[3];
-                        trophy.Progression = (int)info[4];
+                        trophy.FolderPath = info[1].ToString();
+                        trophy.ImagePath = info[2].ToString();
+                        trophy.IsComplete = (bool)info[3];
+                        trophy.MaxCount = (int)info[4];
+                        trophy.Progression = (int)info[5];
 
-                    info[2] = CheckTrophy(trophy.Progression, trophy.MaxCount, trophy.IsComplete, Name);
-                    trophy.IsComplete = CheckTrophy(trophy.Progression, trophy.MaxCount, (bool)info[2], Name);
+                    info[3] = CheckTrophy(trophy.Progression, trophy.MaxCount, trophy.IsComplete, Name);
+                    trophy.IsComplete = CheckTrophy(trophy.Progression, trophy.MaxCount, (bool)info[3], Name);
 
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label(CheckTrophyDoneForImage(trophy.ImagePath, trophy.IsComplete), GUILayout.Width(86), GUILayout.Height(86)); // Show the image of the trophy
+                    GUILayout.Label(CheckTrophyDoneForImage(trophy.ImagePath, trophy.FolderPath, trophy.IsComplete), GUILayout.Width(86), GUILayout.Height(86)); // Show the image of the trophy
                     GUILayout.BeginVertical();
                     GUILayout.TextField(Name, styleT_Name);// Show the name of the Trophy
-                    GUILayout.TextArea(trophy.Description + "\n\nProgression : " + trophy.Progression + "/" + trophy.MaxCount, GUILayout.ExpandWidth(true));// Show the progression in the description field
+                    GUILayout.TextArea(trophy.Description + "\n\nProgression : " + WhatIntToShow(trophy.Progression, trophy.MaxCount) + "/" + trophy.MaxCount, GUILayout.ExpandWidth(true));// Show the progression in the description field
                     GUILayout.EndVertical();
                     GUILayout.EndHorizontal();
                 }
-
             }
             catch (Exception ex)
             {
@@ -124,21 +124,20 @@ namespace TrophyManager
 
 
         // START OF FUNCTION FOR THE MOD
-        //-----------------------------
-        public static Texture texConvert(string imgFile) //Convert the image of the trophy to a Texture2D
+        // -----------------------------
+        private static Texture texConvert(string imgFile) //Convert the image of the trophy to a Texture2D
         {
             Texture2D texture;
             byte[] fileData;
 
-            string t_imgPath = modPath + "/Trophy/" + imgFile;
-            fileData = File.ReadAllBytes(t_imgPath);
+            fileData = File.ReadAllBytes(imgFile);
 
             texture = new Texture2D(2, 2, TextureFormat.ARGB32, false);
             texture.LoadImage(fileData);
             return texture;
         }
 
-        public static Texture CheckTrophyDoneForImage(string ImagePath, bool IsDone)
+        private static Texture CheckTrophyDoneForImage(string ImagePath, string folderPath, bool IsDone)
         {
             Texture image;
             string imgTrophyDone = "m_";
@@ -146,38 +145,38 @@ namespace TrophyManager
             {
                 if (IsDone)
                 {
-                    if (File.Exists(trophyFolderPath + imgTrophyDone + ImagePath))
+                    if (File.Exists(folderPath + imgTrophyDone + ImagePath))
                     {
-                        image = texConvert(imgTrophyDone + ImagePath); //Get the image of done
+                        image = texConvert(folderPath + imgTrophyDone + ImagePath); //Get the done image
                     }
                     else
                     {
-                        image = texConvert(imgTrophyDone + "imgMissing.png"); //otherwise get the image missing
+                        image = texConvert(trophyFolderPath + imgTrophyDone + "imgMissing.png"); //otherwise get the image missing
                     }
                 }
                 else
                 {
-                    if (File.Exists(trophyFolderPath + ImagePath))
+                    if (File.Exists(folderPath + ImagePath))
                     {
-                        image = texConvert(imgTrophyDone + ImagePath);// Get the image
+                        image = texConvert(folderPath + ImagePath);// Get the normal image
 
                     }
                     else
                     {
-                        image = texConvert("imgMissing.png");//Otherwise get the image Missing
+                        image = texConvert(trophyFolderPath + "imgMissing.png");//Otherwise get the image Missing
                     }
                 }
 
                 if (image == null)
                 {
-                    image = texConvert("error.png"); //if it show we have a problem 👏
+                    image = texConvert(trophyFolderPath + "error.png"); //if it show we have a problem 👏
                     Main.Log("Error");
                 }
             }
             catch (Exception ex)
             {
                 Main.Log(ex.ToString());
-                image = texConvert("error.png");
+                image = texConvert(folderPath + "error.png");
             }
             return image;
         }
@@ -200,7 +199,13 @@ namespace TrophyManager
             return false;
         }
 
-        public static void ResetTrophy() //Doesn't work anymore
+        private static int WhatIntToShow(int Progression, int Objective)
+        {
+            if (Progression >= Objective) return Objective;
+            return Progression;
+        }
+
+        private static void ResetTrophy() //Doesn't work anymore
         {
             //This function delete the Settings.xml, where the Progression is save.
             string[] directoryFiles_xml = Directory.GetFiles(modPath, "*.xml");
@@ -225,6 +230,7 @@ namespace TrophyManager
                 }
             }
         }
+        // -----------------------------
     }
 
 
@@ -244,178 +250,6 @@ namespace TrophyManager
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
-        }
-    }
-
-    //Who turn off the light TROPHY
-    [HarmonyPatch(typeof(Mook), "IsDecapitated")]
-    static class WhoTurnOffTheLight_TrophyPatch
-    {
-        public static void Postfix(ref bool __result)
-        {
-            if (__result)
-            {
-                Main.settings.decapitatedCount++;
-                //Main.CheckTrophy();
-            }
-
-        }
-    }
-    //DoYouLikeMyMuscle TROPHY
-    [HarmonyPatch(typeof(Mook), "StopBeingBlind", new Type[] { })]//Work 👍
-    static class DoYouLikeMyMuscle_TrophyPatch
-    {
-        public static void Postfix()
-        {
-            Main.settings.blindCount++;
-            //Main.CheckTrophy();
-        }
-    }
-    //Explode TROPHY
-    [HarmonyPatch(typeof(TestVanDammeAnim), "CreateGibs", new Type[] {typeof(float), typeof(float)})]//Work 👍
-    static class BoomYouAreNowInvisible_TrophyPatch
-    {
-        public static void Postfix()
-        {
-            try
-            {
-                Main.settings.explodeCount++;
-               // Main.CheckTrophy();
-            }
-            catch(Exception ex)
-            {
-                Main.Log(ex.ToString());
-            }
-        }
-    }
-
-    //KILL TROPHY
-    [HarmonyPatch(typeof(Mook), "OnDestroy", new Type[] { })]//Work 👍
-    static class KillTrophy_TrophyPatch
-    {
-        public static void Postfix()
-        {
-            try
-            {
-                Main.settings.killCount++;
-               // Main.CheckTrophy();
-
-            }
-            catch (Exception ex)
-            {
-                Main.Log(ex.ToString());
-            }
-        }
-    }
-
-    //Guerrilla TROPHY
-    [HarmonyPatch(typeof(VillagerAI), "EnterMinionMode", new Type[] { })]
-    static class GuerillaTrophy_TrophyPatch
-    {
-        public static void Postfix()
-        {
-            try
-            {
-                Main.settings.villagerCount++;
-                //Main.CheckTrophy();
-
-            }
-            catch (Exception ex)
-            {
-                Main.Log(ex.ToString());
-            }
-        }
-    }
-
-    //Predabro TROPHY
-    [HarmonyPatch(typeof(PredabroRope), "SetUp", new Type[] { typeof(Unit)})]
-    static class predabroTrophy_TrophyPatch
-    {
-        public static void Postfix()
-        {
-            try
-            {
-                Main.settings.ennemiOnRopeCount++;
-                //Main.CheckTrophy();
-
-            }
-            catch (Exception ex)
-            {
-                Main.Log(ex.ToString());
-            }
-        }
-    }
-    //door kill TROPHY
-    [HarmonyPatch(typeof(DoorDoodad), "MakeEffectsDeath", new Type[] {  })]
-    static class doorKillTrophy_TrophyPatch
-    {
-        public static void Postfix()
-        {
-            try
-            {
-                Main.settings.doorKillCount++;
-                //Main.CheckTrophy();
-
-            }
-            catch (Exception ex)
-            {
-                Main.Log(ex.ToString());
-            }
-        }
-    }
-
-    //shield TROPHY
-    [HarmonyPatch(typeof(MookRiotShield), "DisarmShield", new Type[] { typeof(float) })]
-    static class shieldThrowTrophy_TrophyPatch
-    {
-        public static void Postfix()
-        {
-            try
-            {
-                Main.settings.shieldThrowCount++;
-                //Main.CheckTrophy();
-
-            }
-            catch (Exception ex)
-            {
-                Main.Log(ex.ToString());
-            }
-        }
-    }
-    //anti-insemination TROPHY
-    [HarmonyPatch(typeof(TestVanDammeAnim), "RecoverFromInsemination", new Type[] {  })]
-    static class InsecticidTrophy_TrophyPatch
-    {
-        public static void Postfix()
-        {
-            try
-            {
-                Main.settings.recoverInseminationCount++;
-                //Main.CheckTrophy();
-
-            }
-            catch (Exception ex)
-            {
-                Main.Log(ex.ToString());
-            }
-        }
-    }
-    //assassination TROPHY
-    [HarmonyPatch(typeof(Mook), "AnimateAssasinated", new Type[] {  })]
-    static class AssassinationTrophy_TrophyPatch
-    {
-        public static void Postfix()
-        {
-            try
-            {
-                Main.settings.assassinationCount++;
-                //Main.CheckTrophy();
-
-            }
-            catch (Exception ex)
-            {
-                Main.Log(ex.ToString());
-            }
         }
     }
 }
