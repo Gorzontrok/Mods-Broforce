@@ -7,6 +7,7 @@
  * For the momment i add 7 simple trophy. Some trophy have no image yet.
  * An "automatic" GUI.
  * Let everyone add their trophy.
+ * Notification on screen.
 
 ## Planned feature :
 * More trophy.
