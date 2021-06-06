@@ -32,6 +32,7 @@ namespace TrophyManager
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
+            modEntry.OnUpdate = OnUpdate;
             settings = Settings.Load<Settings>(modEntry);
 
             var harmony = new Harmony(modEntry.Info.Id);
@@ -39,6 +40,7 @@ namespace TrophyManager
             {
                 var assembly = Assembly.GetExecutingAssembly();
                 harmony.PatchAll(assembly);
+                TrophyShower.Load();
             }
             catch (Exception ex)
             {
@@ -71,6 +73,7 @@ namespace TrophyManager
             {
                 ResetTrophy();//Like the function doesn't work, he doesn't work either
             }
+            settings.Notif = GUILayout.Toggle(settings.Notif, "Show on screen when a trophy is redeem.");
             GUILayout.EndHorizontal();
 
             try
@@ -88,11 +91,14 @@ namespace TrophyManager
                         trophy.MaxCount = (int)info[4];
                         trophy.Progression = (int)info[5];
 
+                    Texture imageTex = CheckTrophyDoneForImage(trophy.ImagePath, trophy.FolderPath, trophy.IsComplete);
+
                     info[3] = CheckTrophy(trophy.Progression, trophy.MaxCount, trophy.IsComplete, Name);
                     trophy.IsComplete = CheckTrophy(trophy.Progression, trophy.MaxCount, (bool)info[3], Name);
 
+
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label(CheckTrophyDoneForImage(trophy.ImagePath, trophy.FolderPath, trophy.IsComplete), GUILayout.Width(86), GUILayout.Height(86)); // Show the image of the trophy
+                    GUILayout.Label(imageTex, GUILayout.Width(86), GUILayout.Height(86)); // Show the image of the trophy
                     GUILayout.BeginVertical();
                     GUILayout.TextField(Name, styleT_Name);// Show the name of the Trophy
                     GUILayout.TextArea(trophy.Description + "\n\nProgression : " + WhatIntToShow(trophy.Progression, trophy.MaxCount) + "/" + trophy.MaxCount, GUILayout.ExpandWidth(true));// Show the progression in the description field
@@ -103,6 +109,22 @@ namespace TrophyManager
             catch (Exception ex)
             {
                 Main.Log(ex.ToString());
+            }
+        }
+        static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
+        {
+            foreach (KeyValuePair<string, object[]> Trophy in TrophyDico.trophyIntObjective)
+            {
+                string Name = Trophy.Key;
+                object[] info = Trophy.Value;
+
+                bool IsComplete = (bool)info[3];
+                int MaxCount = (int)info[4];
+                int Progression = (int)info[5];
+
+                bool temp = CheckTrophy(Progression, MaxCount, IsComplete, Name);
+                info[3] = temp;
+
             }
         }
 
@@ -121,7 +143,6 @@ namespace TrophyManager
         {
             mod.Logger.Log(str);
         }
-
 
         // START OF FUNCTION FOR THE MOD
         // -----------------------------
@@ -181,21 +202,33 @@ namespace TrophyManager
             return image;
         }
 
-        public static bool CheckTrophy(int Progression, int Objective, bool IsClaim, string Name)//Function to check trophy and return the stat of it
+        private static bool CheckTrophy(int Progression, int Objective, bool IsClaim, string Name)//Function to check trophy and return the stat of it
         {
             if (IsClaim)
                 return true;
 
             if (!IsClaim)
             {
-                if (Progression >= Objective)// if he can be claim
+                if (CheckIt(Progression, Objective))// if he can be claim
                 {
+                    var trophy = new TrophyInfo();
+                    Texture imageTex = CheckTrophyDoneForImage(trophy.ImagePath, trophy.FolderPath, CheckIt(Progression, Objective));
                     Main.Log("'" + Name + "' trophy is done !");
+                    TrophyShower.AddRedeem(imageTex, Name);
                     return true;
                 }
                 return false;
             }
 
+            return false;
+        }
+
+        private static bool CheckIt(int Progression, int Objective)
+        {
+            if (Progression >= Objective)// if he can be claim
+            {
+                return true;
+            }
             return false;
         }
 
@@ -231,11 +264,14 @@ namespace TrophyManager
             }
         }
         // -----------------------------
+        // END OF CUSTOM FUNCTION
     }
 
 
     public class Settings : UnityModManager.ModSettings
     {
+        public bool Notif = true;
+        // Count for Trophy
         public int decapitatedCount = 0;
         public int blindCount = 0;
         public int explodeCount = 0;
