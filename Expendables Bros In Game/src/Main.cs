@@ -109,9 +109,6 @@ namespace ExpendablesBrosInGame_Mod
             catch (Exception ex) { Main.Log(ex.ToString()); }
 
         }
-        //for the BronnarJensen Patch
-        //Tis is the only way that i found, because they share the same variable
-
     }
 
     [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for add the Brosvisua
