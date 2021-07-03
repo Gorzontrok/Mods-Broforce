@@ -13,7 +13,7 @@ namespace FilteredBros
         public static bool enabled;
         public static Settings settings;
 
-        public static Dictionary<int, HeroType> SelectedHero = new Dictionary<int, HeroType>();
+        internal static int numberOfBro;
 
 
         static bool Load(UnityModManager.ModEntry modEntry)
@@ -43,6 +43,7 @@ namespace FilteredBros
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
             GUILayout.BeginHorizontal();
+            GUILayout.Label("Number of bro select : " + numberOfBro);
             GUILayout.BeginVertical(GUILayout.ExpandWidth(false));
             if (GUILayout.Button("Select all", GUILayout.ExpandWidth(false)))
                 SelectAllBasic();
@@ -298,7 +299,35 @@ namespace FilteredBros
             {
                 Main.Log(ex);
             }
+            numberOfBro = BroDico.Count;
             return BroDico;
+        }
+
+        public static void voidUpdateList(Dictionary<int, HeroType> BroDico)
+        {
+            //Dictionary<int, HeroType> BroDico = new Dictionary<int, HeroType>();
+
+            List<HeroType> broList = new List<HeroType> { HeroType.AshBrolliams, HeroType.BaBroracus, HeroType.Blade, HeroType.BoondockBros, HeroType.Brobocop, HeroType.Broc, HeroType.Brochete, HeroType.BrodellWalker, HeroType.Broden, HeroType.BroDredd, HeroType.BroHard, HeroType.BroLee, HeroType.BroMax, HeroType.Brominator, HeroType.Brommando, HeroType.BronanTheBrobarian, HeroType.BrondleFly, HeroType.BroneyRoss, HeroType.BroniversalSoldier, HeroType.BronnarJensen, HeroType.Brononymous, HeroType.BroveHeart, HeroType.CherryBroling, HeroType.ColJamesBroddock, HeroType.DirtyHarry, HeroType.DoubleBroSeven, HeroType.EllenRipbro, HeroType.HaleTheBro, HeroType.IndianaBrones, HeroType.LeeBroxmas, HeroType.McBrover, HeroType.Nebro, HeroType.Predabro, HeroType.Rambro, HeroType.SnakeBroSkin, HeroType.TankBro, HeroType.TheBrocketeer, HeroType.TheBrode, HeroType.TheBrofessional, HeroType.TheBrolander, HeroType.TimeBroVanDamme, HeroType.TollBroad, HeroType.TrentBroser };
+            List<int> heroInt = new List<int> { 1, 3, 5, 8, 11, 15, 20, 25, 37, 42, 46, 52, 56, 62, 65, 72, 75, 82, 87, 92, 99, 102, 115, 123, 132, 145, 160, 175, 193, 209, 222, 249, 274, 300, 326, 350, 374, 400, 425, 445, 465, 485, 520 };
+
+            try
+            {
+                int i = 0;
+
+                foreach (HeroType hero in broList)
+                {
+                    bool broBool = GetBroBool(hero);
+                    if (broBool & !BroDico.ContainsValue(hero))
+                    {
+                        BroDico.Add(heroInt[i], hero);
+                        i++;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Main.Log(ex);
+            }
         }
 
         static bool GetBroBool(HeroType broName)
@@ -409,7 +438,7 @@ namespace FilteredBros
         }
     }
 
-    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for add the Brosvisua
+    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for add the Bros
     static class HeroUnlockController_IsAvailableInCampaign_Patch
     {
         public static bool Prefix(ref HeroType hero)
@@ -424,8 +453,9 @@ namespace FilteredBros
                     if (newHeroUnlockIntervals.Count <= 0)
                         throw new Exception("You need at least 1 Bro !");
 
-                    origHeroUnlockIntervals = newHeroUnlockIntervals;
-                    Main.Log("Finish BroDico. Number of bro : " + newHeroUnlockIntervals.Count);
+                    Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(newHeroUnlockIntervals);
+
+                    origHeroUnlockIntervals = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
                 }
                 catch (Exception ex)
                 {
