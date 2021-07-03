@@ -1,5 +1,6 @@
 v1.0.1 :
  - It's nothing, the mods just work again..
+ - Add a text where it show how many bro are enabled, only after load a level.
 
 v1.0 :
  - Initial release.
