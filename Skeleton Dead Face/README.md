@@ -4,4 +4,4 @@
  ![](.img/showcase.png?raw=true)
 
 ## Installation :
- For the latest release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/SkeletonDeadFace).
+ For the latest release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/SkeletonDeadFace). 

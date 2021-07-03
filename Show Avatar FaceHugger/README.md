@@ -8,4 +8,4 @@
  For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/AvatarFaceHugger).  
 
 ## Know issue :
- * Sprite look transparent sometimes.
+ * Sprite look transparent sometimes. 
