@@ -111,9 +111,10 @@ namespace ExpendablesBrosInGame_Mod
         }
     }
 
-    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for add the Brosvisua
+    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for add the Bros
     static class HeroUnlockController_IsAvailableInCampaign_Patch
     {
+        // After my mod FiltredBros, i have no idea how this can working..
             public static bool Prefix(ref HeroType hero)
             {
                 Dictionary<int, HeroType> newHeroUnlockIntervals = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
