@@ -22,6 +22,6 @@ For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/rel
 
 ## Know Issue :
 * The Image of Rescue is Rambro.
-* They become invisible on taunt because they have'nt animation for this.
+* They become invisible on taunt because they haven't animation for this.
   
   
