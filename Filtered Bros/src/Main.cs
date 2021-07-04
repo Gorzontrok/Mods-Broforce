@@ -65,14 +65,14 @@ namespace FilteredBros
             GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(true));
             settings.Rambro = GUILayout.Toggle(settings.Rambro, "Rambro");
             settings.Brommando = GUILayout.Toggle(settings.Brommando, "Brommando");
-            settings.BaBroracus = GUILayout.Toggle(settings.BaBroracus, "B. A. Broracus");
+            settings.BaBroracus = GUILayout.Toggle(settings.BaBroracus, "B.A. Broracus");
             settings.BrodellWalker = GUILayout.Toggle(settings.BrodellWalker, "Brodell Walker");
             settings.BroHard = GUILayout.Toggle(settings.BroHard, "Bro Hard");
             settings.McBrover = GUILayout.Toggle(settings.McBrover, "MacBrover");
             settings.Blade = GUILayout.Toggle(settings.Blade, "Brade");
             settings.BroDredd = GUILayout.Toggle(settings.BroDredd, "Bro Dredd");
             settings.Brononymous = GUILayout.Toggle(settings.Brononymous, "Bro in Black");
-            settings.DirtyHarry = GUILayout.Toggle(settings.DirtyHarry, "Dirty Brory");
+            settings.DirtyHarry = GUILayout.Toggle(settings.DirtyHarry, "Dirty Brorry");
             settings.Brominator = GUILayout.Toggle(settings.Brominator, "Brominator");
             settings.Brobocop = GUILayout.Toggle(settings.Brobocop, "Brobocop");
             settings.IndianaBrones = GUILayout.Toggle(settings.IndianaBrones, "Indiana Brones");
@@ -80,7 +80,7 @@ namespace FilteredBros
             GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false));
 
             settings.Nebro = GUILayout.Toggle(settings.Nebro, "Mr. Anderbro", GUILayout.ExpandWidth(false));
-            settings.BoondockBros = GUILayout.Toggle(settings.BoondockBros, "Boondock Bros", GUILayout.ExpandWidth(false));
+            settings.BoondockBros = GUILayout.Toggle(settings.BoondockBros, "The Boondock Bros", GUILayout.ExpandWidth(false));
             settings.Brochete = GUILayout.Toggle(settings.Brochete, "Brochete", GUILayout.ExpandWidth(false));
             settings.BronanTheBrobarian = GUILayout.Toggle(settings.BronanTheBrobarian, "Bronan The Brobarian", GUILayout.ExpandWidth(false));
             settings.EllenRipbro = GUILayout.Toggle(settings.EllenRipbro, "Ellen Ripbro", GUILayout.ExpandWidth(false));
@@ -89,13 +89,13 @@ namespace FilteredBros
             settings.BroniversalSoldier = GUILayout.Toggle(settings.BroniversalSoldier, "Broniversal Soldier", GUILayout.ExpandWidth(false));
             settings.ColJamesBroddock = GUILayout.Toggle(settings.ColJamesBroddock, "Colonel James Broddock", GUILayout.ExpandWidth(false));
             settings.CherryBroling = GUILayout.Toggle(settings.CherryBroling, "Cherry Broling", GUILayout.ExpandWidth(false));
-            settings.BroMax = GUILayout.Toggle(settings.BroMax, "BroMax", GUILayout.ExpandWidth(false));
+            settings.BroMax = GUILayout.Toggle(settings.BroMax, "Bro Max", GUILayout.ExpandWidth(false));
             settings.DoubleBroSeven = GUILayout.Toggle(settings.DoubleBroSeven, "Double Bro Seven", GUILayout.ExpandWidth(false));
             GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false));
 
             settings.TheBrode = GUILayout.Toggle(settings.TheBrode, "The Brode", GUILayout.ExpandWidth(false));
-            settings.Predabro = GUILayout.Toggle(settings.Predabro, "Predabro", GUILayout.ExpandWidth(false));
-            settings.BroveHeart = GUILayout.Toggle(settings.BroveHeart, "BroveHeart", GUILayout.ExpandWidth(false));
+            settings.Predabro = GUILayout.Toggle(settings.Predabro, "The Brodator", GUILayout.ExpandWidth(false));
+            settings.BroveHeart = GUILayout.Toggle(settings.BroveHeart, "Bro Heart", GUILayout.ExpandWidth(false));
             settings.TheBrofessional = GUILayout.Toggle(settings.TheBrofessional, "The Brofessional", GUILayout.ExpandWidth(false));
             settings.Broden = GUILayout.Toggle(settings.Broden, "Broden", GUILayout.ExpandWidth(false));
             settings.TheBrolander = GUILayout.Toggle(settings.TheBrolander, "The Brolander", GUILayout.ExpandWidth(false));
@@ -109,11 +109,11 @@ namespace FilteredBros
             GUILayout.Label(" - Expendabros :", typeStyle);
             GUILayout.EndHorizontal(); GUILayout.BeginHorizontal();
             settings.BroneyRoss = GUILayout.Toggle(settings.BroneyRoss, "Broney Ross", GUILayout.ExpandWidth(false));
-            settings.LeeBroxmas = GUILayout.Toggle(settings.LeeBroxmas, "Lee Broxmas", GUILayout.ExpandWidth(false));
-            settings.BronnarJensen = GUILayout.Toggle(settings.BronnarJensen, "Bronnar Jensen", GUILayout.ExpandWidth(false));
-            settings.HaleTheBro = GUILayout.Toggle(settings.HaleTheBro, "Hale The Bro", GUILayout.ExpandWidth(false));
+            settings.LeeBroxmas = GUILayout.Toggle(settings.LeeBroxmas, "Bro Christmas", GUILayout.ExpandWidth(false));
+            settings.BronnarJensen = GUILayout.Toggle(settings.BronnarJensen, "Bronnar Jenson", GUILayout.ExpandWidth(false));
+            settings.HaleTheBro = GUILayout.Toggle(settings.HaleTheBro, "Bro Caesar", GUILayout.ExpandWidth(false));
             settings.TrentBroser = GUILayout.Toggle(settings.TrentBroser, "Trent Broser", GUILayout.ExpandWidth(false));
-            settings.Broc = GUILayout.Toggle(settings.Broc, "Broc", GUILayout.ExpandWidth(false));
+            settings.Broc = GUILayout.Toggle(settings.Broc, "Broctor Death", GUILayout.ExpandWidth(false));
             settings.TollBroad = GUILayout.Toggle(settings.TollBroad, "Toll Broad", GUILayout.ExpandWidth(false));
             GUILayout.EndHorizontal(); GUILayout.Space(25);
 

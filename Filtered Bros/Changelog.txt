@@ -1,3 +1,6 @@
+v1.0.3 :
+ - Fix name in the menu.
+
 v1.0.2 :
  - Fix HaleTheBro spawn.
 
