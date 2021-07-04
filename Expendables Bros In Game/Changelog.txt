@@ -1,7 +1,12 @@
-V1.1.0
+V1.1.1 :
+  - Add a warning text for using FilteredBros.
+  - The mod does nothing if it's disable.
+  - Clean up some unused line.
+
+V1.1.0 :
   - Remove a spam log line.
   - Added an option to enable Brondfly.
   - The Option for enable the Expendables rework.
 
-v1.0.0
+v1.0.0 :
   - Initial Release.
