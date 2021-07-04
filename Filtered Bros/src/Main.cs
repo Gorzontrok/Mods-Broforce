@@ -361,7 +361,7 @@ namespace FilteredBros
                 case HeroType.DirtyHarry: return settings.DirtyHarry;
                 case HeroType.DoubleBroSeven: return settings.DoubleBroSeven;
                 case HeroType.EllenRipbro: return settings.EllenRipbro;
-                case HeroType.HaleTheBro: return settings.TankBro;
+                case HeroType.HaleTheBro: return settings.HaleTheBro;
                 case HeroType.IndianaBrones: return settings.IndianaBrones;
                 case HeroType.LeeBroxmas: return settings.LeeBroxmas;
                 case HeroType.McBrover: return settings.McBrover;
