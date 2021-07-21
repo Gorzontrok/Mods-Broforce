@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -14,7 +14,6 @@ namespace FilteredBros
         public static Settings settings;
 
         internal static int numberOfBro;
-
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
@@ -34,7 +33,7 @@ namespace FilteredBros
                 mod.Logger.Log(ex.ToString());
             }
 
-            if (!settings.firstLaunch)
+            if (!settings.hadFirstLaunch)
                 firstLaunch();
 
             return true;
@@ -44,22 +43,24 @@ namespace FilteredBros
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label("Number of bro select : " + numberOfBro);
-            GUILayout.BeginVertical(GUILayout.ExpandWidth(false));
+            GUILayout.FlexibleSpace();
             if (GUILayout.Button("Select all", GUILayout.ExpandWidth(false)))
                 SelectAllBasic();
-            if (GUILayout.Button("Select nothing", GUILayout.ExpandWidth(false)))
-                DeselectAllBasic();
-            GUILayout.EndVertical();
-            GUILayout.BeginVertical();
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Remove Brolander", GUILayout.ExpandWidth(false)))
                 RemoveBrolander();
-            GUILayout.EndVertical();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Select nothing", GUILayout.ExpandWidth(false)))
+                DeselectAllBasic();
             GUILayout.EndHorizontal();
 
             var typeStyle = new GUIStyle();
             typeStyle.normal.textColor = Color.gray;
             typeStyle.fontSize = 15;
             typeStyle.fontStyle = FontStyle.Bold;
+            
+            // Broforce Basic
             GUILayout.BeginHorizontal("box", GUILayout.ExpandWidth(false));
             GUILayout.Label(" - Broforce :", typeStyle);
             GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(true));
@@ -122,7 +123,6 @@ namespace FilteredBros
             GUILayout.Label(" - The ? :", typeStyle);
             GUILayout.EndHorizontal(); GUILayout.BeginHorizontal();
             settings.BrondleFly = GUILayout.Toggle(settings.BrondleFly, "BrondleFly", GUILayout.ExpandWidth(false));
-            //settings.MadMaxBrotansky = GUILayout.Toggle(settings.MadMaxBrotansky, "MadMaxBrotansky", GUILayout.ExpandWidth(false));
             GUILayout.EndHorizontal();
         }
 
@@ -187,10 +187,12 @@ namespace FilteredBros
             settings.HaleTheBro = false;
             settings.TrentBroser = false;
             settings.Broc = false;
-            settings.BrondleFly = false;
             settings.TollBroad = false;
+            
+            // The ?
+            settings.BrondleFly = false;
 
-            settings.firstLaunch = false;
+            settings.hadFirstLaunch = true;
         }
 
         static void RemoveBrolander()
@@ -284,7 +286,6 @@ namespace FilteredBros
             try
             {
                 int i = 0;
-
                 foreach (HeroType hero in broList)
                 {
                     bool broBool = GetBroBool(hero);
@@ -301,33 +302,6 @@ namespace FilteredBros
             }
             numberOfBro = BroDico.Count;
             return BroDico;
-        }
-
-        public static void voidUpdateList(Dictionary<int, HeroType> BroDico)
-        {
-            //Dictionary<int, HeroType> BroDico = new Dictionary<int, HeroType>();
-
-            List<HeroType> broList = new List<HeroType> { HeroType.AshBrolliams, HeroType.BaBroracus, HeroType.Blade, HeroType.BoondockBros, HeroType.Brobocop, HeroType.Broc, HeroType.Brochete, HeroType.BrodellWalker, HeroType.Broden, HeroType.BroDredd, HeroType.BroHard, HeroType.BroLee, HeroType.BroMax, HeroType.Brominator, HeroType.Brommando, HeroType.BronanTheBrobarian, HeroType.BrondleFly, HeroType.BroneyRoss, HeroType.BroniversalSoldier, HeroType.BronnarJensen, HeroType.Brononymous, HeroType.BroveHeart, HeroType.CherryBroling, HeroType.ColJamesBroddock, HeroType.DirtyHarry, HeroType.DoubleBroSeven, HeroType.EllenRipbro, HeroType.HaleTheBro, HeroType.IndianaBrones, HeroType.LeeBroxmas, HeroType.McBrover, HeroType.Nebro, HeroType.Predabro, HeroType.Rambro, HeroType.SnakeBroSkin, HeroType.TankBro, HeroType.TheBrocketeer, HeroType.TheBrode, HeroType.TheBrofessional, HeroType.TheBrolander, HeroType.TimeBroVanDamme, HeroType.TollBroad, HeroType.TrentBroser };
-            List<int> heroInt = new List<int> { 1, 3, 5, 8, 11, 15, 20, 25, 37, 42, 46, 52, 56, 62, 65, 72, 75, 82, 87, 92, 99, 102, 115, 123, 132, 145, 160, 175, 193, 209, 222, 249, 274, 300, 326, 350, 374, 400, 425, 445, 465, 485, 520 };
-
-            try
-            {
-                int i = 0;
-
-                foreach (HeroType hero in broList)
-                {
-                    bool broBool = GetBroBool(hero);
-                    if (broBool & !BroDico.ContainsValue(hero))
-                    {
-                        BroDico.Add(heroInt[i], hero);
-                        i++;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Main.Log(ex);
-            }
         }
 
         static bool GetBroBool(HeroType broName)
@@ -430,7 +404,7 @@ namespace FilteredBros
         public bool BrondleFly;
         public bool TollBroad;
 
-        public bool firstLaunch;
+        public bool hadFirstLaunch;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
