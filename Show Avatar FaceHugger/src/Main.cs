@@ -8,7 +8,6 @@ namespace Avatar_FaceHugger_Mod
 {
     public static class Main
     {
-
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
         public static Settings settings;
@@ -22,7 +21,6 @@ namespace Avatar_FaceHugger_Mod
             modEntry.OnToggle = OnToggle;
             settings = Settings.Load<Settings>(modEntry);
             var harmony = new Harmony(modEntry.Info.Id);
-
             try
             {
                  var assembly = Assembly.GetExecutingAssembly();
@@ -36,12 +34,12 @@ namespace Avatar_FaceHugger_Mod
             return true;
         }
 
-        static void OnGUI(UnityModManager.ModEntry modEntry)
+        /*static void OnGUI(UnityModManager.ModEntry modEntry)
         {
             //GUILayout.BeginHorizontal();
             // OPTION FOR THE BUBBLE
             //GUILayout.EndVertical();
-        }
+        }*/
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
         {
@@ -53,9 +51,9 @@ namespace Avatar_FaceHugger_Mod
             enabled = value;
             return true;
         }
-        public static void Log(String str)
+        public static void Log(object str)
         {
-            mod.Logger.Log(str);
+            mod.Logger.Log(str.ToString());
         }
     }
 
