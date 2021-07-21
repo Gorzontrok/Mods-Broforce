@@ -1,3 +1,4 @@
+// I use this for copy/paste it in my next mod and save me time. You can use it too.
 using System;
 using System.Collections.Generic;
 using System.Linq;
