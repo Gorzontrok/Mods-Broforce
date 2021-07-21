@@ -29,15 +29,13 @@ namespace SkeletonDeadFace
             return true;
         }
 
-        public static void Log(String str)
+        public static void Log(object str)
         {
-            mod.Logger.Log(str);
+            mod.Logger.Log(str.ToString());
         }
 
         public static SpriteSM Setup(string filePath, ref PlayerHUD PHUD) //Setup the sprite
         {
-            
-
             Texture2D tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
             tex.LoadImage(File.ReadAllBytes(filePath));
             tex.wrapMode = TextureWrapMode.Clamp;
@@ -77,7 +75,7 @@ namespace SkeletonDeadFace
                 Traverse.Create(typeof(PlayerHUD)).Field("SetToDead").SetValue(true); //Change the value "SetToDead" to true
 
                 //Set sprite
-                string filePath = "./Mods/SkeletonDeadFaceMod/skeletonFace.png";
+                string filePath = mod.Path + "/skeletonFace.png";
 
                 SpriteSM sprite = Main.Setup(filePath, ref __instance); // SpriteSM require otherwise he won't work
                 
