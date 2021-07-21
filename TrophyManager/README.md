@@ -1,5 +1,5 @@
 # Trophy Manager
-**You shouldn't use it, it's not working very well**
+**You shouldn't use it, it's not working very well**  
  It's a mod where i add some trophy/achievements.  
  Still in work in progress.  
  [Latest Release](https://github.com/Gorzon38/Broforce-Mods/releases/tag/TrophyManager)
