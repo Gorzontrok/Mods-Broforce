@@ -62,7 +62,6 @@ namespace ModTemplate
 
     public class Settings : UnityModManager.ModSettings
     {
-        public int count;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
