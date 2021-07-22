@@ -20,6 +20,7 @@
     * [Skeleton Dead Face](https://github.com/Gorzon38/Broforce-Mods/tree/main/Skeleton%20Dead%20Face)
  * Other :
    * [Trophy Manager](https://github.com/Gorzon38/Broforce-Mods/tree/main/TrophyManager)
+   * [AutoEnterPassword](https://github.com/Gorzon38/Broforce-Mods/tree/main/AutoEnterPassword)
 
 ## Installation :
 All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
