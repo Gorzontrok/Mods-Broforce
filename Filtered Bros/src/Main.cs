@@ -59,7 +59,7 @@ namespace FilteredBros
             typeStyle.normal.textColor = Color.gray;
             typeStyle.fontSize = 15;
             typeStyle.fontStyle = FontStyle.Bold;
-            
+
             // Broforce Basic
             GUILayout.BeginHorizontal("box", GUILayout.ExpandWidth(false));
             GUILayout.Label(" - Broforce :", typeStyle);
@@ -188,7 +188,7 @@ namespace FilteredBros
             settings.TrentBroser = false;
             settings.Broc = false;
             settings.TollBroad = false;
-            
+
             // The ?
             settings.BrondleFly = false;
 
@@ -412,7 +412,7 @@ namespace FilteredBros
         }
     }
 
-    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for add the Bros
+    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for change the dictionary
     static class HeroUnlockController_IsAvailableInCampaign_Patch
     {
         public static bool Prefix(ref HeroType hero)
@@ -437,6 +437,68 @@ namespace FilteredBros
                 }
             }
             return origHeroUnlockIntervals.ContainsValue(hero);
+        }
+    }
+
+    // Patch for don't destroy Mod.
+    [HarmonyPatch(typeof(PauseMenu), "ReturnToMenu")]
+    static class PauseMenu_ReturnToMenu_Patch
+    {
+        static bool Prefix(PauseMenu __instance)
+        {
+            if (!Main.enabled)
+            {
+                return true;
+            }
+
+            PauseGameConfirmationPopup m_ConfirmationPopup = (Traverse.Create(__instance).Field("m_ConfirmationPopup").GetValue() as PauseGameConfirmationPopup);
+
+            MethodInfo dynMethod = m_ConfirmationPopup.GetType().GetMethod("ConfirmReturnToMenu", BindingFlags.NonPublic | BindingFlags.Instance);
+            dynMethod.Invoke(m_ConfirmationPopup, null);
+
+            return false;
+        }
+
+    }
+    [HarmonyPatch(typeof(PauseMenu), "ReturnToMap")]
+    static class PauseMenu_ReturnToMap_Patch
+    {
+        static bool Prefix(PauseMenu __instance)
+        {
+            if (!Main.enabled)
+            {
+                return true;
+            }
+
+            __instance.CloseMenu();
+            GameModeController.Instance.ReturnToWorldMap();
+            return false;
+        }
+
+    }
+    [HarmonyPatch(typeof(PauseMenu), "RestartLevel")]
+    static class PauseMenu_RestartLevel_Patch
+    {
+        static bool Prefix(PauseMenu __instance)
+        {
+            if (!Main.enabled)
+            {
+                return true;
+            }
+
+            Map.ClearSuperCheckpointStatus();
+
+            (Traverse.Create(typeof(TriggerManager)).Field("alreadyTriggeredTriggerOnceTriggers").GetValue() as List<string>).Clear();
+
+            if (GameModeController.publishRun)
+            {
+                GameModeController.publishRun = false;
+                LevelEditorGUI.levelEditorActive = true;
+            }
+            PauseController.SetPause(PauseStatus.UnPaused);
+            GameModeController.RestartLevel();
+
+            return false;
         }
     }
 }

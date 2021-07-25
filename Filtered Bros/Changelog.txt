@@ -1,3 +1,7 @@
+v1.0.4 :
+ - Remove unused function.
+ - Add the fix for avoiding the destruction of the mod manager.
+
 v1.0.3 :
  - Fix name in the menu.
 
