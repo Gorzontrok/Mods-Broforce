@@ -1,3 +1,7 @@
+v1.0.5 :
+ - The name on the GUI are the same that we have on the in-game HUD.
+ - The number of bro in GUI are now update everytime instead of waiting to spawn.
+
 v1.0.4 :
  - Remove unused function.
  - Add the fix for avoiding the destruction of the mod manager.
