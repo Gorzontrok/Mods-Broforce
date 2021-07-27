@@ -157,7 +157,7 @@ namespace AutoEnterPassword
         }
         public static void seagull()
         {
-            HeroUnlockController.UnlockEverythingButBroheart();
+            HeroUnlockController.UnlockEverythingButBroheart(); // False ! Unlock all until The Brode !
             PlayerProgress.Save(true);
             Main.Log("'seagull' loaded !");
         }
