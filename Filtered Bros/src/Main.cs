@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using UnityModManagerNet;
-using HarmonyLib;
 
 namespace FilteredBros
 {
+    using RocketLib;
     public class Main
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
         public static Settings settings;
 
-        public static List<HeroType> broList = new List<HeroType> { HeroType.AshBrolliams, HeroType.BaBroracus, HeroType.Blade, HeroType.BoondockBros, HeroType.Brobocop, HeroType.Broc, HeroType.Brochete, HeroType.BrodellWalker, HeroType.Broden, HeroType.BroDredd, HeroType.BroHard, HeroType.BroLee, HeroType.BroMax, HeroType.Brominator, HeroType.Brommando, HeroType.BronanTheBrobarian, HeroType.BrondleFly, HeroType.BroneyRoss, HeroType.BroniversalSoldier, HeroType.BronnarJensen, HeroType.Brononymous, HeroType.BroveHeart, HeroType.CherryBroling, HeroType.ColJamesBroddock, HeroType.DirtyHarry, HeroType.DoubleBroSeven, HeroType.EllenRipbro, HeroType.HaleTheBro, HeroType.IndianaBrones, HeroType.LeeBroxmas, HeroType.McBrover, HeroType.Nebro, HeroType.Predabro, HeroType.Rambro, HeroType.SnakeBroSkin, HeroType.TankBro, HeroType.TheBrocketeer, HeroType.TheBrode, HeroType.TheBrofessional, HeroType.TheBrolander, HeroType.TimeBroVanDamme, HeroType.TollBroad, HeroType.TrentBroser };
+        public static List<HeroType> HeroList = RocketLib._HeroUnlockController.HeroTypeFullList;
         public static List<int> heroInt = new List<int> { 1, 3, 5, 8, 11, 15, 20, 25, 37, 42, 46, 52, 56, 62, 65, 72, 75, 82, 87, 92, 99, 102, 115, 123, 132, 145, 160, 175, 193, 209, 222, 249, 274, 300, 326, 350, 374, 400, 425, 445, 465, 485, 520 };
 
 
@@ -25,18 +24,8 @@ namespace FilteredBros
             modEntry.OnToggle = OnToggle;
             modEntry.OnUpdate = OnUpdate;
             settings = Settings.Load<Settings>(modEntry);
-            var harmony = new Harmony(modEntry.Info.Id);
-            try
-            {
-                var assembly = Assembly.GetExecutingAssembly();
-                harmony.PatchAll(assembly);
-            }
-            catch (Exception ex)
-            {
-                mod.Logger.Log(ex.ToString());
-            }
 
-            if (!settings.hadFirstLaunch)
+            if (!settings.getFirstLaunch)
                 firstLaunch();
 
             return true;
@@ -45,10 +34,13 @@ namespace FilteredBros
         static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
         {
             settings.numberOfBro = 0;
-            foreach(HeroType hero in broList)
+            foreach(HeroType hero in HeroList)
             {
                 if (GetBroBool(hero)) settings.numberOfBro++;
             }
+
+            Dictionary<int, HeroType> NewDictionary = Main.UpdateList();
+            if (NewDictionary.Count > 1) { RocketLib._HeroUnlockController.SetHeroUnlockIntervals(NewDictionary); }
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
@@ -149,9 +141,9 @@ namespace FilteredBros
             return true;
         }
 
-        public static void Log(object str)
+        public static void Log(object str, RLogType type = RLogType.Log)
         {
-            mod.Logger.Log(str.ToString());
+            RocketLib.ScreenLogger.Log(str, type);
         }
 
         static void firstLaunch()
@@ -204,7 +196,7 @@ namespace FilteredBros
             // The ?
             settings.BrondleFly = false;
 
-            settings.hadFirstLaunch = true;
+            settings.getFirstLaunch = true;
         }
 
         static void RemoveBrolander()
@@ -291,12 +283,10 @@ namespace FilteredBros
         public static Dictionary<int, HeroType> UpdateList()
         {
             Dictionary<int, HeroType> BroDico = new Dictionary<int, HeroType>();
-
-
             try
             {
                 int i = 0;
-                foreach (HeroType hero in broList)
+                foreach (HeroType hero in HeroList)
                 {
                     bool broBool = GetBroBool(hero);
                     if(broBool & !BroDico.ContainsValue(hero))
@@ -413,102 +403,12 @@ namespace FilteredBros
         public bool BrondleFly;
         public bool TollBroad;
 
-        public bool hadFirstLaunch;
+        public bool getFirstLaunch;
         public int numberOfBro;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
-        }
-    }
-
-    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for change the dictionary
-    static class HeroUnlockController_IsAvailableInCampaign_Patch
-    {
-        public static bool Prefix(ref HeroType hero)
-        {
-            Dictionary<int, HeroType> origHeroUnlockIntervals = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
-            if (Main.enabled)
-            {
-                try
-                {
-                    Dictionary<int, HeroType> newHeroUnlockIntervals = Main.UpdateList();
-
-                    if (newHeroUnlockIntervals.Count <= 0)
-                        throw new Exception("You need at least 1 Bro !");
-
-                    Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(newHeroUnlockIntervals);
-
-                    origHeroUnlockIntervals = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
-                }
-                catch (Exception ex)
-                {
-                    Main.Log(ex);
-                }
-            }
-            return origHeroUnlockIntervals.ContainsValue(hero);
-        }
-    }
-
-    // Patch for don't destroy Mod.
-    [HarmonyPatch(typeof(PauseMenu), "ReturnToMenu")]
-    static class PauseMenu_ReturnToMenu_Patch
-    {
-        static bool Prefix(PauseMenu __instance)
-        {
-            if (!Main.enabled)
-            {
-                return true;
-            }
-
-            PauseGameConfirmationPopup m_ConfirmationPopup = (Traverse.Create(__instance).Field("m_ConfirmationPopup").GetValue() as PauseGameConfirmationPopup);
-
-            MethodInfo dynMethod = m_ConfirmationPopup.GetType().GetMethod("ConfirmReturnToMenu", BindingFlags.NonPublic | BindingFlags.Instance);
-            dynMethod.Invoke(m_ConfirmationPopup, null);
-
-            return false;
-        }
-
-    }
-    [HarmonyPatch(typeof(PauseMenu), "ReturnToMap")]
-    static class PauseMenu_ReturnToMap_Patch
-    {
-        static bool Prefix(PauseMenu __instance)
-        {
-            if (!Main.enabled)
-            {
-                return true;
-            }
-
-            __instance.CloseMenu();
-            GameModeController.Instance.ReturnToWorldMap();
-            return false;
-        }
-
-    }
-    [HarmonyPatch(typeof(PauseMenu), "RestartLevel")]
-    static class PauseMenu_RestartLevel_Patch
-    {
-        static bool Prefix(PauseMenu __instance)
-        {
-            if (!Main.enabled)
-            {
-                return true;
-            }
-
-            Map.ClearSuperCheckpointStatus();
-
-            (Traverse.Create(typeof(TriggerManager)).Field("alreadyTriggeredTriggerOnceTriggers").GetValue() as List<string>).Clear();
-
-            if (GameModeController.publishRun)
-            {
-                GameModeController.publishRun = false;
-                LevelEditorGUI.levelEditorActive = true;
-            }
-            PauseController.SetPause(PauseStatus.UnPaused);
-            GameModeController.RestartLevel();
-
-            return false;
         }
     }
 }
