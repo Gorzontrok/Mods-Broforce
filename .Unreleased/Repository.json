@@ -2,6 +2,6 @@
     "Releases":
     [
         {"Id": "AutoEnterPassword", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/AutoEnterPassword/Release/AutoEnterPassword.zip"}, 
-        {"Id": "ForBralef", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/ForBralef/Release/ForBralef.zip"}
+        {"Id": "ForBralef", "Version": "1.0.3", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/ForBralef/Release/ForBralef.zip"}
     ]
 }
