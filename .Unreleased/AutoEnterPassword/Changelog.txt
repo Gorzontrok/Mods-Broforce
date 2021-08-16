@@ -1,5 +1,2 @@
-v1.0.1 :
- - Move release
-
 v1.0.0 :
  - Initial Release
