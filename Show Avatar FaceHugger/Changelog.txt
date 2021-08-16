@@ -1,2 +1,5 @@
+v1.0.1 :
+ - Fix update link.
+
 v1.0.0
   - Initial Release.
