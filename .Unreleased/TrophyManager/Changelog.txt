@@ -1,3 +1,9 @@
+v1.2.0 planned :
+ - Fix update link.
+
+V1.1.0
+  - Added Notification on screen.
+
 V1.0.0
   - Out of beta.
   - Fix the show of the "done image" if it isn't done.
