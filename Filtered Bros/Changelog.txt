@@ -1,5 +1,8 @@
+v1.1.1 :
+ - Fix a bug when select one bro return to the normal unlock order.
+
 v1.1.0 :
- - Use now RocketLib.
+ - Use now RocketLib for optimizing the code.
 
 v1.0.5 :
  - The name on the GUI are the same that we have on the in-game HUD.

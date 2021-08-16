@@ -40,7 +40,7 @@ namespace FilteredBros
             }
 
             Dictionary<int, HeroType> NewDictionary = Main.UpdateList();
-            if (NewDictionary.Count > 1) { RocketLib._HeroUnlockController.SetHeroUnlockIntervals(NewDictionary); }
+            if (NewDictionary.Count > 0) { RocketLib._HeroUnlockController.SetHeroUnlockIntervals(NewDictionary); }
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
