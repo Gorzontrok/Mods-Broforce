@@ -1,5 +1,5 @@
 v1.1.2 :
- - Add support for CustomHeroName.
+ - Fix the name of Predabro and Brove Heart.
 
 v1.1.1 :
  - Fix a bug when select one bro return to the normal unlock order.

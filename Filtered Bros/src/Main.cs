@@ -99,8 +99,8 @@ namespace FilteredBros
             GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false));
 
             settings.TheBrode = GUILayout.Toggle(settings.TheBrode, HeroController.GetHeroName(HeroType.TheBrode), GUILayout.ExpandWidth(false));
-            settings.Predabro = GUILayout.Toggle(settings.Predabro, HeroController.GetHeroName(HeroType.Predabro), GUILayout.ExpandWidth(false));
-            settings.BroveHeart = GUILayout.Toggle(settings.BroveHeart, HeroController.GetHeroName(HeroType.BroveHeart), GUILayout.ExpandWidth(false));
+            settings.Predabro = GUILayout.Toggle(settings.Predabro, "Predabro", GUILayout.ExpandWidth(false));
+            settings.BroveHeart = GUILayout.Toggle(settings.BroveHeart, "Brove Heart", GUILayout.ExpandWidth(false));
             settings.TheBrofessional = GUILayout.Toggle(settings.TheBrofessional, HeroController.GetHeroName(HeroType.TheBrofessional), GUILayout.ExpandWidth(false));
             settings.Broden = GUILayout.Toggle(settings.Broden, HeroController.GetHeroName(HeroType.Broden), GUILayout.ExpandWidth(false));
             settings.TheBrolander = GUILayout.Toggle(settings.TheBrolander, HeroController.GetHeroName(HeroType.TheBrolander), GUILayout.ExpandWidth(false));
