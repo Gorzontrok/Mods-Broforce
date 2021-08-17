@@ -5,6 +5,6 @@
         {"Id": "AvatarFaceHuggerMod", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/AvatarFaceHugger/Release/AvatarFaceHuggerMod.zip"},
         {"Id": "ExpendaBrosInGame", "Version": "1.1.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/ExpendablesBrosInGame/Release/ExpendaBrosInGame.zip"},
         {"Id": "TrophyManagerMod", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/TrophyManager/Release/TrophyManager.zip"},
-        {"Id": "FilteredBrosMod", "Version": "1.1.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Filtered%20Bros/Release/FilteredBrosMod.zip"}
+        {"Id": "FilteredBrosMod", "Version": "1.1.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Filtered%20Bros/Release/FilteredBrosMod.zip"}
     ]
 }
