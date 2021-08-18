@@ -30,7 +30,7 @@ namespace ModTemplate
             }
             catch(Exception ex)
             {
-                mod.Logger.Log(ex.ToString());
+                mod.Logger.Log("Failed to Patch Harmony !\n"+ex.ToString());
             }
 
             mod = modEntry;
