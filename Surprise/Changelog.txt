@@ -1,2 +1,8 @@
+v0.2.0 :
+ - Surprise again.
+
+v0.1.0 : 
+ - A lot of Surprises !
+
 v0.0.1 :
  - First Surprise.
