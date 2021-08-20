@@ -1,0 +1,16 @@
+v1.1.0 :
+ - Add a 'Random Unlock Intervals' button.
+ - Sort the HeroType list to the order of the game.
+ - T-bag enabled.
+
+v1.0.3 :
+- Fix update link.
+
+v1.0.2 :
+ - Fix some bug.
+
+v1.0.1 :
+ - Fix some bug.
+
+v1.0.0 :
+ - Intial release.
