@@ -54,11 +54,33 @@ namespace Surprise
 
             if (!__instance.isMegaDog)
                 normalDog = __instance.GetComponent<Renderer>().sharedMaterial;
+
             if (Main.HardMode)
             {
                 __instance.canBeAssasinated = false;
                 __instance.willPanicWhenOnFire = false;
                 __instance.canBeCoveredInAcid = false;
+
+                if(__instance.isMegaDog)
+                {
+                    /*Traverse.Create(typeof(MookDog)).Field("spritePixelWidth").SetValue(32);
+                    Traverse.Create(typeof(MookDog)).Field("spritePixelHeight").SetValue(32);
+                    Traverse.Create(typeof(MookDog)).Field("halfWidth").SetValue(6);
+                    Traverse.Create(typeof(MookDog)).Field("feetWidth").SetValue(4);
+                    Traverse.Create(typeof(MookDog)).Field("standingHeadHeight").SetValue(18);
+                    SpriteSM sprite = Traverse.Create(typeof(MookDog)).Field("sprite").GetValue() as SpriteSM;
+                    Vector3 spriteOffset = Traverse.Create(typeof(MookDog)).Field("spriteOffset").GetValue<Vector3>();
+
+                    int spritePixelWidth = Traverse.Create(typeof(MookDog)).Field("spritePixelWidth").GetValue<int>();
+                    int spritePixelHeight = Traverse.Create(typeof(MookDog)).Field("spritePixelHeight").GetValue<int>();
+
+                    sprite.RecalcTexture();
+                    sprite.SetPixelDimensions(32, 32);
+                    sprite.SetSize(32, 32);
+                    spriteOffset.y = sprite.offset.y;
+                    sprite.SetLowerLeftPixel((float)(15 * spritePixelWidth), (float)(spritePixelHeight * 2));*/
+                }
+                
             }
         }
     }
@@ -79,6 +101,8 @@ namespace Surprise
             if (Main.HardMode)
             {
                 //__instance.health = 85;
+                __instance.immuneToPlasmaShock = true;
+                __instance.showElectrifiedFrames = false;
                 __instance.canBeAssasinated = false;
                 __instance.canBeCoveredInAcid = false;
             }
@@ -145,6 +169,10 @@ namespace Surprise
             __instance.tankSpeed = 150;
             __instance.mooksToSpawn = 15;
             Traverse.Create(typeof(MookTruck)).Field("fireDelay").SetValue(0f);
+            if(Main.HardMode)
+            {
+                __instance.mooksToSpawn = 25;
+            }
         }
     }
 
@@ -210,7 +238,6 @@ namespace Surprise
             __instance.runSpeed = 175f;
         }
     }
-
     [HarmonyPatch(typeof(ScoutMook), "Awake")]
     static class ScoutMook_Awake_Patch
     {
@@ -228,6 +255,63 @@ namespace Surprise
                 __instance.canBeAssasinated = false;
                 __instance.willPanicWhenOnFire = false;
                 __instance.canBeCoveredInAcid = false;
+            }
+        }
+    }
+
+    // Patch MookJetpack
+    [HarmonyPatch(typeof(MookJetpack), "Start")]
+    static class MookJetpack_Start_Patch
+    {
+        static void Postfix(MookJetpack __instance)
+        {
+            __instance.speed = 80;
+            __instance.fireRate = 0.05f;
+            __instance.explosionRange = 70;
+            __instance.blastForce = 40f;
+
+            if (Main.HardMode)
+            {
+                __instance.health = 5;
+                __instance.canBeAssasinated = false;
+                __instance.willPanicWhenOnFire = false;
+                __instance.canBeCoveredInAcid = false;
+            }
+        }
+    }
+
+    //Patch Mookopter
+    [HarmonyPatch(typeof(ScoutMook), "Awake")]
+    static class Mookopter_Awake_Patch
+    {
+        static MookopterPolyAI mkpAI;
+        static void Postfix(Mookopter __instance)
+        {
+            __instance.health = 300;
+            __instance.verticalSpeed = 200;
+            __instance.tankSpeed = 150;
+
+            mkpAI.attackTime = 5;
+            if (Main.HardMode)
+            {
+                __instance.health = 400;
+                mkpAI.maxIdleWaitDuration = 0.5f;
+            }
+        }
+    }
+
+    // Patch TankBig
+    [HarmonyPatch(typeof(TankBig), "Start")]
+    static class TankBig_Start_Patch
+    {
+        static void Postfix(TankBig __instance)
+        {
+            __instance.health = 500;
+            __instance.tankSpeed = 80;
+
+            if(Main.HardMode)
+            {
+                __instance.health = 600;
             }
         }
     }

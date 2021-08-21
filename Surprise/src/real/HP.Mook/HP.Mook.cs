@@ -75,7 +75,26 @@ namespace Surprise
         {
             if(Main.HardMode)
             {
+                __instance.health = 50;
+               /*
                 __instance.GetComponent<Renderer>().sharedMaterial = MookDogUpdate_Patch.normalDog;
+
+                Traverse.Create(typeof(MookDog)).Field("spritePixelWidth").SetValue(32);
+                Traverse.Create(typeof(MookDog)).Field("spritePixelHeight").SetValue(32);
+                Traverse.Create(typeof(MookDog)).Field("halfWidth").SetValue(6);
+                Traverse.Create(typeof(MookDog)).Field("feetWidth").SetValue(4);
+                Traverse.Create(typeof(MookDog)).Field("standingHeadHeight").SetValue(18);
+                SpriteSM sprite = Traverse.Create(typeof(MookDog)).Field("sprite").GetValue() as SpriteSM;
+                Vector3 spriteOffset = Traverse.Create(typeof(MookDog)).Field("spriteOffset").GetValue<Vector3>();
+
+                int spritePixelWidth = Traverse.Create(typeof(MookDog)).Field("spritePixelWidth").GetValue<int>();
+                int spritePixelHeight = Traverse.Create(typeof(MookDog)).Field("spritePixelHeight").GetValue<int>();
+
+                sprite.RecalcTexture();
+                sprite.SetPixelDimensions(32, 32);
+                sprite.SetSize(32, 32);
+                spriteOffset.y = sprite.offset.y;
+                sprite.SetLowerLeftPixel((float)(15 * spritePixelWidth), (float)(spritePixelHeight * 2));*/
             }
         }
     }
@@ -124,7 +143,9 @@ namespace Surprise
     {
         static void Postfix(MookBigGuy __instance, float x, float y, float xSpeed, float ySpeed)
         {
-
+            ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed - 2f - UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
+            ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.85f, ySpeed - 40f - UnityEngine.Random.value * 35f, __instance.firingPlayerNum);
+            ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.85f, ySpeed - 50f + UnityEngine.Random.value * 80f, __instance.firingPlayerNum);
         }
     }
 
@@ -162,7 +183,8 @@ namespace Surprise
         {
             __instance.hasShield = true;
             __instance.BackSomersault(forceTumble);
-            return true;
+            return false;
         }
     }
+
 }

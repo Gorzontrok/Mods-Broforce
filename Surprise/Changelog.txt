@@ -1,3 +1,5 @@
+v0.3.0 :
+ - More surprise.
 v0.2.0 :
  - Surprise again.
 
