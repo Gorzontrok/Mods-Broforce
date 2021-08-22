@@ -244,7 +244,7 @@ namespace Surprise
         static void Postfix(ScoutMook __instance)
         {
             __instance.runSpeed = 175f;
-            __instance.health = 20;
+            __instance.health = 10;
             __instance.hearingRangeX = 450;
             __instance.immuneToPlasmaShock = true;
 

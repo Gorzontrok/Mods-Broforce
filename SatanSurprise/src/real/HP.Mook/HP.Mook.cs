@@ -143,9 +143,9 @@ namespace Surprise
     {
         static void Postfix(MookBigGuy __instance, float x, float y, float xSpeed, float ySpeed)
         {
+            ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed + 2f + UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
             ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed - 2f - UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
             ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.85f, ySpeed - 40f - UnityEngine.Random.value * 35f, __instance.firingPlayerNum);
-            ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.85f, ySpeed - 50f + UnityEngine.Random.value * 80f, __instance.firingPlayerNum);
         }
     }
 

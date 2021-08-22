@@ -29,10 +29,26 @@ namespace Surprise
         static void Prefix(BarrelBlock __instance)
         {
             __instance.range = 80f;
-            __instance.delayExplosionTime = 0.12f;
+            //__instance.delayExplosionTime = 0.12f;
             if(Main.HardMode)
             {
                 __instance.delayExplosionTime = 0f;
+            }
+        }
+    }
+    
+    // Patch Propane
+    [HarmonyPatch(typeof(PropaneBlock), "Update")]
+    static class PropaneBlock_Update_Patch
+    {
+        static void Prefix(PropaneBlock __instance)
+        {
+            __instance.range = 80f;
+            __instance.delayExplosionTime = 1.0f;
+            //__instance.dropDirt = false; do nothing
+            if(Main.HardMode)
+            {
+                __instance.delayExplosionTime = 0.5f;
             }
         }
     }

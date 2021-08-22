@@ -1,0 +1,16 @@
+v0.4.0 :
+ - Make the mod serious now.
+ - Rename the mod to Satan Surprise.
+ - All mook are surprise now.
+ - Some alien have been done.
+
+v0.3.0 :
+ - More surprise.
+v0.2.0 :
+ - Surprise again.
+
+v0.1.0 : 
+ - A lot of Surprises !
+
+v0.0.1 :
+ - First Surprise.
