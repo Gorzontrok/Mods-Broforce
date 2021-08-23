@@ -5,7 +5,10 @@
  ![](.img/showcase.png?raw=true)
 
 ## Installation :
- For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/AvatarFaceHugger).  
+ * The latest Release it's in the `/Release` folder.  
 
 ## Know issue :
- * Sprite look transparent sometimes. 
+ * Sprite look transparent sometimes.
+
+## Incompatible :
+ * None

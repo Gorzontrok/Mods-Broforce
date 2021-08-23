@@ -3,8 +3,6 @@
  You can found their Release in the `Release` folder.
 
 ## Finish
- * Bros
-    * [ForBralef](https://github.com/Gorzon38/Mods-Broforce/tree/main/.Unreleased/ForBralef)
  * Other
     * [AutoEnterPassword](https://github.com/Gorzon38/Mods-Broforce/tree/main/.Unreleased/AutoEnterPassword)
     * [Custom Hero Name](https://github.com/Gorzon38/Mods-Broforce/tree/main/.Unreleased/Custom%20Hero%20Name)

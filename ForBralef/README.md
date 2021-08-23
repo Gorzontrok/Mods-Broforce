@@ -5,6 +5,13 @@
  ![](.img/1.jpg?raw=true)
 
  Turn that it's an really fun mod, i decided to "Officially" release it.
+
+## Installation :
+ * The latest Release it's in the `/Release` folder.
+
+## Know Issue :
+* None.
+
  ## Incompatible :
  * Filtered Bros
  * Expendables Bros In Game

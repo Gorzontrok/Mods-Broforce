@@ -14,11 +14,13 @@ If you uncheck all, it will not work and use the one from the game.
  * 861 for Brondfly
 
 ## Installation :
- * For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/FiltredBros) or in the `/Release` folder.
+ * The latest Release it's in the `/Release` folder.
  * You need to download [RocketLib](https://www.nexusmods.com/broforce/mods/9), install it like a normal mod.
 
 ## Know Issue :
-* None for the moment..
+ * Expendabros don't have all animation, they can become invisible
+ * Expendabros don't have a rescue cutscene. The one from rambro is show. 
 
 ## Incompatible :
  * Expendables Bros In Game
+ * ForBralef

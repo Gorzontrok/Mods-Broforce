@@ -18,13 +18,14 @@ If you have rescue all of the Bros of Broforce you already have them ! :D
 Except Brondfly, maybe.. 
 
 ## Installation :
-For the latest Release it's [here](https://github.com/Gorzon38/Broforce-Mods/releases/tag/ExpendablesBrosInGame).  
+ * The latest Release it's in the `/Release` folder.  
 
 ## Know Issue :
 * The Image of Rescue is Rambro.
 * They become invisible on taunt because they haven't animation for this.
 
 ## Incompatible :
- * Filtred Bros
+ * Filtred Bros 
+ * ForBralef
   
   
