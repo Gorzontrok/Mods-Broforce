@@ -1,5 +1,5 @@
 # 007_Patch
- It's a patch that add the 5th special of 007.
+ It's a patch that add the 5th special of 007, a teargas.
 
 ## Installation :
  * The latest Release it's in the `/Release` folder.
