@@ -57,7 +57,7 @@ namespace Surprise
     [HarmonyPatch(typeof(CheckPoint), "ReactivateInternal")] // Don't work
     static class CheckpointCantWork_Patch
     {
-        static bool Prefix()
+        static bool Prefix(CheckPoint __instance)
         {
             if (Main.HardMode)
             {

@@ -59,6 +59,7 @@ namespace Surprise
                 HardMode = settings.HardMode;
             }
             catch (Exception ex) { mod.Logger.Log("Failed to set HardMode value !\n" + ex.ToString()); }
+
         }
 
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
@@ -89,10 +90,13 @@ namespace Surprise
     }
 
     public class WaitForSecondss : MonoBehaviour
-    {
+    { 
         public bool Wait(float time)
         {
-            StartCoroutine(Waiter(time));
+            while(time > 0)
+            {
+                time -= Time.deltaTime;
+            }
             return true;
         }
 

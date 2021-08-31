@@ -49,8 +49,8 @@ namespace Surprise
         public static Material normalDog;
         static void Postfix(MookDog __instance)
         {
-            __instance.awareMegaRunSpeed = 175f;
-            __instance.awareRunSpeed = 150f;
+            __instance.awareMegaRunSpeed = 190f;
+            __instance.awareRunSpeed = 175;
 
             if (!__instance.isMegaDog)
                 normalDog = __instance.GetComponent<Renderer>().sharedMaterial;
@@ -104,7 +104,6 @@ namespace Surprise
                 __instance.immuneToPlasmaShock = true;
                 __instance.showElectrifiedFrames = false;
                 __instance.canBeAssasinated = false;
-                __instance.canBeCoveredInAcid = false;
             }
         }
     }
@@ -281,7 +280,7 @@ namespace Surprise
     }
 
     //Patch Mookopter
-    [HarmonyPatch(typeof(ScoutMook), "Awake")]
+    [HarmonyPatch(typeof(Mookopter), "Awake")]
     static class Mookopter_Awake_Patch
     {
         static MookopterPolyAI mkpAI;
