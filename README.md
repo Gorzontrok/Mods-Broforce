@@ -36,4 +36,4 @@ Le guide d'installation est [ici](https://steamcommunity.com/sharedfiles/filedet
 If you are looking for how to made mod. I recommend you to see the [template of alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods).  
 
 **Français :**  
-Si vous souhaitez faire des mods je vous recommande d'allez voir les [exemples d'alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods) (*en anglais*).
+Si vous souhaitez faire des mods je vous recommande d'allez voir l'[exemple d'alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods) (*en anglais*).
