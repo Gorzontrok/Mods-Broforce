@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using HarmonyLib;
+using UnityEngine;
 using UnityModManagerNet;
 
 namespace _007_Patch
@@ -9,11 +10,15 @@ namespace _007_Patch
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
+        public static Settings settings;
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             modEntry.OnToggle = OnToggle;
+            modEntry.OnGUI = OnGUI;
+            modEntry.OnSaveGUI = OnSaveGUI;
             var harmony = new Harmony(modEntry.Info.Id);
+            settings = Settings.Load<Settings>(modEntry);
             try
             {
                 var assembly = Assembly.GetExecutingAssembly();
@@ -29,16 +34,42 @@ namespace _007_Patch
             return true;
         }
 
+        static void OnGUI(UnityModManager.ModEntry modEntry)
+        {
+            GUILayout.BeginHorizontal();
+            settings.UseWeirdMartini = GUILayout.Toggle(settings.UseWeirdMartini, "Use weird martini behaviour");
+            settings.PatchTearGas = GUILayout.Toggle(settings.PatchTearGas, "Everyone can be teargased (BUG)");
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+        }
+
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
             enabled = value;
             return true;
         }
 
+        static void OnSaveGUI(UnityModManager.ModEntry modEntry)
+        {
+            settings.Save(modEntry);
+        }
+
         public static void Log(object str)
         {
             mod.Logger.Log(str.ToString());
         }
+    }
+
+    public class Settings : UnityModManager.ModSettings
+    {
+        public bool UseWeirdMartini;
+        public bool PatchTearGas;
+
+        public override void Save(UnityModManager.ModEntry modEntry)
+        {
+            Save(this, modEntry);
+        }
+
     }
 
     [HarmonyPatch(typeof(DoubleBroSeven), "Awake")]
@@ -52,22 +83,21 @@ namespace _007_Patch
             __instance.originalSpecialAmmo = 5;
         }
     }
-    /*[HarmonyPatch(typeof(DoubleBroSeven), "Update")]
-    static class TearGas_Patch
+
+    // Weird Martini
+    [HarmonyPatch(typeof(MartiniGlass), "Death")]
+    static class WeirdMartini_Patch
     {
-        static void Postfix(DoubleBroSeven __instance)
+        static bool Prefix(MartiniGlass __instance)
         {
-            if (__instance.health > 0)
+            if(Main.settings.UseWeirdMartini)
             {
-                if (!Main.usedTeargas)
-                {
-                    Main.usedTeargas = true;
-                    Traverse.Create(typeof(DoubleBroSeven)).Field("_specialAmmo").SetValue(5);
-                    __instance.SpecialAmmo = 5;
-                }
+                Traverse.Create(__instance).Method("MakeEffects").GetValue();
+                return false;
             }
+            return true;
         }
-    }*/
+    }
 
     // Mook patch
     [HarmonyPatch(typeof(MookSuicide), "Start")]
@@ -75,7 +105,8 @@ namespace _007_Patch
     {
         static void Postfix(MookSuicide __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(MookBigGuy), "Awake")]
@@ -83,7 +114,8 @@ namespace _007_Patch
     {
         static void Postfix(MookBigGuy __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(MookDog), "Update")]
@@ -91,7 +123,8 @@ namespace _007_Patch
     {
         static void Postfix(MookDog __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(MookGrenadier), "Start")]
@@ -99,7 +132,8 @@ namespace _007_Patch
     {
         static void Postfix(MookGrenadier __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(MookJetpack), "Start")]
@@ -107,7 +141,8 @@ namespace _007_Patch
     {
         static void Postfix(MookJetpack __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(MookNinja), "Start")]
@@ -115,7 +150,8 @@ namespace _007_Patch
     {
         static void Postfix(MookNinja __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(MookRiotShield), "Update")]
@@ -123,7 +159,8 @@ namespace _007_Patch
     {
         static void Postfix(MookRiotShield __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(MookTrooper), "Start")]
@@ -131,7 +168,8 @@ namespace _007_Patch
     {
         static void Postfix(MookTrooper __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(ScoutMook), "Awake")]
@@ -139,7 +177,8 @@ namespace _007_Patch
     {
         static void Postfix(ScoutMook __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(MookGeneral), "IsEvil")]
@@ -147,7 +186,8 @@ namespace _007_Patch
     {
         static void Postfix(MookGeneral __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
 
@@ -157,7 +197,8 @@ namespace _007_Patch
     {
         static void Postfix(Alien __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(AlienFaceHugger), "Start")]
@@ -165,7 +206,8 @@ namespace _007_Patch
     {
         static void Postfix(AlienFaceHugger __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(AlienMelter), "Start")]
@@ -173,7 +215,8 @@ namespace _007_Patch
     {
         static void Postfix(AlienMelter __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(AlienMosquito), "Start")]
@@ -181,7 +224,8 @@ namespace _007_Patch
     {
         static void Postfix(AlienMosquito __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(AlienXenomorph), "Start")]
@@ -189,7 +233,8 @@ namespace _007_Patch
     {
         static void Postfix(AlienXenomorph __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
 
@@ -199,7 +244,8 @@ namespace _007_Patch
     {
         static void Postfix(MookSuicideUndead __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(HellDog), "Awake")]
@@ -207,7 +253,8 @@ namespace _007_Patch
     {
         static void Postfix(HellDog __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
     [HarmonyPatch(typeof(UndeadTrooper), "Start")]
@@ -215,7 +262,8 @@ namespace _007_Patch
     {
         static void Postfix(UndeadTrooper __instance)
         {
-            __instance.canBeTearGased = true;
+            if (Main.settings.PatchTearGas) __instance.canBeTearGased = true;
+            else __instance.canBeTearGased = false;
         }
     }
 
