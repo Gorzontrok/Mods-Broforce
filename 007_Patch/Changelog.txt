@@ -1,2 +1,6 @@
+v1.1.0 :
+ - Add weird Martini behaviour (from DragonightFury)
+ - Add an option for toggle the teargased patch.
+
 v1.0.0 :
  - Intial release.
