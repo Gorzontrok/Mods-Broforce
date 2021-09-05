@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.IO;
 using HarmonyLib;
 using UnityEngine;
 using UnityModManagerNet;
@@ -18,7 +14,7 @@ namespace Surprise
 
         public static bool HardMode;
 
-        public static WaitForSecondss waitFS;
+        public static Mook NewMookForMecha;
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
@@ -78,6 +74,14 @@ namespace Surprise
         {
             mod.Logger.Log(str.ToString());
         }
+
+        public static void Wait(float time)
+        {
+            while (time > 0)
+            {
+                time -= Time.deltaTime;
+            }
+        }
     }
 
     public class Settings : UnityModManager.ModSettings
@@ -86,31 +90,6 @@ namespace Surprise
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
-        }
-    }
-
-    public class WaitForSecondss : MonoBehaviour
-    { 
-        public bool Wait(float time)
-        {
-            while(time > 0)
-            {
-                time -= Time.deltaTime;
-            }
-            return true;
-        }
-
-        IEnumerator Waiter(float time)
-        {
-            //Print the time of when the function is first called.
-            Debug.Log("Started Coroutine at timestamp : " + Time.time);
-
-            //yield on a new YieldInstruction that waits for 5 seconds.
-            yield return new WaitForSeconds(time);
-            //yield return time;
-
-            //After we have waited 5 seconds print the time again.
-            Debug.Log("Finished Coroutine at timestamp : " + Time.time);
         }
     }
 }

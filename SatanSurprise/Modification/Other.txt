@@ -16,4 +16,10 @@
             - delay explosion time 0.5
 
 -- Checkpoint :
-        - don't work but i want them to be disabled in hard mode
+        - They are disable in Hard Mode
+
+-- Alarm pole :
+        - call 8 mook
+        -- HardMode :
+                - call 10 mooks
+                - call 2 villagers

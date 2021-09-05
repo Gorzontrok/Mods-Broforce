@@ -33,6 +33,7 @@ namespace Surprise
             __instance.blastForce = 100f;
 
             __instance.speed = 150f;
+            Main.NewMookForMecha = __instance;
             if (Main.HardMode)
             {
                 __instance.canBeAssasinated = false;
@@ -279,6 +280,29 @@ namespace Surprise
         }
     }
 
+    // Patch CR-666
+    [HarmonyPatch(typeof(DolphLundrenSoldier), "Start")]
+    static class DolphLundrenSoldier_Start_Patch
+    {
+        static void Postfix(DolphLundrenSoldier __instance)
+        {
+            __instance.health = 200;
+            __instance.healthReviveAmount = 200;
+            __instance.speed = 110;
+            __instance.willPanicWhenOnFire = false;
+            __instance.immuneToPlasmaShock = true;
+            __instance.showElectrifiedFrames = false;
+
+            if (Main.HardMode)
+            {
+                __instance.health = 300;
+                __instance.healthReviveAmount = 300;
+                __instance.canBeAssasinated = false;
+                __instance.canBeCoveredInAcid = false;
+            }
+        }
+    }
+
     //Patch Mookopter
     [HarmonyPatch(typeof(Mookopter), "Awake")]
     static class Mookopter_Awake_Patch
@@ -314,4 +338,42 @@ namespace Surprise
             }
         }
     }
+
+    // patch Mecha
+    [HarmonyPatch(typeof(MookArmouredGuy), "Start")]
+    static class MookArmouredGuy_Start_Patch
+    {
+        static void Postfix(MookArmouredGuy __instance)
+        {
+            __instance.health = 50;
+            __instance.speed = 15;
+            try
+            {
+                __instance.jetPackFuelConsumption *= 2;
+                __instance.pilotUnit = Main.NewMookForMecha;
+            }
+            catch(Exception ex)
+            {
+                Main.Log(ex);
+            }
+            
+        }
+    }
+
+    // Patch Mamoth kopter
+    [HarmonyPatch(typeof(MammothKopter), "Start")]
+    static class MammothKopter_Start_Patch
+    {
+        static void Postfix(MammothKopter __instance)
+        {
+            __instance.health = 12000;
+            __instance.tankSpeed = 110;
+            __instance.verticalSpeed = 110;
+            int NbrHitPropane = 8;
+            if (Main.HardMode) NbrHitPropane = 10;
+            Traverse.Create(__instance).Field("propaneHitsLeft").SetValue(NbrHitPropane);
+
+        }
+    }
 }
+
