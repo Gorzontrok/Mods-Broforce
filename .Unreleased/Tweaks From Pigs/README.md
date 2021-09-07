@@ -29,7 +29,7 @@
     - Suicide terrorrist don't panic when they have a bomb on them
     - Pig always have the terrorist skin.  
 
- i don't think i will include all modification so look at [Modification](/Modification/)
+ i don't think i will include all modification here so look at [Modification](/Modification/)
  ## Mods Include :
  * Bros :
     * [Expendables Bros In Game](https://github.com/Gorzon38/Mods-Broforce/tree/main/Expendables%20Bros%20In%20Game)  
