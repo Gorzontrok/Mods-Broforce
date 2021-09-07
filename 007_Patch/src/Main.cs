@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 using UnityModManagerNet;
@@ -58,6 +61,24 @@ namespace _007_Patch
         {
             mod.Logger.Log(str.ToString());
         }
+
+        public static Texture2D CreateTexFromMat(string filename, Material origMat)
+        {
+            if (!File.Exists(Main.mod.Path +  filename)) throw new IOException();
+
+            Texture2D tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
+            tex.LoadImage(File.ReadAllBytes(Main.mod.Path + filename));
+            tex.wrapMode = TextureWrapMode.Clamp;
+
+            Texture orig = origMat.mainTexture;
+
+            tex.anisoLevel = orig.anisoLevel;
+            tex.filterMode = orig.filterMode;
+            tex.mipMapBias = orig.mipMapBias;
+            tex.wrapMode = orig.wrapMode;
+
+            return tex;
+        }
     }
 
     public class Settings : UnityModManager.ModSettings
@@ -81,6 +102,23 @@ namespace _007_Patch
             Traverse.Create(typeof(DoubleBroSeven)).Field("_specialAmmo").SetValue(5);
             __instance.SpecialAmmo = 5;
             __instance.originalSpecialAmmo = 5;
+        }
+    }
+
+    // Patch the icon in the HUD
+    [HarmonyPatch(typeof(PlayerHUD), "SetGrenadeMaterials", new Type[] { typeof(HeroType) })]
+    static class AddTearGasIcon_Patch
+    {
+        static void Prefix(PlayerHUD __instance, HeroType type)
+        {
+            Material newIconForTearGas = __instance.rambroIcon;
+            if (type == HeroType.DoubleBroSeven)
+            {
+                newIconForTearGas.mainTexture = Main.CreateTexFromMat("Grenade_Tear_Gas.png", newIconForTearGas);
+                List<Material> tempList = __instance.doubleBroGrenades.ToList();
+                tempList.Add(newIconForTearGas);
+                __instance.doubleBroGrenades = tempList.ToArray();
+            }
         }
     }
 
