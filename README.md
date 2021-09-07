@@ -13,14 +13,14 @@
 
 ## Mods :
  * Bros :
-    * [Expendabros Bros In Game](https://github.com/Gorzon38/Broforce-Mods/tree/main/Expendables%20Bros%20In%20Game)  
+    * [Expendables Bros In Game](https://github.com/Gorzon38/Mods-Broforce/tree/main/Expendables%20Bros%20In%20Game)  
     * [Filtered Bros](https://github.com/Gorzon38/Mods-Broforce/tree/main/Filtered%20Bros)
     * [ForBralef](https://github.com/Gorzon38/Mods-Broforce/tree/main/ForBralef)
  * Fix :
     * [007_Patch](https://github.com/Gorzon38/Mods-Broforce/tree/main/007_Patch)
  * HUD :
-    * [Show Avatar FaceHugger](https://github.com/Gorzon38/Broforce-Mods/tree/main/Show%20Avatar%20FaceHugger)
-    * [Skeleton Dead Face](https://github.com/Gorzon38/Broforce-Mods/tree/main/Skeleton%20Dead%20Face)
+    * [Show Avatar FaceHugger](https://github.com/Gorzon38/Mods-Broforce/tree/main/Show%20Avatar%20FaceHugger)
+    * [Skeleton Dead Face](https://github.com/Gorzon38/Mods-Broforce/tree/main/Skeleton%20Dead%20Face)
  * Other :
    * [Surprise](https://github.com/Gorzon38/Mods-Broforce/tree/main/Surprise)
 
