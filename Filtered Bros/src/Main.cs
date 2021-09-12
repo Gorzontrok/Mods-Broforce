@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityModManagerNet;
+using HarmonyLib;
 
 namespace FilteredBros
 {
@@ -12,22 +14,33 @@ namespace FilteredBros
         public static bool enabled;
         public static Settings settings;
 
-        public static List<HeroType> HeroList = RocketLib._HeroUnlockController.HeroTypeFullList;
+        public static Dictionary<int, HeroType> origDico = new Dictionary<int, HeroType>();
+        public static List<HeroType> HeroList = new List<HeroType> { HeroType.Rambro, HeroType.Brommando, HeroType.BaBroracus, HeroType.BrodellWalker, HeroType.BroHard, HeroType.McBrover, HeroType.Blade, HeroType.BroDredd, HeroType.Brononymous, HeroType.DirtyHarry, HeroType.Brominator, HeroType.Brobocop, HeroType.IndianaBrones, HeroType.AshBrolliams, HeroType.Nebro, HeroType.BoondockBros, HeroType.Brochete, HeroType.BronanTheBrobarian, HeroType.EllenRipbro, HeroType.TheBrocketeer, HeroType.TimeBroVanDamme, HeroType.BroniversalSoldier, HeroType.ColJamesBroddock, HeroType.CherryBroling, HeroType.BroMax, HeroType.TheBrode, HeroType.DoubleBroSeven, HeroType.Predabro, HeroType.BroveHeart, HeroType.TheBrofessional, HeroType.Broden, HeroType.TheBrolander, HeroType.SnakeBroSkin, HeroType.TankBro, HeroType.BroLee, HeroType.Broc, HeroType.BroneyRoss, HeroType.BronnarJensen, HeroType.HaleTheBro, HeroType.LeeBroxmas, HeroType.TollBroad, HeroType.TrentBroser, HeroType.BrondleFly };
         public static List<int> heroInt = new List<int> { 1, 3, 5, 8, 11, 15, 20, 25, 37, 42, 46, 52, 56, 62, 65, 72, 75, 82, 87, 92, 99, 102, 115, 123, 132, 145, 160, 175, 193, 209, 222, 249, 274, 300, 326, 350, 374, 400, 425, 445, 465, 485, 520 };
-
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
-            mod = modEntry;
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
             modEntry.OnUpdate = OnUpdate;
             settings = Settings.Load<Settings>(modEntry);
 
+            var harmony = new Harmony(modEntry.Info.Id);
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                harmony.PatchAll(assembly);
+            }
+            catch (Exception ex)
+            {
+                mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
+            }
+
             if (!settings.getFirstLaunch)
                 firstLaunch();
 
+            mod = modEntry;
             return true;
         }
 
@@ -38,9 +51,6 @@ namespace FilteredBros
             {
                 if (GetBroBool(hero)) settings.numberOfBro++;
             }
-
-            Dictionary<int, HeroType> NewDictionary = Main.UpdateList();
-            if (NewDictionary.Count > 0) { RocketLib._HeroUnlockController.SetHeroUnlockIntervals(NewDictionary); }
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
@@ -49,14 +59,16 @@ namespace FilteredBros
             GUILayout.Label("Number of bro select : " + settings.numberOfBro);
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Select all", GUILayout.ExpandWidth(false)))
-                SelectAllBasic();
+                SelectAll();
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Remove Brolander", GUILayout.ExpandWidth(false)))
                 RemoveBrolander();
+            if (GUILayout.Button("Only expendabros", GUILayout.ExpandWidth(false)))
+                SelectOnlyExpendabros();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Select nothing", GUILayout.ExpandWidth(false)))
-                DeselectAllBasic();
+                SelectNothing();
             GUILayout.EndHorizontal();
 
             var typeStyle = new GUIStyle();
@@ -141,57 +153,14 @@ namespace FilteredBros
             return true;
         }
 
-        public static void Log(object str, RLogType type = RLogType.Log)
+        public static void Log(object str)
         {
-            RocketLib.ScreenLogger.Log(str, type);
+            mod.Logger.Log(str.ToString());
         }
 
         static void firstLaunch()
         {
-            settings.Rambro = true;
-            settings.Brommando = true;
-            settings.BaBroracus = true;
-            settings.BrodellWalker = true;
-            settings.BroHard = true;
-            settings.McBrover = true;
-            settings.Blade = true;
-            settings.BroDredd = true;
-            settings.Brononymous = true;
-            settings.SnakeBroSkin = true;
-            settings.Brominator = true;
-            settings.Brobocop = true;
-            settings.IndianaBrones = true;
-            settings.AshBrolliams = true;
-            settings.Nebro = true;
-            settings.BoondockBros = true;
-            settings.Brochete = true;
-            settings.BronanTheBrobarian = true;
-            settings.EllenRipbro = true;
-            settings.TimeBroVanDamme = true;
-            settings.BroniversalSoldier = true;
-            settings.ColJamesBroddock = true;
-            settings.CherryBroling = true;
-            settings.BroMax = true;
-            settings.TheBrode = true;
-            settings.DoubleBroSeven = true;
-            settings.Predabro = true;
-            settings.TheBrocketeer = true;
-            settings.BroveHeart = true;
-            settings.TheBrofessional = true;
-            settings.Broden = true;
-            settings.TheBrolander = true;
-            settings.DirtyHarry = true;
-            settings.TankBro = true;
-            settings.BroLee = true;
-
-            // Expendabros
-            settings.BroneyRoss = false;
-            settings.LeeBroxmas = false;
-            settings.BronnarJensen = false;
-            settings.HaleTheBro = false;
-            settings.TrentBroser = false;
-            settings.Broc = false;
-            settings.TollBroad = false;
+            SelectAll();
 
             // The ?
             settings.BrondleFly = false;
@@ -203,7 +172,7 @@ namespace FilteredBros
         {
             settings.TheBrolander = false;
         }
-        static void SelectAllBasic()
+        static void SelectAll()
         {
             settings.Rambro = true;
             settings.Brommando = true;
@@ -240,8 +209,17 @@ namespace FilteredBros
             settings.DirtyHarry = true;
             settings.TankBro = true;
             settings.BroLee = true;
+
+            //Expendabros
+            settings.BroneyRoss = true;
+            settings.LeeBroxmas = true;
+            settings.BronnarJensen = true;
+            settings.HaleTheBro = true;
+            settings.TrentBroser = true;
+            settings.Broc = true;
+            settings.TollBroad = true;
         }
-        static void DeselectAllBasic()
+        static void SelectNothing()
         {
             settings.Rambro = false;
             settings.Brommando = false;
@@ -278,6 +256,66 @@ namespace FilteredBros
             settings.DirtyHarry = false;
             settings.TankBro = false;
             settings.BroLee = false;
+
+            //Expendabros
+            settings.BroneyRoss = false;
+            settings.LeeBroxmas = false;
+            settings.BronnarJensen = false;
+            settings.HaleTheBro = false;
+            settings.TrentBroser = false;
+            settings.Broc = false;
+            settings.TollBroad = false;
+
+            settings.BrondleFly = false;
+        }
+         static void SelectOnlyExpendabros()
+        {
+            settings.Rambro = false;
+            settings.Brommando = false;
+            settings.BaBroracus = false;
+            settings.BrodellWalker = false;
+            settings.BroHard = false;
+            settings.McBrover = false;
+            settings.Blade = false;
+            settings.BroDredd = false;
+            settings.Brononymous = false;
+            settings.SnakeBroSkin = false;
+            settings.Brominator = false;
+            settings.Brobocop = false;
+            settings.IndianaBrones = false;
+            settings.AshBrolliams = false;
+            settings.Nebro = false;
+            settings.BoondockBros = false;
+            settings.Brochete = false;
+            settings.BronanTheBrobarian = false;
+            settings.EllenRipbro = false;
+            settings.TimeBroVanDamme = false;
+            settings.BroniversalSoldier = false;
+            settings.ColJamesBroddock = false;
+            settings.CherryBroling = false;
+            settings.BroMax = false;
+            settings.TheBrode = false;
+            settings.DoubleBroSeven = false;
+            settings.Predabro = false;
+            settings.TheBrocketeer = false;
+            settings.BroveHeart = false;
+            settings.TheBrofessional = false;
+            settings.Broden = false;
+            settings.TheBrolander = false;
+            settings.DirtyHarry = false;
+            settings.TankBro = false;
+            settings.BroLee = false;
+
+            //Expendabros
+            settings.BroneyRoss = true;
+            settings.LeeBroxmas = true;
+            settings.BronnarJensen = true;
+            settings.HaleTheBro = true;
+            settings.TrentBroser = true;
+            settings.Broc = true;
+            settings.TollBroad = true;
+
+            settings.BrondleFly = false;
         }
 
         public static Dictionary<int, HeroType> UpdateList()
@@ -400,15 +438,49 @@ namespace FilteredBros
         public bool HaleTheBro;
         public bool TrentBroser;
         public bool Broc;
-        public bool BrondleFly;
         public bool TollBroad;
+        // ?
+        public bool BrondleFly;
 
         public bool getFirstLaunch;
+        public bool useExpandaMod;
         public int numberOfBro;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
+        }
+    }
+
+    // Patch Hero unlock intervals for spawn
+    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for add the Bros
+    static class HeroUnlockController_IsAvailableInCampaign_Patch
+    {
+        public static bool Prefix(ref HeroType hero)
+        {
+            Dictionary<int, HeroType> newHeroUnlockIntervals = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
+
+            if (Main.origDico.Count <= 0) Main.origDico = newHeroUnlockIntervals;
+
+            if (Main.enabled)
+            {
+                Dictionary<int, HeroType> NewDictionary = Main.UpdateList();
+                if (NewDictionary.Count <= 0) throw new Exception("You need at least 1 Bro !");
+                else 
+                {
+                    newHeroUnlockIntervals = NewDictionary;
+                }
+
+            }
+            else if(!Main.enabled && Main.origDico.Count >0)
+            {
+                newHeroUnlockIntervals = Main.origDico;
+            }
+
+            Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(newHeroUnlockIntervals);
+            newHeroUnlockIntervals = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
+
+            return newHeroUnlockIntervals.ContainsValue(hero);
         }
     }
 }
