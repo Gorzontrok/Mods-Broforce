@@ -1,0 +1,7 @@
+-- Free lives :
+	- Grenade_Tear_Gas.png
+	- pig_animStinky.png
+
+-- Made/modified by me :
+	- Gimp_Pig_anim.png
+	- SkeletonDeadFace.png
