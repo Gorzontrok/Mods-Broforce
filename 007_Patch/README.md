@@ -7,7 +7,7 @@
  * The latest Release it's in the `/Release` folder.
 
 ## Know Issue :
-* Some enemies become invisible in the tear gas, because they don't have animation for this.
+* If you enabled the TearGas Patch, some enemies become invisible in the tear gas, because they don't have animation for this.
 
 ## Incompatible :
  * None
