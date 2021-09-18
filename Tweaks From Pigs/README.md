@@ -6,12 +6,12 @@
  
  ## Mods Include :
  * Bros :
-    * [Expendables Bros In Game](https://github.com/Gorzon38/Mods-Broforce/tree/main/Expendables%20Bros%20In%20Game)  
+    * [Expendables Bros In Game](../Tweaks%20From%20Pigs%20-%20Mod%20Standalone/Expendables%20Bros%20In%20Game)  
  * Fix :
-    * [007_Patch](https://github.com/Gorzon38/Mods-Broforce/tree/main/007_Patch)
+    * [007_Patch](../Tweaks%20From%20Pigs%20-%20Mod%20Standalone/007_Patch)
  * HUD :
-    * [Show Avatar FaceHugger](https://github.com/Gorzon38/Mods-Broforce/tree/main/Show%20Avatar%20FaceHugger)
-    * [Skeleton Dead Face](https://github.com/Gorzon38/Mods-Broforce/tree/main/Skeleton%20Dead%20Face)
+    * [Show Avatar FaceHugger](../Tweaks%20From%20Pigs%20-%20Mod%20Standalone/Show%20Avatar%20FaceHugger)
+    * [Skeleton Dead Face](../Tweaks%20From%20Pigs%20-%20Mod%20Standalone/Skeleton%20Dead%20Face)
 
 ## Installation :
  * The latest Release it's in the `/Release` folder.
