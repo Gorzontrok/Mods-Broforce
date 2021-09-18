@@ -2,11 +2,10 @@
  Here's my mods for Broforce.  
  The `.img/` folder are just for showcase image. And are not in the zip mod.  
  The `Release/` folder are the latest release and the update of the mods.
-
-<span style="color:red">I recommend to download [Utility Mod](https://www.nexusmods.com/broforce/mods/2), because in Broforce, if you restart a level or return to menu, the Manager will be "destroy" and you will not able to use mod anymore.</span>.
+ I recommand you to use [RocketLib](RocketLib/), because it fix some bug with mod.
 
  **Français :**  
- Ici se trouve mes mods pour Broforce. Les dossier `.img/` contiennent les image d'"exemple" de mes mods, il n'est pas inclus dans le zip du mod.  
+ Ici sont repertoriés mes mods pour Broforce. Les dossier `.img/` contiennent les image d'"exemple" de mes mods, il n'est pas inclus dans le zip du mod.  
  Le dossier `Release/` contient le dernier zip du mod.
 
  Contact : Gorzon#4430
@@ -18,7 +17,9 @@
    * [Satan Surprise](Satan%20Surprise/)
  * Bro Spawn : 
     * [Filtered Bros](Filtered%20Bros/)
-    * [ForBralef](ForBralef/)    
+    * [ForBralef](ForBralef/) 
+ * Other :
+    * [RocketLib](RocketLib/)   
 
 ## Installation :
 All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
