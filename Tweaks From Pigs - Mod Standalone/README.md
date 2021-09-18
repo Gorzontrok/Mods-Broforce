@@ -1,5 +1,5 @@
 # Tweaks From Pigs - Mod Standalone
- Standalone of the mod include in [Tweaks From Pigs](./Tweaks%20From%20Pigs).
+ Standalone of the mod include in [Tweaks From Pigs](../Tweaks%20From%20Pigs).
 
 ## Mods :
 * Bro :
