@@ -1,0 +1,9 @@
+v0.6.0 :
+ - Sort the HeroType list to the order of the game.
+ - Add a new exception to 'BuildHeroUnlockIntervalsDictionary' fonction when the first value of the parameters 'IntervalsInt' is different of 1.
+ - Add a exception in the case that RocketLib don't load.
+ - Fix the ScreenLog message.
+ - The launch message are now in the box
+ - Fix Cursor in LevelEditor
+ - Add the key F2 for clearing log on the screen.
+ - Add time to the log
