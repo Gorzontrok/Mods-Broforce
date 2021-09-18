@@ -13,18 +13,12 @@
 
 ## Mods :
  * All ? :
-   * [Tweaks From Pigs](https://github.com/Gorzon38/Mods-Broforce/tree/main/Tweak%20From%20Pigs)
- * Bro :
-    * [007_Patch](https://github.com/Gorzon38/Mods-Broforce/tree/main/007_Patch)
+   * [Tweaks From Pigs](Tweak%20From%20Pigs/)
  * Ennemies :
-   * [Satan Surprise](https://github.com/Gorzon38/Mods-Broforce/tree/main/SatanSurprise)
- * Hero Unlock Controller :
-    * [Expendables Bros In Game](https://github.com/Gorzon38/Mods-Broforce/tree/main/Expendables%20Bros%20In%20Game)  
-    * [Filtered Bros](https://github.com/Gorzon38/Mods-Broforce/tree/main/Filtered%20Bros)
-    * [ForBralef](https://github.com/Gorzon38/Mods-Broforce/tree/main/ForBralef)    
- * HUD :
-    * [Show Avatar FaceHugger](https://github.com/Gorzon38/Mods-Broforce/tree/main/Show%20Avatar%20FaceHugger)
-    * [Skeleton Dead Face](https://github.com/Gorzon38/Mods-Broforce/tree/main/Skeleton%20Dead%20Face)
+   * [Satan Surprise](Satan%20Surprise/)
+ * Bro Spawn : 
+    * [Filtered Bros](Filtered%20Bros/)
+    * [ForBralef](ForBralef/)    
 
 ## Installation :
 All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
