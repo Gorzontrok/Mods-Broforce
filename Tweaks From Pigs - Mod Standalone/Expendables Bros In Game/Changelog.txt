@@ -1,3 +1,13 @@
+v1.2.0:
+ - The mod is working again.
+ - Add some fix for Expendabros from TweaksFromPigs.
+ - Change Unlock intervals of Expendabros, start now at 500.
+ - The Spawn change will be deactivate if FilteredBros is install.
+ - Remove option for disable Expendabros in GUI, use the global one instead.
+
+v1.1.2 :
+ - Fix update link.
+
 V1.1.1 :
   - Add a warning text for using FilteredBros.
   - The mod does nothing if it's disable.
