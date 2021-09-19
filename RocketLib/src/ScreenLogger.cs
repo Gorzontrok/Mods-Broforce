@@ -76,7 +76,6 @@ namespace RocketLib
                 Log("TEST ERROR", RLogType.Error);
                 Log("TEST Exception", RLogType.Exception);
                 Log("TEST Information", RLogType.Information);*/
-                
             }
 
             void Update()
@@ -135,19 +134,20 @@ namespace RocketLib
 
             void WhichColor(string LogMsg)
             {
-                if (LogMsg.Contains("[Error]") | LogMsg.Contains("[Exception]"))
+                LogMsg = LogMsg.ToLower();
+                if (LogMsg.Contains("error") || LogMsg.Contains("exception"))
                 {
                     LogStyle.normal.textColor = Color.red; return;
                 }
-                else if (LogMsg.Contains("[Warning]"))
+                else if (LogMsg.Contains("warning"))
                 {
                     LogStyle.normal.textColor = Color.yellow; return;
                 }
-                else if (LogMsg.Contains("[Information]"))
+                else if (LogMsg.Contains("[information]"))
                 {
                     LogStyle.normal.textColor = Color.blue; return;
                 }
-                else if(LogMsg.Contains("SUCCESSFUL LOADED"))
+                else if(LogMsg.Contains("successful loaded"))
                 {
                     LogStyle.normal.textColor = Color.green; return;
                 }

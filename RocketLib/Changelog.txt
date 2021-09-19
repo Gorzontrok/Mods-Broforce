@@ -1,3 +1,6 @@
+v0.6.1 :
+ - Better color handeler
+
 v0.6.0 :
  - Sort the HeroType list to the order of the game.
  - Add a new exception to 'BuildHeroUnlockIntervalsDictionary' fonction when the first value of the parameters 'IntervalsInt' is different of 1.
