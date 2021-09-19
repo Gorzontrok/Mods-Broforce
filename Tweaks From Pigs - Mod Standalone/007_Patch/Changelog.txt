@@ -1,3 +1,7 @@
+v1.3.0 :
+ - 007 can shoot tear gas at foot
+ - All mook can be teargased without major bug
+
 v1.2.1 : 
  - Fix the icon of Rambro for being the TearGas
 
