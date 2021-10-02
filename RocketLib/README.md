@@ -5,7 +5,7 @@
  * OnScreenLog with color and times (F2 to clear).
  * Fix for avoiding the mod manager for being destroy
  * Fix the bug where the cursor in LevelEditor was stuck.
- * Some function for patching the unlock intervals of bro.
+ * Function that use often.
 
 ## Installation :
  * The latest Release it's in the `/Release` folder.
