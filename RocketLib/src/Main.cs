@@ -64,18 +64,18 @@ namespace RocketLibLoadMod
         {
             GUIStyle testBtnStyle = new GUIStyle("button");
             testBtnStyle.normal.textColor = Color.yellow;
-            if (GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150)}))
+           /* if (GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150)}))
             {
                 try
                 {
-                    Main.Log("TEST");
+                    foreach (HeroType d in PlayerProgress.Instance.yetToBePlayedUnlockedHeroes) { Main.Log(d.ToString()); }
                 }
                 catch (Exception ex)
                 {
                     Main.Log(ex);
 
                 }
-            }
+            }*/
             GUILayout.BeginHorizontal();
             settings.DebugMode = GUILayout.Toggle(settings.DebugMode, "Enable Debug log");
             GUILayout.FlexibleSpace();
@@ -87,7 +87,7 @@ namespace RocketLibLoadMod
             var ScreenlogOptionBtnStyle = new GUIStyle("button");
             ScreenlogOptionBtnStyle.fontStyle = FontStyle.Bold;
             ScreenlogOptionBtnStyle.fontSize = 13;
-            ScreenlogOptionBtnStyle.normal.textColor = Color.yellow;
+            ScreenlogOptionBtnStyle.normal.textColor = Color.white;
             settings.ShowScreenLogOption = GUILayout.Toggle(settings.ShowScreenLogOption, ScreenlogOptionBtn, ScreenlogOptionBtnStyle);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();

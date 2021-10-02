@@ -113,12 +113,19 @@ namespace RocketLib0
             {
                 UnlockedBro = new List<HeroType>();
                 LockedBro = new List<HeroType>();
-                int unlock = PlayerProgress.Instance.freedBros;
-                foreach (KeyValuePair<int, HeroType> hero in HeroesDico)
+                try
                 {
-                        if (hero.Key >= unlock)
+                    int unlock = PlayerProgress.Instance.freedBros;
+                    foreach (KeyValuePair<int, HeroType> hero in HeroesDico)
+                    {
+                        if (hero.Key <= unlock)
                             UnlockedBro.Add(hero.Value);
                         else LockedBro.Add(hero.Value);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Main.Log(ex);
                 }
             }
         }

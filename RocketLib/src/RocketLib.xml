@@ -4,124 +4,28 @@
         <name>RocketLib</name>
     </assembly>
     <members>
-        <member name="T:RocketLib.RocketLib">
-            <summary>
-            Library of useful function made for Broforce. And an OnScreen Logger.
-            </summary>
-        </member>
-        <member name="T:RocketLib.RocketLib._HeroUnlockController">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:RocketLib.RocketLib._HeroUnlockController.HeroTypeList">
-            <summary>
-            It's the HeroType  list of the Broforce bros.
-            </summary>
-        </member>
-        <member name="F:RocketLib.RocketLib._HeroUnlockController.ExpendabrosHeroTypeList">
-            <summary>
-            It's the HeroType List of the Expendabros bros.
-            </summary>
-        </member>
-        <member name="F:RocketLib.RocketLib._HeroUnlockController.HeroTypeFullList">
-            <summary>
-            It's the full HeroType list of the Broforce bros. Include Expendabros and Brond Fly.
-            </summary>
-        </member>
-        <member name="F:RocketLib.RocketLib._HeroUnlockController.HeroUnlockIntervalsInt">
-            <summary>
-            The list of unlock intervals of the bros.
-            </summary>
-        </member>
-        <member name="M:RocketLib.RocketLib._HeroUnlockController.GetHeroUnlockIntervals">
-            <summary>
-            Return the dictionnary of the Intervals for unlock bros.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:RocketLib.RocketLib._HeroUnlockController.SetHeroUnlockIntervals(System.Collections.Generic.Dictionary{System.Int32,HeroType})">
-            <summary>
-            Set the Intervals for unlock bros.
-            </summary>
-            <param name="newHeroUnlockIntervals">The new intervall dictionary.</param>
-        </member>
-        <member name="M:RocketLib.RocketLib._HeroUnlockController.BuildHeroUnlockIntervalsDictionary(System.Collections.Generic.List{HeroType})">
-            <summary>
-            Create the HeroUnlockInterval dictionary.
-            </summary>
-            <param name="HeroList">The list of hero to use.</param>
-            <returns></returns>
-        </member>
-        <member name="M:RocketLib.RocketLib._HeroUnlockController.BuildHeroUnlockIntervalsDictionary(System.Collections.Generic.List{HeroType},System.Collections.Generic.List{System.Int32})">
-            <summary>
-            Create the HeroUnlockIntervals dictionary.
-            </summary>
-            <param name="HeroList">The list of hero to use.</param>
-            <param name="IntervalsInt">The list of custom intervals to use.</param>
-            <returns>The HeroUnlockIntervals dictionnary</returns>
-        </member>
-        <member name="M:RocketLib.RocketLib._HeroUnlockController.ShowHeroUnlockIntervals">
-            <summary>
-            Show Current Unlock order
-            </summary>
-        </member>
-        <member name="T:RocketLib.RocketLib.ScreenLogger">
-            <summary>
-            On screen logger.
-            </summary>
-        </member>
-        <member name="F:RocketLib.RocketLib.ScreenLogger.ModId">
-            <summary>
-            The Id of your mod who will display on the log. Call this variable before calling the Log function. Example :
-            <code>RocketLib.ScreenLogger.ModId = "ID";</code>
-            </summary>
-        </member>
-        <member name="M:RocketLib.RocketLib.ScreenLogger.Clear">
-            <summary>
-            Clear the log on screen.
-            </summary>
-        </member>
-        <member name="M:RocketLib.RocketLib.ScreenLogger.Log(System.Object)">
-            <summary>
-            Add log to the screen.
-            </summary>
-            <param name="str">Log Message</param>
-        </member>
-        <member name="M:RocketLib.RocketLib.ScreenLogger.Log(System.Object,RLogType)">
-            <summary>
-            Add log to the screen.
-            </summary>
-            <param name="str">Log Message</param>
-            <param name="type"><code>RLogType</code></param>
-        </member>
-        <member name="F:RocketLib.RocketLib.GameDataPath">
-            <summary>
-            Give the '_Data' folder of the game. Be careful ! If the mod is not load, it will be empty !
-            </summary>
-        </member>
-        <member name="T:RocketLib.RocketLib.IsThisModIs">
+        <member name="T:RocketLib0.IsThisMod">
             <summary>This constructor check if a mod is Here or is Enabled.
             <example>
             Example of call :
             <code>
-                RocketLib.IsThisModIs RocketLib_info = new RocketLib.IsThisModIs("RocketLib");
+                var RocketLib_info = new IsThisModIs("RocketLib");
             </code>
             </example>
             </summary>
         </member>
-        <member name="F:RocketLib.RocketLib.IsThisModIs.Here">
+        <member name="P:RocketLib0.IsThisMod.IsHere">
             <summary>
             Return if the mod is Here.
             </summary>
         </member>
-        <member name="F:RocketLib.RocketLib.IsThisModIs.Enabled">
+        <member name="P:RocketLib0.IsThisMod.IsEnabled">
             <summary>
             Return is the mod is Enabled, if the mod does not exist it will return false.
             </summary>
         </member>
-        <member name="M:RocketLib.RocketLib.IsThisModIs.#ctor(System.String)">
-            <summary>This constructor check if a mod is Here or is Enabled.
+        <member name="M:RocketLib0.IsThisMod.#ctor(System.String)">
+            <summary>This constructor check if a mod is Here or is Enabled. Actually it don't work.
             <example>
             Example of call :
             <code>
@@ -131,12 +35,140 @@
             </summary>
             <param name="ID">Id of the mod.</param>
         </member>
-        <member name="T:RocketLib.RocketLib.GUI">
+        <member name="M:RocketLib0.IsThisMod.HasHarmonyInstance(System.String,System.Reflection.MethodInfo,HarmonyLib.HarmonyPatchType)">
+            <summary>
+            Check if their is Harmony Instance of XXXXXX function in the game.
+            </summary>
+            <param name="HarmonyId">The ID of the mod</param>
+            <param name="MethodInfo">Method Info</param>
+            <param name="PatchType">The patch type</param>
+            <returns>bool</returns>
+        </member>
+        <member name="T:RocketLib0.RocketLib">
+            <summary>
+            Library of useful function made for Broforce. And an  Logger on screen.
+            </summary>
+        </member>
+        <member name="T:RocketLib0.RocketLib._HeroUnlockController">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:RocketLib0.RocketLib._HeroUnlockController.HeroTypeList">
+            <summary>
+            It's the HeroType  list of the Broforce bros.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.RocketLib._HeroUnlockController.ExpendabrosHeroTypeList">
+            <summary>
+            It's the HeroType List of the Expendabros bros.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.RocketLib._HeroUnlockController.HeroTypeFullList">
+            <summary>
+            It's the full HeroType list of the Broforce bros. Include Expendabros and Brond Fly.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.RocketLib._HeroUnlockController.HeroUnlockIntervalsInt">
+            <summary>
+            The list of unlock intervals of the bros.
+            </summary>
+        </member>
+        <member name="M:RocketLib0.RocketLib._HeroUnlockController.GetHeroUnlockIntervals">
+            <summary>
+            Return the dictionnary of the Intervals for unlock bros.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib0.RocketLib._HeroUnlockController.SetHeroUnlockIntervals(System.Collections.Generic.Dictionary{System.Int32,HeroType})">
+            <summary>
+            Set the Intervals for unlock bros.
+            </summary>
+            <param name="newHeroUnlockIntervals">The new intervall dictionary.</param>
+        </member>
+        <member name="M:RocketLib0.RocketLib._HeroUnlockController.BuildHeroUnlockIntervalsDictionary(System.Collections.Generic.List{HeroType})">
+            <summary>
+            Create the HeroUnlockInterval dictionary.
+            </summary>
+            <param name="HeroList">The list of hero to use.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib0.RocketLib._HeroUnlockController.BuildHeroUnlockIntervalsDictionary(System.Collections.Generic.List{HeroType},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Create the HeroUnlockIntervals dictionary.
+            </summary>
+            <param name="HeroList">The list of hero to use.</param>
+            <param name="IntervalsInt">The list of custom intervals to use.</param>
+            <returns>The HeroUnlockIntervals dictionnary</returns>
+        </member>
+        <member name="M:RocketLib0.RocketLib._HeroUnlockController.ShowHeroUnlockIntervals">
+            <summary>
+            Show Current Unlock order
+            </summary>
+        </member>
+        <member name="M:RocketLib0.RocketLib._HeroUnlockController.GetUnlockLockList(System.Collections.Generic.Dictionary{System.Int32,HeroType},System.Collections.Generic.List{HeroType}@,System.Collections.Generic.List{HeroType}@)">
+            <summary>
+            Get the list of Bro that are lock and unlock.
+            </summary>
+            <param name="HeroesDico">The dictionary of hero and their intervals.</param>
+            <param name="LockedBro">return the list of lock bros</param>
+            <param name="UnlockedBro">return the list of unlock bros</param>
+        </member>
+        <member name="T:RocketLib0.RocketLib.ScreenLogger">
+            <summary>
+            On screen logger.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.RocketLib.ScreenLogger.ModId">
+            <summary>
+            The Id of your mod who will display on the log. Call this variable before calling the Log function. Example :
+            <code>RocketLib.ScreenLogger.ModId = "ID";</code>
+            </summary>
+        </member>
+        <member name="P:RocketLib0.RocketLib.ScreenLogger.isSuccessfullyLoad">
+            <summary>
+            Know if the ScreenLogger is successfully load.
+            </summary>
+        </member>
+        <member name="M:RocketLib0.RocketLib.ScreenLogger.Clear">
+            <summary>
+            Clear the log on screen.
+            </summary>
+        </member>
+        <member name="M:RocketLib0.RocketLib.ScreenLogger.Log(System.Object,RLogType)">
+            <summary>
+            Add log to the screen.
+            </summary>
+            <param name="str">Log Message</param>
+            <param name="type">RLogType</param>
+        </member>
+        <member name="F:RocketLib0.RocketLib.GameDataPath">
+            <summary>
+            Give the '_Data' folder of the game. Be careful ! If the mod is not load, it will be empty !
+            </summary>
+        </member>
+        <member name="M:RocketLib0.RocketLib.CreateTexFromMat(System.String,UnityEngine.Material)">
+            <summary>
+            Create a Texture based on an existing material.
+            </summary>
+            <param name="ImagePath">Image path</param>
+            <param name="origMat">Original Materail</param>
+            <returns>A Texture</returns>
+        </member>
+        <member name="M:RocketLib0.RocketLib.CreateTexFromSpriteSM(System.String,SpriteSM)">
+            <summary>
+            Create a Texture from SpriteSM
+            </summary>
+            <param name="ImagePath">Image Path</param>
+            <param name="sprite">Original Sprite</param>
+            <returns>A Texture</returns>
+        </member>
+        <member name="T:RocketLib0.RocketLib.GUI">
             <summary>
             This class contains my GUILayout.
             </summary>
         </member>
-        <member name="M:RocketLib.RocketLib.GUI.ArrowList(System.Collections.Generic.List{System.String},System.Int32)">
+        <member name="M:RocketLib0.RocketLib.GUI.ArrowList(System.Collections.Generic.List{System.String},System.Int32)">
             <summary>
             A custom GUILayout. You make a choice with arrow.
             </summary>
@@ -171,12 +203,12 @@
         </member>
         <member name="F:RLogType.Information">
             <summary>
-            Blue 
+            Blue
             </summary>
         </member>
         <member name="T:RocketLibLoadMod.Main">
             <summary>
-            Really, you don't need it. Anyway you will just have the function of the UnityModManager.
+            You don't need it. Anyway you will just have the function of the UnityModManager.
             </summary>
         </member>
         <member name="F:RocketLibLoadMod.Main.mod">

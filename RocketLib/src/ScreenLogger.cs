@@ -83,7 +83,7 @@ namespace RocketLib0
                 StartLog.Clear();
                 getFirstLaunch = true;
             }
-
+            /*
             /// <summary>
             /// Add log to the screen.
             /// </summary>
@@ -91,18 +91,18 @@ namespace RocketLib0
             public static void Log(object str)
             {
                 Log(str, RLogType.Log);
-            }
+            }*/
 
             /// <summary>
             /// Add log to the screen.
             /// </summary>
             /// <param name="str">Log Message</param>
-            /// <param name="type"><code>RLogType</code></param>
-            public static void Log(object str, RLogType type)
+            /// <param name="type">RLogType</param>
+            public static void Log(object str, RLogType type = RLogType.Log)
             {
                 if (!isSuccessfullyLoad) return;
                 string dateTimeNow = DateTime.Now.ToString("HH:mm:ss");
-                string newString = $"[{dateTimeNow}] [{ModId}] [" + type + "] : " + str;
+                string newString = $"[{dateTimeNow}] [{ModId}] [" + type.ToString() + "] : " + str.ToString();
 
                 if (type == RLogType.Log)
                     newString = $"[{ModId}] " + (string)str;
@@ -124,12 +124,12 @@ namespace RocketLib0
 
             void Start()
             {
-                ModId = "RocketLibTest";
+                /*ModId = "RocketLibTest";
                 Log("TEST Log", RLogType.Log);
                 Log("TEST Warning", RLogType.Warning);
                 Log("TEST ERROR", RLogType.Error);
                 Log("TEST Exception", RLogType.Exception);
-                Log("TEST Information", RLogType.Information);
+                Log("TEST Information", RLogType.Information);*/
             }
 
             void Update()
