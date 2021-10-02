@@ -1,3 +1,6 @@
+v1.0.2 :
+ - Fix The direction of Facehugger in HUD
+
 v1.0.1 :
  - Fix update link.
 

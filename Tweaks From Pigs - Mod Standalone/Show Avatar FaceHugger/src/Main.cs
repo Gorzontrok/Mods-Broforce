@@ -16,7 +16,7 @@ namespace Avatar_FaceHugger_Mod
         {
             mod = modEntry;
 
-            modEntry.OnGUI = OnGUI;
+            //modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
             settings = Settings.Load<Settings>(modEntry);
@@ -28,7 +28,7 @@ namespace Avatar_FaceHugger_Mod
             }
             catch (Exception ex)
             {
-                mod.Logger.Log(ex.ToString());
+                mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
 
             return true;
@@ -79,6 +79,7 @@ namespace Avatar_FaceHugger_Mod
             //Otherwise show the facehugger when alien on head of the Bro
             //This code is just the opposite of HideFaceHugger()
             __instance.showFaceHugger = true;
+            __instance.faceHugger1.SetSize(Traverse.Create(__instance).Field("avatarFacingDirection").GetValue<int>() * __instance.faceHugger1.width, __instance.faceHugger1.height);
             __instance.avatar.SetLowerLeftPixel(new Vector2(__instance.faceHugger1.lowerLeftPixel.x, 1f)); //For some reason he makes the avatar transparent.
             __instance.faceHugger1.gameObject.SetActive(true);
 
