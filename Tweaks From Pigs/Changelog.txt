@@ -1,2 +1,22 @@
+v1.0.1 :
+ - Remove some unused function
+ - Block some Bro for use pushing animation. Because i don't know how to fix them.
+ - Fix the cursor for being block in Level Editor
+ - Enabled use the custom arrow from the editor
+ - 007 can shoot tear gas at foot
+ - All mook can be taer gas without major bug
+ - If 007 is drunk he is less accurate
+ - Broniversal Soldier need to wait something like 0.5 sec before reuse special.
+ - Broniversal Soldier can Auto-Revive.
+ - Add advanced settings to disable/enabled almost all modification.
+ - Faster Zombie added.
+ - In avatar FaceHugger, the avatar look,in the good direction.
+ - Optimized Skeleton dead face.
+ - Fix a bug(i hope) where you need to watch all cutscene of everyone before replay them.
+ - You can change the spawn rate of acid barrel
+ - You can unpatch mod that change the hero unlock intervals(ForBralef, Filtered Bros, Expendables Bros In Game).
+ - Add more variable to the First launch fonction
+ - Use RocketLib
+
 v1.0.0 :
  - Intial release.

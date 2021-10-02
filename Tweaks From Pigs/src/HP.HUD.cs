@@ -17,41 +17,28 @@ namespace TweaksFromPigs
             if(Main.settings.ShowFacehuggerHUD)
             {
                 __instance.showFaceHugger = true;
-                __instance.avatar.SetLowerLeftPixel(new Vector2(__instance.faceHugger1.lowerLeftPixel.x, 1f)); //For some reason he makes the avatar transparent.
-                __instance.faceHugger1.gameObject.SetActive(true);
+                    __instance.faceHugger1.SetSize(Traverse.Create(__instance).Field("avatarFacingDirection").GetValue<int>() * __instance.faceHugger1.width, __instance.faceHugger1.height);
+                    __instance.avatar.SetLowerLeftPixel(new Vector2(__instance.faceHugger1.lowerLeftPixel.x, 1f)); //For some reason he makes the avatar transparent.
+                    __instance.faceHugger1.gameObject.SetActive(true);
             }
-            
         }
     }
-    
+
+
     // From Skeleton Dead Face
     [HarmonyPatch(typeof(PlayerHUD), "SetAvatarDead")]
     static class SetAvatarDead_Patch
     {
-        static void Prefix(PlayerHUD __instance, bool useFirstAvatar)
+        static void Prefix(PlayerHUD __instance)
         {
             if (!Main.enabled) return;
             if(Main.settings.SkeletonDeadFace)
             {
-                bool isUsingSpecialFrame = Traverse.Create(typeof(PlayerHUD)).Field("isUsingSpecialFrame").GetValue<bool>(); //Get the "isUsingSpecialFrame" original Value
-
-                if (isUsingSpecialFrame)
-                {
-                    __instance.StopUsingSpecialFrame();
-                }
-                Traverse.Create(typeof(PlayerHUD)).Field("SetToDead").SetValue(true); //Change the value "SetToDead" to true
-
-                SpriteSM sprite = Utility.CreateSpriteSMForAvatar("SkeletonDeadFace.png", ref __instance); // SpriteSM require otherwise he won't work
+                SpriteSM sprite = __instance.avatar.gameObject.GetComponent<SpriteSM>();
+                sprite.meshRender.sharedMaterial.SetTexture("_MainTex", Utility.CreateTexFromSpriteSM("SkeletonDeadFace.png", sprite));
 
                 Traverse.Create(typeof(PlayerHUD)).Field("avatar").SetValue(sprite); //Change the avatar to the skeleton
                 Traverse.Create(typeof(PlayerHUD)).Field("secondAvatar").SetValue(sprite); //Change the second avatar to the skeleton
-
-
-                SpriteSM spriteSM = (!useFirstAvatar) ? __instance.secondAvatar : __instance.avatar;
-                if (spriteSM != null)
-                {
-                    spriteSM.SetLowerLeftPixel(new Vector2(96f, spriteSM.lowerLeftPixel.y));
-                }
             }
         }
     }

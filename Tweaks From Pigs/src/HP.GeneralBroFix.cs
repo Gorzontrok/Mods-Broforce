@@ -11,51 +11,46 @@ namespace TweaksFromPigs
     [HarmonyPatch(typeof(TestVanDammeAnim), "AnimatePushing")]
     static class AnimatePushing_Patch
     {
-        static Vector3 GetVector3Position(HeroType hero)
+        public static bool ThisHeroTypePushingBug(HeroType hero)
         {
-            Vector3 vector = new Vector3(0f, 0f, -0.001f);
-            switch(hero)
+            List<HeroType> heroBuggy = new List<HeroType>() { HeroType.BroneyRoss, HeroType.Blade, HeroType.BronanTheBrobarian, HeroType.Nebro, HeroType.TheBrolander, HeroType.HaleTheBro, HeroType.TheBrode, HeroType.BroveHeart };
+            foreach (HeroType heroBug in heroBuggy)
             {
-                case HeroType.Blade: vector = new Vector3(4f, 0f, -1f); break;
-                case HeroType.BronanTheBrobarian: vector = new Vector3(3f, 0, -1f); break;
-                case HeroType.Nebro: vector = new Vector3(4f, 0, -1f); break;
-                case HeroType.TheBrolander: vector = new Vector3(3f, 0, -1f); break;
-                case HeroType.HaleTheBro: vector = new Vector3(2f, 0, -1f); break;
-                case HeroType.BroveHeart:
-                    TestVanDammeAnim broheart = HeroController.GetHeroPrefab(hero);
-                    if (!Traverse.Create(broheart).Field("disarmed").GetValue<bool>()) vector = new Vector3(5f, 4, -1f);
-                    else vector = new Vector3(3, 0, -1);
-                    break;
-                case HeroType.BroneyRoss:
-                    vector = new Vector3(2, 0, 0); break;
-                case HeroType.LeeBroxmas:
-                    vector = new Vector3(6, 0, -0.001f); break;
-                case HeroType.TheBrode:
-                    vector = new Vector3(4, 4, -1); break;
-                case HeroType.Brochete:
-                    vector = new Vector3(6, 0, 0.001f); break;
+                if (hero == heroBug) return true;
             }
-            return vector;
+            return false;
         }
         static void Postfix(TestVanDammeAnim __instance)
         {
             if (!Main.enabled) return;
-            float pushingTime = Traverse.Create(__instance).Field("pushingTime").GetValue<float>();
-            if (__instance.fire || pushingTime <= 0)
+            if(Main.settings.FixPushingAnimation)
             {
-                __instance.gunSprite.transform.localScale = new Vector3(-1f, 1f, 1f);
-                __instance.gunSprite.transform.localPosition = GetVector3Position(__instance.heroType);
+                if (ThisHeroTypePushingBug(__instance.heroType))
+                {
+                    __instance.gunSprite.transform.localPosition = Utility.GetBroGunVector3PositionWhilePushing(__instance.heroType);
+                }
+
+                float pushingTime = Traverse.Create(__instance).Field("pushingTime").GetValue<float>();
+                if (__instance.fire || pushingTime <= 0)
+                {
+                    __instance.gunSprite.transform.localScale = new Vector3(-1f, 1f, 1f);
+                    __instance.gunSprite.transform.localPosition = Utility.GetBroGunVector3PositionWhenFinishPushing(__instance.heroType);
+                    if (ThisHeroTypePushingBug(__instance.heroType))
+                        Traverse.Create(HeroController.GetHeroPrefab(__instance.heroType)).Method("SetGunPosition", new object[] { 0, 0 });
+                }
             }
         }
     }
-
     [HarmonyPatch(typeof(TestVanDammeAnim), "AnimateGesture")]
     static class AnimateGesture_Patch
     {
         static bool Prefix(TestVanDammeAnim __instance)
         {
             if (!Main.enabled) return true;
-            if (HeroUnlockController.IsExpendaBro(__instance.heroType)) return false;
+            if(Main.settings.FixExpendabros)
+            {
+                if (HeroUnlockController.IsExpendaBro(__instance.heroType)) return false;
+            }
             return true;
         }
     }
@@ -64,16 +59,19 @@ namespace TweaksFromPigs
     {
         static bool Prefix(TestVanDammeAnim __instance)
         {
-            if (!Main.enabled) return true; ;
-            if (HeroUnlockController.IsExpendaBro(__instance.heroType))
+            if (!Main.enabled) return true;
+            if(Main.settings.FixExpendabros)
             {
-                Traverse.Create(__instance).Method("AnimateActualDeath").GetValue();
-                return false;
+                if (HeroUnlockController.IsExpendaBro(__instance.heroType))
+                {
+                    Traverse.Create(__instance).Method("AnimateActualDeath").GetValue();
+                    return false;
+                }
             }
             return true;
         }
     }
-    
+
     // Patch BroBase
     [HarmonyPatch(typeof(BroBase))]
     [HarmonyPatch("Update")]
@@ -100,7 +98,7 @@ namespace TweaksFromPigs
         static void Postfix(BroBase __instance)
         {
             if (!Main.enabled) return;
-            if (Main.settings.UsePushingFrame) __instance.useNewPushingFrames = true;
+            if (Main.settings.UsePushingFrame && AnimatePushing_Patch.ThisHeroTypePushingBug(__instance.heroType)) __instance.useNewPushingFrames = true;
             if (Main.settings.UseNewLadderFrame) __instance.useNewLadderClimbingFrames = true;
         }
     }
@@ -112,56 +110,25 @@ namespace TweaksFromPigs
         static bool Prefix(Map __instance, ref Doodad __result, float x, float y, float range)
         {
             if (!Main.enabled) return true;
-            Extensions.DrawCircle(x, y, range, Color.magenta, 0f);
-            for (int i = 0; i < Map.grassAndBlood.Count; i++)
+            if(Main.settings.FixHidingInGrass)
             {
-                if (i >= 0 && Map.grassAndBlood[i] != null && Map.grassAndBlood[i].SubMergesUnit())
+                Extensions.DrawCircle(x, y, range, Color.magenta, 0f);
+                for (int i = 0; i < Map.grassAndBlood.Count; i++)
                 {
-                    if (Mathf.Abs(Map.grassAndBlood[i].centerX - x) <= range + Map.grassAndBlood[i].width / 2f)
+                    if (i >= 0 && Map.grassAndBlood[i] != null && Map.grassAndBlood[i].SubMergesUnit())
                     {
-                        if (Mathf.Abs(Map.grassAndBlood[i].centerY - y) <= range + Map.grassAndBlood[i].height / 2f)
+                        if (Mathf.Abs(Map.grassAndBlood[i].centerX - x) <= range + Map.grassAndBlood[i].width / 2f)
                         {
-                            __result = Map.grassAndBlood[i];
-                            return false;
+                            if (Mathf.Abs(Map.grassAndBlood[i].centerY - y) <= range + Map.grassAndBlood[i].height / 2f)
+                            {
+                                __result = Map.grassAndBlood[i];
+                                return false;
+                            }
                         }
                     }
                 }
             }
             return true;
-        }
-    }
-    // Ennemy Forget player when (s)he is in tear gas
-    [HarmonyPatch(typeof(Map), "TearGasUnits")]
-    static class ForgetPlayerInTearGrass_Patch
-    {
-        static bool Prefix(Map __instance, int playerNum, float x, float y, float range, float tearGasTime = 9f)
-        {
-            if (!Main.enabled) return true;
-            if (Map.units == null)
-            {
-                return false;
-            }
-            for (int i = Map.units.Count - 1; i >= 0; i--)
-            {
-                Unit unit = Map.units[i];
-                if (unit.IsHero)
-                {
-                    UpdateBrobase_Patch.TearGasTime = tearGasTime;
-                }
-                if (unit != null && !unit.invulnerable && GameModeController.DoesPlayerNumDamage(playerNum, unit.playerNum))
-                {
-                    float num = unit.X - x;
-                    if (Mathf.Abs(num) - range < unit.width && (unit.Y != y || num != 0f))
-                    {
-                        float f = unit.Y + unit.height / 2f + 3f - y;
-                        if (Mathf.Abs(f) - range < unit.height)
-                        {
-                            unit.TearGas(tearGasTime);
-                        }
-                    }
-                }
-            }
-            return false;
         }
     }
 }

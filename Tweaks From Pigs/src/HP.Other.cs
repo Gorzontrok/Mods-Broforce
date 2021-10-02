@@ -1,4 +1,4 @@
-﻿using System;
+﻿using RocketLib0;
 using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
@@ -22,18 +22,20 @@ namespace TweaksFromPigs
     [HarmonyPatch(typeof(Animal), "Awake")]
     static class Pig_Awake_Patch
     {
-        static System.Random rng = new System.Random();
         static void Postfix(Animal __instance)
         {
             if (!Main.enabled) return;
-            if(rng.Next(3) == 2)
-                __instance.isRotten = true;
-            if(__instance.isRotten && !Main.settings.PigAreAlwaysTerror)
+            if(Main.settings.EnabledSickPigs)
             {
-                __instance.material.mainTexture = Utility.CreateTexFromMat("pig_animStinky.png", __instance.material);
+                if (Utility.rand.Next(3) == 2)
+                    __instance.isRotten = true;
+                if (__instance.isRotten && !Main.settings.PigAreAlwaysTerror)
+                {
+                    __instance.material.mainTexture = Utility.CreateTexFromMat("pig_animStinky.png", __instance.material);
+                }
+                if (Main.settings.PigAreAlwaysTerror || Map.MapData.theme == LevelTheme.Hell)
+                    __instance.material.mainTexture = Utility.CreateTexFromMat("Gimp_Pig_anim.png", __instance.material);
             }
-            if (Main.settings.PigAreAlwaysTerror || Map.MapData.theme == LevelTheme.Hell)
-                __instance.material.mainTexture = Utility.CreateTexFromMat("Gimp_Pig_anim.png", __instance.material);
         }
     }
 
@@ -41,28 +43,14 @@ namespace TweaksFromPigs
     [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")]
     static class HeroUnlockController_IsAvailableInCampaign_Patch
     {
-        public static void Prefix(HeroType hero)
+        public static void Prefix()
         {
             if (!Main.enabled) return;
-            if (Main.settings.ChangeHeroUnlock)
+            if (Main.settings.ChangeHeroUnlock && Main.HeroDictionary.Count > 0)
             {
                 Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(Main.HeroDictionary);
+                PlayerProgress.Instance.yetToBePlayedUnlockedHeroes = new List<HeroType>();
             }
-        }
-    }
-
-    // i like the steel from expendabros
-    [HarmonyPatch(typeof(Map), "Start")]
-    static class ChangeSteelBlockTex_Patch // Don't work
-    {
-        static void Postfix(Map __instance)
-        {
-            if (!Main.enabled) return;
-            /*  try
-              {
-                  __instance.activeTheme.blockPrefabSteel.GetComponent<SpriteSM>().meshRender.sharedMaterial.SetTexture("_MainTex", Utility.CreateTexFromSpriteSM("Steel.png", __instance.activeTheme.blockPrefabSteel.sprite));
-
-              }catch(Exception ex) { Main.Log(ex); }*/
         }
     }
 
@@ -73,7 +61,10 @@ namespace TweaksFromPigs
         static void Prefix(BroBase __instance)
         {
             if (!Main.enabled) return;
-             (ProjectileController.GetMechDropGrenadePrefab() as GrenadeAirstrike).callInTank = true;
+            if(Main.settings.MechDropDoesFumiginene)
+            {
+                (ProjectileController.GetMechDropGrenadePrefab() as GrenadeAirstrike).callInTank = true;
+            }
         }
-    } 
+    }
 }

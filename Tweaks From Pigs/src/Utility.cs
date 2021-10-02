@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.IO;
+using RocketLib0;
 using UnityEngine;
 using HarmonyLib;
 
@@ -9,8 +9,9 @@ namespace TweaksFromPigs
 {
     public class Utility
     {
+        public static System.Random rand = new System.Random();
 
-        public static List<HeroType> HeroList = new List<HeroType> { HeroType.Rambro, HeroType.Brommando, HeroType.BaBroracus, HeroType.BrodellWalker, HeroType.BroHard, HeroType.McBrover, HeroType.Blade, HeroType.BroDredd, HeroType.Brononymous, HeroType.DirtyHarry, HeroType.Brominator, HeroType.Brobocop, HeroType.IndianaBrones, HeroType.AshBrolliams, HeroType.Nebro, HeroType.BoondockBros, HeroType.Brochete, HeroType.BronanTheBrobarian, HeroType.EllenRipbro, HeroType.TheBrocketeer, HeroType.TimeBroVanDamme, HeroType.BroniversalSoldier, HeroType.ColJamesBroddock, HeroType.CherryBroling, HeroType.BroMax, HeroType.TheBrode, HeroType.DoubleBroSeven, HeroType.Predabro, HeroType.BroveHeart, HeroType.TheBrofessional, HeroType.Broden, HeroType.TheBrolander, HeroType.SnakeBroSkin, HeroType.TankBro, HeroType.BroLee, HeroType.BroneyRoss, HeroType.LeeBroxmas, HeroType.BronnarJensen, HeroType.HaleTheBro, HeroType.TrentBroser, HeroType.Broc, HeroType.TollBroad, HeroType.BrondleFly };
+        public static List<HeroType> HeroList = RocketLib._HeroUnlockController.HeroTypeFullList;
         public static List<int> HeroInt = new List<int> { 1, 3, 5, 8, 11, 15, 20, 25, 31, 37, 46, 56, 65, 75, 87, 99, 115, 132, 145, 160, 175, 193, 222, 249, 274, 300, 326, 350, 374, 400, 420, 440, 465, 460, 480, 500, 510, 524, 534, 540, 548, 560, 600 };
         public static Dictionary<int, HeroType> BuildHeroDictionary()
         {
@@ -45,62 +46,67 @@ namespace TweaksFromPigs
             return HeroDictionary;
         }
 
-        public static Texture2D CreateTexFromMat(string filename, Material origMat)
+
+        public static Texture2D CreateTexFromMat(string ImagePath, Material origMat)
         {
-            if (!File.Exists(Main.mod.Path + "/Ressource/" + filename)) throw new IOException();
-
-            Texture2D tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
-            tex.LoadImage(File.ReadAllBytes(Main.mod.Path + "/Ressource/" + filename));
-            tex.wrapMode = TextureWrapMode.Clamp;
-
-            Texture orig = origMat.mainTexture;
-
-            tex.anisoLevel = orig.anisoLevel;
-            tex.filterMode = orig.filterMode;
-            tex.mipMapBias = orig.mipMapBias;
-            tex.wrapMode = orig.wrapMode;
-
-            return tex;
+            return RocketLib.CreateTexFromMat(Main.ResFolder + ImagePath, origMat);
+        }
+        public static Texture2D CreateTexFromSpriteSM(string ImagePath, SpriteSM sprite)
+        {
+            return RocketLib.CreateTexFromSpriteSM(Main.ResFolder + ImagePath, sprite);
         }
 
-        public static Texture2D CreateTexFromSpriteSM(string filename, SpriteSM sprite)
+        public static Vector3 GetBroGunVector3PositionWhenFinishPushing(HeroType hero)
         {
-            if (!File.Exists(Main.mod.Path + "/Ressource/" + filename)) throw new IOException();
-
-            Texture2D tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
-            tex.LoadImage(File.ReadAllBytes(Main.mod.Path + "/Ressource/" + filename));
-            tex.wrapMode = TextureWrapMode.Clamp;
-
-            Texture orig = sprite.meshRender.sharedMaterial.GetTexture("_MainTex");
-
-            tex.anisoLevel = orig.anisoLevel;
-            tex.filterMode = orig.filterMode;
-            tex.mipMapBias = orig.mipMapBias;
-            tex.wrapMode = orig.wrapMode;
-
-            return tex;
+            Vector3 vector = new Vector3(0f, 0f, -0.001f);
+            switch (hero)
+            {
+                case HeroType.Blade: vector = new Vector3(0f, 0f, -1f); break;
+                case HeroType.BronanTheBrobarian: vector = new Vector3(3f, 0, -1f); break;
+                case HeroType.Nebro: vector = new Vector3(4f, 0, -1f); break;
+                case HeroType.TheBrolander: vector = new Vector3(3f, 0, -1f); break;
+                case HeroType.HaleTheBro: vector = new Vector3(2f, 0, -1f); break;
+                case HeroType.BroveHeart:
+                    TestVanDammeAnim broheart = HeroController.GetHeroPrefab(hero);
+                    if (!Traverse.Create(broheart).Field("disarmed").GetValue<bool>()) vector = new Vector3(5f, 4, -1f);
+                    else vector = new Vector3(3, 0, -1);
+                    break;
+                case HeroType.BroneyRoss:
+                    vector = new Vector3(0, 0, 0); break;
+                case HeroType.LeeBroxmas:
+                    vector = new Vector3(6, 0, -0.001f); break;
+                case HeroType.TheBrode:
+                    vector = new Vector3(4, 4, 1); break;
+                case HeroType.Brochete:
+                    vector = new Vector3(6, 0, 0.001f); break;
+            }
+            return vector;
         }
-
-        public static SpriteSM CreateSpriteSMForAvatar(string filename, ref PlayerHUD PHUD) //Setup the sprite
+        public static Vector3 GetBroGunVector3PositionWhilePushing(HeroType hero)
         {
-            if (!File.Exists(Main.mod.Path + "/Ressource/" + filename)) throw new IOException();
-
-            Texture2D tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
-            tex.LoadImage(File.ReadAllBytes(Main.mod.Path + "/Ressource/" + filename));
-            tex.wrapMode = TextureWrapMode.Clamp;
-
-            SpriteSM sprite = PHUD.avatar.gameObject.GetComponent<SpriteSM>();
-
-            Texture orig = sprite.meshRender.sharedMaterial.GetTexture("_MainTex");
-
-            tex.anisoLevel = orig.anisoLevel;
-            tex.filterMode = orig.filterMode;
-            tex.mipMapBias = orig.mipMapBias;
-            tex.wrapMode = orig.wrapMode;
-
-            sprite.meshRender.sharedMaterial.SetTexture("_MainTex", tex);
-
-            return sprite;
+            Vector3 vector = new Vector3(0f, 0f, -0.001f);
+            switch (hero)
+            {
+                case HeroType.Blade: vector = new Vector3(-4f, 0f, -1f); break;
+                case HeroType.BronanTheBrobarian: vector = new Vector3(-3f, 0, -1f); break;
+                case HeroType.Nebro: vector = new Vector3(-4f, 0, -1f); break;
+                case HeroType.TheBrolander: vector = new Vector3(-3f, 0, -1f); break;
+                case HeroType.HaleTheBro: vector = new Vector3(-2f, 0, -1f); break;
+                case HeroType.BroveHeart:
+                    TestVanDammeAnim broheart = HeroController.GetHeroPrefab(hero);
+                    if (!Traverse.Create(broheart).Field("disarmed").GetValue<bool>()) vector = new Vector3(-5f, 4, -1f);
+                    else vector = new Vector3(-3, 0, -1);
+                    break;
+                case HeroType.BroneyRoss:
+                    vector = new Vector3(-2, 0, 0); break;
+                case HeroType.LeeBroxmas:
+                    vector = new Vector3(-5, 0, -0.001f); break;
+                case HeroType.TheBrode:
+                    vector = new Vector3(-4, 0, -1); break;
+                case HeroType.Brochete:
+                    vector = new Vector3(-6, 0, 0.001f); break;
+            }
+            return vector;
         }
     }
 }
