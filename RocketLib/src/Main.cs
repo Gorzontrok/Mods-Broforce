@@ -4,15 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityModManagerNet;
 using HarmonyLib;
-
+using RocketLib0;
 
 
 namespace RocketLibLoadMod
 {
-    using RocketLib;
-
     /// <summary>
-    /// Really, you don't need it. Anyway you will just have the function of the UnityModManager.
+    /// You don't need it. Anyway you will just have the function of the UnityModManager.
     /// </summary>
     public class Main
     {
@@ -26,6 +24,7 @@ namespace RocketLibLoadMod
         /// </summary>
         public static Settings settings;
 
+        internal static Harmony harmony;
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             mod = modEntry;
@@ -33,11 +32,11 @@ namespace RocketLibLoadMod
             modEntry.OnToggle = OnToggle;
             modEntry.OnGUI = OnGui;
             modEntry.OnSaveGUI = OnSaveGUI;
-            modEntry.OnHideGUI = OnHideGUI;
+            modEntry.OnUpdate = OnUpdate;
 
             settings = Settings.Load<Settings>(modEntry);
 
-            var harmony = new Harmony(modEntry.Info.Id);
+            harmony = new Harmony(modEntry.Info.Id);
             try
             {
                 var assembly = Assembly.GetExecutingAssembly();
@@ -57,27 +56,26 @@ namespace RocketLibLoadMod
                 mod.Logger.Log("Error while Loading RocketLib :\n" + ex.ToString());
 
             }
-
             FirstLaunch();
-
             return true;
         }
+        private static string ScreenlogOptionBtn = "Show ScreenLog option";
         static void OnGui(UnityModManager.ModEntry modEntry)
         {
             GUIStyle testBtnStyle = new GUIStyle("button");
             testBtnStyle.normal.textColor = Color.yellow;
-            /*if (GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150)}))
+            if (GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150)}))
             {
                 try
                 {
+                    Main.Log("TEST");
                 }
                 catch (Exception ex)
                 {
                     Main.Log(ex);
 
                 }
-            }*/
-            
+            }
             GUILayout.BeginHorizontal();
             settings.DebugMode = GUILayout.Toggle(settings.DebugMode, "Enable Debug log");
             GUILayout.FlexibleSpace();
@@ -86,7 +84,11 @@ namespace RocketLibLoadMod
 
             GUILayout.BeginHorizontal();
             settings.OnScreenLog = GUILayout.Toggle(settings.OnScreenLog, "Enable OnScreenLog");
-            settings.ShowScreenLogOption = GUILayout.Toggle(settings.ShowScreenLogOption, "Show ScreenLog option");
+            var ScreenlogOptionBtnStyle = new GUIStyle("button");
+            ScreenlogOptionBtnStyle.fontStyle = FontStyle.Bold;
+            ScreenlogOptionBtnStyle.fontSize = 13;
+            ScreenlogOptionBtnStyle.normal.textColor = Color.yellow;
+            settings.ShowScreenLogOption = GUILayout.Toggle(settings.ShowScreenLogOption, ScreenlogOptionBtn, ScreenlogOptionBtnStyle);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             if (settings.ShowScreenLogOption)
@@ -116,10 +118,13 @@ namespace RocketLibLoadMod
         {
             settings.Save(modEntry);
         }
-        static void OnHideGUI(UnityModManager.ModEntry modEntry)
+        static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
         {
             if (!LevelEditorGUI.IsActive) ShowMouseController.ShowMouse = false;
             Cursor.lockState = CursorLockMode.None;
+            if (settings.ShowScreenLogOption) ScreenlogOptionBtn = "Hide ScreenLog Option";
+            else ScreenlogOptionBtn = "Show ScreenLog Option";
+
         }
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
@@ -133,7 +138,6 @@ namespace RocketLibLoadMod
             else
             {
                 RocketLib.ScreenLogger.ModId = "RocketLib";
-                mod.Logger.Log(str.ToString());
                 RocketLib.ScreenLogger.Log(str, type);
             }
         }

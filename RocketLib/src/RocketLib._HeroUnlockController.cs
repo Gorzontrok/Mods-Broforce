@@ -5,12 +5,12 @@ using System.Text;
 using HarmonyLib;
 using RocketLibLoadMod;
 
-namespace RocketLib
+namespace RocketLib0
 {
     public partial class RocketLib
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static class _HeroUnlockController
         {
@@ -102,7 +102,25 @@ namespace RocketLib
                 Main.Log(Table);
                 Main.Log("Finish to show unlock order");
             }
+
+            /// <summary>
+            /// Get the list of Bro that are lock and unlock.
+            /// </summary>
+            /// <param name="HeroesDico">The dictionary of hero and their intervals.</param>
+            /// <param name="LockedBro">return the list of lock bros</param>
+            /// <param name="UnlockedBro">return the list of unlock bros</param>
+            public static void GetUnlockLockList(Dictionary<int, HeroType> HeroesDico, out List<HeroType> LockedBro, out List<HeroType> UnlockedBro)
+            {
+                UnlockedBro = new List<HeroType>();
+                LockedBro = new List<HeroType>();
+                int unlock = PlayerProgress.Instance.freedBros;
+                foreach (KeyValuePair<int, HeroType> hero in HeroesDico)
+                {
+                        if (hero.Key >= unlock)
+                            UnlockedBro.Add(hero.Value);
+                        else LockedBro.Add(hero.Value);
+                }
+            }
         }
-        
     }
 }

@@ -1,35 +1,30 @@
 ﻿using System;
-using System.Reflection;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using UnityEngine;
-using RocketLibLoadMod; // for call Main.Log(); when i test function.
+using RocketLibLoadMod;
 
-namespace RocketLib
+namespace RocketLib0
 {
 
     /// <summary>
-    /// Library of useful function made for Broforce. And an OnScreen Logger.
+    /// Library of useful function made for Broforce. And an  Logger on screen.
     /// </summary>
-    public static partial class RocketLib
+    public partial class RocketLib
     {
         /// <summary>
         /// Give the '_Data' folder of the game. Be careful ! If the mod is not load, it will be empty !
         /// </summary>
-        public static string GameDataPath = "";
+        public static string GameDataPath = "/Broforce_beta_Data";
 
         internal static string GameDirectory = Directory.GetCurrentDirectory();
-
-        internal static string RocketLibModFolderPath = Main.mod.Path;
 
         internal static void Load() // Function for load all of function we needed.
         {
             try
             {
-                ScreenLogger.Load();
-                GetGameDataPath();
-                ScreenLogger.firstLaunch.Add(" Succesfully Load RocketLib !");
+                ScreenLogger._isSuccessfullyLoad = ScreenLogger.Load();
+                ScreenLogger.AddStartLog("Succesfully Load RocketLib !");
             }
             catch(Exception ex)
             {
@@ -37,86 +32,53 @@ namespace RocketLib
             }
         }
 
-        static void GetGameDataPath() // Get the Data folder of the game.
-        {
-            string[] dirs = Directory.GetDirectories(GameDirectory, "*_Data");
-            foreach (string dir in dirs)
-            {
-                GameDataPath = dir;
-            }
-        }
-
-        /// <summary>This constructor check if a mod is Here or is Enabled.
-        /// <example>
-        /// Example of call :
-        /// <code>
-        ///     RocketLib.IsThisModIs RocketLib_info = new RocketLib.IsThisModIs("RocketLib");
-        /// </code>
-        /// </example>
-        /// </summary>
-        public class IsThisModIs
-        {
-            private static string xmlFilePath = GameDataPath + "/Managed/UnityModManager/Params.xml";
-
-            /// <summary>
-            /// Return if the mod is Here.
-            /// </summary>
-            public bool Here;
-
-            /// <summary>
-            /// Return is the mod is Enabled, if the mod does not exist it will return false.
-            /// </summary>
-            public bool Enabled;
-
-            /// <summary>This constructor check if a mod is Here or is Enabled.
-            /// <example>
-            /// Example of call :
-            /// <code>
-            ///     RocketLib.IsThisModIs RocketLib_info = new RocketLib.IsThisModIs("RocketLib");
-            /// </code>
-            /// </example>
-            /// </summary>
-            /// <param name="ID">Id of the mod.</param>
-            public IsThisModIs(string ID) // Check if the mod is here and it's enabled
-            {
-                XmlDocument mod = new XmlDocument();
-                mod.Load(xmlFilePath); // Initialize the XML Document
-
-                XmlNode node = mod.SelectSingleNode("//ModParams");// Get the group <ModParams>
-                Here = false;
-                Enabled = false;
-                while(true)
-                {
-                    foreach (XmlNode mods in node) // Get each attribute of each <Mod Id="" Enabled="" />
-                    {
-                        if (mods.Attributes["Id"].Value == ID)// Here we need only the ID of the mod
-                        {
-                            Here = true;
-                            if (mods.Attributes["Enabled"].Value == "true" && mods.Attributes["Id"].Value == ID)
-                            {
-                                Enabled = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        /*
         /// <summary>
-        /// Convert an image file to a Texture2D.
+        /// Create a Texture based on an existing material.
         /// </summary>
-        /// <param name="ImagePath">Path of the image.</param>
-        private static Texture2D ImageToTexture2D(string ImagePath) // Convert a image to a Texture2D
+        /// <param name="ImagePath">Image path</param>
+        /// <param name="origMat">Original Materail</param>
+        /// <returns>A Texture</returns>
+        public static Texture2D CreateTexFromMat(string ImagePath, Material origMat)
         {
-            Texture2D texture;
-            byte[] fileData;
+            if (!File.Exists(ImagePath)) throw new IOException();
 
-            fileData = File.ReadAllBytes(ImagePath);
+            Texture2D tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
+            tex.LoadImage(File.ReadAllBytes(ImagePath));
+            tex.wrapMode = TextureWrapMode.Clamp;
 
-            texture = new Texture2D(2, 2, TextureFormat.ARGB32, false);
-            texture.LoadImage(fileData);
-            return texture;
-        }*/
+            Texture orig = origMat.mainTexture;
+
+            tex.anisoLevel = orig.anisoLevel;
+            tex.filterMode = orig.filterMode;
+            tex.mipMapBias = orig.mipMapBias;
+            tex.wrapMode = orig.wrapMode;
+
+            return tex;
+        }
+
+        /// <summary>
+        /// Create a Texture from SpriteSM
+        /// </summary>
+        /// <param name="ImagePath">Image Path</param>
+        /// <param name="sprite">Original Sprite</param>
+        /// <returns>A Texture</returns>
+        public static Texture2D CreateTexFromSpriteSM(string ImagePath, SpriteSM sprite)
+        {
+            if (!File.Exists(ImagePath)) throw new IOException();
+
+            Texture2D tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
+            tex.LoadImage(File.ReadAllBytes(ImagePath));
+            tex.wrapMode = TextureWrapMode.Clamp;
+
+            Texture orig = sprite.meshRender.sharedMaterial.GetTexture("_MainTex");
+
+            tex.anisoLevel = orig.anisoLevel;
+            tex.filterMode = orig.filterMode;
+            tex.mipMapBias = orig.mipMapBias;
+            tex.wrapMode = orig.wrapMode;
+
+            return tex;
+        }
 
         /// <summary>
         /// This class contains my GUILayout.
@@ -151,6 +113,6 @@ namespace RocketLib
 
                 return Nbr;
             }
-        }  
+        }
     }
 }
