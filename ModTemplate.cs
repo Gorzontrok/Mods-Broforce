@@ -57,6 +57,10 @@ namespace ModTemplate
         {
             mod.Logger.Log(str.ToString());
         }
+        public static void Log(IEnumerable<object> str)
+        {
+            mod.Logger.Log(str.ToString());
+        }
 
     }
 
