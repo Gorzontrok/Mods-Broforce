@@ -1,3 +1,12 @@
+v0.6.2 :
+ - Better Button for toggle Screenlog option.
+ - Change the keybinding of clean screenlog to F3
+ - Add CreateTexFromMat and CreateTexFromSpriteSM fonction.
+ - Remove the little square in top right of the screen
+ - If the total of log on the screen are superior of 30, they will be remove faster.
+ - Add GetUnlockLockList fonction.
+ - Change Namespace to RocketLib0
+
 v0.6.1 :
  - Better color handeler
 
