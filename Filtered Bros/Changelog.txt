@@ -1,3 +1,6 @@
+v1.1.4 :
+ - Finaly fix the bug where i need to rewatch all cutscene.
+
 v1.1.3 :
  - Expendabros are selected in select all button
  - Fix the bug where all bro cutscene need to be reload, i hope

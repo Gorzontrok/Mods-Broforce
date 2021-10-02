@@ -4,22 +4,24 @@ using System.Reflection;
 using UnityEngine;
 using UnityModManagerNet;
 using HarmonyLib;
+using RocketLib0;
 
 namespace FilteredBros
 {
-    using RocketLib;
     public class Main
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
         public static Settings settings;
 
-        public static Dictionary<int, HeroType> origDico = new Dictionary<int, HeroType>();
-        public static List<HeroType> HeroList = new List<HeroType> { HeroType.Rambro, HeroType.Brommando, HeroType.BaBroracus, HeroType.BrodellWalker, HeroType.BroHard, HeroType.McBrover, HeroType.Blade, HeroType.BroDredd, HeroType.Brononymous, HeroType.DirtyHarry, HeroType.Brominator, HeroType.Brobocop, HeroType.IndianaBrones, HeroType.AshBrolliams, HeroType.Nebro, HeroType.BoondockBros, HeroType.Brochete, HeroType.BronanTheBrobarian, HeroType.EllenRipbro, HeroType.TheBrocketeer, HeroType.TimeBroVanDamme, HeroType.BroniversalSoldier, HeroType.ColJamesBroddock, HeroType.CherryBroling, HeroType.BroMax, HeroType.TheBrode, HeroType.DoubleBroSeven, HeroType.Predabro, HeroType.BroveHeart, HeroType.TheBrofessional, HeroType.Broden, HeroType.TheBrolander, HeroType.SnakeBroSkin, HeroType.TankBro, HeroType.BroLee, HeroType.Broc, HeroType.BroneyRoss, HeroType.BronnarJensen, HeroType.HaleTheBro, HeroType.LeeBroxmas, HeroType.TollBroad, HeroType.TrentBroser, HeroType.BrondleFly };
+        public static Dictionary<int, HeroType> OriginalDico = new Dictionary<int, HeroType>();
+        public static List<HeroType> HeroList = RocketLib._HeroUnlockController.HeroTypeFullList;
         public static List<int> heroInt = new List<int> { 1, 3, 5, 8, 11, 15, 20, 25, 37, 42, 46, 52, 56, 62, 65, 72, 75, 82, 87, 92, 99, 102, 115, 123, 132, 145, 160, 175, 193, 209, 222, 249, 274, 300, 326, 350, 374, 400, 425, 445, 465, 485, 520 };
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
+            mod = modEntry;
+
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
@@ -39,9 +41,12 @@ namespace FilteredBros
 
             if (!settings.getFirstLaunch)
                 firstLaunch();
-
-            mod = modEntry;
+            Start();
             return true;
+        }
+        static void Start()
+        {
+            OriginalDico = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
         }
 
         static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
@@ -153,9 +158,14 @@ namespace FilteredBros
             return true;
         }
 
-        public static void Log(object str)
+        public static void Log(object str, RLogType type = RLogType.Log)
         {
-            mod.Logger.Log(str.ToString());
+            if (RocketLib.ScreenLogger.isSuccessfullyLoad) mod.Logger.Log(str.ToString());
+            else
+            {
+                RocketLib.ScreenLogger.ModId = "Filtered Bros";
+                RocketLib.ScreenLogger.Log(str, type);
+            }
         }
 
         static void firstLaunch()
@@ -318,7 +328,7 @@ namespace FilteredBros
             settings.BrondleFly = false;
         }
 
-        public static Dictionary<int, HeroType> UpdateList()
+        public static Dictionary<int, HeroType> UpdateDico()
         {
             Dictionary<int, HeroType> BroDico = new Dictionary<int, HeroType>();
             try
@@ -336,7 +346,7 @@ namespace FilteredBros
             }
             catch (Exception ex)
             {
-                Main.Log(ex);
+                Main.Log(ex, RLogType.Exception);
             }
             return BroDico;
         }
@@ -456,31 +466,26 @@ namespace FilteredBros
     [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for add the Bros
     static class HeroUnlockController_IsAvailableInCampaign_Patch
     {
-        public static bool Prefix(ref HeroType hero)
+        static void Prefix()
         {
-            Dictionary<int, HeroType> newHeroUnlockIntervals = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
-
-            if (Main.origDico.Count <= 0) Main.origDico = newHeroUnlockIntervals;
-
+            Dictionary<int, HeroType> HeroUnlockIntervals = new Dictionary<int, HeroType>();
             if (Main.enabled)
             {
-                Dictionary<int, HeroType> NewDictionary = Main.UpdateList();
-                if (NewDictionary.Count <= 0) throw new Exception("You need at least 1 Bro !");
-                else 
-                {
-                    newHeroUnlockIntervals = NewDictionary;
-                }
-
+                    HeroUnlockIntervals = Main.UpdateDico();
             }
-            else if(!Main.enabled && Main.origDico.Count >0)
+            if(!Main.enabled || HeroUnlockIntervals.Count <= 0)
             {
-                newHeroUnlockIntervals = Main.origDico;
+                HeroUnlockIntervals = Main.OriginalDico;
             }
-
-            Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(newHeroUnlockIntervals);
-            newHeroUnlockIntervals = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
-
-            return newHeroUnlockIntervals.ContainsValue(hero);
+            try
+            {
+                Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(HeroUnlockIntervals);
+                List<HeroType> LockedBro = new List<HeroType>();
+                List<HeroType> UnlockedBro = new List<HeroType>();
+                RocketLib._HeroUnlockController.GetUnlockLockList(HeroUnlockIntervals, out LockedBro, out UnlockedBro);
+                PlayerProgress.Instance.yetToBePlayedUnlockedHeroes = LockedBro;
+            }
+            catch(Exception ex) { Main.Log(ex, RLogType.Exception); }
         }
     }
 }
