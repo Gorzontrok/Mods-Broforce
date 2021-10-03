@@ -1,7 +1,7 @@
 {
     "Releases":
     [
-        {"Id": "TweaksFromPigsMod", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Tweak%20From%20Pigs/Release/TweaksFromPigsMod.zip"},
+        {"Id": "TweaksFromPigsMod", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Tweak%20From%20Pigs/Release/TweaksFromPigsMod.zip"},
         {"Id": "007_Patch", "Version": "1.3.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Tweaks%20From%20Pigs%20-%20Mod%20Standalone/007_Patch/Release/007_Patch.zip"},
         {"Id": "AvatarFaceHuggerMod", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Tweaks%20From%20Pigs%20-%20Mod%20Standalone/AvatarFaceHugger/Release/AvatarFaceHuggerMod.zip"},
         {"Id": "ExpendaBrosInGame", "Version": "1.1.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Tweaks%20From%20Pigs%20-%20Mod%20Standalone/ExpendablesBrosInGame/Release/ExpendaBrosInGame.zip"},
