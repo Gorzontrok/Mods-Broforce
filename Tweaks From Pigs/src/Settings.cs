@@ -21,6 +21,9 @@ namespace TweaksFromPigs
         public bool SpawnWithExpendabros;
         public bool SpawnBrondeFly;
 
+        // Enemies
+        public bool FasterZombie;
+
         // Framerate
         public bool UseCustomFramerate;
         public int MaxFramerate;
@@ -31,11 +34,11 @@ namespace TweaksFromPigs
 
         // Map
         public bool UseAcidBarrel;
+        public int ArcadeIndex;
 
         // Other
         public bool PigAreAlwaysTerror;
         public bool SetCustomMouse; public bool CustomMouseIsSet;
-        public bool FasterZombie;
 
         // AdvancedOption
         public bool ShowAdvancedOption;

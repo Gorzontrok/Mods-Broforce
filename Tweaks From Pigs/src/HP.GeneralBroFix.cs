@@ -98,7 +98,7 @@ namespace TweaksFromPigs
         static void Postfix(BroBase __instance)
         {
             if (!Main.enabled) return;
-            if (Main.settings.UsePushingFrame && AnimatePushing_Patch.ThisHeroTypePushingBug(__instance.heroType)) __instance.useNewPushingFrames = true;
+            if (Main.settings.UsePushingFrame && !AnimatePushing_Patch.ThisHeroTypePushingBug(__instance.heroType)) __instance.useNewPushingFrames = true;
             if (Main.settings.UseNewLadderFrame) __instance.useNewLadderClimbingFrames = true;
         }
     }

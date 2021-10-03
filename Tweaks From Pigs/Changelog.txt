@@ -1,3 +1,9 @@
+v1.0.2 :
+ - Add the ability to change the Arcade Campaign.
+ - Fix Pushing not working
+ - Fix ToolTip not working
+ - Fix some bug in menu
+
 v1.0.1 :
  - Remove some unused function
  - Block some Bro for use pushing animation. Because i don't know how to fix them.

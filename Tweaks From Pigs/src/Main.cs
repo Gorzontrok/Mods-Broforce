@@ -22,6 +22,9 @@ namespace TweaksFromPigs
         public static string ResFolder;
 
         public static Harmony harmony;
+
+        public static string[] ArcadeCampaign = new string[] { "Normal", "Expendabros", "TWITCHCON", "Alien Demo", "Boss Rush", "Hell Arcade" };
+        public static string CurentArcade;
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             modEntry.OnGUI = OnGUI;
@@ -60,6 +63,7 @@ namespace TweaksFromPigs
             settings.ForBralefIsHere = CheckIfThisModIsHereAndUnpatchPrefix(IsAvailableInC_Patch, "ForBralef", settings.UnpatchForBralef);
             if (settings.ExpendabrosModIsHere && settings.UnpatchExpendabrosMod) harmony.UnpatchAll("ExpendaBrosInGame");
 
+            // Set Mouse of the game
             if (settings.SetCustomMouse)
             {
                 ShowMouseController.SetCursorToArrow(true);
@@ -70,27 +74,30 @@ namespace TweaksFromPigs
 
             ResFolder = mod.Path + "/Ressource/";
 
-            mod.Logger.Log(PlayerProgress.Instance.freedBros.ToString());
         }
 
         static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
         {
             if (!Main.enabled) return;
+            // Build Unlock Intervals
             HeroDictionary = Utility.BuildHeroDictionary();
 
+            // Set T-Bag
             if (settings.TbagEnabled) TestVanDammeAnim.teaBagCheatEnabled = true;
             else TestVanDammeAnim.teaBagCheatEnabled = false;
 
+            //Set custom Frame rate
             if (settings.UseCustomFramerate)
             { Application.targetFrameRate = settings.MaxFramerate; QualitySettings.vSyncCount = 0; }
             else QualitySettings.vSyncCount = 1;
 
+            // Change string of Advanced Btn
             if (settings.ShowAdvancedOption) BtnAdvancedOptionTxt = "Hide advanced settings";
             else BtnAdvancedOptionTxt = "Show advanced settings";
 
             settings.NeedReload = TheseVarHaveChangeValue();
 
-            PlaytomicController.hasChosenBossRushDemo = true;
+            // Custom Mouse change color
             if(settings.SetCustomMouse)
             {
                 if(!settings.CustomMouseIsSet)
@@ -100,6 +107,10 @@ namespace TweaksFromPigs
                 }
                 if (Input.GetMouseButton(0)) ShowMouseController.HilightCursor();
             }
+
+
+            // Arcade choice
+            CurentArcade = ArcadeCampaign[settings.ArcadeIndex];
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
@@ -130,7 +141,9 @@ namespace TweaksFromPigs
             }
             GUILayout.EndHorizontal();
 
-            GUILayout.Space(30);
+            GUILayout.Space(15);
+            Rect ToolTipRect = GUILayoutUtility.GetLastRect();
+            GUILayout.Space(15);
 
             GUILayout.BeginHorizontal();
             settings.UseCustomFramerate = GUILayout.Toggle(settings.UseCustomFramerate, new GUIContent("Use custom Framerate"));
@@ -200,7 +213,7 @@ namespace TweaksFromPigs
             GUILayout.Label("- Ennemies :", TitleStyle);
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
-            settings.FasterZombie = GUILayout.Toggle(settings.FasterZombie, new GUIContent("Faster Zombie", "The zombie are the bro and ennemies who are revive by Bronniversal Soldier"));
+            settings.FasterZombie = GUILayout.Toggle(settings.FasterZombie, new GUIContent("Faster Zombie", "The zombie are faster. You can change the value in Advanced Section"));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -208,6 +221,11 @@ namespace TweaksFromPigs
             GUILayout.Space(10);
             GUILayout.Label("- Map :", TitleStyle);
             GUILayout.BeginVertical("box");
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(new GUIContent("Arcade Type :", "When choose, play Arcade level 1. You can play Online."));
+            settings.ArcadeIndex = RocketLib.GUI.ArrowList(new List<string>(ArcadeCampaign), settings.ArcadeIndex);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             settings.UseAcidBarrel = GUILayout.Toggle(settings.UseAcidBarrel, new GUIContent("Enabled Acid barrel to spawn", "They are unused in Campaign i just enabled them."));
             GUILayout.FlexibleSpace();
@@ -229,13 +247,7 @@ namespace TweaksFromPigs
             ToolTipStyle.fontSize = 15;
             ToolTipStyle.normal.textColor = Color.white;
 
-            GUILayout.BeginHorizontal();
-            Rect lastRect = GUILayoutUtility.GetLastRect();
-            lastRect.y -= 350;
-            //lastRect.x += 250;
-            lastRect.width += 300;
-            GUI.Label(lastRect, GUI.tooltip, ToolTipStyle);
-            GUILayout.EndHorizontal();
+            GUI.Label(ToolTipRect, GUI.tooltip, ToolTipStyle);
 
             GUILayout.Space(10);
             var AdvancedStyle = new GUIStyle("button");
@@ -267,6 +279,20 @@ namespace TweaksFromPigs
             GUILayout.EndVertical();
 
             GUILayout.Space(10);
+            Rect ToolTipRect = GUILayoutUtility.GetLastRect();
+            GUILayout.Space(10);
+            var ToolTipStyle = new GUIStyle();
+            ToolTipStyle.fontStyle = FontStyle.Bold;
+            ToolTipStyle.fontSize = 15;
+            ToolTipStyle.normal.textColor = Color.white;
+
+            GUILayout.BeginHorizontal();
+            //lastRect.y -= 350;
+            //lastRect.x += 250;
+            //lastRect.width += 300;
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
             GUILayout.Label("- Animation :", TitleStyle);
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
@@ -293,11 +319,12 @@ namespace TweaksFromPigs
             GUILayout.Label("- Ennemies :", TitleStyle);
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Zombie Speed modifier : " + settings.ZombieSpeedModifier.ToString(), GUILayout.ExpandWidth(false));
-            settings.ZombieSpeedModifier = (float)GUILayout.HorizontalScrollbar(settings.ZombieSpeedModifier, 0.5f, 1f, 5, GUILayout.MaxWidth(500));
+            GUILayout.Label(" Zombie Speed modifier : ", GUILayout.ExpandWidth(false));
+            GUILayout.Label(settings.ZombieSpeedModifier.ToString(), GUILayout.Width(55));
+            settings.ZombieSpeedModifier = (float)GUILayout.HorizontalScrollbar(settings.ZombieSpeedModifier, 0f, 1f, 5, GUILayout.MaxWidth(500));
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            settings.CanTeargasedEveryone = GUILayout.Toggle(settings.CanTeargasedEveryone, new GUIContent("TearGas everyone", "Some ennemies can't be teargased.-"));
+            settings.CanTeargasedEveryone = GUILayout.Toggle(settings.CanTeargasedEveryone, new GUIContent("TearGas everyone", "Some ennemies can't be teargased."));
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
@@ -305,9 +332,10 @@ namespace TweaksFromPigs
             GUILayout.Label("- Map :", TitleStyle);
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
-                GUILayout.Label("Acid Barrel spawn rate : " + settings.AcidBarrelSpawnChance.ToString(), GUILayout.ExpandWidth(false));
-                settings.AcidBarrelSpawnChance = (float)GUILayout.HorizontalScrollbar(settings.AcidBarrelSpawnChance, 0f, 0.5f, 1f, GUILayout.MaxWidth(500));
-                GUILayout.EndHorizontal();
+                GUILayout.Label(" Acid Barrel spawn rate : ", GUILayout.ExpandWidth(false));
+            GUILayout.Label(settings.AcidBarrelSpawnChance.ToString(), GUILayout.Width(70));
+                settings.AcidBarrelSpawnChance = (float)GUILayout.HorizontalScrollbar(settings.AcidBarrelSpawnChance, 0f, 0.0f, 1f, GUILayout.MaxWidth(500));
+            GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
@@ -322,6 +350,8 @@ namespace TweaksFromPigs
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
+
+            GUI.Label(ToolTipRect, GUI.tooltip, ToolTipStyle);
         }
 
         public static bool CheckIfThisModIsHereAndUnpatchPrefix(MethodInfo methodInfo, string HarmonyId, bool unpatchThis, HarmonyPatchType patchType = HarmonyPatchType.Prefix)
@@ -385,7 +415,7 @@ namespace TweaksFromPigs
             settings.CanTeargasedEveryone = true;
             settings.ZombieSpeedModifier = 1.2f;
             // Map
-            settings.AcidBarrelSpawnChance = 0.4f;
+            settings.AcidBarrelSpawnChance = 0.2f;
             // other
             settings.EnabledSickPigs = true;
             settings.MechDropDoesFumiginene = true;

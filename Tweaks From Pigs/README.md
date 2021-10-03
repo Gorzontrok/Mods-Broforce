@@ -21,6 +21,7 @@
 
  ## Incompatible :
  * All who are include in the mod.
+ * Those who change the unlock intervals (if you enable the one from this mod).
 
  ## Some Modification
  If you disabled the mod, any of this will work.

@@ -45,6 +45,7 @@
 - Map :
 	-- OPTIONAL :
 		- Acid barrel can be enabled and you can change spawn rate
+		- Choose the arcade campaign.
 
 - Pig :
 	- rotten pig have 1/3 chance to spawn.
