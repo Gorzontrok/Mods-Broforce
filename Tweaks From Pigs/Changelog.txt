@@ -1,3 +1,8 @@
+v1.0.3 :
+ - You can delete save slot.
+ - The number of max level in arcade change depends on your arcade choice.
+ - Add language menu
+
 v1.0.2 :
  - Add the ability to change the Arcade Campaign.
  - Fix Pushing not working

@@ -58,6 +58,9 @@ namespace TweaksFromPigs
         // - Map
         public float AcidBarrelSpawnChance;
         public bool FixHidingInGrass;
+        // - Menu
+        public bool LanguageMenuEnabled;
+        public bool MaxArcadeLevelEnabled;
         // - Other
         public bool EnabledSickPigs;
         public bool MechDropDoesFumiginene;
@@ -67,7 +70,8 @@ namespace TweaksFromPigs
         public bool ExpendabrosModIsHere = false; public bool UnpatchExpendabrosMod;
         public bool ForBralefIsHere = false; public bool UnpatchForBralef;
 
-
+        // Danger Zone
+        public bool DangerZoneOpen = false;
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);

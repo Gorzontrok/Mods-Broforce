@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 using HarmonyLib;
 using Utility;
 using UnityEngine.SceneManagement;
@@ -11,26 +11,84 @@ namespace TweaksFromPigs
     [HarmonyPatch(typeof(LevelSelectionController), "ResetLevelAndGameModeToDefault")]
     static class ArcadeCampaign_Patch
     {
+        static int GetMaxAracadeLevel(string ArcadeLevel)
+        {
+            if(Main.settings.MaxArcadeLevelEnabled)
+            {
+                switch(ArcadeLevel)
+                {
+                    case "Hell Arcade":
+                        return 13;
+                    case "Expendabros": return 11;
+                    case "TWITCHCON": return 10;
+                    case "Alien Demo": return 5;
+                    case "Boss Rush": return 10;
+                }
+            }
+            return 63;
+        }
         static void Postfix()
         {
             if (!Main.enabled) return;
             string c = Main.CurentArcade;
             if (c == "Hell Arcade")
+            {
                 LevelSelectionController.DefaultCampaign = LevelSelectionController.HellArcade;
+            }
             else if (c == "Expendabros")
+            {
                 LevelSelectionController.DefaultCampaign = LevelSelectionController.ExpendabrosCampaign;
-            else if (c == "TWITCHCON")
-                LevelSelectionController.DefaultCampaign = "VIETNAM_EXHIBITION_TWITCHCON";
-            else if (c == "Alien Demo")
-                LevelSelectionController.DefaultCampaign = "AlienExhibition";
-            else if (c == "Boss Rush")
-                LevelSelectionController.DefaultCampaign = "BossRushCampaign";
-            else
-                LevelSelectionController.DefaultCampaign = LevelSelectionController.OfflineCampaign;
 
+            }
+            else if (c == "TWITCHCON")
+            {
+                LevelSelectionController.DefaultCampaign = "VIETNAM_EXHIBITION_TWITCHCON";
+            }
+            else if (c == "Alien Demo")
+            {
+                LevelSelectionController.DefaultCampaign = "AlienExhibition";
+            }
+            else if (c == "Boss Rush")
+            {
+                LevelSelectionController.DefaultCampaign = "BossRushCampaign";
+            }
+            else
+            {
+               LevelSelectionController.DefaultCampaign = LevelSelectionController.OfflineCampaign;
+            }
+            GetMaxAracadeLevel(c);
         }
     }
 
+    // Add language menu
+    [HarmonyPatch(typeof(OptionsMenu), "InstantiateItems")]
+    static class AddLanguageMenu_Patch
+    {
+        static void Prefix(OptionsMenu __instance)
+        {
+            if (!Main.enabled) return;
+            if(Main.settings.LanguageMenuEnabled)
+            {
+                Traverse trav = Traverse.Create(__instance);
+                MenuBarItem[] masterItems = trav.Field("masterItems").GetValue() as MenuBarItem[];
+                List<MenuBarItem> list = new List<MenuBarItem>(masterItems);
+
+                list.Insert(list.Count - 2, new MenuBarItem
+                {
+                    color = Color.white,
+                    size = __instance.characterSizes,
+                    localisedKey = "MENU_OPTIONS_LANGUAGE",
+                    name = "LANGUAGE_TFP",
+                    invokeMethod = "GoToLanguageMenu"
+                });
+                trav.Field("masterItems").SetValue(list.ToArray());
+            }
+        }
+        static void Postfix(OptionsMenu __instance)
+        {
+            Traverse trav = Traverse.Create(__instance);
+        }
+    }
     // Patch Main Menu
     /* [HarmonyPatch(typeof(MainMenu), "SetupItems")]
      static class p_Patch
@@ -97,35 +155,5 @@ namespace TweaksFromPigs
          }
      }*/
 
-    /* [HarmonyPatch(typeof(OptionsMenu), "InstantiateItems")]
-     static class d
-     {
-         static bool Prefix(OptionsMenu __instance)
-         {
-             Traverse trav = Traverse.Create(__instance);
-             trav.Field("playingInSteam").SetValue(trav.Type("SteamController").Method("IsSteamEnabled").GetValue<bool>());
-
-            // __instance.playOnlineWithFnetIndex = __instance.FindIndexOf("PLAY ONLINE WITH NON STEAM USERS");
-             //__instance.playerNameIndex = __instance.FindIndexOf("PLAYERNAME");
-             Ref.menu.InstantiateItems();
-             //base.SetMenuItemColor(__instance.playerNameIndex, __instance.playingInSteam ? Color.gray : Color.white);
-             trav.Method("SetPlayOnlineWithFnet").GetValue();
-             __instance.SetPlayerNameText();
-
-             return false;
-         }
-     }*/
-    /*[HarmonyPatch(typeof(OptionsMenu), "SetPlayerName")]
-    static class d4
-    {
-        static bool Prefix(OptionsMenu __instance)
-        {
-            Traverse trav = Traverse.Create(__instance);
-
-            trav.Field("settingPlayerName").SetValue(true);
-
-            return false;
-        }
-    }*/
 
 }

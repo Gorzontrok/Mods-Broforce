@@ -25,6 +25,13 @@ namespace TweaksFromPigs
 
         public static string[] ArcadeCampaign = new string[] { "Normal", "Expendabros", "TWITCHCON", "Alien Demo", "Boss Rush", "Hell Arcade" };
         public static string CurentArcade;
+
+        private static string BtnAdvancedOptionTxt = string.Empty;
+        private static string BtnDangerZoneTxt = string.Empty;
+
+        private static int SaveSlotToDelete = 1;
+
+        private static GUIStyle ToolTipStyle = new GUIStyle();
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             modEntry.OnGUI = OnGUI;
@@ -74,6 +81,11 @@ namespace TweaksFromPigs
 
             ResFolder = mod.Path + "/Ressource/";
 
+            ToolTipStyle = new GUIStyle();
+            ToolTipStyle.fontStyle = FontStyle.Bold;
+            ToolTipStyle.fontSize = 15;
+            ToolTipStyle.normal.textColor = Color.white;
+
         }
 
         static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
@@ -94,6 +106,9 @@ namespace TweaksFromPigs
             // Change string of Advanced Btn
             if (settings.ShowAdvancedOption) BtnAdvancedOptionTxt = "Hide advanced settings";
             else BtnAdvancedOptionTxt = "Show advanced settings";
+            // Change txt of danger btn
+            if (settings.DangerZoneOpen) BtnDangerZoneTxt = "CLOSE DANGER ZONE";
+            else BtnDangerZoneTxt = "OPEN DANGER ZONE";
 
             settings.NeedReload = TheseVarHaveChangeValue();
 
@@ -242,11 +257,6 @@ namespace TweaksFromPigs
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
-            var ToolTipStyle = new GUIStyle();
-            ToolTipStyle.fontStyle = FontStyle.Bold;
-            ToolTipStyle.fontSize = 15;
-            ToolTipStyle.normal.textColor = Color.white;
-
             GUI.Label(ToolTipRect, GUI.tooltip, ToolTipStyle);
 
             GUILayout.Space(10);
@@ -262,7 +272,6 @@ namespace TweaksFromPigs
             GUILayout.EndHorizontal();
             if (settings.ShowAdvancedOption) AdvancedOptionGUI();
         }
-        private static string BtnAdvancedOptionTxt = "Show Advanced settings";
 
         static void AdvancedOptionGUI()
         {
@@ -281,16 +290,6 @@ namespace TweaksFromPigs
             GUILayout.Space(10);
             Rect ToolTipRect = GUILayoutUtility.GetLastRect();
             GUILayout.Space(10);
-            var ToolTipStyle = new GUIStyle();
-            ToolTipStyle.fontStyle = FontStyle.Bold;
-            ToolTipStyle.fontSize = 15;
-            ToolTipStyle.normal.textColor = Color.white;
-
-            GUILayout.BeginHorizontal();
-            //lastRect.y -= 350;
-            //lastRect.x += 250;
-            //lastRect.width += 300;
-            GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
             GUILayout.Label("- Animation :", TitleStyle);
@@ -342,6 +341,18 @@ namespace TweaksFromPigs
             GUILayout.EndVertical();
 
             GUILayout.Space(10);
+            GUILayout.Label("- Menu :", TitleStyle);
+            GUILayout.BeginVertical("box");
+            GUILayout.BeginHorizontal();
+            settings.MaxArcadeLevelEnabled = GUILayout.Toggle(settings.MaxArcadeLevelEnabled, new GUIContent("Max Arcade Level", "On different arcade, block the level at the max level playable."));
+            settings.LanguageMenuEnabled = GUILayout.Toggle(settings.LanguageMenuEnabled, new GUIContent("Re-Enabled Language menu", "You can change language of the game in option menu."));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+
+            GUILayout.Space(10);
             GUILayout.Label("- Other :", TitleStyle);
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
@@ -351,6 +362,43 @@ namespace TweaksFromPigs
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
+            GUI.Label(ToolTipRect, GUI.tooltip, ToolTipStyle);
+
+            GUILayout.Space(10);
+            var DangerZoneTxt = new GUIStyle("button");
+            DangerZoneTxt.fontStyle = FontStyle.Bold;
+            DangerZoneTxt.fontSize = 15;
+            DangerZoneTxt.normal.textColor = Color.red;
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(100);
+            settings.DangerZoneOpen = GUILayout.Toggle(settings.DangerZoneOpen, BtnDangerZoneTxt, DangerZoneTxt);
+            GUILayout.Space(100);
+            GUILayout.EndHorizontal();
+            if (settings.DangerZoneOpen) DangerZoneGUI();
+        }
+
+        static void DangerZoneGUI()
+        {
+            var BoxDangerStyle = new GUIStyle("box");
+            BoxDangerStyle.normal.background = Utility.MakeTex(2, 2, new Color(0.5f, 0f, 0f, 0.5f));
+
+            var RedTxt = new GUIStyle();
+            RedTxt.normal.textColor = Color.red;
+
+            Rect ToolTipRect = GUILayoutUtility.GetLastRect();
+
+            GUILayout.BeginHorizontal(BoxDangerStyle);
+            GUILayout.Label("Save slot to delete : ", GUILayout.ExpandWidth(false));
+            GUILayout.Label(SaveSlotToDelete.ToString(), GUILayout.ExpandWidth(false));
+            SaveSlotToDelete = (int)GUILayout.HorizontalScrollbar(SaveSlotToDelete, 0, 1, 5, GUILayout.MaxWidth(100));
+            if (GUILayout.Button(new GUIContent("DELETE", "BE CAREFUL")))
+            {
+                PlayerProgress.Instance.saveSlots[SaveSlotToDelete - 1] = null;
+                PlayerProgress.Save(true);
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
             GUI.Label(ToolTipRect, GUI.tooltip, ToolTipStyle);
         }
 
@@ -423,6 +471,7 @@ namespace TweaksFromPigs
 
         static void OnHideGUI(UnityModManager.ModEntry modEntry)
         {
+            settings.DangerZoneOpen = false;
             if (settings.CloseAdvancedOptionOnExit) settings.ShowAdvancedOption = false;
            /* if(!LevelEditorGUI.IsActive) ShowMouseController.ShowMouse = false;
             Cursor.lockState = CursorLockMode.None;*/
