@@ -19,7 +19,8 @@
     * [Filtered Bros](Filtered%20Bros/)
     * [ForBralef](ForBralef/) 
  * Other :
-    * [RocketLib](RocketLib/)   
+    * [RocketLib](RocketLib/)
+    * [Trophy Manager](Trophy%20Manager/)
 
 ## Installation :
 All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
