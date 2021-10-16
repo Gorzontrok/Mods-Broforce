@@ -11,6 +11,8 @@
         {"Id": "ForBralef", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/ForBralef/Release/ForBralef.zip"},
         {"Id": "RocketLib", "Version": "0.6.3", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/RocketLib/Release/RocketLib.zip"},
         {"Id": "Surprise", "Version": "0.5.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Satan%20Surprise/Release/SurpriseMod.zip"},
-        {"Id": "TrophyManagerMod", "Version": "1.2.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Trophy%20Manager/Release/TrophyManager.zip"}
+        {"Id": "TrophyManagerMod", "Version": "1.2.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Trophy%20Manager/Release/TrophyManager.zip"},
+
+        {"Id": "PigstiniMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/Pigstini/Release/PigstiniMod.zip"}
     ]
 }
