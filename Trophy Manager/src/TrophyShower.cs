@@ -28,6 +28,14 @@ public class TrophyShower : MonoBehaviour
         return false;
     }
 
+    void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+    void OnDestroy()
+    {
+        Main.Log("TrophyManager notification DESTROY");
+    }
     void Update()
     {
         if (timeRemaining > 0)

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using HarmonyLib;
 
 namespace TrophyManager
@@ -11,7 +12,7 @@ namespace TrophyManager
         {
             if (__result)
             {
-                Main.settings.decapitatedCount++;
+                Main.settings.DecapitatedCount++;
                 //Main.CheckTrophy();
             }
 
@@ -23,20 +24,21 @@ namespace TrophyManager
     {
         public static void Postfix()
         {
-            Main.settings.blindCount++;
-            //Main.CheckTrophy();
+            Main.settings.BlindCount++;
         }
     }
     //Explode TROPHY
-    [HarmonyPatch(typeof(TestVanDammeAnim), "CreateGibs", new Type[] { typeof(float), typeof(float) })]//Work 👍
+    [HarmonyPatch(typeof(Mook), "Gib", new Type[] {typeof(DamageType), typeof(float), typeof(float) })]//Work 👍
     static class BoomYouAreNowInvisible_TrophyPatch
     {
-        public static void Postfix()
+        public static void Prefix(Mook __instance)
         {
             try
             {
-                Main.settings.explodeCount++;
-                // Main.CheckTrophy();
+                if(!__instance.destroyed)
+                {
+                    Main.settings.ExplodeCount++;
+                }
             }
             catch (Exception ex)
             {
@@ -46,15 +48,17 @@ namespace TrophyManager
     }
 
     //KILL TROPHY
-    [HarmonyPatch(typeof(Mook), "OnDestroy", new Type[] { })]//Work 👍
+    [HarmonyPatch(typeof(Mook), "Death", new Type[] { typeof(float), typeof(float) , typeof(DamageObject) })]//Work 👍
     static class KillTrophy_TrophyPatch
     {
-        public static void Postfix()
+        public static void Prefix(Mook __instance)
         {
             try
             {
-                Main.settings.killCount++;
-                // Main.CheckTrophy();
+                if (!Traverse.Create(__instance).Field("hasDied").GetValue<bool>())
+                {
+                    Main.settings.KillCount++;
+                }
 
             }
             catch (Exception ex)
@@ -72,8 +76,7 @@ namespace TrophyManager
         {
             try
             {
-                Main.settings.villagerCount++;
-                //Main.CheckTrophy();
+                Main.settings.VillagerArmedCount++;
 
             }
             catch (Exception ex)
@@ -91,8 +94,7 @@ namespace TrophyManager
         {
             try
             {
-                Main.settings.ennemiOnRopeCount++;
-                //Main.CheckTrophy();
+                Main.settings.EnemiesOnRopeCount++;
 
             }
             catch (Exception ex)
@@ -102,15 +104,15 @@ namespace TrophyManager
         }
     }
     //door kill TROPHY
-    [HarmonyPatch(typeof(DoorDoodad), "MakeEffectsDeath", new Type[] { })]
+    [HarmonyPatch(typeof(Map), "HitUnits", new Type[] { typeof(MonoBehaviour), typeof(MonoBehaviour), typeof(int), typeof(int), typeof(DamageType), typeof(float), typeof(float), typeof(float), typeof(float), typeof(float), typeof(bool), typeof(bool)})]
     static class doorKillTrophy_TrophyPatch
     {
-        public static void Postfix()
+        public static void Postfix(ref bool __result, MonoBehaviour damageSender)
         {
             try
             {
-                Main.settings.doorKillCount++;
-                //Main.CheckTrophy();
+                /*if ((damageSender.GetType() == typeof(DoorDoodad)) && __result == true)
+                    Main.settings.DoorKillCount++;*/
 
             }
             catch (Exception ex)
@@ -128,8 +130,7 @@ namespace TrophyManager
         {
             try
             {
-                Main.settings.shieldThrowCount++;
-                //Main.CheckTrophy();
+                Main.settings.ShieldThrowCount++;
 
             }
             catch (Exception ex)
@@ -146,9 +147,7 @@ namespace TrophyManager
         {
             try
             {
-                Main.settings.recoverInseminationCount++;
-                //Main.CheckTrophy();
-
+                Main.settings.RecoverFromInseminationCount++;
             }
             catch (Exception ex)
             {
@@ -160,12 +159,48 @@ namespace TrophyManager
     [HarmonyPatch(typeof(Mook), "AnimateAssasinated", new Type[] { })]
     static class AssassinationTrophy_TrophyPatch
     {
-        public static void Postfix()
+        public static void Postfix(Mook __instance)
         {
             try
             {
-                Main.settings.assassinationCount++;
-                //Main.CheckTrophy();
+                if(__instance.assasinatedFrame == 14)
+                    Main.settings.AssasinationCount++;
+
+            }
+            catch (Exception ex)
+            {
+                Main.Log(ex.ToString());
+            }
+        }
+    }
+    // Swallow Trophy
+    [HarmonyPatch(typeof(AlienMinibossSandWorm), "ExplodeWithinHead", new Type[] { typeof(SachelPack) })]
+    static class SwallowTrophy_TrophyPatch
+    {
+        public static void Prefix(AlienMinibossSandWorm __instance, SachelPack sachel)
+        {
+            try
+            {
+                if (sachel is SachelPackTurkey)
+                    Main.settings.SwallowAlienCount++;
+
+            }
+            catch (Exception ex)
+            {
+                Main.Log(ex.ToString());
+            }
+        }
+    }
+
+    // Satan final boss kill Trophy
+    [HarmonyPatch(typeof(BossSatanFloatingHead), "LoadEndCutscene", new Type[] {  })]
+    static class SatanFinalKillTrophy_TrophyPatch
+    {
+        public static void Prefix(BossSatanFloatingHead __instance)
+        {
+            try
+            {
+                 Main.settings.SatanFinalBossKill++;
 
             }
             catch (Exception ex)

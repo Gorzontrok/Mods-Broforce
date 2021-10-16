@@ -1,5 +1,9 @@
-v1.2.0 planned :
+v1.2.0 :
  - Fix update link.
+ - Rewrite all of the code
+ - Better function for adding/controlling Trophy
+ - Temporary remove 'Do you like my muscle' and 'Dorr kill' trophy.
+ - Add 'Be Quiet', 'Is This The End ?', 'I Thought It Was The End !' and 'The Last Meat' Trophy
 
 V1.1.0
   - Added Notification on screen.
