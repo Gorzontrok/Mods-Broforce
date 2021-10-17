@@ -22,6 +22,8 @@ namespace ModTemplate
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
             settings = Settings.Load<Settings>(modEntry);
+            mod = modEntry;
+            
             var harmony = new Harmony(modEntry.Info.Id);
             try
             {
@@ -32,9 +34,7 @@ namespace ModTemplate
             {
                 mod.Logger.Log("Failed to Patch Harmony !\n"+ex.ToString());
             }
-
-            mod = modEntry;
-
+            
             return true;
         }
 
