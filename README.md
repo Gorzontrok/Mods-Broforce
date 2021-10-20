@@ -21,6 +21,8 @@
  * Other :
     * [RocketLib](RocketLib/)
     * [Trophy Manager](Trophy%20Manager/)
+  * Special :
+    * [Only Pocketted Special Ammo](Only%20Pocketted%20Special%20Ammo/)
 
 ## Installation :
 All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
