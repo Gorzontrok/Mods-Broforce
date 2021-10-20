@@ -114,6 +114,11 @@
             <param name="LockedBro">return the list of lock bros</param>
             <param name="UnlockedBro">return the list of unlock bros</param>
         </member>
+        <member name="F:RocketLib0.RocketLib._HeroUnlockController.ListPockettedSpecialAmmoTypes">
+            <summary>
+            List of all PockettedSpecialAmmoType.
+            </summary>
+        </member>
         <member name="T:RocketLib0.RocketLib.ScreenLogger">
             <summary>
             On screen logger.
@@ -163,12 +168,12 @@
             <param name="sprite">Original Sprite</param>
             <returns>A Texture</returns>
         </member>
-        <member name="T:RocketLib0.RocketLib.GUI">
+        <member name="T:RocketLib0.RocketLib.RGUI">
             <summary>
             This class contains my GUILayout.
             </summary>
         </member>
-        <member name="M:RocketLib0.RocketLib.GUI.ArrowList(System.Collections.Generic.List{System.String},System.Int32)">
+        <member name="M:RocketLib0.RocketLib.RGUI.ArrowList(System.Collections.Generic.List{System.String},System.Int32)">
             <summary>
             A custom GUILayout. You make a choice with arrow.
             </summary>

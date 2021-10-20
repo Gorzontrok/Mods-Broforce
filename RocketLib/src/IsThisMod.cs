@@ -26,7 +26,7 @@ namespace RocketLib0
         {
             get
             {
-                return _IsHere;
+                return GetHere();
             }
         }
 
@@ -37,13 +37,12 @@ namespace RocketLib0
         {
             get
             {
-                return _IsEnabled;
+                return GetEnabled();
             }
         }
 
+        private string _ID = string.Empty;
 
-        private bool _IsHere;
-        private bool _IsEnabled;
         /// <summary>This constructor check if a mod is Here or is Enabled. Actually it don't work.
         /// <example>
         /// Example of call :
@@ -55,26 +54,39 @@ namespace RocketLib0
         /// <param name="ID">Id of the mod.</param>
         public IsThisMod(string ID) // Check if the mod is here and it's enabled
         {
-            XmlDocument mod = new XmlDocument();
-            mod.Load(xmlFilePath); // Initialize the XML Document
+            this._ID = ID;
+        }
 
-            XmlNode node = mod.SelectSingleNode("//ModParams");// Get the group <ModParams>
-            _IsHere = false;
-            _IsEnabled = false;
-            while (true)
+        private bool GetEnabled()
+        {
+            XmlDocument file = new XmlDocument();
+            file.Load(xmlFilePath); // Initialize the XML Document
+
+            XmlNode node = file.SelectSingleNode("//ModParams");// Get the group <ModParams>
+            foreach (XmlNode mods in node) // Get each attribute of each <Mod Id="" Enabled="" />
             {
-                foreach (XmlNode mods in node) // Get each attribute of each <Mod Id="" Enabled="" />
+                if (mods.Attributes["Enabled"].Value == "true" && mods.Attributes["Id"].Value == this._ID)
                 {
-                    if (mods.Attributes["Id"].Value == ID)// Here we need only the ID of the mod
-                    {
-                        _IsHere = true;
-                        if (mods.Attributes["Enabled"].Value == "true" && mods.Attributes["Id"].Value == ID)
-                        {
-                            _IsEnabled = true;
-                        }
-                    }
+                    return true;
                 }
             }
+            return false;
+        }
+
+        private bool GetHere()
+        {
+            XmlDocument file = new XmlDocument();
+            file.Load(xmlFilePath); // Initialize the XML Document
+
+            XmlNode node = file.SelectSingleNode("//ModParams");// Get the group <ModParams>
+            foreach (XmlNode mods in node) // Get each attribute of each <Mod Id="" Enabled="" />
+            {
+                if (mods.Attributes["Id"].Value == this._ID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>

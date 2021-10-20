@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityModManagerNet;
 using RocketLibLoadMod;
 
 namespace RocketLib0
@@ -83,7 +84,7 @@ namespace RocketLib0
         /// <summary>
         /// This class contains my GUILayout.
         /// </summary>
-        public static class GUI
+        public static class RGUI
         {
             /// <summary>
             /// A custom GUILayout. You make a choice with arrow.

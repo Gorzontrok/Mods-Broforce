@@ -43,6 +43,8 @@ namespace RocketLib0
             internal static Dictionary<string, RLogType> logDico = new Dictionary<string, RLogType>();
             internal static List<string> logListForTxt = new List<string>();
 
+            internal static List<string> FullLogList = new List<string>();
+
             internal static int nbrUmmLog = 0;
 
             private static string LogFilePath = Main.mod.Path + "\\Log.txt";
@@ -109,6 +111,7 @@ namespace RocketLib0
 
                 logList.Add("\n" + newString);
                 logListForTxt.Add(newString);
+                FullLogList.Add(newString);
             }
 
             void OnDestroy()

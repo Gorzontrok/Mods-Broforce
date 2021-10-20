@@ -24,6 +24,8 @@ namespace RocketLibLoadMod
         /// </summary>
         public static Settings settings;
 
+        private static int TabSelected = 0;
+
         internal static Harmony harmony;
         static bool Load(UnityModManager.ModEntry modEntry)
         {
@@ -64,7 +66,7 @@ namespace RocketLibLoadMod
         {
             GUIStyle testBtnStyle = new GUIStyle("button");
             testBtnStyle.normal.textColor = Color.yellow;
-           /* if (GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150)}))
+          /*  if (GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150)}))
             {
                 try
                 {
@@ -76,6 +78,29 @@ namespace RocketLibLoadMod
 
                 }
             }*/
+
+            var TabStyle = new GUIStyle("button");
+
+            GUILayout.BeginHorizontal();
+            if(GUILayout.Button("Main", TabStyle, GUILayout.Width(100))) TabSelected = 0;
+            GUILayout.Space(20);
+            if(GUILayout.Button("Log", TabStyle, GUILayout.Width(100))) TabSelected = 1;
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            if (TabSelected == 0)
+            {
+                MainGUI();
+            }
+            else if (TabSelected == 1)
+            {
+                LogGUI();
+            }
+
+        }
+
+        private static void MainGUI()
+        {
             GUILayout.BeginHorizontal();
             settings.DebugMode = GUILayout.Toggle(settings.DebugMode, "Enable Debug log");
             GUILayout.FlexibleSpace();
@@ -105,13 +130,23 @@ namespace RocketLibLoadMod
                 lastRect.width += 300;
                 GUILayout.Label(GUI.tooltip);
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Time before log disapear : "+settings.logTimer.ToString(), GUILayout.ExpandWidth(false));
+                GUILayout.Label("Time before log disapear : " + settings.logTimer.ToString(), GUILayout.ExpandWidth(false));
                 settings.logTimer = (int)GUILayout.HorizontalScrollbar(settings.logTimer, 1f, 1f, 11f, GUILayout.MaxWidth(200));
                 GUILayout.EndHorizontal();
 
                 GUILayout.EndVertical();
                 GUILayout.EndHorizontal();
             }
+        }
+
+        private static void LogGUI()
+        {
+            string FullLog = string.Empty;
+            foreach(string log in RocketLib.ScreenLogger.FullLogList)
+            {
+                FullLog += log + "\n";
+            }
+            GUILayout.TextArea(FullLog);
         }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
