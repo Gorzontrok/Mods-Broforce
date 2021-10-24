@@ -21,7 +21,10 @@ namespace ModTemplate
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
+            modEntry.OnUpdate = OnUpdate;
+
             settings = Settings.Load<Settings>(modEntry);
+            
             mod = modEntry;
             
             var harmony = new Harmony(modEntry.Info.Id);
@@ -39,6 +42,10 @@ namespace ModTemplate
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
+        {
+        }
+        
+        static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
         {
         }
 
