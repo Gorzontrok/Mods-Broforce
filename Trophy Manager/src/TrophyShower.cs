@@ -12,7 +12,7 @@ public class TrophyShower : MonoBehaviour
 
     internal static Dictionary<Texture, string> redeem = new Dictionary<Texture, string>();
 
-    public static bool Load()
+    internal static bool Load()
     {
         try
         {
@@ -67,7 +67,7 @@ public class TrophyShower : MonoBehaviour
         }
     }
 
-    public static void AddRedeem(Texture image, string Name)
+    internal static void AddRedeem(Texture image, string Name)
     {
         redeem.Add(image, Name);
     }

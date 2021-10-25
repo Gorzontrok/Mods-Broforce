@@ -6,32 +6,31 @@ namespace TrophyManager
 {
     //Who turn off the light TROPHY
     [HarmonyPatch(typeof(Mook), "IsDecapitated")]
-    static class WhoTurnOffTheLight_TrophyPatch
+    class WhoTurnOffTheLight_TrophyPatch
     {
-        public static void Postfix(ref bool __result)
+         static void Postfix(ref bool __result)
         {
             if (__result)
             {
                 Main.settings.DecapitatedCount++;
-                //Main.CheckTrophy();
             }
 
         }
     }
     //DoYouLikeMyMuscle TROPHY
-    [HarmonyPatch(typeof(Mook), "StopBeingBlind", new Type[] { })]//Work 👍
-    static class DoYouLikeMyMuscle_TrophyPatch
+    [HarmonyPatch(typeof(Mook), "StopBeingBlind", new Type[] { })]//Work partially
+    class DoYouLikeMyMuscle_TrophyPatch
     {
-        public static void Postfix()
+        static void Postfix()
         {
             Main.settings.BlindCount++;
         }
     }
     //Explode TROPHY
     [HarmonyPatch(typeof(Mook), "Gib", new Type[] {typeof(DamageType), typeof(float), typeof(float) })]//Work 👍
-    static class BoomYouAreNowInvisible_TrophyPatch
+    class BoomYouAreNowInvisible_TrophyPatch
     {
-        public static void Prefix(Mook __instance)
+        static void Prefix(Mook __instance)
         {
             try
             {
@@ -49,9 +48,9 @@ namespace TrophyManager
 
     //KILL TROPHY
     [HarmonyPatch(typeof(Mook), "Death", new Type[] { typeof(float), typeof(float) , typeof(DamageObject) })]//Work 👍
-    static class KillTrophy_TrophyPatch
+    class KillTrophy_TrophyPatch
     {
-        public static void Prefix(Mook __instance)
+        static void Prefix(Mook __instance)
         {
             try
             {
@@ -70,10 +69,10 @@ namespace TrophyManager
 
     //Guerrilla TROPHY
     [HarmonyPatch(typeof(VillagerAI), "EnterMinionMode", new Type[] { })]
-    static class GuerillaTrophy_TrophyPatch
+    class GuerillaTrophy_TrophyPatch
     {
-        public static void Postfix()
-        {
+         static void Postfix()
+         {
             try
             {
                 Main.settings.VillagerArmedCount++;
@@ -83,14 +82,14 @@ namespace TrophyManager
             {
                 Main.Log(ex.ToString());
             }
-        }
+         }
     }
 
     //Predabro TROPHY
     [HarmonyPatch(typeof(PredabroRope), "SetUp", new Type[] { typeof(Unit) })]
-    static class predabroTrophy_TrophyPatch
+    class predabroTrophy_TrophyPatch
     {
-        public static void Postfix()
+        static void Postfix()
         {
             try
             {
@@ -105,9 +104,9 @@ namespace TrophyManager
     }
     //door kill TROPHY
     [HarmonyPatch(typeof(Map), "HitUnits", new Type[] { typeof(MonoBehaviour), typeof(MonoBehaviour), typeof(int), typeof(int), typeof(DamageType), typeof(float), typeof(float), typeof(float), typeof(float), typeof(float), typeof(bool), typeof(bool)})]
-    static class doorKillTrophy_TrophyPatch
+    class doorKillTrophy_TrophyPatch
     {
-        public static void Postfix(ref bool __result, MonoBehaviour damageSender)
+        static void Postfix(ref bool __result, MonoBehaviour damageSender)
         {
             try
             {
@@ -124,9 +123,9 @@ namespace TrophyManager
 
     //shield TROPHY
     [HarmonyPatch(typeof(MookRiotShield), "DisarmShield", new Type[] { typeof(float) })]
-    static class shieldThrowTrophy_TrophyPatch
+    class shieldThrowTrophy_TrophyPatch
     {
-        public static void Postfix()
+        static void Postfix()
         {
             try
             {
@@ -141,9 +140,9 @@ namespace TrophyManager
     }
     //anti-insemination TROPHY
     [HarmonyPatch(typeof(TestVanDammeAnim), "RecoverFromInsemination", new Type[] { })]
-    static class InsecticidTrophy_TrophyPatch
+    class InsecticidTrophy_TrophyPatch
     {
-        public static void Postfix()
+        static void Postfix()
         {
             try
             {
@@ -157,9 +156,9 @@ namespace TrophyManager
     }
     //assassination TROPHY
     [HarmonyPatch(typeof(Mook), "AnimateAssasinated", new Type[] { })]
-    static class AssassinationTrophy_TrophyPatch
+    class AssassinationTrophy_TrophyPatch
     {
-        public static void Postfix(Mook __instance)
+        static void Postfix(Mook __instance)
         {
             try
             {
@@ -175,9 +174,9 @@ namespace TrophyManager
     }
     // Swallow Trophy
     [HarmonyPatch(typeof(AlienMinibossSandWorm), "ExplodeWithinHead", new Type[] { typeof(SachelPack) })]
-    static class SwallowTrophy_TrophyPatch
+    class SwallowTrophy_TrophyPatch
     {
-        public static void Prefix(AlienMinibossSandWorm __instance, SachelPack sachel)
+        static void Prefix(AlienMinibossSandWorm __instance, SachelPack sachel)
         {
             try
             {
@@ -194,9 +193,9 @@ namespace TrophyManager
 
     // Satan final boss kill Trophy
     [HarmonyPatch(typeof(BossSatanFloatingHead), "LoadEndCutscene", new Type[] {  })]
-    static class SatanFinalKillTrophy_TrophyPatch
+    class SatanFinalKillTrophy_TrophyPatch
     {
-        public static void Prefix(BossSatanFloatingHead __instance)
+        static void Prefix(BossSatanFloatingHead __instance)
         {
             try
             {

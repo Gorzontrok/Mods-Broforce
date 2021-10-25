@@ -116,7 +116,7 @@ namespace TrophyManager
             this.__ImagePath = (!string.IsNullOrEmpty(ImagePath) && File.Exists(ImagePath) && !Main.settings.LockTrophyDontHaveImage)? ImagePath : ImagePath_Missing;
             this.__ImagePathDone = (!string.IsNullOrEmpty(ImagePathDone) && File.Exists(ImagePathDone)) ? ImagePathDone : ImagePath_MissingDone;
             this.__Progression = 0;
-            TrophyDico.AddTrophy(this);
+            TrophyController.AddTrophy(this);
         }
 
         // Method
@@ -140,7 +140,7 @@ namespace TrophyManager
         public void UpdateProgression(int Progression)
         {
             this.__Progression = Progression;
-            TrophyDico.UpdateTrophyValue(this);
+            TrophyController.UpdateTrophyValue(this);
         }
 
         private Texture GetImageTexture()
@@ -168,7 +168,7 @@ namespace TrophyManager
         {
             this.__Progression = 0;
             this.__IsDone = false;
-            TrophyDico.UpdateTrophyValue(this);
+            TrophyController.UpdateTrophyValue(this);
         }
     }
 }

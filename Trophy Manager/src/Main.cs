@@ -8,21 +8,21 @@ using UnityModManagerNet;
 
 namespace TrophyManager
 {
-    public class Main
+    static class Main
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
         public static Settings settings;
 
-        public static string trophyFolderPath;
+        internal static string trophyFolderPath;
 
         static Trophy WhoTurnOffTheLight ;
-        //static Trophy DoYouLikeMyMuscle;
+        static Trophy DoYouLikeMyMuscle;
         static Trophy BOOMYouAreNowInvisible;
         static Trophy ForMURICA;
         static Trophy JesusWillBeProud;
         static Trophy Guerrilla;
-        //static Trophy DoorKill;
+        static Trophy DoorKill;
         static Trophy BeQuiet;
         static Trophy IsThisTheEnd;
         static Trophy IThoughtItWasTheEnd;
@@ -31,13 +31,14 @@ namespace TrophyManager
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
-            mod = modEntry;
 
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
             modEntry.OnUpdate = OnUpdate;
             settings = Settings.Load<Settings>(modEntry);
+
+            mod = modEntry;
 
             var harmony = new Harmony(modEntry.Info.Id);
             try
@@ -68,10 +69,12 @@ namespace TrophyManager
             IsThisTheEnd = new Trophy("Is This The End ?", 1, "Kill Satan.", trophyFolderPath + "IsThisTheEnd.png", trophyFolderPath + "m_IsThisTheEnd.png");
             IThoughtItWasTheEnd = new Trophy("I Thought It Was The End !", 10, "Kill 10 times Satan.", trophyFolderPath + "IThoughtItWasTheEnd.png", trophyFolderPath + "m_IThoughtItWasTheEnd.png");
             TheLastMeat = new Trophy("The Last Meat", 1, "Make the sandworm alien miniboss swallow a turkey.", trophyFolderPath + "TheLastMeat.png", trophyFolderPath + "m_TheLastMeat.png");
+            //DoorKill = new Trophy("D-D-D-DOOR KILL !", 1, "Kill Someone with a door", trophyFolderPath + "DoorKill.png", trophyFolderPath + "m_DoorKill.png");
+           // DoYouLikeMyMuscle = new Trophy("Do you like my muscle ?", 50, "Make 50 enemies blind.", trophyFolderPath + "DoYouLikeMyMuscle.png", trophyFolderPath + "m_DoYouLikeMyMuscle.png");
         }
         static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
         {
-            TrophyDico.CheckIsDone();
+            TrophyController.CheckIsDone();
             //Decapitation
             WhoTurnOffTheLight.UpdateProgression(settings.DecapitatedCount);
             //Kill
@@ -108,7 +111,7 @@ namespace TrophyManager
 
             try
             {       //Draw automatically all of the trophy
-                foreach(Trophy trophy in TrophyDico.AllTrophyList)
+                foreach(Trophy trophy in TrophyController.AllTrophyList)
                 {
                     GUILayout.BeginHorizontal("box");
                     GUILayout.Space(10);
@@ -137,14 +140,14 @@ namespace TrophyManager
             return true;
         }
 
-        public static void Log(object str)
+        internal static void Log(object str)
         {
             mod.Logger.Log(str.ToString());
         }
 
         private static void ResetTrophy() //Doesn't work anymore
         {
-            TrophyDico.Reset();
+            TrophyController.Reset();
             settings.DecapitatedCount = 0;
             settings.BlindCount = 0;
             settings.ExplodeCount = 0;
