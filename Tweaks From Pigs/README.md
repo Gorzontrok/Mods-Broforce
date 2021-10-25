@@ -3,6 +3,7 @@
    
  You need RocketLib.
 
+ Example of what is inside in the ['.img/'](.img/) folder.
  
  ## Mods Include :
  * Bros :
