@@ -1,3 +1,6 @@
+v1.1.5 : 
+ - Update to RocketLib last version
+
 v1.1.4 :
  - Finaly fix the bug where i need to rewatch all cutscene.
 
