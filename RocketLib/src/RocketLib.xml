@@ -4,6 +4,217 @@
         <name>RocketLib</name>
     </assembly>
     <members>
+        <member name="T:RocketLib0.BroforceMod">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.__mod">
+            <summary>
+            The Unity mod of the class.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.ID">
+            <summary>
+            The ID of the mod.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.Prefix">
+            <summary>
+            Normal prefix.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.PrefixException">
+            <summary>
+            Exception prefix.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.PrefixInformation">
+            <summary>
+            Information prefix.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.PrefixWarning">
+            <summary>
+            Warning prefix.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.PrefixError">
+            <summary>
+            Error Prefix.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.PrefixDebug">
+            <summary>
+            Debug prefix.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.UseLocalLog">
+            <summary>
+            Write log locally.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.UseDebugLog">
+            <summary>
+            Show debug log.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.TimeNow">
+            <summary>
+            the current time.
+            </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.HasStartLog">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:RocketLib0.BroforceMod.IsLoaded">
+            <summary>
+            Is the mod is successfuly load.
+            </summary>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.#ctor(UnityModManagerNet.UnityModManager.ModEntry,System.Boolean,System.Boolean)">
+            <summary>
+            Create the mod.
+            </summary>
+            <param name="mod">Mod given by UnityModManager</param>
+            <param name="_UseLocalLog">Write local log stored in the mod's folder.</param>
+            <param name="_UseDebugLog">Show debug log.</param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.OnUpdate">
+            <summary>
+            The Update function. Call it in Main.OnUpdate.
+            </summary>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.StartLog">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.Log(System.Collections.Generic.IEnumerable{System.Object},RLogType,System.Boolean)">
+            <summary>
+            Write Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="LogType"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.Log(System.Exception,System.Boolean)">
+            <summary>
+            Write Exception Log.
+            </summary>
+            <param name="exception"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.Log(System.String,System.Exception,System.Boolean)">
+            <summary>
+            Write Exception Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="exception"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.Log(System.Object,RLogType,System.Boolean)">
+            <summary>
+            Write log.
+            </summary>
+            <param name="Message"></param>
+            <param name="LogType"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.ExceptionLog(System.Exception,System.Boolean)">
+            <summary>
+            Write Exception Log.
+            </summary>
+            <param name="exception"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.ExceptionLog(System.String,System.Exception,System.Boolean)">
+            <summary>
+            Write Exception Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="exception"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.ExceptionLog(System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Write Exception Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.ExceptionLog(System.Object,System.Boolean)">
+            <summary>
+            Write Exception Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.WarningLog(System.Object,System.Boolean)">
+            <summary>
+            Write Warning Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.WarningLog(System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Write Warning Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.InformationLog(System.Object,System.Boolean)">
+            <summary>
+            Write information Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.InformationLog(System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Write information Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.ErrorLog(System.Object,System.Boolean)">
+            <summary>
+            Write Error Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.ErrorLog(System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Write Error Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.DebugLog(System.Object,RLogType)">
+            <summary>
+            Write log only in debug mode.
+            </summary>
+            <param name="Message"></param>
+            <param name="LogType"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.DebugLog(System.Collections.Generic.IEnumerable{System.Object},RLogType)">
+            <summary>
+            Write log only in debug mode.
+            </summary>
+            <param name="Message"></param>
+            <param name="LogType"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.WriteLogLocally(System.String,System.String)">
+            <summary>
+            Write log in the current mod folder.
+            </summary>
+            <param name="Message">Message to write in the log.</param>
+            <param name="prefix">The prefix</param>
+        </member>
         <member name="T:RocketLib0.IsThisMod">
             <summary>This constructor check if a mod is Here or is Enabled.
             <example>
@@ -24,6 +235,11 @@
             Return is the mod is Enabled, if the mod does not exist it will return false.
             </summary>
         </member>
+        <member name="P:RocketLib0.IsThisMod.ID">
+            <summary>
+            The ID of the given mod.
+            </summary>
+        </member>
         <member name="M:RocketLib0.IsThisMod.#ctor(System.String)">
             <summary>This constructor check if a mod is Here or is Enabled. Actually it don't work.
             <example>
@@ -35,11 +251,10 @@
             </summary>
             <param name="ID">Id of the mod.</param>
         </member>
-        <member name="M:RocketLib0.IsThisMod.HasHarmonyInstance(System.String,System.Reflection.MethodInfo,HarmonyLib.HarmonyPatchType)">
+        <member name="M:RocketLib0.IsThisMod.HasHarmonyInstance(System.Reflection.MethodInfo,HarmonyLib.HarmonyPatchType)">
             <summary>
             Check if their is Harmony Instance of XXXXXX function in the game.
             </summary>
-            <param name="HarmonyId">The ID of the mod</param>
             <param name="MethodInfo">Method Info</param>
             <param name="PatchType">The patch type</param>
             <returns>bool</returns>
@@ -140,6 +355,13 @@
             Clear the log on screen.
             </summary>
         </member>
+        <member name="M:RocketLib0.RocketLib.ScreenLogger.Log(System.Object,System.String)">
+            <summary>
+            Add log to the screen. (BroforceMod edition)
+            </summary>
+            <param name="str">Log Message</param>
+            <param name="prefix">Prefix of the log</param>
+        </member>
         <member name="M:RocketLib0.RocketLib.ScreenLogger.Log(System.Object,RLogType)">
             <summary>
             Add log to the screen.
@@ -149,7 +371,7 @@
         </member>
         <member name="F:RocketLib0.RocketLib.GameDataPath">
             <summary>
-            Give the '_Data' folder of the game. Be careful ! If the mod is not load, it will be empty !
+            Give the '_Data' folder of the game.
             </summary>
         </member>
         <member name="M:RocketLib0.RocketLib.CreateTexFromMat(System.String,UnityEngine.Material)">
@@ -157,7 +379,7 @@
             Create a Texture based on an existing material.
             </summary>
             <param name="ImagePath">Image path</param>
-            <param name="origMat">Original Materail</param>
+            <param name="origMat">Original Material</param>
             <returns>A Texture</returns>
         </member>
         <member name="M:RocketLib0.RocketLib.CreateTexFromSpriteSM(System.String,SpriteSM)">
@@ -242,10 +464,6 @@
             </summary>
         </member>
         <member name="F:RocketLibLoadMod.Settings.ShowManagerLog">
-            <summary>
-            </summary>
-        </member>
-        <member name="F:RocketLibLoadMod.Settings.DebugMode">
             <summary>
             </summary>
         </member>

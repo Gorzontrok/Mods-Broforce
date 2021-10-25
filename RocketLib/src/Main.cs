@@ -24,12 +24,15 @@ namespace RocketLibLoadMod
         /// </summary>
         public static Settings settings;
 
+        internal static BroforceMod bmod;
+
+        internal static List<BroforceMod> BMOD_List = new List<BroforceMod>();
+
         private static int TabSelected = 0;
 
         internal static Harmony harmony;
         static bool Load(UnityModManager.ModEntry modEntry)
         {
-            mod = modEntry;
 
             modEntry.OnToggle = OnToggle;
             modEntry.OnGUI = OnGui;
@@ -37,6 +40,8 @@ namespace RocketLibLoadMod
             modEntry.OnUpdate = OnUpdate;
 
             settings = Settings.Load<Settings>(modEntry);
+
+            mod = modEntry;
 
             harmony = new Harmony(modEntry.Info.Id);
             try
@@ -46,103 +51,110 @@ namespace RocketLibLoadMod
             }
             catch (Exception ex)
             {
-                mod.Logger.Log(ex.ToString());
+                Main.Log("Failed to Patch Harmony :\n" + ex, RLogType.Exception);
             }
 
             try
             {
                 RocketLib.Load();
+                bmod = new BroforceMod(mod);
             }
             catch (Exception ex)
             {
                 mod.Logger.Log("Error while Loading RocketLib :\n" + ex.ToString());
-
             }
+
             FirstLaunch();
+
             return true;
         }
-        private static string ScreenlogOptionBtn = "Show ScreenLog option";
+
         static void OnGui(UnityModManager.ModEntry modEntry)
         {
             GUIStyle testBtnStyle = new GUIStyle("button");
             testBtnStyle.normal.textColor = Color.yellow;
-          /*  if (GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150)}))
-            {
-                try
-                {
-                    foreach (HeroType d in PlayerProgress.Instance.yetToBePlayedUnlockedHeroes) { Main.Log(d.ToString()); }
-                }
-                catch (Exception ex)
-                {
-                    Main.Log(ex);
+            /*if (GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150)}))
+              {
+                  try
+                  {
+                    bmod.Log("test123");
+                  }
+                  catch (Exception ex)
+                  {
+                      Main.Log(ex, RLogType.Exception);
 
-                }
-            }*/
+                  }
+              }*/
 
             var TabStyle = new GUIStyle("button");
 
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Main", TabStyle, GUILayout.Width(100))) TabSelected = 0;
+            if (GUILayout.Button("Main", TabStyle, GUILayout.Width(100))) TabSelected = 0;
             GUILayout.Space(20);
-            if(GUILayout.Button("Log", TabStyle, GUILayout.Width(100))) TabSelected = 1;
+            if (settings.OnScreenLog)
+            {
+                if (GUILayout.Button("Screen Logger", TabStyle, GUILayout.Width(110))) TabSelected = 1;
+                GUILayout.Space(20);
+            }
+            if (GUILayout.Button("Log", TabStyle, GUILayout.Width(100))) TabSelected = -1;
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
             if (TabSelected == 0)
             {
+                GUILayout.Space(30);
                 MainGUI();
             }
-            else if (TabSelected == 1)
+            else if (TabSelected == 1 && settings.OnScreenLog)
             {
+                GUILayout.Space(30);
+                ScreenLoggerGUI();
+            }
+            else if (TabSelected == -1)
+            {
+                GUILayout.Space(30);
                 LogGUI();
             }
-
         }
 
         private static void MainGUI()
         {
             GUILayout.BeginHorizontal();
-            settings.DebugMode = GUILayout.Toggle(settings.DebugMode, "Enable Debug log");
+            if (GUILayout.Button("Show current unlock intervals")) RocketLib._HeroUnlockController.ShowHeroUnlockIntervals();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Show the current bros order in log")) RocketLib._HeroUnlockController.ShowHeroUnlockIntervals();
             GUILayout.EndHorizontal();
+            settings.OnScreenLog = GUILayout.Toggle(settings.OnScreenLog, "Enable OnScreenLog");
+        }
+
+        private static void ScreenLoggerGUI()
+        {
+            Rect ToolTipRect = GUILayoutUtility.GetLastRect();
+            GUILayout.BeginVertical("box");
 
             GUILayout.BeginHorizontal();
-            settings.OnScreenLog = GUILayout.Toggle(settings.OnScreenLog, "Enable OnScreenLog");
-            var ScreenlogOptionBtnStyle = new GUIStyle("button");
-            ScreenlogOptionBtnStyle.fontStyle = FontStyle.Bold;
-            ScreenlogOptionBtnStyle.fontSize = 13;
-            ScreenlogOptionBtnStyle.normal.textColor = Color.white;
-            settings.ShowScreenLogOption = GUILayout.Toggle(settings.ShowScreenLogOption, ScreenlogOptionBtn, ScreenlogOptionBtnStyle);
+            if (GUILayout.Button("Clear Log on screen", GUILayout.Width(150)))
+            {
+                RocketLib.ScreenLogger.Clear();
+            }
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            if (settings.ShowScreenLogOption)
-            {
-                GUILayout.BeginHorizontal("box");
-                GUILayout.BeginVertical();
-                if (GUILayout.Button("Clear Log on screen", GUILayout.Width(150)))
-                {
-                    RocketLib.ScreenLogger.Clear();
-                }
-                settings.ShowManagerLog = GUILayout.Toggle(settings.ShowManagerLog, new GUIContent("Show Unity Mod Manager Log"/*, "Don't recommend to do it, because you can have double Log."*/));
-                Rect lastRect = GUILayoutUtility.GetLastRect();
-                lastRect.y += 20;
-                lastRect.width += 300;
-                GUILayout.Label(GUI.tooltip);
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Time before log disapear : " + settings.logTimer.ToString(), GUILayout.ExpandWidth(false));
-                settings.logTimer = (int)GUILayout.HorizontalScrollbar(settings.logTimer, 1f, 1f, 11f, GUILayout.MaxWidth(200));
-                GUILayout.EndHorizontal();
 
-                GUILayout.EndVertical();
-                GUILayout.EndHorizontal();
-            }
+            bmod.UseDebugLog = GUILayout.Toggle(bmod.UseDebugLog, "Enable Debug log");
+            settings.ShowManagerLog = GUILayout.Toggle(settings.ShowManagerLog, new GUIContent("Show Unity Mod Manager Log"));
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Time before log disapear : " + settings.logTimer.ToString(), GUILayout.ExpandWidth(false));
+            settings.logTimer = (int)GUILayout.HorizontalScrollbar(settings.logTimer, 1f, 1f, 11f, GUILayout.MaxWidth(200));
+            GUILayout.EndHorizontal();
+
+            GUI.Label(ToolTipRect, GUI.tooltip);
+            GUILayout.EndVertical();
         }
 
         private static void LogGUI()
         {
             string FullLog = string.Empty;
-            foreach(string log in RocketLib.ScreenLogger.FullLogList)
+            foreach (string log in RocketLib.ScreenLogger.FullLogList)
             {
                 FullLog += log + "\n";
             }
@@ -153,13 +165,16 @@ namespace RocketLibLoadMod
         {
             settings.Save(modEntry);
         }
+
         static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
         {
             if (!LevelEditorGUI.IsActive) ShowMouseController.ShowMouse = false;
             Cursor.lockState = CursorLockMode.None;
-            if (settings.ShowScreenLogOption) ScreenlogOptionBtn = "Hide ScreenLog Option";
-            else ScreenlogOptionBtn = "Show ScreenLog Option";
 
+            foreach(BroforceMod mod in BMOD_List)
+            {
+                mod.OnUpdate();
+            }
         }
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
@@ -169,33 +184,24 @@ namespace RocketLibLoadMod
 
         internal static void Log(object str, RLogType type = RLogType.Log)
         {
-            if (!RocketLib.ScreenLogger.isSuccessfullyLoad) mod.Logger.Log(str.ToString());
-            else
-            {
-                RocketLib.ScreenLogger.ModId = "RocketLib";
-                RocketLib.ScreenLogger.Log(str, type);
-            }
+            mod.Logger.Log(str.ToString());
         }
 
         internal static void Dbg(object str, RLogType type = RLogType.Information)
         {
-            if (settings.DebugMode)
-            {
-                string prefixDbg = " [RocketLib DEBUG] : ";
-                Main.Log(prefixDbg + str, type);
-            }
+            bmod.DebugLog(str, type);
         }
 
         static void FirstLaunch()
         {
-            if(!settings.HaveItFirstLaunch)
+            if (!settings.HaveItFirstLaunch)
             {
                 settings.logTimer = 3;
                 settings.OnScreenLog = true;
-                settings.DebugMode = false;
-                settings.ShowManagerLog = false;
+                settings.ShowManagerLog = true;
 
                 settings.HaveItFirstLaunch = true;
+                bmod.InformationLog("Finish Rocketlib first launch.");
                 OnSaveGUI(mod);
             }
         }
@@ -216,9 +222,6 @@ namespace RocketLibLoadMod
         /// <summary>
         /// </summary>
         public bool ShowManagerLog;
-        /// <summary>
-        /// </summary>
-        public bool DebugMode;
         /// <summary>
         /// </summary>
         public bool HaveItFirstLaunch;

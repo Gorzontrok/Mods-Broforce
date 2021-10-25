@@ -26,7 +26,7 @@ namespace RocketLib0
         {
             get
             {
-                return GetHere();
+                return this.GetHere();
             }
         }
 
@@ -37,7 +37,18 @@ namespace RocketLib0
         {
             get
             {
-                return GetEnabled();
+                return this.GetEnabled();
+            }
+        }
+
+        /// <summary>
+        /// The ID of the given mod.
+        /// </summary>
+        public string ID
+        {
+            get
+            {
+                return this._ID;
             }
         }
 
@@ -79,7 +90,7 @@ namespace RocketLib0
             file.Load(xmlFilePath); // Initialize the XML Document
 
             XmlNode node = file.SelectSingleNode("//ModParams");// Get the group <ModParams>
-            foreach (XmlNode mods in node) // Get each attribute of each <Mod Id="" Enabled="" />
+            foreach (XmlNode mods in node) // Get <Mod Id="" /> atribute
             {
                 if (mods.Attributes["Id"].Value == this._ID)
                 {
@@ -92,11 +103,10 @@ namespace RocketLib0
         /// <summary>
         /// Check if their is Harmony Instance of XXXXXX function in the game.
         /// </summary>
-        /// <param name="HarmonyId">The ID of the mod</param>
         /// <param name="MethodInfo">Method Info</param>
         /// <param name="PatchType">The patch type</param>
         /// <returns>bool</returns>
-        public static bool HasHarmonyInstance(string HarmonyId, MethodInfo MethodInfo, HarmonyPatchType PatchType)
+        public bool HasHarmonyInstance(MethodInfo MethodInfo, HarmonyPatchType PatchType)
         {
             // https://harmony.pardeike.net/articles/basics.html#checking-for-existing-patches
 
@@ -109,9 +119,9 @@ namespace RocketLib0
             {
                 foreach (var patch in patches.Prefixes)
                 {
-                    if (patch.owner == HarmonyId)
+                    if (patch.owner == this.ID)
                     {
-                        Main.Dbg(HarmonyId + " here");
+                        Main.Dbg(this.ID + " here");
                         return true;
                     }
                 }
@@ -120,9 +130,9 @@ namespace RocketLib0
             {
                 foreach (var patch in patches.Postfixes)
                 {
-                    if (patch.owner == HarmonyId)
+                    if (patch.owner == this.ID)
                     {
-                        Main.Dbg(HarmonyId + " here");
+                        Main.Dbg(this.ID + " here");
                         return true;
                     }
                 }
@@ -131,9 +141,9 @@ namespace RocketLib0
             {
                 foreach (var patch in patches.Transpilers)
                 {
-                    if (patch.owner == HarmonyId)
+                    if (patch.owner == this.ID)
                     {
-                        Main.Dbg(HarmonyId + " here");
+                        Main.Dbg(this.ID + " here");
                         return true;
                     }
                 }
@@ -142,9 +152,9 @@ namespace RocketLib0
             {
                 foreach (var patch in patches.Finalizers)
                 {
-                    if (patch.owner == HarmonyId)
+                    if (patch.owner == this.ID)
                     {
-                        Main.Dbg(HarmonyId + " here");
+                        Main.Dbg(this.ID + " here");
                         return true;
                     }
                 }

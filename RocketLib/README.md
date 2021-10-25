@@ -2,7 +2,7 @@
  This is mod who comes with some useful things.  
 
  **What's Inside :**    
- * OnScreenLog with color and times (F2 to clear).
+ * OnScreenLog with color and times (F3 to clear).
  * Fix for avoiding the mod manager for being destroy
  * Fix the bug where the cursor in LevelEditor was stuck.
  * Function that use often.

@@ -14,11 +14,9 @@ namespace RocketLib0
     public partial class RocketLib
     {
         /// <summary>
-        /// Give the '_Data' folder of the game. Be careful ! If the mod is not load, it will be empty !
+        /// Give the '_Data' folder of the game.
         /// </summary>
-        public static string GameDataPath = "/Broforce_beta_Data";
-
-        internal static string GameDirectory = Directory.GetCurrentDirectory();
+        public static string GameDataPath = Application.dataPath;
 
         internal static void Load() // Function for load all of function we needed.
         {
@@ -29,7 +27,7 @@ namespace RocketLib0
             }
             catch(Exception ex)
             {
-                Main.Log("Failed to load RocketLib !\n" + ex);
+                Main.Log("Failed to load RocketLib !" + ex);
             }
         }
 
@@ -37,7 +35,7 @@ namespace RocketLib0
         /// Create a Texture based on an existing material.
         /// </summary>
         /// <param name="ImagePath">Image path</param>
-        /// <param name="origMat">Original Materail</param>
+        /// <param name="origMat">Original Material</param>
         /// <returns>A Texture</returns>
         public static Texture2D CreateTexFromMat(string ImagePath, Material origMat)
         {

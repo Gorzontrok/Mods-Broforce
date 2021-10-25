@@ -47,23 +47,24 @@ namespace RocketLib0
 
             internal static int nbrUmmLog = 0;
 
-            private static string LogFilePath = Main.mod.Path + "\\Log.txt";
+            private static string LogFilePath = Main.mod.Path + "Logs\\";
 
             private static bool getFirstLaunch;
             internal static List<string> StartLog = new List<string>();
-            private static float timeFirstLaunch = 5;
+            private static float timeFirstLaunch = 6;
 
             internal static bool Load()
             {
                 try
                 {
                     new GameObject(typeof(ScreenLogger).FullName, typeof(ScreenLogger));
-                    AddStartLog("RocketLib ScreenLogger successfully Loaded !\n");
+                    AddStartLog("RocketLib ScreenLogger successfully Loaded !");
+                    _isSuccessfullyLoad = true;
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    Main.Log(ex);
+                    Main.Log(ex, RLogType.Exception);
                 }
 
                 return false;
@@ -71,9 +72,10 @@ namespace RocketLib0
 
             internal static void AddStartLog(string str)
             {
-                str = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + str;
-                StartLog.Add(str);
-                logListForTxt.Add(str);
+                string nstr = "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + str;
+                StartLog.Add("\n" + nstr);
+                logListForTxt.Add(nstr);
+                FullLogList.Add(nstr);
             }
 
             /// <summary>
@@ -85,15 +87,21 @@ namespace RocketLib0
                 StartLog.Clear();
                 getFirstLaunch = true;
             }
-            /*
+
             /// <summary>
-            /// Add log to the screen.
+            /// Add log to the screen. (BroforceMod edition)
             /// </summary>
             /// <param name="str">Log Message</param>
-            public static void Log(object str)
+            /// <param name="prefix">Prefix of the log</param>
+            public static void Log(object str, string prefix)
             {
-                Log(str, RLogType.Log);
-            }*/
+                if (!isSuccessfullyLoad) return;
+                string newString = $"{prefix} : " + str.ToString();
+
+                logList.Add("\n" + newString);
+                logListForTxt.Add(newString);
+                FullLogList.Add(newString);
+            }
 
             /// <summary>
             /// Add log to the screen.
@@ -107,7 +115,7 @@ namespace RocketLib0
                 string newString = $"[{dateTimeNow}] [{ModId}] [" + type.ToString() + "] : " + str.ToString();
 
                 if (type == RLogType.Log)
-                    newString = $"[{ModId}] " + (string)str;
+                    newString = $"[{dateTimeNow}] [{ModId}] " + (string)str;
 
                 logList.Add("\n" + newString);
                 logListForTxt.Add(newString);
@@ -116,13 +124,13 @@ namespace RocketLib0
 
             void OnDestroy()
             {
-                Main.Log("ScreenLogger DESTROY");
+                Main.Log("ScreenLogger DESTROY", RLogType.Error);
             }
 
             void Awake()
             {
                 DontDestroyOnLoad(this);
-                ClearTxtLog();
+                //ClearTxtLog();
             }
 
             void Start()
@@ -133,6 +141,9 @@ namespace RocketLib0
                 Log("TEST ERROR", RLogType.Error);
                 Log("TEST Exception", RLogType.Exception);
                 Log("TEST Information", RLogType.Information);*/
+
+                string thing = new string('=', 24);
+                logListForTxt.Add(thing + DateTime.Now.ToString("HH:mm:ss") + thing);
             }
 
             void Update()
@@ -235,13 +246,21 @@ namespace RocketLib0
             {
                 try
                 {
-                    if (!File.Exists(LogFilePath))
+                    if(!Directory.Exists(LogFilePath))
                     {
-                        using (File.Create(LogFilePath)); // Ignore warning.
+                        Directory.CreateDirectory(LogFilePath); // Ignore warning.
+                    }
+
+                    DateTime date = DateTime.UtcNow.Date;
+                    string FilePathToday = Path.Combine(LogFilePath, date.ToString("yyyy'-'MM'-'dd") + ".txt");
+
+                    if (!File.Exists(FilePathToday))
+                    {
+                        using (File.Create(FilePathToday)); // Ignore warning.
                     }
                     if (logListForTxt.Count > 0)
                     {
-                        using (StreamWriter writer = File.AppendText(LogFilePath))
+                        using (StreamWriter writer = File.AppendText(FilePathToday))
                         {
                             foreach (var str in logListForTxt)
                             {
@@ -253,9 +272,10 @@ namespace RocketLib0
                 }
                 catch(Exception ex)
                 {
-                    Main.Log(ex);
+                    Main.bmod.ExceptionLog(ex);
                 }
             }
+
             void ClearTxtLog()
             {
                 if (File.Exists(LogFilePath))
@@ -266,7 +286,7 @@ namespace RocketLib0
                     }
                     catch (Exception ex)
                     {
-                        Main.Log(ex);
+                        Main.Log(ex, RLogType.Exception);
                     }
                 }
             }

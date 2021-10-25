@@ -1,3 +1,11 @@
+v0.6.5 :
+ - Fix GameDataPath.
+ - Make 'IsThisMod' class showing ID
+ - Most of variables are now read only
+ - Log are now permanent and are are stored in 'Logs' folder in mod's folder
+ - Add 'BroforceMod' class, which is usefull for... log... for the moment.
+ - Remade the GUI
+
 v0.6.4 :
  - Fix 'IsThisMod' class
  - Add list of all pocketted special ammo in _HeroUnlockController
