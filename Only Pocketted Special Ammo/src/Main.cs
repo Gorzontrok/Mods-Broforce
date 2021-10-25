@@ -14,6 +14,8 @@ namespace OnlyPockettedSpecialAmmo
         public static bool enabled;
         public static Settings settings;
 
+        internal static BroforceMod bmod;
+
         private static System.Random rnd = new System.Random();
 
         static List<PockettedSpecialAmmoType> pockettedList = new List<PockettedSpecialAmmoType>();
@@ -36,15 +38,19 @@ namespace OnlyPockettedSpecialAmmo
             }
             catch (Exception ex)
             {
-               Main.Log("Failed to Patch Harmony !\n" + ex.ToString(), RLogType.Exception);
+                mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
 
             try
             {
                 pockettedList.AddRange(RocketLib._HeroUnlockController.ListPockettedSpecialAmmoTypes);
                 pockettedList.Remove(PockettedSpecialAmmoType.Standard);
-            }catch(Exception ex) { Main.Log("Failed while modifying the pockettedList !\n" + ex, RLogType.Exception); }
+            }catch(Exception ex) { mod.Logger.Log("Failed while modifying the pockettedList !\n" + ex); }
 
+            try
+            {
+                bmod = new BroforceMod(mod, true);
+            }catch(Exception ex) { mod.Logger.Log("Failed to create Broforce Mod\n" + ex.ToString()); }
             return true;
         }
         static void OnGUI(UnityModManager.ModEntry modEntry)
@@ -58,15 +64,9 @@ namespace OnlyPockettedSpecialAmmo
             return true;
         }
 
-        public static void Log(object str, RLogType type = RLogType.Log)
+        internal static void Log(object str, RLogType type = RLogType.Log)
         {
-            if(RocketLib.ScreenLogger.isSuccessfullyLoad)
-            {
-                RocketLib.ScreenLogger.ModId = mod.Info.Id;
-                RocketLib.ScreenLogger.Log(str, type);
-            }
-            else
-                mod.Logger.Log(str.ToString());
+            bmod.Log(str, type);
         }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
@@ -91,7 +91,7 @@ namespace OnlyPockettedSpecialAmmo
     }
 
     [HarmonyPatch(typeof(BroBase), "Start")]
-    static class SetSpecialAmmo_Patch
+    class SetSpecialAmmo_Patch
     {
         static void Postfix(BroBase __instance)
         {
@@ -114,7 +114,7 @@ namespace OnlyPockettedSpecialAmmo
     }
 
     [HarmonyPatch(typeof(TestVanDammeAnim), "ResetSpecialAmmo")]
-    static class AddPockettedSpecialOnAmmoCrate_Patch
+    class AddPockettedSpecialOnAmmoCrate_Patch
     {
         static void Postfix(TestVanDammeAnim __instance)
         {
@@ -131,7 +131,7 @@ namespace OnlyPockettedSpecialAmmo
 
 
     [HarmonyPatch(typeof(TheBrolander), "ResetSpecialAmmo")]
-    static class AddPockettedSpecialOnAmmoCrateFor_TheBrolander_Patch
+    class AddPockettedSpecialOnAmmoCrateFor_TheBrolander_Patch
     {
         static void Postfix(TheBrolander __instance)
         {
@@ -147,7 +147,7 @@ namespace OnlyPockettedSpecialAmmo
     }
 
     [HarmonyPatch(typeof(TheBrolander), "Start")]
-    static class SetSpecialAmmoFor_TheBrolander_Patch
+    class SetSpecialAmmoFor_TheBrolander_Patch
     {
         static void Postfix(TheBrolander __instance)
         {
