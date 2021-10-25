@@ -1,20 +1,20 @@
+90% OF THE MODIFICATION CAN BE DISABLE/ENABLED
+
 - General Bro fix/improvement :
 	- Fix some pushing animation, block some of them for avoiding bug.
 	- Fix indiana brones achievement
 	- Expendabros can't flex, avoid them to become invisible
 	- Mech drop grenade does pink fumigene.
 	- Fix hiding in grass
-	-- OPTIONAL :
-		- All bro can use pushing animation
-		- All bro can use new ladder climbing animation
-		- T-Bag
+	- All bro can use pushing animation
+	- All bro can use new ladder climbing animation
+	- T-Bag
 
 - Specific Bro :
  	- 007 :
 	 	- can shoot teargas at his feet
 		- If he his drunk, he is less accurate
-		-- OPTIONAL :
-			- 5th special
+		- 5th special
 	- Broniversal Soldier :
 		- need to wait ~0.5sec before reuse special
 		- Auto-revive
@@ -29,34 +29,33 @@
 		
 - Ennemies :
 	- They are all can be teargased
-	-- OPTIONAL :
-		- Faster when zombie
+	- Faster when zombie
 
 - Hero Unlock Controller :
-	-- OPTIONAL :
-		- You can spawn with Expendabros
-		- can spawn with brondefly
+	- You can spawn with Expendabros
+	- can spawn with brondefly
 
 - HUD :
 	- The 5th bond's special have an icon
-	-- OPTIONAL :
-		- Facehugger on HUD
-		- Skeleton dead face
+	- Facehugger on HUD
+	- Skeleton dead face
+
 - Map :
-	-- OPTIONAL :
-		- Acid barrel can be enabled and you can change spawn rate
-		- Choose the arcade campaign.
+	- Acid barrel can be enabled and you can change spawn rate
+	- Choose the arcade campaign.
+
+- Menu :
+	- language Menu
 
 - Pig :
 	- rotten pig have 1/3 chance to spawn.
 	- In hell, pig have terrorist skin
-	-- OPTIONAL :
-		- Pig always have the terrorist skin.
+	- Pig always have the terrorist skin.
 
 - Other :
  	- Fix the cursor for being block in Level Editor
 	- Enabled use the custom arrow from the editor
 	- vSync is turn on when exit App
 	- Unpatch mod that change hero unlock intervals.
-	-- OPTIONAL :
-		- Custom max framerate
+	- Custom max framerate
+	- delete save slot
