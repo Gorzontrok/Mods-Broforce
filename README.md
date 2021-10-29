@@ -21,6 +21,7 @@
  * Other :
     * [RocketLib](RocketLib/)
     * [Trophy Manager](Trophy%20Manager/)
+    * [Spooktober](Spooktober/)
   * Special :
     * [Only Pocketted Special Ammo](Only%20Pocketted%20Special%20Ammo/)
 
