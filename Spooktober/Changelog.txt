@@ -1,2 +1,8 @@
+v1.0.1 :
+ - Add Hell Mode.
+ - In Hell Mode, you have 9.3% of chance that satan miniboss spawn at end of the level.
+ - In Hell Mode, ennemy are randomize and come from hell.
+ - Add/Fix the avatar of Brofesional, Bro Lee and Brove Heart.
+
 v1.0.0 :
- - Intial release
+ - Intial Release

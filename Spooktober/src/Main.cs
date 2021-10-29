@@ -17,6 +17,8 @@ namespace SpooktoberMod
 
         internal static BroforceMod bmod;
 
+        internal static System.Random rand = new System.Random();
+
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             modEntry.OnGUI = OnGUI;
@@ -43,6 +45,7 @@ namespace SpooktoberMod
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
+            settings.HellMode = GUILayout.Toggle(settings.HellMode, "Hell Mode");
         }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
@@ -56,48 +59,20 @@ namespace SpooktoberMod
             return true;
         }
 
-        public static void Log(object str)
+        internal static void Log(object str)
         {
             mod.Logger.Log(str.ToString());
         }
-        public static void Log(IEnumerable<object> str)
-        {
-            mod.Logger.Log(str.ToString());
-        }
-
     }
 
     public class Settings : UnityModManager.ModSettings
     {
-
+        public bool HellMode;
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
         }
-
     }
-
-   /* [HarmonyPatch(typeof(PlayerHUD), "Setup")]
-    static class SetSpooktoberAvatar_Patch
-    {
-        static void Postfix(PlayerHUD __instance)
-        {
-            if (!Main.enabled)
-                return;
-            try
-            {
-                Traverse inst = Traverse.Create(__instance);
-                SpriteSM sprite = __instance.avatar.gameObject.GetComponent<SpriteSM>();
-                sprite.meshRender.sharedMaterial.SetTexture("_MainTex", RocketLib.CreateTexFromSpriteSM(Main.mod.Path + "Spooktober_avatar.png", sprite));
-
-                /* __instance.avatar = sprite;
-                 __instance.secondAvatar = sprite;
-                Traverse.Create(__instance).Field("avatar").SetValue(sprite); //Change the avatar to the skeleton
-                Traverse.Create(__instance).Field("secondAvatar").SetValue(sprite); //Change the second avatar to the skeleton
-            }
-            catch(Exception ex) { Main.Log(ex); }
-        }
-    }*/
 
     [HarmonyPatch(typeof(PlayerHUD), "SwitchAvatarAndGrenadeMaterial")]
     static class SwitchSpooktoberAvatar_Patch
@@ -106,19 +81,21 @@ namespace SpooktoberMod
         {
             if (!Main.enabled)
                 return;
-            Traverse inst = Traverse.Create(__instance);
             try
             {
                 SpriteSM sprite = __instance.avatar.gameObject.GetComponent<SpriteSM>();
-                sprite.meshRender.sharedMaterial.SetTexture("_MainTex", RocketLib.CreateTexFromSpriteSM(Path.Combine(Main.mod.Path, "Spooktober_avatar.png"), sprite));
+                string FileToLoad = string.Empty;
+                if (__instance.heroType == HeroType.BroLee) FileToLoad = "Spooktober_avatar_long2.png";
+                else if (__instance.heroType == HeroType.BroveHeart) FileToLoad = "Spooktober_avatar_long.png";
+                else if (__instance.heroType == HeroType.TheBrofessional) FileToLoad = "Spooktober_avatar_longer.png";
+                else FileToLoad = "Spooktober_avatar.png";
+                sprite.meshRender.sharedMaterial.SetTexture("_MainTex", RocketLib.CreateTexFromSpriteSM(Path.Combine(Main.mod.Path, FileToLoad), sprite));
 
                  __instance.avatar = sprite;
                  __instance.secondAvatar = sprite;
-                /* Traverse.Create(__instance).Field("avatar").SetValue(sprite); //Change the avatar to the skeleton
-                 Traverse.Create(__instance).Field("secondAvatar").SetValue(sprite); //Change the second avatar to the skeleton*/
                 __instance.Show();
             }
-            catch (Exception ex) { Main.Log(ex); }
+            catch (Exception ex) { Main.bmod.Log(ex); }
         }
     }
     // MAP
@@ -134,6 +111,7 @@ namespace SpooktoberMod
             __instance.heroSpawnMode = HeroSpawnMode.Portal;
             __instance.mineFieldSpawnProbability = 1f;
 
+
             int i = 0;
             try
             {
@@ -143,48 +121,87 @@ namespace SpooktoberMod
                     if (dinfo.type == DoodadType.PureEvil)
                     {
                         DoodadInfoList[i].variation = 0;
+
+                        if(Main.settings.HellMode && Main.rand.NextDouble() < 0.093)
+                        {
+                            DoodadInfoList[i].type = DoodadType.HellBoss;
+                        }
                     }
                     else if (dinfo.type == DoodadType.Mook)
                     {
-                        if(dinfo.variation == 0)
+                        if(!Main.settings.HellMode)
                         {
-                            DoodadInfoList[i].type = DoodadType.HellEnemy;
-                            DoodadInfoList[i].variation = 1;
+                            if (dinfo.variation == 0)
+                            {
+                                DoodadInfoList[i].type = DoodadType.HellEnemy;
+                                DoodadInfoList[i].variation = 1;
+                            }
+                            else if (dinfo.variation == 1)
+                            {
+                                DoodadInfoList[i].type = DoodadType.HellEnemy;
+                                DoodadInfoList[i].variation = 5;
+                            }
+                            else if (dinfo.variation == 3)
+                            {
+                                DoodadInfoList[i].type = DoodadType.HellEnemy;
+                                DoodadInfoList[i].variation = 6;
+                            }
+                            else if (dinfo.variation == 5)
+                            {
+                                DoodadInfoList[i].type = DoodadType.HellEnemy;
+                                DoodadInfoList[i].variation = 0;
+                            }
+                            else if (dinfo.variation == 6)
+                            {
+                                DoodadInfoList[i].type = DoodadType.HellEnemy;
+                                DoodadInfoList[i].variation = 11;
+                            }
+                            else if (dinfo.variation == 7)
+                            {
+                                DoodadInfoList[i].type = DoodadType.HellEnemy;
+                                DoodadInfoList[i].variation = 3;
+                            }
+                            else if (dinfo.variation == 8)
+                            {
+                                DoodadInfoList[i].type = DoodadType.HellEnemy;
+                                DoodadInfoList[i].variation = 4;
+                            }
+                            else if (dinfo.variation == 10)
+                            {
+                                DoodadInfoList[i].type = DoodadType.HellEnemy;
+                                DoodadInfoList[i].variation = 8;
+                            }
                         }
-                        else if(dinfo.variation == 1)
+                        else
                         {
                             DoodadInfoList[i].type = DoodadType.HellEnemy;
-                            DoodadInfoList[i].variation = 5;
-                        }
-                        else if (dinfo.variation == 3)
-                        {
-                            DoodadInfoList[i].type = DoodadType.HellEnemy;
-                            DoodadInfoList[i].variation = 6;
-                        }
-                        else if (dinfo.variation == 5)
-                        {
-                            DoodadInfoList[i].type = DoodadType.HellEnemy;
-                            DoodadInfoList[i].variation = 0;
-                        }
-                        else if (dinfo.variation == 6)
-                        {
-                            DoodadInfoList[i].type = DoodadType.HellEnemy;
-                            DoodadInfoList[i].variation = 11;
-                        }
-                        else if (dinfo.variation == 7)
-                        {
-                            DoodadInfoList[i].type = DoodadType.HellEnemy;
-                            DoodadInfoList[i].variation = 3;
-                        }
-                        else if (dinfo.variation == 8)
-                        {
-                            DoodadInfoList[i].type = DoodadType.HellEnemy;
-                            DoodadInfoList[i].variation = 4;
-                        }
-                        else if (dinfo.variation == 10)
-                        {
-                            DoodadInfoList[i].type = DoodadType.HellEnemy;
-                            DoodadInfoList[i].variation = 8;
+                            switch(dinfo.variation)
+                            {
+                                case 0:
+                                    DoodadInfoList[i].variation = 3;
+                                    break;
+                                case 1:
+                                        DoodadInfoList[i].variation = 5;
+                                    break;
+                                case 3:
+                                    DoodadInfoList[i].variation = 6;
+                                    break;
+                                case 5:
+                                    DoodadInfoList[i].variation = 0;
+                                    break;
+                                case 6:
+                                    DoodadInfoList[i].variation = 11;
+                                    break;
+                                case 7:
+                                    DoodadInfoList[i].variation = 3;
+                                    break;
+                                case 8:
+                                    DoodadInfoList[i].variation = 4;
+                                    break;
+                                case 10:
+                                    DoodadInfoList[i].variation = 8;
+                                    break;
+                            }
                         }
                     }
                     i++;
@@ -195,7 +212,7 @@ namespace SpooktoberMod
         }
     }
     [HarmonyPatch(typeof(TestVanDammeAnim), "GetFootPoofColor")]
-    class e
+    class ChangeFootColor_Patch
     {
         static bool Prefix(TestVanDammeAnim __instance, ref BloodColor __result)
         {
@@ -203,5 +220,4 @@ namespace SpooktoberMod
             return false;
         }
     }
-
 }
