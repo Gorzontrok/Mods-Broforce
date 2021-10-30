@@ -6,7 +6,7 @@
  * The latest Release it's in the `/Release` folder.
 
 ## Know Issue :
- * None
+ * When re-spawning on a super checkpoint, the theme is the original one.
 
  ## Incompatible :
  * None

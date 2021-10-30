@@ -1,3 +1,7 @@
+v1.0.2 :
+ - Remove SatanMiniboss
+ - Issue : when respawn from a Super checkpoint, the theme is different
+
 v1.0.1 :
  - Add Hell Mode.
  - In Hell Mode, you have 9.3% of chance that satan miniboss spawn at end of the level.

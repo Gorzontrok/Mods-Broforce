@@ -38,7 +38,7 @@ namespace SpooktoberMod
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
 
-            bmod = new BroforceMod(mod, _UseLocalLog: true); ;
+            bmod = new BroforceMod(mod); ;
 
             return true;
         }
@@ -122,10 +122,10 @@ namespace SpooktoberMod
                     {
                         DoodadInfoList[i].variation = 0;
 
-                        if(Main.settings.HellMode && Main.rand.NextDouble() < 0.093)
+                       /* if(Main.settings.HellMode && Main.rand.NextDouble() < 0.093)
                         {
                             DoodadInfoList[i].type = DoodadType.HellBoss;
-                        }
+                        }*/
                     }
                     else if (dinfo.type == DoodadType.Mook)
                     {
