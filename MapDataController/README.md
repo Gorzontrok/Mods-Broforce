@@ -12,3 +12,7 @@
 
  ## Incompatible :
  * None
+
+ ## Showcase
+ !(GUI)[.img/GUI.jpg]
+ !(Example)[.img/Example.jpg]
