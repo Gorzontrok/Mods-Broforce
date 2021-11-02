@@ -14,5 +14,5 @@
  * None
 
  ## Showcase
- !(GUI)[.img/GUI.jpg]
- !(Example)[.img/Example.jpg]
+ ![GUI](.img/GUI.jpg)
+ ![Example](.img/Example.jpg)
