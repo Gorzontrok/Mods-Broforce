@@ -8,6 +8,7 @@
 ## Know Issue :
  * Loading screen is longer.
  * The chance of breaking the map is high.
+ * Sometimes the check in the GUI disappear
 
  ## Incompatible :
  * None
