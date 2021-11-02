@@ -100,67 +100,89 @@ namespace RocketLib0
             return false;
         }
 
-        /// <summary>
-        /// Check if their is Harmony Instance of XXXXXX function in the game.
-        /// </summary>
-        /// <param name="MethodInfo">Method Info</param>
-        /// <param name="PatchType">The patch type</param>
-        /// <returns>bool</returns>
-        public bool HasHarmonyInstance(MethodInfo MethodInfo, HarmonyPatchType PatchType)
+        private bool HasHarmonyInstance(MethodInfo MethodInfo, HarmonyPatchType PatchType)
         {
             // https://harmony.pardeike.net/articles/basics.html#checking-for-existing-patches
+            return false;
+        }
 
-            // retrieve all patches
+        /// <summary>
+        /// Check if the mod has prefix patch of a given method.
+        /// </summary>
+        /// <param name="MethodInfo"></param>
+        /// <returns></returns>
+        public bool HasHarmonyPrefixPatch(MethodInfo MethodInfo)
+        {
             var patches = Harmony.GetPatchInfo(MethodInfo);
             if (patches is null) return false; // not patched
 
-            // get info about all Prefixes/Postfixes/Transpilers/Finalizer
-            if (PatchType == HarmonyPatchType.Prefix)
+            foreach (var patch in patches.Prefixes)
             {
-                foreach (var patch in patches.Prefixes)
+                if (patch.owner == this.ID)
                 {
-                    if (patch.owner == this.ID)
-                    {
-                        Main.Dbg(this.ID + " here");
-                        return true;
-                    }
+                    return true;
                 }
             }
-            else if (PatchType == HarmonyPatchType.Postfix)
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the mod has Postfix patch of a given method.
+        /// </summary>
+        /// <param name="MethodInfo"></param>
+        /// <returns></returns>
+        public bool HasHarmonyPostfixPatch(MethodInfo MethodInfo)
+        {
+            var patches = Harmony.GetPatchInfo(MethodInfo);
+            if (patches is null) return false; // not patched
+
+            foreach (var patch in patches.Postfixes)
             {
-                foreach (var patch in patches.Postfixes)
+                if (patch.owner == this.ID)
                 {
-                    if (patch.owner == this.ID)
-                    {
-                        Main.Dbg(this.ID + " here");
-                        return true;
-                    }
+                    return true;
                 }
             }
-            else if (PatchType == HarmonyPatchType.Transpiler)
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the mod has Transpiler patch of a given method.
+        /// </summary>
+        /// <param name="MethodInfo"></param>
+        /// <returns></returns>
+        public bool HasHarmonyTranspilerPatch(MethodInfo MethodInfo)
+        {
+            var patches = Harmony.GetPatchInfo(MethodInfo);
+            if (patches is null) return false; // not patched
+
+            foreach (var patch in patches.Transpilers)
             {
-                foreach (var patch in patches.Transpilers)
+                if (patch.owner == this.ID)
                 {
-                    if (patch.owner == this.ID)
-                    {
-                        Main.Dbg(this.ID + " here");
-                        return true;
-                    }
+                    return true;
                 }
             }
-            else if (PatchType == HarmonyPatchType.Finalizer)
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the mod has Finalizer patch of a given method.
+        /// </summary>
+        /// <param name="MethodInfo"></param>
+        /// <returns></returns>
+        public bool HasHarmonyFinalizerPatch(MethodInfo MethodInfo)
+        {
+            var patches = Harmony.GetPatchInfo(MethodInfo);
+            if (patches is null) return false; // not patched
+
+            foreach (var patch in patches.Finalizers)
             {
-                foreach (var patch in patches.Finalizers)
+                if (patch.owner == this.ID)
                 {
-                    if (patch.owner == this.ID)
-                    {
-                        Main.Dbg(this.ID + " here");
-                        return true;
-                    }
+                    return true;
                 }
             }
-            else
-                throw new Exception("The HarmonyPatchType need to be Prefix, Postfix, Transpiler or Finalizer");
             return false;
         }
     }

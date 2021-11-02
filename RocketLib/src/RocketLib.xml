@@ -19,6 +19,11 @@
             The ID of the mod.
             </summary>
         </member>
+        <member name="F:RocketLib0.BroforceMod.IsLoaded">
+            <summary>
+            Is the mod is successfuly load.
+            </summary>
+        </member>
         <member name="F:RocketLib0.BroforceMod.Prefix">
             <summary>
             Normal prefix.
@@ -49,6 +54,11 @@
             Debug prefix.
             </summary>
         </member>
+        <member name="F:RocketLib0.BroforceMod.TimeNow">
+            <summary>
+            the current time.
+            </summary>
+        </member>
         <member name="F:RocketLib0.BroforceMod.UseLocalLog">
             <summary>
             Write log locally.
@@ -59,19 +69,13 @@
             Show debug log.
             </summary>
         </member>
-        <member name="F:RocketLib0.BroforceMod.TimeNow">
+        <member name="F:RocketLib0.BroforceMod.HasStartLog">
             <summary>
-            the current time.
             </summary>
         </member>
-        <member name="F:RocketLib0.BroforceMod.HasStartLog">
-             <summary>
-            
-             </summary>
-        </member>
-        <member name="F:RocketLib0.BroforceMod.IsLoaded">
+        <member name="F:RocketLib0.BroforceMod.LogFilePath">
             <summary>
-            Is the mod is successfuly load.
+            Path of the file with the mod log.
             </summary>
         </member>
         <member name="M:RocketLib0.BroforceMod.#ctor(UnityModManagerNet.UnityModManager.ModEntry,System.Boolean,System.Boolean)">
@@ -194,6 +198,21 @@
             <param name="Message"></param>
             <param name="Debug"></param>
         </member>
+        <member name="M:RocketLib0.BroforceMod.ErrorLog(System.Exception,System.Boolean)">
+            <summary>
+            Write Error Log.
+            </summary>
+            <param name="exception"></param>
+            <param name="Debug"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.ErrorLog(System.String,System.Exception,System.Boolean)">
+            <summary>
+            Write Error Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="exception"></param>
+            <param name="Debug"></param>
+        </member>
         <member name="M:RocketLib0.BroforceMod.DebugLog(System.Object,RLogType)">
             <summary>
             Write log only in debug mode.
@@ -208,12 +227,32 @@
             <param name="Message"></param>
             <param name="LogType"></param>
         </member>
+        <member name="M:RocketLib0.BroforceMod.DebugLog(System.Exception,RLogType)">
+            <summary>
+            Write Exception Debug Log.
+            </summary>
+            <param name="exception"></param>
+            <param name="LogType"></param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.DebugLog(System.String,System.Exception,RLogType)">
+            <summary>
+            Write Exception Debug Log.
+            </summary>
+            <param name="Message"></param>
+            <param name="exception"></param>
+            <param name="LogType"></param>
+        </member>
         <member name="M:RocketLib0.BroforceMod.WriteLogLocally(System.String,System.String)">
             <summary>
             Write log in the current mod folder.
             </summary>
             <param name="Message">Message to write in the log.</param>
             <param name="prefix">The prefix</param>
+        </member>
+        <member name="M:RocketLib0.BroforceMod.ClearFileLog">
+            <summary>
+            Delete all lines in the log file.
+            </summary>
         </member>
         <member name="T:RocketLib0.IsThisMod">
             <summary>This constructor check if a mod is Here or is Enabled.
@@ -251,13 +290,33 @@
             </summary>
             <param name="ID">Id of the mod.</param>
         </member>
-        <member name="M:RocketLib0.IsThisMod.HasHarmonyInstance(System.Reflection.MethodInfo,HarmonyLib.HarmonyPatchType)">
+        <member name="M:RocketLib0.IsThisMod.HasHarmonyPrefixPatch(System.Reflection.MethodInfo)">
             <summary>
-            Check if their is Harmony Instance of XXXXXX function in the game.
+            Check if the mod has prefix patch of a given method.
             </summary>
-            <param name="MethodInfo">Method Info</param>
-            <param name="PatchType">The patch type</param>
-            <returns>bool</returns>
+            <param name="MethodInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib0.IsThisMod.HasHarmonyPostfixPatch(System.Reflection.MethodInfo)">
+            <summary>
+            Check if the mod has Postfix patch of a given method.
+            </summary>
+            <param name="MethodInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib0.IsThisMod.HasHarmonyTranspilerPatch(System.Reflection.MethodInfo)">
+            <summary>
+            Check if the mod has Transpiler patch of a given method.
+            </summary>
+            <param name="MethodInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib0.IsThisMod.HasHarmonyFinalizerPatch(System.Reflection.MethodInfo)">
+            <summary>
+            Check if the mod has Finalizer patch of a given method.
+            </summary>
+            <param name="MethodInfo"></param>
+            <returns></returns>
         </member>
         <member name="T:RocketLib0.RocketLib">
             <summary>
@@ -395,12 +454,21 @@
             This class contains my GUILayout.
             </summary>
         </member>
-        <member name="M:RocketLib0.RocketLib.RGUI.ArrowList(System.Collections.Generic.List{System.String},System.Int32)">
+        <member name="M:RocketLib0.RocketLib.RGUI.ArrowList(System.Collections.Generic.List{System.Object},System.Int32)">
             <summary>
             A custom GUILayout. You make a choice with arrow.
             </summary>
-            <param name="list">The given list where you can choose a value.</param>
-            <param name="Nbr">The number who make the choice.</param>
+            <param name="ObjectList">The given list where you can choose a value.</param>
+            <param name="Number">The number who make the choice.</param>
+            <returns>Int for the list</returns>
+        </member>
+        <member name="M:RocketLib0.RocketLib.RGUI.ArrowList(System.Collections.Generic.List{System.Object},System.Int32,System.Int32)">
+            <summary>
+            A custom GUILayout. You make a choice with arrow.
+            </summary>
+            <param name="ObjectList">The given list where you can choose a value.</param>
+            <param name="Number">The number who make the choice.</param>
+            <param name="width"></param>
             <returns>Int for the list</returns>
         </member>
         <member name="T:RLogType">

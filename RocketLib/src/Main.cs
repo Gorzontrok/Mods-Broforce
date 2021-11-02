@@ -30,6 +30,8 @@ namespace RocketLibLoadMod
 
         private static int TabSelected = 0;
 
+        private static GUIStyle LogStyle = new GUIStyle();
+
         internal static Harmony harmony;
         static bool Load(UnityModManager.ModEntry modEntry)
         {
@@ -51,7 +53,7 @@ namespace RocketLibLoadMod
             }
             catch (Exception ex)
             {
-                Main.Log("Failed to Patch Harmony :\n" + ex, RLogType.Exception);
+                Main.Log("Failed to Patch Harmony :\n" + ex);
             }
 
             try
@@ -61,7 +63,7 @@ namespace RocketLibLoadMod
             }
             catch (Exception ex)
             {
-                mod.Logger.Log("Error while Loading RocketLib :\n" + ex.ToString());
+                Main.Log("Error while Loading RocketLib :\n" + ex.ToString());
             }
 
             FirstLaunch();
@@ -81,7 +83,7 @@ namespace RocketLibLoadMod
                   }
                   catch (Exception ex)
                   {
-                      Main.Log(ex, RLogType.Exception);
+                      bmod.Log(ex, RLogType.Exception);
 
                   }
               }*/
@@ -151,14 +153,20 @@ namespace RocketLibLoadMod
             GUILayout.EndVertical();
         }
 
+
+        private static Vector2 scrollViewVector;
         private static void LogGUI()
         {
-            string FullLog = string.Empty;
+            GUILayout.BeginVertical("box");
+            scrollViewVector = GUILayout.BeginScrollView(scrollViewVector, GUILayout.Height(250));
             foreach (string log in RocketLib.ScreenLogger.FullLogList)
             {
-                FullLog += log + "\n";
+                LogStyle.normal.textColor = WhichColor(log);
+                GUILayout.Label(log, LogStyle);
+                GUILayout.Space(5);
             }
-            GUILayout.TextArea(FullLog);
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
         }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
@@ -182,14 +190,34 @@ namespace RocketLibLoadMod
             return true;
         }
 
-        internal static void Log(object str, RLogType type = RLogType.Log)
+        private static Color WhichColor(string LogMsg)
         {
-            mod.Logger.Log(str.ToString());
+            LogMsg = LogMsg.ToLower();
+            if (LogMsg.Contains("error") || LogMsg.Contains("exception"))
+            {
+                return Color.red;
+            }
+            else if (LogMsg.Contains("warning"))
+            {
+                return Color.yellow;
+            }
+            else if (LogMsg.Contains("[information]"))
+            {
+                return Color.blue;
+            }
+            else if (LogMsg.Contains("successful loaded"))
+            {
+                return Color.green;
+            }
+            else
+            {
+                return Color.white;
+            }
         }
 
-        internal static void Dbg(object str, RLogType type = RLogType.Information)
+        internal static void Log(object str)
         {
-            bmod.DebugLog(str, type);
+            mod.Logger.Log(str.ToString());
         }
 
         static void FirstLaunch()
@@ -238,7 +266,7 @@ namespace RocketLibLoadMod
         }
     }
 
-    // Patch for don't destroy Mod.
+    // Patch for don't destroy Mod. Need to find the one of Cutscene.
     [HarmonyPatch(typeof(PauseMenu), "ReturnToMenu")]
     static class PauseMenu_ReturnToMenu_Patch
     {

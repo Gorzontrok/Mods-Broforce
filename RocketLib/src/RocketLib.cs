@@ -23,7 +23,7 @@ namespace RocketLib0
             try
             {
                 ScreenLogger._isSuccessfullyLoad = ScreenLogger.Load();
-                ScreenLogger.AddStartLog("Succesfully Load RocketLib !");
+                ScreenLogger.AddStartLog("Successful loaded RocketLib !");
             }
             catch(Exception ex)
             {
@@ -87,30 +87,62 @@ namespace RocketLib0
             /// <summary>
             /// A custom GUILayout. You make a choice with arrow.
             /// </summary>
-            /// <param name="list">The given list where you can choose a value.</param>
-            /// <param name="Nbr">The number who make the choice.</param>
+            /// <param name="ObjectList">The given list where you can choose a value.</param>
+            /// <param name="Number">The number who make the choice.</param>
             /// <returns>Int for the list</returns>
-            public static int ArrowList(List<string> list, int Nbr)
+            public static int ArrowList(List<object> ObjectList, int Number)
             {
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("<", GUILayout.ExpandWidth(false)))
                 {
-                    if (Nbr > 0)
+                    if (Number > 0)
                     {
-                        Nbr--;
+                        Number--;
                     }
                 }
-                GUILayout.Label(list[Nbr].ToString(), GUILayout.ExpandWidth(false));
+                GUILayout.Label(ObjectList[Number].ToString(), GUILayout.ExpandWidth(false));
                 if (GUILayout.Button(">", GUILayout.ExpandWidth(false)))
                 {
-                    if (Nbr < list.Count - 1)
+                    if (Number < ObjectList.Count - 1)
                     {
-                        Nbr++;
+                        Number++;
                     }
                 }
                 GUILayout.EndHorizontal();
 
-                return Nbr;
+                return Number;
+            }
+
+            /// <summary>
+            /// A custom GUILayout. You make a choice with arrow.
+            /// </summary>
+            /// <param name="ObjectList">The given list where you can choose a value.</param>
+            /// <param name="Number">The number who make the choice.</param>
+            /// <param name="width"></param>
+            /// <returns>Int for the list</returns>
+            public static int ArrowList(List<object> ObjectList, int Number, int width)
+            {
+                GUILayout.BeginHorizontal(GUILayout.Width(width));
+                if (GUILayout.Button("<", GUILayout.ExpandWidth(false)))
+                {
+                    if (Number > 0)
+                    {
+                        Number--;
+                    }
+                }
+                GUILayout.FlexibleSpace();
+                GUILayout.Label(ObjectList[Number].ToString());
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button(">", GUILayout.ExpandWidth(false)))
+                {
+                    if (Number < ObjectList.Count - 1)
+                    {
+                        Number++;
+                    }
+                }
+                GUILayout.EndHorizontal();
+
+                return Number;
             }
         }
     }

@@ -64,7 +64,7 @@ namespace RocketLib0
                 }
                 catch (Exception ex)
                 {
-                    Main.Log(ex, RLogType.Exception);
+                    Main.Log(ex);
                 }
 
                 return false;
@@ -124,7 +124,7 @@ namespace RocketLib0
 
             void OnDestroy()
             {
-                Main.Log("ScreenLogger DESTROY", RLogType.Error);
+                Main.bmod.ErrorLog("ScreenLogger DESTROY");
             }
 
             void Awake()
@@ -201,7 +201,7 @@ namespace RocketLib0
                 }
             }
 
-            void WhichColor(string LogMsg)
+            internal static void WhichColor(string LogMsg)
             {
                 LogMsg = LogMsg.ToLower();
                 if (LogMsg.Contains("error") || LogMsg.Contains("exception"))
@@ -273,21 +273,6 @@ namespace RocketLib0
                 catch(Exception ex)
                 {
                     Main.bmod.ExceptionLog(ex);
-                }
-            }
-
-            void ClearTxtLog()
-            {
-                if (File.Exists(LogFilePath))
-                {
-                    try
-                    {
-                        File.Delete(LogFilePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        Main.Log(ex, RLogType.Exception);
-                    }
                 }
             }
         }

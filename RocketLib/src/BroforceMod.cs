@@ -19,12 +19,17 @@ namespace RocketLib0
         /// The Unity mod of the class.
         /// </summary>
         protected readonly UnityModManager.ModEntry __mod;
-
         /// <summary>
         /// The ID of the mod.
         /// </summary>
         public readonly string ID = string.Empty;
+        /// <summary>
+        /// Is the mod is successfuly load.
+        /// </summary>
+        public readonly bool IsLoaded = false;
 
+
+        // PREFIX
         /// <summary>
         /// Normal prefix.
         /// </summary>
@@ -41,17 +46,21 @@ namespace RocketLib0
         /// Warning prefix.
         /// </summary>
         protected readonly string PrefixWarning = string.Empty;
-
         /// <summary>
         /// Error Prefix.
         /// </summary>
         protected readonly string PrefixError = string.Empty;
-
         /// <summary>
         /// Debug prefix.
         /// </summary>
         protected readonly string PrefixDebug = "[DEBUG] ";
+        /// <summary>
+        /// the current time.
+        /// </summary>
+        protected string TimeNow = string.Empty;
 
+
+        //
         /// <summary>
         /// Write log locally.
         /// </summary>
@@ -63,19 +72,13 @@ namespace RocketLib0
         public bool UseDebugLog = false;
 
         /// <summary>
-        /// the current time.
-        /// </summary>
-        protected string TimeNow = string.Empty;
-
-        /// <summary>
-        ///
         /// </summary>
         protected bool HasStartLog = false;
 
         /// <summary>
-        /// Is the mod is successfuly load.
+        /// Path of the file with the mod log.
         /// </summary>
-        public readonly bool IsLoaded = false;
+        protected string LogFilePath = string.Empty;
 
         /// <summary>
         /// Create the mod.
@@ -105,11 +108,12 @@ namespace RocketLib0
                 this.UseLocalLog = _UseLocalLog;
                 this.UseDebugLog = _UseDebugLog;
 
+                this.LogFilePath = Path.Combine(this.__mod.Path, $"{this.ID}_Log.txt");
 
                 this.TimeNow = "[" + DateTime.Now.ToString("HH:mm:ss") + "] ";
                 this.IsLoaded = true;
                 RocketLibLoadMod.Main.BMOD_List.Add(this);
-                this.Log($"Succesfully Load the mod : '{this.ID}' ");
+                this.Log($"Successful loaded the mod : '{this.ID}' ");
             }
             catch(Exception ex)
             {
@@ -191,8 +195,6 @@ namespace RocketLib0
 
             this.StartLog();
 
-            //string LocalPrefix  = this.TimeNow + (Debug && this.UseDebugLog ? this.PrefixDebug + this.Prefix : this.Prefix);
-
             if((!Debug && !this.UseDebugLog) || (Debug && this.UseDebugLog))
             {
                 string LocalPrefix = string.Empty;
@@ -221,13 +223,13 @@ namespace RocketLib0
                     LocalPrefix = this.TimeNow + (Debug && this.UseDebugLog ? this.PrefixDebug + this.Prefix : this.Prefix);
                 }
 
-                if (!RocketLib.ScreenLogger.isSuccessfullyLoad)
+                if (RocketLib.ScreenLogger.isSuccessfullyLoad)
                 {
-                    UnityModManager.Logger.Log(Message.ToString(), LocalPrefix);
+                    RocketLib.ScreenLogger.Log(Message, LocalPrefix);
                 }
                 else
                 {
-                    RocketLib.ScreenLogger.Log(Message, LocalPrefix);
+                    UnityModManager.Logger.Log(Message.ToString(), LocalPrefix);
                 }
                 WriteLogLocally(Message.ToString(), LocalPrefix);
             }
@@ -345,7 +347,29 @@ namespace RocketLib0
         {
             this.ErrorLog(Message.ToString(), Debug);
         }
+        /// <summary>
+        /// Write Error Log.
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <param name="Debug"></param>
+        public virtual void ErrorLog(Exception exception, bool Debug = false)
+        {
+            if (!this.IsLoaded) return;
+
+            this.ExceptionLog(exception.ToString(), Debug);
+        }
+        /// <summary>
+        /// Write Error Log.
+        /// </summary>
+        /// <param name="Message"></param>
+        /// <param name="exception"></param>
+        /// <param name="Debug"></param>
+        public virtual void ErrorLog(string Message, Exception exception, bool Debug = false)
+        {
+            this.ExceptionLog(Message + "\n" + exception, Debug);
+        }
         // ==============================
+
 
         // ========= Debug Log ==========
         /// <summary>
@@ -368,6 +392,27 @@ namespace RocketLib0
         {
             this.DebugLog(Message.ToString(), LogType);
         }
+        /// <summary>
+        /// Write Exception Debug Log.
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <param name="LogType"></param>
+        public virtual void DebugLog(Exception exception, RLogType LogType = RLogType.Log)
+        {
+            if (!this.IsLoaded) return;
+
+            this.Log(exception.ToString(), LogType);
+        }
+        /// <summary>
+        /// Write Exception Debug Log.
+        /// </summary>
+        /// <param name="Message"></param>
+        /// <param name="exception"></param>
+        /// <param name="LogType"></param>
+        public virtual void DebugLog(string Message, Exception exception, RLogType LogType = RLogType.Log)
+        {
+            this.Log(Message + "\n" + exception, LogType, true) ;
+        }
         // ==============================
 
         /// <summary>
@@ -383,7 +428,6 @@ namespace RocketLib0
             {
                 if(this.UseLocalLog)
                 {
-                    string LogFilePath = Path.Combine(this.__mod.Path, $"{this.ID}_Log.txt");
 
                     if (!File.Exists(LogFilePath))
                     {
@@ -406,6 +450,29 @@ namespace RocketLib0
             {
                 this.ExceptionLog("Failed write log locally\n" + ex);
             }
+        }
+
+        /// <summary>
+        /// Delete all lines in the log file.
+        /// </summary>
+        public virtual void ClearFileLog()
+        {
+             if (File.Exists(LogFilePath))
+                {
+                    try
+                    {
+                        File.Delete(LogFilePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Main.bmod.ExceptionLog(ex);
+                    }
+                }
+
+                if (!File.Exists(LogFilePath))
+                {
+                    using (File.Create(LogFilePath)) ; // Ignore warning.
+                }
         }
     }
 }

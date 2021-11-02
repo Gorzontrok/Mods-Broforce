@@ -1,3 +1,8 @@
+v0.6.6 :
+ - ArrowList can had a custom width.
+ - Upgrade Log section in GUI
+ - Change some log message
+
 v0.6.5 :
  - Fix GameDataPath.
  - Make 'IsThisMod' class showing ID
