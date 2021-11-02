@@ -12,18 +12,21 @@
 
 ## Mods :
  * All ? :
-   * [Tweaks From Pigs](Tweak%20From%20Pigs/)
+  * [Tweaks From Pigs](Tweak%20From%20Pigs/)
  * Enemies :
-   * [Satan Surprise](Satan%20Surprise/)
+  * [Satan Surprise](Satan%20Surprise/)
+  * [Spooktober](Spooktober/)
  * Bro Spawn : 
-    * [Filtered Bros](Filtered%20Bros/)
-    * [ForBralef](ForBralef/) 
+  * [Filtered Bros](Filtered%20Bros/)
+  * [ForBralef](ForBralef/) 
+ * Map :
+  * [Map Data Controller](MapDataController/) 
+  * [Spooktober](Spooktober/)
  * Other :
-    * [RocketLib](RocketLib/)
-    * [Trophy Manager](Trophy%20Manager/)
-    * [Spooktober](Spooktober/)
-  * Special :
-    * [Only Pocketted Special Ammo](Only%20Pocketted%20Special%20Ammo/)
+  * [RocketLib](RocketLib/)
+  * [Trophy Manager](Trophy%20Manager/)
+ * Special :
+  * [Only Pocketted Special Ammo](Only%20Pocketted%20Special%20Ammo/)
 
 ## Installation :
 All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
