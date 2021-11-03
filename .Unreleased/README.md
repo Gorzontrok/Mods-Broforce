@@ -5,6 +5,7 @@
 ## Finish
  * Bro :
     * [Pigstini](Pigstini/)
+    * [Tank Bro Rocket For Brominator](TankBroRocketForBrominator/)
  * Other
     * [AutoEnterPassword](AutoEnterPassword/)
     * [Custom Hero Name](Custom%20Hero%20Name/)
