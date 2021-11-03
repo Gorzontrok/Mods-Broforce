@@ -1,4 +1,4 @@
-﻿using RocketLib0;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
@@ -12,9 +12,13 @@ namespace TweaksFromPigs
         static void Prefix()
         {
             if (!Main.enabled) return;
-            QualitySettings.vSyncCount = 1;
-            PlayerOptions.Instance.vSync = true;
-            Main.Log("Enable vSync On Exit");
+            try
+            {
+                QualitySettings.vSyncCount = 1;
+                PlayerOptions.Instance.vSync = true;
+                Main.bmod.Log("Active vSync On Exit", RLogType.Information);
+            }
+            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to active V-Sync on exit.\n" + ex); }
         }
     }
 
@@ -25,16 +29,23 @@ namespace TweaksFromPigs
         static void Postfix(Animal __instance)
         {
             if (!Main.enabled) return;
-            if(Main.settings.EnabledSickPigs)
+            try
             {
-                if (Utility.rand.Next(3) == 2)
-                    __instance.isRotten = true;
-                if (__instance.isRotten && !Main.settings.PigAreAlwaysTerror)
+                if (Main.settings.EnabledSickPigs)
                 {
-                    __instance.material.mainTexture = Utility.CreateTexFromMat("pig_animStinky.png", __instance.material);
+                    if (Utility.rand.Next(3) == 2)
+                        __instance.isRotten = true;
+                    if (__instance.isRotten && !Main.settings.PigAreAlwaysTerror)
+                    {
+                        __instance.material.mainTexture = Utility.CreateTexFromMat("pig_animStinky.png", __instance.material);
+                    }
+                    if (Main.settings.PigAreAlwaysTerror || Map.MapData.theme == LevelTheme.Hell)
+                        __instance.material.mainTexture = Utility.CreateTexFromMat("Gimp_Pig_anim.png", __instance.material);
                 }
-                if (Main.settings.PigAreAlwaysTerror || Map.MapData.theme == LevelTheme.Hell)
-                    __instance.material.mainTexture = Utility.CreateTexFromMat("Gimp_Pig_anim.png", __instance.material);
+            }
+            catch(Exception ex)
+            {
+                Main.bmod.ExceptionLog("Failed to Patch Pigs\n" + ex);
             }
         }
     }
@@ -45,12 +56,18 @@ namespace TweaksFromPigs
     {
         public static void Prefix()
         {
-            if (!Main.enabled) return;
-            if (Main.settings.ChangeHeroUnlock && Main.HeroDictionary.Count > 0)
+            try
             {
-                Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(Main.HeroDictionary);
-                PlayerProgress.Instance.yetToBePlayedUnlockedHeroes = new List<HeroType>();
+                Settings sett = Main.settings;
+                if (!Main.enabled || ((sett.FilteredBros_Compatibility && Compatibility.FilteredBros.i.IsEnabled) || (sett.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled) || (sett.ForBralef_Compatibility && Compatibility.ForBralef.i.IsEnabled))) return;
+
+                if (Main.settings.ChangeHeroUnlock && Main.HeroDictionary.Count > 0)
+                {
+                    Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(Main.HeroDictionary);
+                    PlayerProgress.Instance.yetToBePlayedUnlockedHeroes = new List<HeroType>();
+                }
             }
+            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to patch Unlock Intervals.\n" + ex); }
         }
     }
 
@@ -61,10 +78,14 @@ namespace TweaksFromPigs
         static void Prefix(BroBase __instance)
         {
             if (!Main.enabled) return;
-            if(Main.settings.MechDropDoesFumiginene)
+            try
             {
-                (ProjectileController.GetMechDropGrenadePrefab() as GrenadeAirstrike).callInTank = true;
+                if (Main.settings.MechDropDoesFumiginene)
+                {
+                    (ProjectileController.GetMechDropGrenadePrefab() as GrenadeAirstrike).callInTank = true;
+                }
             }
+            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to add pink fumigene to Mech Drop.\n" + ex); }
         }
     }
 }

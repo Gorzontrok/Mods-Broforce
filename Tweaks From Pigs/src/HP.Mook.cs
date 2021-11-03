@@ -21,7 +21,7 @@ namespace TweaksFromPigs
     {
         static bool Prefix(Mook __instance, float time)
         {
-            if (!Main.enabled) return true;
+            if (!Main.enabled || (Main.settings._007Patch_Compatibility && Compatibility._007_Patch.i.IsEnabled)) return true;
             if (__instance.canBeTearGased)
             {
                 __instance.Stop();
@@ -43,7 +43,7 @@ namespace TweaksFromPigs
     {
         static void Prefix(Mook __instance)
         {
-            if (!Main.enabled) return;
+            if (!Main.enabled || (Main.settings._007Patch_Compatibility && Compatibility._007_Patch.i.IsEnabled)) return;
             if(Main.settings.CanTeargasedEveryone)
             {
                 if (__instance.mookType != MookType.Devil || __instance.mookType != MookType.Vehicle) __instance.canBeTearGased = true;

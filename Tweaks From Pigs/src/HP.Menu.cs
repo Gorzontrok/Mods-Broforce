@@ -11,22 +11,6 @@ namespace TweaksFromPigs
     [HarmonyPatch(typeof(LevelSelectionController), "ResetLevelAndGameModeToDefault")]
     static class ArcadeCampaign_Patch
     {
-        static int GetMaxAracadeLevel(string ArcadeLevel)
-        {
-            if(Main.settings.MaxArcadeLevelEnabled)
-            {
-                switch(ArcadeLevel)
-                {
-                    case "Hell Arcade":
-                        return 13;
-                    case "Expendabros": return 11;
-                    case "TWITCHCON": return 10;
-                    case "Alien Demo": return 5;
-                    case "Boss Rush": return 10;
-                }
-            }
-            return 63;
-        }
         static void Postfix()
         {
             if (!Main.enabled) return;
@@ -56,7 +40,29 @@ namespace TweaksFromPigs
             {
                LevelSelectionController.DefaultCampaign = LevelSelectionController.OfflineCampaign;
             }
-            GetMaxAracadeLevel(c);
+        }
+    }
+    [HarmonyPatch(typeof(MainMenu), "Update")]
+    static class ChangeMaxArcadeLevel_Patch
+    {
+        static int GetMaxAracadeLevel(string ArcadeLevel)
+        {
+            if (Main.settings.MaxArcadeLevelEnabled)
+            {
+                switch (ArcadeLevel)
+                {
+                    case "Hell Arcade": return 13;
+                    case "Expendabros": return 11;
+                    case "TWITCHCON": return 10;
+                    case "Alien Demo": return 5;
+                    case "Boss Rush": return 10;
+                }
+            }
+            return 63;
+        }
+        static void Postfix()
+        {
+           LevelSelectionController.totalNumberOfArcadeLevels = GetMaxAracadeLevel(Main.CurentArcade);
         }
     }
 
@@ -90,40 +96,78 @@ namespace TweaksFromPigs
         }
     }
     // Patch Main Menu
-    /* [HarmonyPatch(typeof(MainMenu), "SetupItems")]
+     [HarmonyPatch(typeof(MainMenu), "SetupItems")]
      static class p_Patch
      {
-         static void Postfix(MainMenu __instance)
+         static void Prefix(MainMenu __instance)
          {
+            if (!Main.enabled) return;
+            try
+            {
+                Traverse trav = Traverse.Create(__instance);
+                MenuBarItem[] masterItems = trav.Field("masterItems").GetValue() as MenuBarItem[];
+                List<MenuBarItem> list = new List<MenuBarItem>(masterItems);
 
-             List<MenuBarItem> list = new List<MenuBarItem>( Traverse.Create(__instance).Field("masterItems").GetValue() as MenuBarItem[]);
+                /* list.Insert(5, new MenuBarItem
+                 {
+                     color = list[0].color,
+                     size = list[0].size,
+                     name = "EXPLOSION RUN",
+                     invokeMethod = "StartExplosionRun"
+                 });
 
-             list.Insert(5, new MenuBarItem
-             {
-                 color = list[0].color,
-                 size = list[0].size,
-                 name = "EXPLOSION RUN",
-                 invokeMethod = "StartExplosionRun"
-             });
+                 list.Insert(5, new MenuBarItem
+                 {
+                     color = list[0].color,
+                     size = list[0].size,
+                     name = "SUICIDE HORDE",
+                     invokeMethod = "StartSuicideHorde"
+                 });
+                 list.Insert(5, new MenuBarItem
+                 {
+                     color = list[0].color,
+                     size = list[0].size,
+                     name = "Race",
+                     invokeMethod = "StartRace"
+                 });*/
 
-             list.Insert(5, new MenuBarItem
-             {
-                 color = list[0].color,
-                 size = list[0].size,
-                 name = "SUICIDE HORDE",
-                 invokeMethod = "StartSuicideHorde"
-             });
-             list.Insert(5, new MenuBarItem
-             {
-                 color = list[0].color,
-                 size = list[0].size,
-                 name = "Race",
-                 invokeMethod = "StartRace"
-             });
+                /*list.Insert(list.Count - 2, new MenuBarItem
+                {
+                    color = Color.green,
+                    size = list[0].size,
+                    name = "ACHIEVEMENTS",
+                    invokeMethod = "GoToSteamPage"
+                });*/
 
-             Traverse.Create(__instance).Field("masterItems").SetValue(list.ToArray());
-         }
+                trav.Field("masterItems").SetValue(list.ToArray());
+            }
+            catch(Exception ex) { Main.bmod.Log(ex, RLogType.Exception); }
+        }
      }
+
+     [HarmonyPatch(typeof(MainMenu), "GoToSteamPage")]
+     static class GoToAchievements_Patch
+    {
+        static bool Prefix(MainMenu __instance)
+        {
+            if (!Main.enabled) return true;
+
+            try
+            {
+                var mainMenuItems = Traverse.Create(__instance).Field("items").GetValue<Localisation.MenuBarItemUI[]>();
+                AchievementsMenu aMenu = new AchievementsMenu(__instance, __instance.transform);
+                __instance.MenuActive = false;
+                aMenu.MenuActive = true;
+                aMenu.TransitionIn();
+
+                return false;
+            }catch(Exception ex) { Main.bmod.Log(ex, RLogType.Exception); }
+
+            return true;
+        }
+    }
+
+    /*
      [HarmonyPatch(typeof(MainMenu), "StartSuicideHorde")]
      static class cc
      {

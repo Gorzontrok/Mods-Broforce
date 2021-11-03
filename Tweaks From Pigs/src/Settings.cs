@@ -15,6 +15,7 @@ namespace TweaksFromPigs
         // Bros addon/fix
         public bool TbagEnabled;
         public bool UseFifthBondSpecial;
+        public bool RememberPockettedSpecial;
 
         // Bro Spawn
         public bool ChangeHeroUnlock;
@@ -66,9 +67,13 @@ namespace TweaksFromPigs
         public bool MechDropDoesFumiginene;
 
         // Harmony Id
-        public bool FilteredBrosIsHere = false; public bool UnpatchFilteredBros;
-        public bool ExpendabrosModIsHere = false; public bool UnpatchExpendabrosMod;
-        public bool ForBralefIsHere = false; public bool UnpatchForBralef;
+        public bool FilteredBros_Compatibility;
+        public bool ExpendablesBros_Compatibility;
+        public bool ForBralef_Compatibility;
+        public bool _007Patch_Compatibility;
+        public bool AvatarFaceHugger_Compatibility;
+        public bool SkeletonDeadFace_Compatibility;
+        public bool MapDataController_Compatibility;
 
         // Danger Zone
         public bool DangerZoneOpen = false;

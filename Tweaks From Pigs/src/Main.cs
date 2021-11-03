@@ -14,17 +14,18 @@ namespace TweaksFromPigs
         public static bool enabled;
         public static Settings settings;
 
-        public static Dictionary<int, HeroType> HeroDictionary = new Dictionary<int, HeroType>();
+        internal static BroforceMod bmod;
 
-        public static bool origDicIsSet = true;
-        public static bool origUnpatchFilteredBros;
+        internal static Dictionary<int, HeroType> HeroDictionary = new Dictionary<int, HeroType>();
 
-        public static string ResFolder;
+        internal static bool origDicIsSet = true;
 
-        public static Harmony harmony;
+        internal static string ResFolder;
 
-        public static string[] ArcadeCampaign = new string[] { "Normal", "Expendabros", "TWITCHCON", "Alien Demo", "Boss Rush", "Hell Arcade" };
-        public static string CurentArcade;
+        internal static Harmony harmony;
+
+        internal static string[] ArcadeCampaign = new string[] { "Normal", "Expendabros", "TWITCHCON", "Alien Demo", "Boss Rush", "Hell Arcade" };
+        internal static string CurentArcade;
 
         private static string BtnAdvancedOptionTxt = string.Empty;
         private static string BtnDangerZoneTxt = string.Empty;
@@ -54,9 +55,23 @@ namespace TweaksFromPigs
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
 
+            try
+            {
+                bmod = new BroforceMod(mod, _UseLocalLog: true);
+            }
+            catch(Exception ex)
+            {
+                mod.Logger.Log("Failed create BroforceMod :\n" + ex);
+            }
 
-            try { Start();  }
-            catch(Exception ex) { mod.Logger.Log(ex.ToString()); }
+            try
+            {
+                Start();
+            }
+            catch(Exception ex)
+            {
+                mod.Logger.Log(ex.ToString());
+            }
 
             if (!settings.getFirstLaunch) FirstLaunch();
 
@@ -64,20 +79,30 @@ namespace TweaksFromPigs
         }
         static void Start()
         {
-            var IsAvailableInC_Patch = typeof(HeroUnlockController).GetMethod("IsAvailableInCampaign");
-            settings.FilteredBrosIsHere = CheckIfThisModIsHereAndUnpatchPrefix(IsAvailableInC_Patch, "FilteredBrosMod", settings.UnpatchFilteredBros);
-            settings.ExpendabrosModIsHere = CheckIfThisModIsHereAndUnpatchPrefix(IsAvailableInC_Patch, "ExpendaBrosInGame", settings.UnpatchExpendabrosMod);
-            settings.ForBralefIsHere = CheckIfThisModIsHereAndUnpatchPrefix(IsAvailableInC_Patch, "ForBralef", settings.UnpatchForBralef);
-            if (settings.ExpendabrosModIsHere && settings.UnpatchExpendabrosMod) harmony.UnpatchAll("ExpendaBrosInGame");
+            Compatibility.Load();
+            for(int i = 0; i < Compatibility.BroforceModsList.Count; i++)
+            {
+                Compatibility.IsThisModTFP broforcemod = Compatibility.BroforceModsList[i];
+                if (broforcemod.i.IsHere)
+                {
+                    string end = broforcemod.i.IsEnabled ? " and is active." : ".";
+                    bmod.InformationLog("'" + broforcemod.i.ID + "' is here" + end, true);
+
+                    if(!Compatibility.GetCompatibilityBool(broforcemod.i.ID))
+                    {
+                        bmod.WarningLog($"Compatibility with the mod : '{broforcemod.i.ID}' is off.", false);
+                    }
+                }
+            }
 
             // Set Mouse of the game
             if (settings.SetCustomMouse)
             {
                 ShowMouseController.SetCursorToArrow(true);
                 settings.CustomMouseIsSet = true;
+                bmod.InformationLog("Custom mouse is set.", true);
             }
             else settings.CustomMouseIsSet = false;
-            origUnpatchFilteredBros = settings.UnpatchFilteredBros;
 
             ResFolder = mod.Path + "/Ressource/";
 
@@ -85,7 +110,6 @@ namespace TweaksFromPigs
             ToolTipStyle.fontStyle = FontStyle.Bold;
             ToolTipStyle.fontSize = 15;
             ToolTipStyle.normal.textColor = Color.white;
-
         }
 
         static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
@@ -172,12 +196,16 @@ namespace TweaksFromPigs
                 GUILayout.EndHorizontal();
             }
                 GUILayout.Space(10);
-                GUILayout.Label("- Sensitive variable :", TitleStyle);
+                GUILayout.Label("- Makes X mod compatible :", TitleStyle);
                 GUILayout.BeginVertical("box");
                 GUILayout.BeginHorizontal();
-                if (settings.FilteredBrosIsHere) settings.UnpatchFilteredBros = GUILayout.Toggle(settings.UnpatchFilteredBros, new GUIContent("Unpatch Filtered Bros Mod on start", "This is for avoiding bug with the Hero Unlock Intervals from this Mods."));
-                if (settings.ExpendabrosModIsHere) settings.UnpatchExpendabrosMod = GUILayout.Toggle(settings.UnpatchExpendabrosMod, new GUIContent("Unpatch Expendabros In Game Mod on start", "This is for avoiding bug with the Hero Unlock Intervals and the expendabros fixes from this Mods."));
-                if (settings.ForBralefIsHere) settings.UnpatchForBralef = GUILayout.Toggle(settings.UnpatchForBralef, new GUIContent("Unpatch ForBralef Mod on start", "This is for avoiding bug with the Hero Unlock Intervals from this Mods."));
+                if (Compatibility.FilteredBros.i.IsHere) settings.FilteredBros_Compatibility = GUILayout.Toggle(settings.FilteredBros_Compatibility, new GUIContent("Filtered Bros", "Makes the mod compatible with Filtered Bros Mod."));
+                if (Compatibility.ExpendablesBros.i.IsHere) settings.ExpendablesBros_Compatibility= GUILayout.Toggle(settings.ExpendablesBros_Compatibility, new GUIContent("Expendabros In Game", "Makes the mod compatible with Expendalbes Bros In Game mod."));
+                if (Compatibility._007_Patch.i.IsHere) settings._007Patch_Compatibility= GUILayout.Toggle(settings._007Patch_Compatibility, new GUIContent("007 Patch", "Makes the mod compatible with Expendalbes Bros In Game mod."));
+                if (Compatibility.ForBralef.i.IsHere) settings.ForBralef_Compatibility = GUILayout.Toggle(settings.ForBralef_Compatibility, new GUIContent("ForBralef", "Makes the mod compatible with ForBralef mod."));
+                if (Compatibility.AvatarFaceHugger.i.IsHere) settings.AvatarFaceHugger_Compatibility = GUILayout.Toggle(settings.AvatarFaceHugger_Compatibility, new GUIContent("Avatar FaceHugger", "Makes the mod compatible with Avatar FaceHugger mod."));
+                if (Compatibility.SkeletonDeadFace.i.IsHere) settings.SkeletonDeadFace_Compatibility = GUILayout.Toggle(settings.SkeletonDeadFace_Compatibility, new GUIContent("Skeleton Dead Face", "Makes the mod compatible with Skeleton Dead Face mod."));
+                if (Compatibility.MapDataController.i.IsHere) settings.MapDataController_Compatibility = GUILayout.Toggle(settings.MapDataController_Compatibility, new GUIContent("Map Data Controller", "Makes the mod compatible with Map Data Controller mod."));
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
                 GUILayout.EndVertical();
@@ -197,7 +225,7 @@ namespace TweaksFromPigs
             GUILayout.Label("- Hero Unlock Controller :", TitleStyle);
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
-            settings.ChangeHeroUnlock = GUILayout.Toggle(settings.ChangeHeroUnlock, new GUIContent("Use custom HeroUnlock of this mod", "If you have another mod who change the Unlock Intervals, don't use it or disable it. Unless you have disable the mod."));
+            settings.ChangeHeroUnlock = GUILayout.Toggle(settings.ChangeHeroUnlock, new GUIContent("Use custom HeroUnlock of this mod", "If you have active compatibility of a mod which change the Unlock Intervals, Tweaks From Pigs will do nothing."));
             settings.SpawnWithExpendabros = GUILayout.Toggle(settings.SpawnWithExpendabros, new GUIContent("Spawn With Expendabros"));
             settings.SpawnBrondeFly = GUILayout.Toggle(settings.SpawnBrondeFly, new GUIContent("Spawn With Brondle Fly"));
             GUILayout.FlexibleSpace();
@@ -218,8 +246,9 @@ namespace TweaksFromPigs
             GUILayout.Label("- Bro :", TitleStyle);
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
-            settings.TbagEnabled = GUILayout.Toggle(settings.TbagEnabled, new GUIContent("Enabled T-Bag", "This have a good taste"));
+            settings.TbagEnabled = GUILayout.Toggle(settings.TbagEnabled, new GUIContent("Enabled T-Bag", "You have a good taste."));
             settings.UseFifthBondSpecial = GUILayout.Toggle(settings.UseFifthBondSpecial, new GUIContent("Use the 5th special of 007", "This is a Tear Gas"));
+            settings.RememberPockettedSpecial = GUILayout.Toggle(settings.RememberPockettedSpecial, new GUIContent("Remember Pocketted Special", "When you are alive and tou change your bro, you keep pocketted special. (Work with Swap Bros Mod)"));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -238,7 +267,7 @@ namespace TweaksFromPigs
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
             GUILayout.Label(new GUIContent("Arcade Type :", "When choose, play Arcade level 1. You can play Online."));
-            settings.ArcadeIndex = RocketLib.GUI.ArrowList(new List<string>(ArcadeCampaign), settings.ArcadeIndex);
+            settings.ArcadeIndex = RocketLib.RGUI.ArrowList(new List<object>(ArcadeCampaign), settings.ArcadeIndex, 200);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
@@ -346,8 +375,6 @@ namespace TweaksFromPigs
             GUILayout.BeginHorizontal();
             settings.MaxArcadeLevelEnabled = GUILayout.Toggle(settings.MaxArcadeLevelEnabled, new GUIContent("Max Arcade Level", "On different arcade, block the level at the max level playable."));
             settings.LanguageMenuEnabled = GUILayout.Toggle(settings.LanguageMenuEnabled, new GUIContent("Re-Enabled Language menu", "You can change language of the game in option menu."));
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -386,6 +413,8 @@ namespace TweaksFromPigs
             var RedTxt = new GUIStyle();
             RedTxt.normal.textColor = Color.red;
 
+            GUILayout.Space(30);
+
             Rect ToolTipRect = GUILayoutUtility.GetLastRect();
 
             GUILayout.BeginHorizontal(BoxDangerStyle);
@@ -402,34 +431,8 @@ namespace TweaksFromPigs
             GUI.Label(ToolTipRect, GUI.tooltip, ToolTipStyle);
         }
 
-        public static bool CheckIfThisModIsHereAndUnpatchPrefix(MethodInfo methodInfo, string HarmonyId, bool unpatchThis, HarmonyPatchType patchType = HarmonyPatchType.Prefix)
-        {
-            // https://harmony.pardeike.net/articles/basics.html#checking-for-existing-patches
-
-            // retrieve all patches
-            var patches = Harmony.GetPatchInfo(methodInfo);
-            if (patches is null) return false; // not patched
-
-            // get info about all Prefixes/Postfixes/Transpilers
-            foreach (var patch in patches.Prefixes)
-            {
-                if (patch.owner == HarmonyId)
-                {
-                    Main.Log(HarmonyId + " here", RLogType.Information);
-                    if(unpatchThis)
-                    {
-                        harmony.Unpatch(methodInfo, patchType, HarmonyId);
-                        Main.Log(HarmonyId + " Unpatch !", RLogType.Information);
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
-
         static bool TheseVarHaveChangeValue()
         {
-            if (settings.UnpatchFilteredBros != origUnpatchFilteredBros) return true;
             if (!settings.SetCustomMouse && settings.CustomMouseIsSet) return true;
             return false;
         }
@@ -437,7 +440,7 @@ namespace TweaksFromPigs
         static void FirstLaunch()
         {
             settings.getFirstLaunch = true;
-            settings.MaxFramerate = 10;
+            settings.MaxFramerate = 30;
 
             // Bros addon/fix
             settings.UseFifthBondSpecial = true;
@@ -464,9 +467,14 @@ namespace TweaksFromPigs
             settings.ZombieSpeedModifier = 1.2f;
             // Map
             settings.AcidBarrelSpawnChance = 0.2f;
+            //Menu
+            settings.MaxArcadeLevelEnabled = true;
+            settings.LanguageMenuEnabled = true;
             // other
             settings.EnabledSickPigs = true;
             settings.MechDropDoesFumiginene = true;
+
+            OnSaveGUI(mod);
         }
 
         static void OnHideGUI(UnityModManager.ModEntry modEntry)
@@ -484,24 +492,6 @@ namespace TweaksFromPigs
         {
             enabled = value;
             return true;
-        }
-        public static void Log(object str, RLogType type = RLogType.Log)
-        {
-            if (!RocketLib.ScreenLogger.isSuccessfullyLoad) mod.Logger.Log(str.ToString());
-            else
-            {
-                RocketLib.ScreenLogger.ModId = mod.Info.Id;
-                RocketLib.ScreenLogger.Log(str, type);
-            }
-        }
-        public static void Log(IEnumerable<object> str, RLogType type = RLogType.Log)
-        {
-            if (!RocketLib.ScreenLogger.isSuccessfullyLoad) mod.Logger.Log(str.ToString());
-            else
-            {
-                RocketLib.ScreenLogger.ModId = mod.Info.Id;
-                RocketLib.ScreenLogger.Log(str, type);
-            }
         }
     }
 }

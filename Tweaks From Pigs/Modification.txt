@@ -56,6 +56,6 @@
  	- Fix the cursor for being block in Level Editor
 	- Enabled use the custom arrow from the editor
 	- vSync is turn on when exit App
-	- Unpatch mod that change hero unlock intervals.
+	- Makes mod other compatible.
 	- Custom max framerate
 	- delete save slot

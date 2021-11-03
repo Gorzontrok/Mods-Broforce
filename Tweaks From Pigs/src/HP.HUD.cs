@@ -13,7 +13,7 @@ namespace TweaksFromPigs
     {
         static void Prefix(PlayerHUD __instance)
         {
-            if (!Main.enabled) return;
+            if (!Main.enabled || ( Main.settings.AvatarFaceHugger_Compatibility && Compatibility.AvatarFaceHugger.i.IsEnabled)) return;
             if(Main.settings.ShowFacehuggerHUD)
             {
                 __instance.showFaceHugger = true;
@@ -31,7 +31,7 @@ namespace TweaksFromPigs
     {
         static void Prefix(PlayerHUD __instance)
         {
-            if (!Main.enabled) return;
+            if (!Main.enabled || (Main.settings.SkeletonDeadFace_Compatibility && Compatibility.SkeletonDeadFace.i.IsEnabled)) return;
             if(Main.settings.SkeletonDeadFace)
             {
                 SpriteSM sprite = __instance.avatar.gameObject.GetComponent<SpriteSM>();
@@ -48,7 +48,7 @@ namespace TweaksFromPigs
     {
         static void Prefix(PlayerHUD __instance, HeroType type)
         {
-            if (!Main.enabled) return;
+            if (!Main.enabled || (Main.settings._007Patch_Compatibility && Compatibility._007_Patch.i.IsEnabled)) return;
             if (type == HeroType.DoubleBroSeven && __instance.doubleBroGrenades.Length < 5)
             {
                 Material newIconForTearGas = Material.Instantiate(__instance.rambroIcon);

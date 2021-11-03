@@ -13,7 +13,7 @@ namespace TweaksFromPigs
         static bool Prefix(Map __instance, Block __result, GroundType placeGroundType, int x, int y, ref Block[,] newBlocks, bool addToRegistry = true)
         {
             Ref.map = __instance;
-            if (!Main.enabled) return true;
+            if (!Main.enabled || (Compatibility.MapDataController.i.IsHere && Main.settings.MapDataController_Compatibility)) return true;
             if (Main.settings.UseAcidBarrel)
             {
                 Map.MapData.acidBarrelSpawnProbability = Main.settings.AcidBarrelSpawnChance;

@@ -7,4 +7,12 @@ using UnityEngine;
 
 namespace TweaksFromPigs
 {
+    [HarmonyPatch(typeof(GrenadePrimaryFire), "Launch")]
+    class d
+    {
+        static void Prefix()
+        {
+            //Main.bmod.InformationLog("ddddddd");
+        }
+    }
 }

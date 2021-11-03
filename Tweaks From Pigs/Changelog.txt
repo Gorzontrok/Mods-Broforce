@@ -1,3 +1,7 @@
+v1.0.4 :
+ - Fix max number of Arcade Level
+ - Better compatibility with other mod.
+
 v1.0.3 :
  - You can delete save slot.
  - The number of max level in arcade change depends on your arcade choice.

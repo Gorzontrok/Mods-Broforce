@@ -11,7 +11,7 @@ namespace TweaksFromPigs
     [HarmonyPatch(typeof(TestVanDammeAnim), "AnimatePushing")]
     static class AnimatePushing_Patch
     {
-        public static bool ThisHeroTypePushingBug(HeroType hero)
+        internal static bool ThisHeroTypePushingBug(HeroType hero)
         {
             List<HeroType> heroBuggy = new List<HeroType>() { HeroType.BroneyRoss, HeroType.Blade, HeroType.BronanTheBrobarian, HeroType.Nebro, HeroType.TheBrolander, HeroType.HaleTheBro, HeroType.TheBrode, HeroType.BroveHeart };
             foreach (HeroType heroBug in heroBuggy)
@@ -46,7 +46,7 @@ namespace TweaksFromPigs
     {
         static bool Prefix(TestVanDammeAnim __instance)
         {
-            if (!Main.enabled) return true;
+            if (!Main.enabled || (Main.settings.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled)) return true;
             if(Main.settings.FixExpendabros)
             {
                 if (HeroUnlockController.IsExpendaBro(__instance.heroType)) return false;
@@ -59,7 +59,7 @@ namespace TweaksFromPigs
     {
         static bool Prefix(TestVanDammeAnim __instance)
         {
-            if (!Main.enabled) return true;
+            if (!Main.enabled || (Main.settings.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled)) return true;
             if(Main.settings.FixExpendabros)
             {
                 if (HeroUnlockController.IsExpendaBro(__instance.heroType))
@@ -77,7 +77,7 @@ namespace TweaksFromPigs
     [HarmonyPatch("Update")]
     static class UpdateBrobase_Patch
     {
-        public static float TearGasTime;
+        internal static float TearGasTime;
         static void Postfix(BroBase __instance)
         {
             if (!Main.enabled) return;
@@ -110,25 +110,78 @@ namespace TweaksFromPigs
         static bool Prefix(Map __instance, ref Doodad __result, float x, float y, float range)
         {
             if (!Main.enabled) return true;
-            if(Main.settings.FixHidingInGrass)
+            try
             {
-                Extensions.DrawCircle(x, y, range, Color.magenta, 0f);
-                for (int i = 0; i < Map.grassAndBlood.Count; i++)
+                if (Main.settings.FixHidingInGrass)
                 {
-                    if (i >= 0 && Map.grassAndBlood[i] != null && Map.grassAndBlood[i].SubMergesUnit())
+                    Extensions.DrawCircle(x, y, range, Color.magenta, 0f);
+                    for (int i = 0; i < Map.grassAndBlood.Count; i++)
                     {
-                        if (Mathf.Abs(Map.grassAndBlood[i].centerX - x) <= range + Map.grassAndBlood[i].width / 2f)
+                        if (i >= 0 && Map.grassAndBlood[i] != null && Map.grassAndBlood[i].SubMergesUnit())
                         {
-                            if (Mathf.Abs(Map.grassAndBlood[i].centerY - y) <= range + Map.grassAndBlood[i].height / 2f)
+                            if (Mathf.Abs(Map.grassAndBlood[i].centerX - x) <= range + Map.grassAndBlood[i].width / 2f)
                             {
-                                __result = Map.grassAndBlood[i];
-                                return false;
+                                if (Mathf.Abs(Map.grassAndBlood[i].centerY - y) <= range + Map.grassAndBlood[i].height / 2f)
+                                {
+                                    __result = Map.grassAndBlood[i];
+                                    return false;
+                                }
                             }
                         }
                     }
                 }
             }
+            catch(Exception ex)
+            {
+                Main.bmod.ExceptionLog("Failed to hide player in grass", ex);
+            }
             return true;
         }
     }
+
+    // Remember pocketted special on bro swap.
+    [HarmonyPatch(typeof(Player), "SpawnHero")]
+    class RememberPockettedSpecial_Patch
+    {
+        static List<PockettedSpecialAmmoType> listp = new List<PockettedSpecialAmmoType>();
+        static void Prefix(Player __instance)
+        {
+            if (!Main.enabled) return;
+            if(Main.settings.RememberPockettedSpecial)
+            {
+                try
+                {
+                    if (__instance.character != null && __instance.character.IsAlive())
+                    {
+                        BroBase bro = __instance.character as BroBase;
+                        if (bro)
+                        {
+                            listp = bro.pockettedSpecialAmmo;
+                        }
+                    }
+                }
+                catch (Exception ex) { Main.bmod.ExceptionLog("Failed while remembering pocketted special list.", ex); }
+            }
+        }
+        static void Postfix(Player __instance)
+        {
+            if (!Main.enabled) return;
+            try
+            {
+                if(Main.settings.RememberPockettedSpecial)
+                {
+                    BroBase bro = __instance.character as BroBase;
+                    if (bro)
+                    {
+                        bro.pockettedSpecialAmmo = listp;
+                        Traverse.Create(bro).Method("SetPlayerHUDAmmo").GetValue();
+                        listp = new List<PockettedSpecialAmmoType>();
+                    }
+                }
+            }
+            catch (Exception ex) { Main.bmod.ExceptionLog("Failed while assigne pocketted special list.", ex); }
+        }
+    }
+
+
 }
