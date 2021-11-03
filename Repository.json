@@ -16,6 +16,7 @@
         {"Id": "PigstiniMod", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/Pigstini/Release/PigstiniMod.zip"},
         {"Id": "OnlyPockettedSpecialAmmoMod", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Only%20Pocketted%20Special%20Ammo/Release/OnlyPockettedSpecialAmmoMod.zip"},
         {"Id": "SpooktoberMod", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Spooktober/Release/SpooktoberMod.zip"},
-        {"Id": "MapDataControllerMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/MapDataController/Release/MapDataControllerMod.zip"}
+        {"Id": "MapDataControllerMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/MapDataController/Release/MapDataControllerMod.zip"},
+        {"Id": "TankBroRocketForBrominator", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/TankBroRocketForBrominator/Release/TankBroRocketForBrominator.zip"}
     ]
 }
