@@ -1,4 +1,4 @@
-.vscode/
-.Unreleased/ReplaceRambroWithCasey/src/.vs/
-.Unreleased/ReplaceRambroWithCasey/src/bin/
-.Unreleased/ReplaceRambroWithCasey/src/obj/
+*.vscode/
+*.vs/
+*bin/
+*obj/
