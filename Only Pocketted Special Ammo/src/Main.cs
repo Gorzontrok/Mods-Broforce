@@ -49,7 +49,8 @@ namespace OnlyPockettedSpecialAmmo
 
             try
             {
-                bmod = new BroforceMod(mod, true);
+                bmod = new BroforceMod();
+                bmod.Load(mod);
             }catch(Exception ex) { mod.Logger.Log("Failed to create Broforce Mod\n" + ex.ToString()); }
             return true;
         }

@@ -35,7 +35,8 @@ namespace Pigstini
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
 
-            bmod = new BroforceMod(mod, true);
+            bmod = new BroforceMod(mod);
+            bmod.Load(mod);
 
             return true;
         }
@@ -46,7 +47,7 @@ namespace Pigstini
                 pigstini = (HeroController.GetHeroPrefab(HeroType.DoubleBroSeven) as DoubleBroSeven).martiniGlass;
                 pigstini.gameObject.GetComponent<MeshRenderer>().material.mainTexture = RocketLib.CreateTexFromMat(mod.Path + "pigstini.png", pigstini.gameObject.GetComponent<MeshRenderer>().material);
             }
-            catch (Exception ex) { bmod.ExceptionLog("Failed to create Pistini :(", ex); }
+            catch (Exception ex) { bmod.logger.ExceptionLog("Failed to create Pistini :(", ex); }
         }
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
@@ -76,7 +77,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch(Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch(Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -93,7 +94,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -111,7 +112,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -129,7 +130,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -147,7 +148,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -165,7 +166,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -183,7 +184,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -201,7 +202,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -219,7 +220,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -237,7 +238,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -255,7 +256,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -273,7 +274,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -291,7 +292,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -309,7 +310,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -327,7 +328,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -345,7 +346,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -363,7 +364,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -381,7 +382,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -399,7 +400,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -417,7 +418,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -435,7 +436,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -453,7 +454,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -471,7 +472,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -489,7 +490,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -506,7 +507,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -524,7 +525,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -542,7 +543,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -560,7 +561,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -578,7 +579,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -596,7 +597,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -614,7 +615,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -632,7 +633,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -650,7 +651,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -666,7 +667,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -684,7 +685,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -702,7 +703,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -720,7 +721,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -739,7 +740,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }
@@ -757,7 +758,7 @@ namespace Pigstini
                 return false;
 
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
             return true;
         }
     }

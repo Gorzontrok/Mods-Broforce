@@ -15,6 +15,7 @@ namespace _007_Patch
         public static bool enabled;
         public static Settings settings;
 
+        public static System.Random rng = new System.Random();
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             modEntry.OnToggle = OnToggle;
@@ -41,6 +42,7 @@ namespace _007_Patch
         {
             GUILayout.BeginHorizontal();
             settings.UseWeirdMartini = GUILayout.Toggle(settings.UseWeirdMartini, "Use weird martini behaviour");
+            if(settings.UseWeirdMartini) settings.DoEffect = GUILayout.Toggle(settings.DoEffect, "Do effect while laying on ground");
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
         }
@@ -83,6 +85,7 @@ namespace _007_Patch
     public class Settings : UnityModManager.ModSettings
     {
         public bool UseWeirdMartini;
+        public bool DoEffect;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
@@ -131,6 +134,23 @@ namespace _007_Patch
             return true;
         }
     }
+    [HarmonyPatch(typeof(DoubleBroSeven), "FireWeapon")]
+    static class LessAccurateWhenDrunk_Patch
+    {
+        static bool Prefix(DoubleBroSeven __instance, float x, float y, float xSpeed, float ySpeed)
+        {
+            if (!Main.enabled) return true;
+            if(Traverse.Create(__instance).Field("martinisDrunk").GetValue<int>() > 2)
+            {
+                int randY = Main.rng.Next(-25, 25);
+                __instance.gunSprite.SetLowerLeftPixel((float)(32 * 3), 32f);
+                EffectsController.CreateMuzzleFlashEffect(x, y, -25f, xSpeed * 0.01f, ySpeed * 0.01f, __instance.transform);
+                ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed, ySpeed + randY, __instance.playerNum);
+                return false;
+            }
+            return true;
+        }
+    }
 
     // Patch the icon in the HUD
     [HarmonyPatch(typeof(PlayerHUD), "SetGrenadeMaterials", new Type[] { typeof(HeroType) })]
@@ -138,6 +158,7 @@ namespace _007_Patch
     {
         static void Prefix(PlayerHUD __instance, HeroType type)
         {
+            if (!Main.enabled) return;
             if (type == HeroType.DoubleBroSeven && __instance.doubleBroGrenades.Length < 5)
             {
                 Material newIconForTearGas = Material.Instantiate(__instance.rambroIcon);
@@ -156,9 +177,11 @@ namespace _007_Patch
     {
         static bool Prefix(MartiniGlass __instance)
         {
+            if (!Main.enabled) return true;
             if(Main.settings.UseWeirdMartini)
             {
-                Traverse.Create(__instance).Method("MakeEffects").GetValue();
+                if(Main.settings.DoEffect)
+                    Traverse.Create(__instance).Method("MakeEffects").GetValue();
                 return false;
             }
             return true;

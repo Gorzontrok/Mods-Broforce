@@ -47,9 +47,13 @@ namespace TrophyManager
                 harmony.PatchAll(assembly);
 
                 trophyFolderPath = mod.Path + "Trophy/";
-                CreateTrophy();
 
                 TrophyShower.Load();
+                Trophy.errorTexture = TrophyController.CreateTextureFromPath(Main.trophyFolderPath + "Error.png");
+                Trophy.hideTexture = TrophyController.CreateTextureFromPath(Main.trophyFolderPath + "Hide.png");
+                Trophy.achieveFrame = TrophyController.CreateTextureFromPath(Main.trophyFolderPath + "achieveFrame.png");
+
+                CreateTrophy();
             }
             catch (Exception ex)
             {
@@ -60,15 +64,15 @@ namespace TrophyManager
         }
         static void CreateTrophy()
         {
-            WhoTurnOffTheLight = new Trophy("Who Turn Off The Light ?!", 150, "Decapitate 150 enemies", trophyFolderPath + "WhoTurnOffTheLight.png", trophyFolderPath + "m_WhoTurnOffTheLight.png");
-            ForMURICA = new Trophy("For MURICA !", 1000, "Kill 1000 enemies.", trophyFolderPath + "ForMURICA.png", trophyFolderPath + "m_ForMURICA.png");
-            JesusWillBeProud = new Trophy("Jesus will be proud", 50000, "Kill 50 000 enemies.", trophyFolderPath + "JesusWillBeProud.png", trophyFolderPath + "m_JesusWillBeProud.png");
-            BOOMYouAreNowInvisible = new Trophy("*BOOM* you are now invisible", 1500, "Explode 1500 enemies.", trophyFolderPath + "BOOMYouAreNowInvisible.png", trophyFolderPath + "m_BOOMYouAreNowInvisible.png");
-            Guerrilla = new Trophy("Guerrilla", 50, "Give gun to 50 villagers.", trophyFolderPath + "Guerrilla.png", trophyFolderPath + "m_Guerrilla.png");
-            BeQuiet = new Trophy("Be quiet !", 150, "Assasinate 150 enemies.", trophyFolderPath + "BeQuiet.png", trophyFolderPath + "m_BeQuiet.png");
-            IsThisTheEnd = new Trophy("Is This The End ?", 1, "Kill Satan.", trophyFolderPath + "IsThisTheEnd.png", trophyFolderPath + "m_IsThisTheEnd.png");
-            IThoughtItWasTheEnd = new Trophy("I Thought It Was The End !", 10, "Kill 10 times Satan.", trophyFolderPath + "IThoughtItWasTheEnd.png", trophyFolderPath + "m_IThoughtItWasTheEnd.png");
-            TheLastMeat = new Trophy("The Last Meat", 1, "Make the sandworm alien miniboss swallow a turkey.", trophyFolderPath + "TheLastMeat.png", trophyFolderPath + "m_TheLastMeat.png");
+            WhoTurnOffTheLight = new Trophy("Who Turn Off The Light ?!", 150, settings.DecapitatedCount, "Decapitate 150 enemies", TrophyController.CreateTextureFromPath(trophyFolderPath + "WhoTurnOffTheLight.png"));
+            ForMURICA = new Trophy("For MURICA !", 1000, settings.KillCount, "Kill 1000 enemies.", TrophyController.CreateTextureFromPath(trophyFolderPath + "ForMURICA.png"));
+            JesusWillBeProud = new Trophy("Jesus will be proud", 50000, settings.KillCount, "Kill 50 000 enemies.", TrophyController.CreateTextureFromPath(trophyFolderPath + "JesusWillBeProud.png"));
+            BOOMYouAreNowInvisible = new Trophy("*BOOM* you are now invisible", 1500, settings.ExplodeCount, "Explode 1500 enemies.", TrophyController.CreateTextureFromPath(trophyFolderPath + "BOOMYouAreNowInvisible.png"));
+            Guerrilla = new Trophy("Guerrilla", 50, settings.VillagerArmedCount, "Give gun to 50 villagers.", TrophyController.CreateTextureFromPath(trophyFolderPath + "Guerrilla.png"));
+            BeQuiet = new Trophy("Be quiet !", 150, settings.AssasinationCount, "Assassinate 150 enemies.", TrophyController.CreateTextureFromPath(trophyFolderPath + "BeQuiet.png"));
+            IsThisTheEnd = new Trophy("Is This The End ?", 1, settings.SatanFinalBossKill, "Kill Satan.", TrophyController.CreateTextureFromPath(trophyFolderPath + "IsThisTheEnd.png"));
+            IThoughtItWasTheEnd = new Trophy("I Thought It Was The End !", 10,settings.SatanFinalBossKill, "Kill 10 times Satan.", TrophyController.CreateTextureFromPath(trophyFolderPath + "IThoughtItWasTheEnd.png"));
+            TheLastMeat = new Trophy("The Last Meat", 1, settings.SwallowAlienCount, "Make the Sandworm alien Miniboss swallow a turkey.", TrophyController.CreateTextureFromPath(trophyFolderPath + "TheLastMeat.png"));
             //DoorKill = new Trophy("D-D-D-DOOR KILL !", 1, "Kill Someone with a door", trophyFolderPath + "DoorKill.png", trophyFolderPath + "m_DoorKill.png");
            // DoYouLikeMyMuscle = new Trophy("Do you like my muscle ?", 50, "Make 50 enemies blind.", trophyFolderPath + "DoYouLikeMyMuscle.png", trophyFolderPath + "m_DoYouLikeMyMuscle.png");
         }
@@ -92,7 +96,7 @@ namespace TrophyManager
             //Swallow
             TheLastMeat.UpdateProgression(settings.SwallowAlienCount);
         }
-
+        private static Vector2 scrollViewVector;
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
             //Bold the name of the trophy
@@ -107,21 +111,26 @@ namespace TrophyManager
                 ResetTrophy();//Like the function doesn't work, he doesn't work either
             }
             settings.Notif = GUILayout.Toggle(settings.Notif, "Screen Notification");
+            settings.LockedTrophyDontHaveImage = GUILayout.Toggle(settings.LockedTrophyDontHaveImage, "No image when locked");
             GUILayout.EndHorizontal();
 
             try
             {       //Draw automatically all of the trophy
-                foreach(Trophy trophy in TrophyController.AllTrophyList)
+                scrollViewVector = GUILayout.BeginScrollView(scrollViewVector, GUILayout.Height(500));
+                foreach (Trophy trophy in TrophyController.AllTrophyList)
                 {
                     GUILayout.BeginHorizontal("box");
                     GUILayout.Space(10);
-                    GUILayout.Label(trophy.ImageTex, GUILayout.Width(86), GUILayout.Height(86)); // Show the image of the trophy
+                    //var rect = GUILayoutUtility.GetLastRect();
+                    GUILayout.Label(trophy.TrophyTex, GUILayout.Width(86), GUILayout.Height(86)); // Show the image of the trophy
+                    //GUI.Label(rect, doneTrophy);
                     GUILayout.BeginVertical();
                     GUILayout.TextField(trophy.Name, styleT_Name);// Show the name of the Trophy
                     GUILayout.TextArea(trophy.Description + "\n\nProgression : " + trophy.IntToShow() + "/" + trophy.Objective, GUILayout.ExpandWidth(true));// Show the progression in the description field
                     GUILayout.EndVertical();
                     GUILayout.EndHorizontal();
                 }
+                GUILayout.EndScrollView();
             }
             catch (Exception ex)
             {
@@ -147,7 +156,6 @@ namespace TrophyManager
 
         private static void ResetTrophy() //Doesn't work anymore
         {
-            TrophyController.Reset();
             settings.DecapitatedCount = 0;
             settings.BlindCount = 0;
             settings.ExplodeCount = 0;
@@ -158,6 +166,7 @@ namespace TrophyManager
             settings.ShieldThrowCount = 0;
             settings.RecoverFromInseminationCount = 0;
             settings.AssasinationCount = 0;
+            TrophyController.Reset();
         }
     }
 
@@ -165,7 +174,7 @@ namespace TrophyManager
     public class Settings : UnityModManager.ModSettings
     {
         public bool Notif;
-        public bool LockTrophyDontHaveImage;
+        public bool LockedTrophyDontHaveImage;
         // Count for Trophy
         public int DecapitatedCount = 0;
         public int BlindCount = 0;

@@ -12,6 +12,9 @@ public class TrophyShower : MonoBehaviour
 
     internal static Dictionary<Texture, string> redeem = new Dictionary<Texture, string>();
 
+    private static List<Trophy> showedTrophy = new List<Trophy>();
+    private static List<Trophy> waitingTrophy = new List<Trophy>();
+
     internal static bool Load()
     {
         try
@@ -31,6 +34,7 @@ public class TrophyShower : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(this);
+        trophyStyle.normal.textColor = new Color(1f, 0.701f, 0.101f); // "gold" color
     }
     void OnDestroy()
     {
@@ -44,8 +48,8 @@ public class TrophyShower : MonoBehaviour
         }
         else
         {
-            redeem.Remove(redeem.Keys.First());
-            timeRemaining = 10;
+            waitingTrophy.Remove(waitingTrophy.First());
+            timeRemaining = 5;
         }
     }
 
@@ -53,23 +57,23 @@ public class TrophyShower : MonoBehaviour
     {
         if (Main.settings.Notif)
         {
-            trophyStyle.normal.textColor = new Color(1f, 0.701f, 0.101f); // "gold" color
 
-            foreach (KeyValuePair<Texture, string> obj in redeem)
-            {
+            /* foreach (KeyValuePair<Texture, string> obj in redeem)
+             {*/
+            Trophy trophy = waitingTrophy.First();
                 GUILayout.Space(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height-400);
                 GUILayout.BeginHorizontal("box");
-                GUILayout.Label(obj.Key);
-                GUILayout.Label("\n\n" + obj.Value, trophyStyle, GUILayout.ExpandWidth(true));
+                GUILayout.Label(trophy.TrophyTex);
+                GUILayout.Label("\n\n" + trophy.Name, trophyStyle, GUILayout.ExpandWidth(true));
                 GUILayout.EndHorizontal();
                 //Main.Log(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height.ToString());
-            }
+           // }
         }
     }
 
-    internal static void AddRedeem(Texture image, string Name)
+    internal static void AddRedeem(Trophy trophy)
     {
-        redeem.Add(image, Name);
+        waitingTrophy.Add(trophy);
     }
 
 }

@@ -29,7 +29,7 @@ namespace Surprise
     {
         static void Postfix(MookSuicide __instance)
         {
-            __instance.range = 100f;
+            __instance.range = 60;
             __instance.blastForce = 100f;
 
             __instance.speed = 150f;

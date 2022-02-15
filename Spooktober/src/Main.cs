@@ -38,7 +38,8 @@ namespace SpooktoberMod
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
 
-            bmod = new BroforceMod(mod); ;
+            bmod = new BroforceMod(mod);
+            bmod.Load(mod);
 
             return true;
         }
@@ -208,7 +209,7 @@ namespace SpooktoberMod
                 }
 
                 __instance.DoodadList = new List<DoodadInfo>(DoodadInfoList);
-            }catch(Exception ex) { Main.bmod.ExceptionLog(ex); }
+            }catch(Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
     [HarmonyPatch(typeof(TestVanDammeAnim), "GetFootPoofColor")]

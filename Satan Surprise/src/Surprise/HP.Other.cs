@@ -28,7 +28,7 @@ namespace Surprise
     {
         static void Prefix(BarrelBlock __instance)
         {
-            __instance.range = 80f;
+            __instance.range = 60f;
             //__instance.delayExplosionTime = 0.12f;
             if(Main.HardMode)
             {
@@ -43,7 +43,7 @@ namespace Surprise
     {
         static void Prefix(PropaneBlock __instance)
         {
-            __instance.range = 80f;
+            __instance.range = 60f;
             __instance.delayExplosionTime = 1.0f;
             //__instance.dropDirt = false; do nothing
             if(Main.HardMode)
@@ -65,20 +65,13 @@ namespace Surprise
             {
                 return false;
             }
-            SpatialSound component = __instance.GetComponent<SpatialSound>();
-            if (component)
-            {
-                component.Play();
-            }
             StatisticsController.NotifyCaptureCheckPoint();
 
-            __instance.activated = false;
+            __instance.activated = true;
             __instance.flag.gameObject.SetActive(false);
 
             if (isFinal || !Main.HardMode)
             {
-                Main.Log("Checkpoint");
-                __instance.activated = true;
                 __instance.flag.gameObject.SetActive(true);
                 HeroController.SetCheckPoint(new Vector2(__instance.transform.position.x, __instance.transform.position.y + 16f), __instance.checkPointID);
             }
@@ -94,11 +87,6 @@ namespace Surprise
                     Networking.Networking.RPC<Vector2, float>(PID.TargetAll, new RpcSignature<Vector2, float>(Map.newestHelicopter.Enter), new Vector2(__instance.X - 10f, __instance.Y), 0f, false);
                 }
             }
-            if (__instance.flagRaiseAudioClip != null)
-            {
-                Sound.GetInstance().PlaySoundEffectAt(__instance.flagRaiseAudioClip, 0.6f, __instance.transform.position, 1f, true, false, false, 0f);
-            }
-            
 
             return false;
         }
@@ -113,6 +101,54 @@ namespace Surprise
             if (isFinal || Main.HardMode) return false;
 
             return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(SuperCheckpoint), "ActivateInternal")]
+    static class SuperCheckpointtWork_Patch
+    {
+        static bool Prefix(SuperCheckpoint __instance)
+        {
+            if (__instance.activated)
+            {
+                return false;
+            }
+            Traverse.Create(typeof(HeroController)).Method("GiveAllLifelessPlayersALife").GetValue();
+            StatisticsController.NotifyCaptureCheckPoint();
+
+            __instance.activated = true;
+            __instance.flag.gameObject.SetActive(false);
+
+            __instance.flag.gameObject.SetActive(true);
+            HeroController.SetCheckPoint(new Vector2(__instance.transform.position.x, __instance.transform.position.y + 16f), __instance.checkPointID);
+            if (Traverse.Create(__instance).Field("isFinal").GetValue<bool>())
+            {
+                if (Map.MapData.theme == LevelTheme.Hell)
+                {
+                    Map.CreateExitPortal(new Vector2(__instance.X, __instance.Y));
+                }
+                else
+                {
+                    Networking.Networking.RPC<Vector2, float>(PID.TargetAll, new RpcSignature<Vector2, float>(Map.newestHelicopter.Enter), new Vector2(__instance.X - 10f, __instance.Y), 0f, false);
+                }
+            }
+
+            if (!LevelEditorGUI.levelEditorActive)
+            {
+                if (__instance.horizontal)
+                {
+                    Map.SetStartFromHorizontalSuperCheckPoint(Map.GetCollumn(__instance.X) + Map.lastXLoadOffset - 6);
+                }
+                if (__instance.vertical)
+                {
+                    Map.SetStartFromVerticalSuperCheckPoint(Map.GetRow(__instance.Y) + Map.lastYLoadOffset - 5);
+                }
+                Map.superCheckpointStartPos.c = Map.GetCollumn(__instance.X) + Map.lastXLoadOffset - Map.nextXLoadOffset;
+                Map.superCheckpointStartPos.r = Map.GetCollumn(__instance.Y) + Map.lastYLoadOffset - Map.nextYLoadOffset;
+                StatisticsController.CacheStats();
+            }
+
+            return false;
         }
     }
 

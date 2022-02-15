@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 using TrophyManager;
 
@@ -12,11 +13,6 @@ public class TrophyController
         {
             return __AllTrophyList;
         }
-    }
-
-    public static void UpdateTrophyValue(Trophy trophy)
-    {
-        __AllTrophyList[__AllTrophyList.FindIndex(ind => ind.Name.Equals(trophy.Name))] = trophy;
     }
 
     public static void AddTrophy(Trophy trophy)
@@ -38,21 +34,29 @@ public class TrophyController
 
     internal static void Reset()
     {
-        List<Trophy> temp = __AllTrophyList;
-        foreach (Trophy trophy in temp)
+        foreach (Trophy trophy in __AllTrophyList)
         {
             trophy.Reset();
-            UpdateTrophyValue(trophy);
         }
     }
 
     internal static void CheckIsDone()
     {
-        List<Trophy> temp = __AllTrophyList;
-        foreach (Trophy trophy in temp)
+        foreach (Trophy trophy in __AllTrophyList)
         {
             trophy.CheckIsDone();
-            UpdateTrophyValue(trophy);
         }
+    }
+
+    public static Texture2D CreateTextureFromPath(string path)
+    {
+        if(System.IO.File.Exists(path))
+        {
+            Texture2D tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
+            tex.wrapMode = TextureWrapMode.Clamp;
+            tex.LoadImage(System.IO.File.ReadAllBytes(path));
+            return tex;
+        }
+        return null;
     }
 }

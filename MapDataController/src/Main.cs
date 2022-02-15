@@ -18,28 +18,30 @@ namespace MapDataController
         internal static BroforceMod bmod;
 
         internal static AmbienceType[] AmbiencesType = { AmbienceType.Auto, AmbienceType.AlienCave, AmbienceType.BurningJungle, AmbienceType.Cave, AmbienceType.City, AmbienceType.HeavyRain, AmbienceType.Hell, AmbienceType.HellFire, AmbienceType.Jungle, AmbienceType.NoChange, AmbienceType.None, AmbienceType.Rain };
-        internal static List<object> AmbiencesTypeList = new List<object>();
+        internal static List<string> AmbiencesTypeList = new List<string>();
 
         internal static CameraFollowMode[] CameraFollowModes = { CameraFollowMode.Normal, CameraFollowMode.DescendInStages, CameraFollowMode.ForcedDescent, CameraFollowMode.ForcedHorizontal, CameraFollowMode.ForcedVertical, CameraFollowMode.Horizontal, CameraFollowMode.MapExtents, CameraFollowMode.MapWidth, CameraFollowMode.NoChange, CameraFollowMode.PanUpward, CameraFollowMode.SingleScreen, CameraFollowMode.Vertical, CameraFollowMode.Zoom };
-        internal static List<object> CameraFollowModesList = new List<object>();
+        internal static List<string> CameraFollowModesList = new List<string>();
 
-        internal static List<object> HeroTypeListObj = new List<object>();
+        internal static List<string> HeroTypeListObj = new List<string>();
         internal static List<HeroType> HeroTypeList = new List<HeroType>();
 
         internal static HeroSpawnMode[] HeroSpawnModes = { HeroSpawnMode.Auto, HeroSpawnMode.Helicopter, HeroSpawnMode.Portal, HeroSpawnMode.SpawnPoint, HeroSpawnMode.Truck };
-        internal static List<object> HeroSpawnModesList = new List<object>();
+        internal static List<string> HeroSpawnModesList = new List<string>();
 
         internal static MusicType[] MusicTypes = { MusicType.Default, MusicType.Alien,  MusicType.Bossfight, MusicType.BroforceDrums, MusicType.Factory, MusicType.Hell, MusicType.IntensityTest, MusicType.JungleBlueSky, MusicType.JungleRedSky, MusicType.Silence };
-        internal static List<object> MusicTypesList = new List<object>();
+        internal static List<string> MusicTypesList = new List<string>();
 
         internal static LevelTheme[] LevelThemes = { LevelTheme.Forest, LevelTheme.Jungle, LevelTheme.BurningJungle, LevelTheme.City, LevelTheme.Hell, LevelTheme.America };
-        internal static List<object> LevelThemeList = new List<object>();
+        internal static List<string> LevelThemeList = new List<string>();
 
         internal static WeatherType[] WeatherTypes = { WeatherType.Day, WeatherType.NoChange, WeatherType.DampCave, WeatherType.Burning, WeatherType.Evil, WeatherType.Night, WeatherType.Overcast, WeatherType.None };
-        internal static List<object> WeatherTypesList = new List<object>();
+        internal static List<string> WeatherTypesList = new List<string>();
 
         private static GUIStyle LabelStyle = new GUIStyle();
         internal static GUIStyle ActiveStateStyle = new GUIStyle("toggle");
+
+        private static IsThisMod UtilityMod = new IsThisMod("Utility Mod");
 
         private static Texture2D GreenTexture;
         private static Texture2D LightGreenTexture;
@@ -69,12 +71,15 @@ namespace MapDataController
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
 
-            foreach (AmbienceType i in AmbiencesType) AmbiencesTypeList.Add(i);
-            foreach (CameraFollowMode i in CameraFollowModes) CameraFollowModesList.Add(i);
-            foreach (HeroSpawnMode i in HeroSpawnModes) HeroSpawnModesList.Add(i);
-            foreach (MusicType i in MusicTypes) MusicTypesList.Add(i);
-            foreach (LevelTheme i in LevelThemes) LevelThemeList.Add(i);
-            foreach (WeatherType i in WeatherTypes) WeatherTypesList.Add(i);
+            bmod = new BroforceMod(mod);
+            bmod.Load(mod);
+
+            foreach (AmbienceType i in AmbiencesType) AmbiencesTypeList.Add(i.ToString());
+            foreach (CameraFollowMode i in CameraFollowModes) CameraFollowModesList.Add(i.ToString());
+            foreach (HeroSpawnMode i in HeroSpawnModes) HeroSpawnModesList.Add(i.ToString());
+            foreach (MusicType i in MusicTypes) MusicTypesList.Add(i.ToString());
+            foreach (LevelTheme i in LevelThemes) LevelThemeList.Add(i.ToString());
+            foreach (WeatherType i in WeatherTypes) WeatherTypesList.Add(i.ToString());
 
             HeroTypeList = new List<HeroType>(RocketLib._HeroUnlockController.HeroTypeFullList);
             HeroTypeList.Insert(0, HeroType.Random);
@@ -101,7 +106,6 @@ namespace MapDataController
             ActiveStateStyle.active.background = OrangeTexture;*/
 
 
-            bmod = new BroforceMod(mod);
 
             return true;
         }
@@ -272,26 +276,28 @@ namespace MapDataController
             return bActive;
         }
 
-        private static bool GUIList(bool bActive, int value, string name, List<object> list, out int rValue)
+        private static bool GUIList(bool bActive, int value, string name, List<string> list, out int rValue)
         {
-            var ActiveStateStyle = new GUIStyle("toggle");
-            ActiveStateStyle.normal.background = RedTexture;
-            ActiveStateStyle.hover.background = LightRedTexture;
-            ActiveStateStyle.onNormal.background = GreenTexture;
-            ActiveStateStyle.onHover.background = LightGreenTexture;
-            ActiveStateStyle.onActive.background = OrangeTexture;
-            ActiveStateStyle.active.background = OrangeTexture;
+                var ActiveStateStyle = new GUIStyle("toggle");
+                ActiveStateStyle.normal.background = RedTexture;
+                ActiveStateStyle.hover.background = LightRedTexture;
+                ActiveStateStyle.onNormal.background = GreenTexture;
+                ActiveStateStyle.onHover.background = LightGreenTexture;
+                ActiveStateStyle.onActive.background = OrangeTexture;
+                ActiveStateStyle.active.background = OrangeTexture;
+            try
+            {
+                GUILayout.BeginHorizontal();
+                bActive = GUILayout.Toggle(bActive, "", ActiveStateStyle);
+                GUILayout.Label(name, GUILayout.Width(150));
+                value = RocketLib.RGUI.ArrowList(list.ToArray(), value, 200);
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+                GUILayout.Space(5);
 
-            GUILayout.BeginHorizontal();
-            bActive = GUILayout.Toggle(bActive, "", ActiveStateStyle);
-            GUILayout.Label(name, GUILayout.Width(150));
-            value = RocketLib.RGUI.ArrowList(list, value, 200);
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.Space(5);
+            }catch(Exception ex) { bmod.logger.ExceptionLog(ex); }
 
             rValue = value;
-
             return bActive;
         }
 
@@ -383,7 +389,7 @@ namespace MapDataController
 
                 __instance = mapData;
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
 }
