@@ -1,4 +1,5 @@
 # Broforce Mods
+
  Here's my mods for Broforce.  
  The `.img/` folder are just for showcase image. And are not in the zip mod.  
  The `Release/` folder are the latest release and the update of the mods.
@@ -10,25 +11,27 @@
 
  Contact : Gorzon#4430
 
-## Mods :
- * All ? :
-    * [Tweaks From Pigs](Tweak%20From%20Pigs/)
- * Enemies :
-    * [Satan Surprise](Satan%20Surprise/)
-    * [Spooktober](Spooktober/)
- * Bro Spawn : 
-    * [Filtered Bros](Filtered%20Bros/)
-    * [ForBralef](ForBralef/) 
- * Map :
-    * [Map Data Controller](MapDataController/) 
-    * [Spooktober](Spooktober/)
- * Other :
-    * [RocketLib](RocketLib/)
-    * [Trophy Manager](Trophy%20Manager/)
- * Special :
-    * [Only Pocketted Special Ammo](Only%20Pocketted%20Special%20Ammo/)
+## Mods
 
-## Installation :
+* All ? :
+  * [Tweaks From Pigs](Tweak%20From%20Pigs/)
+* Enemies :
+  * [Satan Surprise](Satan%20Surprise/)
+  * [Spooktober](Spooktober/)
+* Bro Spawn :
+  * [Filtered Bros](Filtered%20Bros/)
+  * [ForBralef](ForBralef/)
+* Map :
+  * [Map Data Controller](MapDataController/)
+  * [Spooktober](Spooktober/)
+* Other :
+  * [RocketLib](RocketLib/)
+  * [Trophy Manager](Trophy%20Manager/)
+* Special :
+  * [Only Pocketted Special Ammo](Only%20Pocketted%20Special%20Ammo/)
+
+## Installation
+
 All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
 The installation guide can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2434812447).  
 
@@ -36,7 +39,8 @@ The installation guide can be found [here](https://steamcommunity.com/sharedfile
 Tout les mods ont besoin de [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
 Le guide d'installation est [ici](https://steamcommunity.com/sharedfiles/filedetails/?id=2489196482).
 
-## Modding :
+## Modding
+
 If you are looking for how to made mod. I recommend you to see the [template of alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods)  
   
 **Français :**  
