@@ -18,6 +18,7 @@
         {"Id": "SpooktoberMod", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Spooktober/Release/SpooktoberMod.zip"},
         {"Id": "MapDataControllerMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/MapDataController/Release/MapDataControllerMod.zip"},
         {"Id": "TankBroRocketForBrominator", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/TankBroRocketForBrominator/Release/TankBroRocketForBrominator.zip"},
-        {"Id": "Proc_Gen_Mod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/Proc_Gen_Mod/Release/Proc_Gen_Mod.zip"}
+        {"Id": "Proc_Gen_Mod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/Proc_Gen_Mod/Release/Proc_Gen_Mod.zip"},
+        {"Id": "ReplaceRambroWithCasey", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/ReplaceRambroWithCasey/Release/ReplaceRambroWithCasey.zip"}
     ]
 }
