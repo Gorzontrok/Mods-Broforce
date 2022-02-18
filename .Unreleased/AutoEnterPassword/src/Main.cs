@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Reflection;
+using System.Collections.Generic;
+using System.Linq;
+using RocketLib0;
 using HarmonyLib;
 using UnityEngine;
 using UnityModManagerNet;
 
 namespace AutoEnterPassword
 {
-    class Main
+    static class Main
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
         public static Settings settings;
-
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
@@ -19,18 +21,19 @@ namespace AutoEnterPassword
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
             settings = Settings.Load<Settings>(modEntry);
+            mod = modEntry;
+
             var harmony = new Harmony(modEntry.Info.Id);
             try
             {
-                var assembly = Assembly.GetExecutingAssembly();
-                harmony.PatchAll(assembly);
+                var myAssembly = Assembly.GetExecutingAssembly();
+                harmony.PatchAll(myAssembly);
             }
             catch (Exception ex)
             {
-                mod.Logger.Log(ex.ToString());
+                mod.Logger.Log("Fail\n" +ex.ToString());
             }
 
-            mod = modEntry;
 
             try { AutoLoad(); } catch (Exception ex) { Main.Log("Failed to AutoLoad the cheats !\n" + ex); }
 
@@ -41,67 +44,57 @@ namespace AutoEnterPassword
         {
             GUILayout.BeginHorizontal();
 
+            settings.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay = InGamePasswordGUI(settings.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay, "IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay", Cheats.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay);
+
+            settings.alaskanpipeline = InGamePasswordGUI(settings.alaskanpipeline, "alaskanpipeline", Cheats.alaskanpipeline);
+
+            settings.seagull = InGamePasswordGUI(settings.seagull, "seagull", Cheats.seagull);
+
+            settings.mranderbro = InGamePasswordGUI(settings.mranderbro, "mranderbro", Cheats.mranderbro);
+
+            settings.abrahamlincoln = InGamePasswordGUI(settings.abrahamlincoln, "abrahamlincoln", Cheats.abrahamlincoln);
+
+            settings.smokinggun = InGamePasswordGUI(settings.smokinggun, "smokinggun", Cheats.smokinggun);
+
+            settings.iloveamerica = InGamePasswordGUI(settings.iloveamerica, "iloveamerica", Cheats.iloveamerica);
+
+            GUILayout.EndHorizontal();
+
+            if(GamePasswordController.GamePasswords.Count > 0)
+            {
+                GUILayout.Label("RocketLib Password :");
+            }
+            for (int i = 0; i < GamePasswordController.GamePasswords.Count; i++)
+            {
+                if(i == 0)
+                {
+                    GUILayout.BeginHorizontal();
+                }
+                if (GUILayout.Button(GamePasswordController.GamePasswords[i].password, GUILayout.ExpandWidth(false)))
+                {
+                    GamePasswordController.GamePasswords[i].action();
+                }
+                if (i % 5 == 0 || i == GamePasswordController.GamePasswords.Count)
+                {
+                    GUILayout.EndHorizontal();
+                }
+            }
+        }
+
+        static bool InGamePasswordGUI(bool active, string text, Action action)
+        {
             GUILayout.BeginVertical();
-            if (GUILayout.Button("IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay"))
-                Cheats.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay();
+            if (GUILayout.Button(text))
+            {
+                action();
+            }
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            settings.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay = GUILayout.Toggle(settings.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay, "AutoLoad");
+            active = GUILayout.Toggle(active, "AutoLoad");
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            if (GUILayout.Button("alaskanpipeline"))
-                Cheats.alaskanpipeline();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            settings.alaskanpipeline = GUILayout.Toggle(settings.alaskanpipeline, "AutoLoad");
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            if (GUILayout.Button("seagull"))
-                Cheats.seagull();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            settings.seagull = GUILayout.Toggle(settings.seagull, "AutoLoad");
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            if (GUILayout.Button("mranderbro"))
-                Cheats.mranderbro();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            settings.mranderbro = GUILayout.Toggle(settings.mranderbro, "AutoLoad");
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            if (GUILayout.Button("abrahamlincoln"))
-                Cheats.abrahamlincoln();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            settings.abrahamlincoln = GUILayout.Toggle(settings.abrahamlincoln, "AutoLoad");
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-
-            GUILayout.BeginVertical();
-            if (GUILayout.Button("smokinggun"))
-                Cheats.smokinggun();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            settings.smokinggun = GUILayout.Toggle(settings.smokinggun, "AutoLoad");
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-
-            GUILayout.EndHorizontal();
+            return active;
         }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
@@ -139,6 +132,9 @@ namespace AutoEnterPassword
 
             if (settings.smokinggun)
                 Cheats.smokinggun();
+
+            if (settings.iloveamerica)
+                Cheats.iloveamerica();
         }
     }
 
@@ -179,6 +175,14 @@ namespace AutoEnterPassword
             Main.Log("'smokinggun' loaded !");
         }
 
+        public static void iloveamerica()
+        {
+            HeroUnlockController.UnlockAllBros();
+            WorldTerritory3D.allTerritoriesCheat = true;
+            PlayerProgress.Save(true);
+            Main.Log("'iloveamerica' loaded !");
+        }
+
     }
     public class Settings : UnityModManager.ModSettings
     {
@@ -188,6 +192,7 @@ namespace AutoEnterPassword
         public bool mranderbro;
         public bool abrahamlincoln;
         public bool smokinggun;
+        public bool iloveamerica;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
