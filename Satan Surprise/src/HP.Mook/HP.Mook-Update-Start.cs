@@ -14,7 +14,7 @@ namespace Surprise
         static void Postfix(Mook __instance)
         {
 
-            if (Main.HardMode)
+            if (Main.HardMode && Main.enabled)
             {
                 __instance.canBeAssasinated = false;
                 __instance.willPanicWhenOnFire = false;
@@ -29,6 +29,7 @@ namespace Surprise
     {
         static void Postfix(MookSuicide __instance)
         {
+            if (!Main.enabled) return;
             __instance.range = 60;
             __instance.blastForce = 100f;
 
@@ -50,6 +51,7 @@ namespace Surprise
         public static Material normalDog;
         static void Postfix(MookDog __instance)
         {
+            if (!Main.enabled) return;
             __instance.awareMegaRunSpeed = 190f;
             __instance.awareRunSpeed = 175;
 
@@ -81,7 +83,7 @@ namespace Surprise
                     spriteOffset.y = sprite.offset.y;
                     sprite.SetLowerLeftPixel((float)(15 * spritePixelWidth), (float)(spritePixelHeight * 2));*/
                 }
-                
+
             }
         }
     }
@@ -92,6 +94,7 @@ namespace Surprise
     {
         static void Postfix(MookBigGuy __instance)
         {
+            if (!Main.enabled) return;
             //__instance.health = 75;
             __instance.willPanicWhenOnFire = false;
             __instance.canBeCoveredInAcid = false;
@@ -115,6 +118,7 @@ namespace Surprise
     {
         static void Postfix(MookGrenadier __instance)
         {
+            if (!Main.enabled) return;
             if (Main.HardMode)
             {
                 __instance.canBeAssasinated = false;
@@ -130,6 +134,7 @@ namespace Surprise
     {
         static void Postfix(Satan __instance)
         {
+            if (!Main.enabled) return;
             __instance.health = 300000;
             __instance.canBeAssasinated = false;
             __instance.willPanicWhenOnFire = false;
@@ -153,6 +158,7 @@ namespace Surprise
     {
         static void Postfix(DrillCarrier __instance)
         {
+            if (!Main.enabled) return;
             __instance.health = 100;
             __instance.tankSpeed = 150;
             __instance.mooksToSpawn = 15;
@@ -165,6 +171,7 @@ namespace Surprise
     {
         static void Postfix(MookTruck __instance)
         {
+            if (!Main.enabled) return;
             __instance.health = 100;
             __instance.tankSpeed = 150;
             __instance.mooksToSpawn = 15;
@@ -182,6 +189,7 @@ namespace Surprise
     {
         static void Postfix(MookDoor __instance)
         {
+            if (!Main.enabled) return;
             __instance.maxMookCount = 5;
             __instance.maxMooksOnCollapse = 15;
             __instance.maxAlarmedMooksCount = 10;
@@ -201,6 +209,7 @@ namespace Surprise
     {
         static void Postfix(MookDoorSliding __instance)
         {
+            if (!Main.enabled) return;
             __instance.maxMookCount = 5;
             __instance.maxMooksOnCollapse = 15;
             __instance.maxAlarmedMooksCount = 10;
@@ -220,7 +229,7 @@ namespace Surprise
     {
         static void Postfix(MookRiotShield __instance)
         {
-            if (Main.HardMode)
+            if (Main.HardMode && Main.enabled)
             {
                 __instance.canBeAssasinated = false;
                 __instance.willPanicWhenOnFire = false;
@@ -235,6 +244,7 @@ namespace Surprise
     {
         static void Postfix(ScoutMook __instance)
         {
+            if (!Main.enabled) return;
             __instance.runSpeed = 175f;
         }
     }
@@ -243,6 +253,7 @@ namespace Surprise
     {
         static void Postfix(ScoutMook __instance)
         {
+            if (!Main.enabled) return;
             __instance.runSpeed = 175f;
             __instance.health = 10;
             __instance.hearingRangeX = 450;
@@ -265,6 +276,7 @@ namespace Surprise
     {
         static void Postfix(MookJetpack __instance)
         {
+            if (!Main.enabled) return;
             __instance.speed = 80;
             __instance.fireRate = 0.05f;
             __instance.explosionRange = 70;
@@ -286,6 +298,7 @@ namespace Surprise
     {
         static void Postfix(DolphLundrenSoldier __instance)
         {
+            if (!Main.enabled) return;
             __instance.health = 200;
             __instance.healthReviveAmount = 200;
             __instance.speed = 110;
@@ -310,6 +323,7 @@ namespace Surprise
         static MookopterPolyAI mkpAI;
         static void Postfix(Mookopter __instance)
         {
+            if (!Main.enabled) return;
             __instance.health = 300;
             __instance.verticalSpeed = 200;
             __instance.tankSpeed = 150;
@@ -329,6 +343,7 @@ namespace Surprise
     {
         static void Postfix(TankBig __instance)
         {
+            if (!Main.enabled) return;
             __instance.health = 500;
             __instance.tankSpeed = 80;
 
@@ -345,6 +360,7 @@ namespace Surprise
     {
         static void Postfix(MookArmouredGuy __instance)
         {
+            if (!Main.enabled) return;
             __instance.health = 50;
             __instance.speed = 15;
             try
@@ -356,7 +372,7 @@ namespace Surprise
             {
                 Main.Log(ex);
             }
-            
+
         }
     }
 
@@ -366,6 +382,7 @@ namespace Surprise
     {
         static void Postfix(MammothKopter __instance)
         {
+            if (!Main.enabled) return;
             __instance.health = 12000;
             __instance.tankSpeed = 110;
             __instance.verticalSpeed = 110;

@@ -13,12 +13,13 @@ namespace Surprise
     {
         static void Prefix(Mine __instance)
         {
+            if (!Main.enabled) return;
             try
             {
                 Traverse.Create(typeof(Mine)).Field("detonationTime").SetValue(0f);
                 Traverse.Create(typeof(Mine)).Field("range").SetValue(80f);
             }catch(Exception ex) { Main.Log(ex); }
-            
+
         }
     }
 
@@ -28,21 +29,23 @@ namespace Surprise
     {
         static void Prefix(BarrelBlock __instance)
         {
+            if (!Main.enabled) return;
             __instance.range = 60f;
             //__instance.delayExplosionTime = 0.12f;
-            if(Main.HardMode)
+            if (Main.HardMode)
             {
                 __instance.delayExplosionTime = 0f;
             }
         }
     }
-    
+
     // Patch Propane
     [HarmonyPatch(typeof(PropaneBlock), "Update")]
     static class PropaneBlock_Update_Patch
     {
         static void Prefix(PropaneBlock __instance)
         {
+            if (!Main.enabled) return;
             __instance.range = 60f;
             __instance.delayExplosionTime = 1.0f;
             //__instance.dropDirt = false; do nothing
@@ -59,6 +62,7 @@ namespace Surprise
     {
         static bool Prefix(CheckPoint __instance)
         {
+            if (!Main.enabled) return true;
             bool isFinal = Traverse.Create(__instance).Field("isFinal").GetValue<bool>();
 
             if (__instance.activated)
@@ -96,6 +100,7 @@ namespace Surprise
     {
         static bool Prefix(CheckPoint __instance)
         {
+            if (!Main.enabled) return true;
             bool isFinal = Traverse.Create(__instance).Field("isFinal").GetValue<bool>();
 
             if (isFinal || Main.HardMode) return false;
@@ -187,7 +192,7 @@ namespace Surprise
                         Villager villager2 = villager[UnityEngine.Random.Range(0, max)] as Villager;
                         if (villager2 != null)
                         {
-                            MapController.SpawnVillager_Networked(villager2, x + ((float)j - 1.5f) * 32f, num + UnityEngine.Random.value * 8f, (float)UnityEngine.Random.Range(-1, 2), 0f, false, false, true, false, false);
+                            MapController.SpawnVillager_Networked(villager2, x + ((float)j - 1.5f) * 32f, num + UnityEngine.Random.value * 8f, (float)UnityEngine.Random.Range(-1, 2), 0f, false, false, true, false, false, 1);
                         }
                     }
                     Traverse.Create(__instance).Field("calledVillagers").SetValue(true);

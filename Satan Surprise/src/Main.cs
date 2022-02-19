@@ -6,7 +6,7 @@ using UnityModManagerNet;
 
 namespace Surprise
 {
-    public class Main
+    static class Main
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;

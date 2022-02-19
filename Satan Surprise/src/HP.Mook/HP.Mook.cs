@@ -13,13 +13,21 @@ namespace Surprise
     {
         static void Postfix(Mook __instance, float x, float y, float xSpeed, float ySpeed)
         {
+            if (!Main.enabled) return;
             try
             {
-                ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.83f, ySpeed + 40f + UnityEngine.Random.value * 35f, __instance.firingPlayerNum);
-                ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed + 2f + UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
-                ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed - 2f - UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
-                ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.85f, ySpeed - 40f - UnityEngine.Random.value * 35f, __instance.firingPlayerNum);
-                ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.85f, ySpeed - 50f + UnityEngine.Random.value * 80f, __instance.firingPlayerNum);
+                if(!(__instance is MookJetpack))
+                {
+                    ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.83f, ySpeed + 40f + UnityEngine.Random.value * 35f, __instance.firingPlayerNum);
+                    ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed + 2f + UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
+                    ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed - 2f - UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
+                    ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.85f, ySpeed - 40f - UnityEngine.Random.value * 35f, __instance.firingPlayerNum);
+                    ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.85f, ySpeed - 50f + UnityEngine.Random.value * 80f, __instance.firingPlayerNum);
+                }
+                if(UnityEngine.Random.value > 0.75f)
+                {
+                    ProjectileController.SpawnGrenadeOverNetwork(__instance.specialGrenade, __instance, __instance.X + Mathf.Sign(__instance.transform.localScale.x) * 8f, __instance.Y + 8f, 0.001f, 0.011f, Mathf.Sign(__instance.transform.localScale.x) * 200f, 150f, __instance.playerNum, 1f);
+                }
             }
             catch (Exception ex)
             {
@@ -34,6 +42,7 @@ namespace Surprise
     {
         static void Postfix(MookGrenadier __instance)
         {
+            if (!Main.enabled) return;
             if (__instance.IsMine)
             {
                 for (int i = 0; i < 6; i++)
@@ -49,6 +58,7 @@ namespace Surprise
     {
         static void Postfix(MookGrenadier __instance)
         {
+            if (!Main.enabled) return;
             if (__instance.IsMine)
             {
                 float num2 = 128f;
@@ -73,6 +83,7 @@ namespace Surprise
     {
         static void Postfix(MookDog __instance)
         {
+            if (!Main.enabled) return;
             if(Main.HardMode)
             {
                 __instance.health = 50;
@@ -106,6 +117,7 @@ namespace Surprise
         static void Postfix(MookBazooka __instance, float x, float y, float xSpeed, float ySpeed)
         {
 
+            if (!Main.enabled) return;
             Projectile projectile = ProjectileController.SpawnProjectileOverNetwork(__instance.projectile, __instance, x, y, xSpeed, ySpeed, false, -1, false, true, 0f);
             int seenPlayerNum = __instance.enemyAI.GetSeenPlayerNum();
             if (seenPlayerNum >= 0)
@@ -143,6 +155,7 @@ namespace Surprise
     {
         static void Postfix(MookBigGuy __instance, float x, float y, float xSpeed, float ySpeed)
         {
+            if (!Main.enabled) return;
             ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed + 2f + UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
             ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed - 2f - UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
             ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.85f, ySpeed - 40f - UnityEngine.Random.value * 35f, __instance.firingPlayerNum);
@@ -155,6 +168,7 @@ namespace Surprise
     {
         static bool Prefix(MookGeneral __instance, Mook prefab, float x, float y)
         {
+            if (!Main.enabled) return true;
             int i = 3;
             if (prefab != null)
             {
@@ -182,6 +196,7 @@ namespace Surprise
     {
         static bool Prefix(MookRiotShield __instance, bool forceTumble)
         {
+            if (!Main.enabled) return true;
             __instance.hasShield = true;
             __instance.BackSomersault(forceTumble);
             return false;
@@ -194,6 +209,7 @@ namespace Surprise
     {
         static void Postfix(DolphLundrenSoldier __instance)
         {
+            if (!Main.enabled) return;
             for (int i = 0; i < 5; i++)
             {
                 float num = 128f;
@@ -220,6 +236,7 @@ namespace Surprise
     {
         static  void Postfix(DolphLundrenSoldier __instance, float x, float y, float xSpeed, float ySpeed)
         {
+            if (!Main.enabled) return;
             for(int i = 0; i<3; i++)
             {
                 EffectsController.CreateMuzzleFlashEffect(x, y, -25f, xSpeed * 0.01f, ySpeed * 0.01f, __instance.transform);
@@ -233,6 +250,7 @@ namespace Surprise
     {
         static void Postfix(DolfLundgrenAI __instance)
         {
+            if (!Main.enabled) return;
             for(int i =0; i<2; i++)
             {
                 Main.Wait(10);
@@ -240,7 +258,7 @@ namespace Surprise
                 Vector3 vector = bombardmentPositions[0];
                 ProjectileController.SpawnProjectileLocally(ProjectileController.instance.shellBombardment, SingletonMono<MapController>.Instance, vector.x + 300f, vector.y + 450f, -187.5f, -281.25f, -1);
             }
-            
+
         }
     }
 
@@ -250,6 +268,7 @@ namespace Surprise
     {
         static bool Prefix(MookArmouredGuy __instance, bool forceHighFive = false)
         {
+            if (!Main.enabled) return true;
             if (Main.HardMode && __instance.pilotUnit.IsMine || __instance.hasBeenPiloted)
                 return false;
 
@@ -261,6 +280,7 @@ namespace Surprise
     {
         static void Postfix(MookArmouredGuy __instance , float x, float y, float xSpeed, float ySpeed)
         {
+            if (!Main.enabled) return;
             ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed + 2f + UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
             ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed * 0.9f, ySpeed - 2f - UnityEngine.Random.value * 15f, __instance.firingPlayerNum);
         }
