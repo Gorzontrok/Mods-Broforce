@@ -26,7 +26,7 @@ namespace Surprise
             }
         }
     }
-
+    
     // Patch AlienBrute
     [HarmonyPatch(typeof(AlienBrute), "Start")]
     static class AlienBrute_Update_Patch

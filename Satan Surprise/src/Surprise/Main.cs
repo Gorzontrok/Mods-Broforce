@@ -14,7 +14,13 @@ namespace Surprise
 
         public static bool HardMode;
 
-        public static Mook NewMookForMecha;
+        public static bool PartyIsHardMode
+        {
+            get
+            {
+                return (GameState.Instance.currentWorldmapSave != null && GameState.Instance.currentWorldmapSave.worldMapIsInHardMode) || GameState.Instance.arcadeHardMode;
+            }
+        }
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
