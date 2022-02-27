@@ -12,9 +12,15 @@ namespace Surprise
         public static bool enabled;
         public static Settings settings;
 
-        public static bool HardMode;
+        public static bool HardMode
+        {
+            get
+            {
+                return settings.HardMode;
+            }
+        }
 
-        public static bool PartyIsHardMode
+        internal static bool PartyIsHardMode
         {
             get
             {
@@ -26,22 +32,23 @@ namespace Surprise
         {
             modEntry.OnToggle = OnToggle;
             modEntry.OnGUI = OnGui;
-            modEntry.OnUpdate= OnUpdate;
-            modEntry.OnSaveGUI= OnSaveGUI;
+            modEntry.OnUpdate = OnUpdate;
+            modEntry.OnSaveGUI = OnSaveGUI;
             settings = Settings.Load<Settings>(modEntry);
-            var harmony = new Harmony(modEntry.Info.Id);
+
+            mod = modEntry;
 
             try
             {
+
+                var harmony = new Harmony(modEntry.Info.Id);
                 var assembly = Assembly.GetExecutingAssembly();
                 harmony.PatchAll(assembly);
             }
             catch (Exception ex)
             {
-                mod.Logger.Log("Failed to Patch Harmony !\n"+ex.ToString());
+                mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
-
-            mod = modEntry;
 
             return true;
         }
@@ -56,11 +63,6 @@ namespace Surprise
 
         static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
         {
-            try
-            {
-                HardMode = settings.HardMode;
-            }
-            catch (Exception ex) { mod.Logger.Log("Failed to set HardMode value !\n" + ex.ToString()); }
 
         }
 

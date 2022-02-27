@@ -60,15 +60,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HP.Alien\HP.Alien-Update-Start.cs" />
-    <Compile Include="HP.Alien\HP.Alien.cs" />
-    <Compile Include="Terrorist\HP.Mook-Update-Start.cs" />
-    <Compile Include="Terrorist\HP.Mook.cs" />
+    <Compile Include="Aliens\MelterMakeEffectDuringRolling.cs" />
+    <Compile Include="Aliens\Patch\Alien-Update-Start.cs" />
+    <Compile Include="Aliens\Patch\Alien.cs" />
+    <Compile Include="CustomAction.cs" />
+    <Compile Include="Terrorist\GrenadorThrow2Grenade.cs" />
+    <Compile Include="Terrorist\Patch\Mook-Vehicle.cs" />
+    <Compile Include="Terrorist\Patch\Mook.cs" />
     <Compile Include="HP.Other.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Terrorist\NewTruckTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Terrorist\ShootGrenade.cs" />
+    <Compile Include="Terrorist\ShootXProjectile.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\Mods\$(ProjectName)Mod\$(ProjectName).dll*"</PostBuildEvent>

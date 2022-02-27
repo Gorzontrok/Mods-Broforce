@@ -7,7 +7,6 @@ namespace Surprise.Terrorist
 {
     class NewTruckTest : MonoBehaviour
     {
-        public Mook basicMook;
         public int maximumSpawnMook;
 
         int spawnMookCount = 0;
