@@ -2,5 +2,5 @@
 *.vs/
 *bin/
 *obj/
-*.beta
+*.beta.txt
 *.beta/
