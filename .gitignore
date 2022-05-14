@@ -2,4 +2,5 @@
 *.vs/
 *bin/
 *obj/
-.Unreleased/ReplaceRambroWithCasey
+*.beta
+*.beta/
