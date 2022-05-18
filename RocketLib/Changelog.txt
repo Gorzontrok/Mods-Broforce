@@ -1,3 +1,9 @@
+v0.6.7 :
+ - Add 'CreateTexFromTexture' method
+ - Add GamePassword class
+ - Update BroforceMod
+ - Add the original dict of unlock intervals in _HeroUnlockController
+
 v0.6.6 :
  - ArrowList can had a custom width.
  - Upgrade Log section in GUI
