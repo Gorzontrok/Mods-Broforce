@@ -1,3 +1,12 @@
+v1.1.6 :
+ - update to last RocketLib version.
+ - Fix a bug where you can't spawn
+ - Secrets bro can only be selected in cheat mode
+ - If a bro is not unlocked, their name will be hidden
+ - Automate most of the things
+ - setting : Number of bro per ligne
+ - Show the number of saves needed for the next bro unlock
+
 v1.1.5 : 
  - Update to RocketLib last version
 

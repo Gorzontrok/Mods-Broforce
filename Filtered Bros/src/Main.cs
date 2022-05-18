@@ -1,32 +1,36 @@
+using HarmonyLib;
+using RocketLib0;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityModManagerNet;
-using HarmonyLib;
-using RocketLib0;
 
 namespace FilteredBros
 {
-    public class Main
+    public static class Main
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
         public static Settings settings;
 
-        internal static BroforceMod bmod;
+        public static Dictionary<int, HeroType> originalDict = RocketLib._HeroUnlockController.Original_Unlock_Intervals;
+        public static BroforceMod bmod;
 
-        internal static Dictionary<int, HeroType> OriginalDico = new Dictionary<int, HeroType>();
-        internal static List<HeroType> HeroList = RocketLib._HeroUnlockController.HeroTypeFullList;
-        internal static List<int> heroInt = new List<int> { 1, 3, 5, 8, 11, 15, 20, 25, 37, 42, 46, 52, 56, 62, 65, 72, 75, 82, 87, 92, 99, 102, 115, 123, 132, 145, 160, 175, 193, 209, 222, 249, 274, 300, 326, 350, 374, 400, 425, 445, 465, 485, 520 };
+        public static List<HeroType> heroList = new List<HeroType>();
+        public static List<int> heroInt = new List<int>(RocketLib._HeroUnlockController.Hero_Unlock_Intervals);
+        public static bool cheat;
+        public static HeroType[] broforceBros = RocketLib._HeroUnlockController.HeroTypes_Intervals;
+        public static HeroType[] expendabrosBros = RocketLib._HeroUnlockController.Expendabros_HeroTypes_Intervals;
+        public static HeroType[] otherBros = RocketLib._HeroUnlockController.Other_Bros_HeroTypes;
+        public static List<HeroType> broList = new List<HeroType>();
 
-        static bool Load(UnityModManager.ModEntry modEntry)
+        private static bool Load(UnityModManager.ModEntry modEntry)
         {
-
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
-            modEntry.OnUpdate = OnUpdate;
             settings = Settings.Load<Settings>(modEntry);
 
             mod = modEntry;
@@ -41,46 +45,131 @@ namespace FilteredBros
             {
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
-
-            if (!settings.getFirstLaunch)
+            cheat = Environment.UserName == "Gorzon";
+            if (!settings.firstLaunch)
                 firstLaunch();
             Start();
             return true;
         }
-        static void Start()
-        {
-            OriginalDico = Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").GetValue() as Dictionary<int, HeroType>;
 
-            bmod = new BroforceMod(mod, true);
-        }
-
-        static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
+        private static void Start()
         {
-            settings.numberOfBro = 0;
-            foreach(HeroType hero in HeroList)
+            bmod = new BroforceMod();
+            bmod.Load(mod);
+
+            heroList.AddRange(broforceBros);
+            heroList.AddRange(expendabrosBros);
+            heroList.AddRange(otherBros);
+            BuildBroToggles(broforceBros, BroToggle.BroGroup.Broforce);
+            BuildBroToggles(expendabrosBros, BroToggle.BroGroup.Expendabros);
+            BuildBroToggles(otherBros, BroToggle.BroGroup.Hide);
+
+            if (BroToggle.BroToggles.Count == settings.brosEnable.Count)
             {
-                if (GetBroBool(hero)) settings.numberOfBro++;
+                int i = 0;
+                foreach (BroToggle broToggle in BroToggle.BroToggles)
+                {
+                    broToggle.enabled = settings.brosEnable[i];
+                    i++;
+                }
             }
-            PlayerProgress.Instance.yetToBePlayedUnlockedHeroes = new List<HeroType>();
+
+            foreach (BroToggle b in BroToggle.BroToggles)
+            {
+                heroInt.Add(b.unlockNumber);
+            }
+
+            new GamePassword("iaminthematrix", InTheMatrix);
         }
 
-        static void OnGUI(UnityModManager.ModEntry modEntry)
+        private static void BuildBroToggles(HeroType[] heroArray, BroToggle.BroGroup group)
         {
+            Dictionary<int, HeroType> dict = new Dictionary<int, HeroType>(originalDict);
+            foreach (HeroType hero in heroArray)
+            {
+                try
+                {
+                    int interval = -1;
+                    foreach (KeyValuePair<int, HeroType> pair in dict)
+                    {
+                        if (pair.Value == hero)
+                        {
+                            interval = pair.Key;
+                            dict.Remove(pair.Key);
+                            break;
+                        }
+                    }
+                    if(interval == -1)
+                    {
+                        interval = 490;
+                        foreach (BroToggle broToggle in BroToggle.BroToggles)
+                        {
+                            if(broToggle.unlockNumber >= interval)
+                            {
+                                interval = broToggle.unlockNumber + 10;
+                                while (broToggle.unlockNumber >= interval)
+                                {
+                                    interval += 10;
+                                }
+                            }
+                        }
+                    }
+                    new BroToggle(hero, interval, group);
+                }
+                catch (Exception ex)
+                {
+                    Main.bmod.Log(ex);
+                }
+            }
+        }
+
+        private static void InTheMatrix()
+        {
+            cheat = true;
+        }
+
+        private static void OnGUI(UnityModManager.ModEntry modEntry)
+        {
+
+            var s = new GUIStyle();
+            s.normal.textColor = Color.yellow;
+            s.fontStyle = FontStyle.Italic;
+
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Number of bro select : " + settings.numberOfBro);
             GUILayout.FlexibleSpace();
+            GUILayout.Label("I am in The Matrix", s);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Number of bro select : " + BroToggle.brosEnable);
             if (GUILayout.Button("Select all", GUILayout.ExpandWidth(false)))
                 SelectAll();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Number of bro per line : " + settings.numberOfBroPerLine);
+            settings.numberOfBroPerLine = (int)GUILayout.HorizontalScrollbar(settings.numberOfBroPerLine, 0, 3, 15, GUILayout.MinWidth(200));
             GUILayout.EndHorizontal();
+
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Remove Brolander", GUILayout.ExpandWidth(false)))
-                RemoveBrolander();
             if (GUILayout.Button("Only expendabros", GUILayout.ExpandWidth(false)))
                 SelectOnlyExpendabros();
-            GUILayout.FlexibleSpace();
             if (GUILayout.Button("Select nothing", GUILayout.ExpandWidth(false)))
                 SelectNothing();
+            GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+
+            /*GUILayout.BeginHorizontal();
+            GUILayout.Label("Number of bro saved : " + PlayerProgress.Instance.freedBros);
+            GUILayout.EndHorizontal();*/
+            int numberOfRescuesToNextUnlock = HeroUnlockController.GetNumberOfRescuesToNextUnlock();
+            if (numberOfRescuesToNextUnlock != -1)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(String.Format("Next unlock in {0} saves", HeroUnlockController.GetNumberOfRescuesToNextUnlock()));
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.Space(10);
 
             var typeStyle = new GUIStyle();
             typeStyle.normal.textColor = Color.gray;
@@ -90,238 +179,104 @@ namespace FilteredBros
             // Broforce Basic
             GUILayout.BeginHorizontal("box", GUILayout.ExpandWidth(false));
             GUILayout.Label(" - Broforce :", typeStyle);
-            GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(true));
-            settings.Rambro = GUILayout.Toggle(settings.Rambro, HeroController.GetHeroName(HeroType.Rambro));
-            settings.Brommando = GUILayout.Toggle(settings.Brommando, HeroController.GetHeroName(HeroType.Brommando));
-            settings.BaBroracus = GUILayout.Toggle(settings.BaBroracus, HeroController.GetHeroName(HeroType.BaBroracus));
-            settings.BrodellWalker = GUILayout.Toggle(settings.BrodellWalker, HeroController.GetHeroName(HeroType.BrodellWalker));
-            settings.BroHard = GUILayout.Toggle(settings.BroHard, HeroController.GetHeroName(HeroType.BroHard));
-            settings.McBrover = GUILayout.Toggle(settings.McBrover, HeroController.GetHeroName(HeroType.McBrover));
-            settings.Blade = GUILayout.Toggle(settings.Blade, HeroController.GetHeroName(HeroType.Blade));
-            settings.BroDredd = GUILayout.Toggle(settings.BroDredd, HeroController.GetHeroName(HeroType.BroDredd));
-            settings.Brononymous = GUILayout.Toggle(settings.Brononymous, HeroController.GetHeroName(HeroType.Brononymous));
-            settings.DirtyHarry = GUILayout.Toggle(settings.DirtyHarry, HeroController.GetHeroName(HeroType.DirtyHarry));
-            settings.Brominator = GUILayout.Toggle(settings.Brominator, HeroController.GetHeroName(HeroType.Brominator));
-            settings.Brobocop = GUILayout.Toggle(settings.Brobocop, HeroController.GetHeroName(HeroType.Brobocop));
-            settings.IndianaBrones = GUILayout.Toggle(settings.IndianaBrones, HeroController.GetHeroName(HeroType.IndianaBrones));
-            settings.AshBrolliams = GUILayout.Toggle(settings.AshBrolliams, HeroController.GetHeroName(HeroType.AshBrolliams));
-            GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false));
-
-            settings.Nebro = GUILayout.Toggle(settings.Nebro, HeroController.GetHeroName(HeroType.Nebro), GUILayout.ExpandWidth(false));
-            settings.BoondockBros = GUILayout.Toggle(settings.BoondockBros, HeroController.GetHeroName(HeroType.BoondockBros), GUILayout.ExpandWidth(false));
-            settings.Brochete = GUILayout.Toggle(settings.Brochete, HeroController.GetHeroName(HeroType.Brochete), GUILayout.ExpandWidth(false));
-            settings.BronanTheBrobarian = GUILayout.Toggle(settings.BronanTheBrobarian, HeroController.GetHeroName(HeroType.BronanTheBrobarian), GUILayout.ExpandWidth(false));
-            settings.EllenRipbro = GUILayout.Toggle(settings.EllenRipbro, HeroController.GetHeroName(HeroType.EllenRipbro), GUILayout.ExpandWidth(false));
-            settings.TheBrocketeer = GUILayout.Toggle(settings.TheBrocketeer, HeroController.GetHeroName(HeroType.TheBrocketeer), GUILayout.ExpandWidth(false));
-            settings.TimeBroVanDamme = GUILayout.Toggle(settings.TimeBroVanDamme, HeroController.GetHeroName(HeroType.TimeBroVanDamme), GUILayout.ExpandWidth(false));
-            settings.BroniversalSoldier = GUILayout.Toggle(settings.BroniversalSoldier, HeroController.GetHeroName(HeroType.BroniversalSoldier), GUILayout.ExpandWidth(false));
-            settings.ColJamesBroddock = GUILayout.Toggle(settings.ColJamesBroddock, HeroController.GetHeroName(HeroType.ColJamesBroddock), GUILayout.ExpandWidth(false));
-            settings.CherryBroling = GUILayout.Toggle(settings.CherryBroling, HeroController.GetHeroName(HeroType.CherryBroling), GUILayout.ExpandWidth(false));
-            settings.BroMax = GUILayout.Toggle(settings.BroMax, HeroController.GetHeroName(HeroType.BroMax), GUILayout.ExpandWidth(false));
-            settings.DoubleBroSeven = GUILayout.Toggle(settings.DoubleBroSeven, HeroController.GetHeroName(HeroType.DoubleBroSeven), GUILayout.ExpandWidth(false));
-            GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false));
-
-            settings.TheBrode = GUILayout.Toggle(settings.TheBrode, HeroController.GetHeroName(HeroType.TheBrode), GUILayout.ExpandWidth(false));
-            settings.Predabro = GUILayout.Toggle(settings.Predabro, "Predabro", GUILayout.ExpandWidth(false));
-            settings.BroveHeart = GUILayout.Toggle(settings.BroveHeart, "Brove Heart", GUILayout.ExpandWidth(false));
-            settings.TheBrofessional = GUILayout.Toggle(settings.TheBrofessional, HeroController.GetHeroName(HeroType.TheBrofessional), GUILayout.ExpandWidth(false));
-            settings.Broden = GUILayout.Toggle(settings.Broden, HeroController.GetHeroName(HeroType.Broden), GUILayout.ExpandWidth(false));
-            settings.TheBrolander = GUILayout.Toggle(settings.TheBrolander, HeroController.GetHeroName(HeroType.TheBrolander), GUILayout.ExpandWidth(false));
-            settings.SnakeBroSkin = GUILayout.Toggle(settings.SnakeBroSkin, HeroController.GetHeroName(HeroType.SnakeBroSkin), GUILayout.ExpandWidth(false));
-            settings.TankBro = GUILayout.Toggle(settings.TankBro, HeroController.GetHeroName(HeroType.TankBro), GUILayout.ExpandWidth(false));
-            settings.BroLee = GUILayout.Toggle(settings.BroLee, HeroController.GetHeroName(HeroType.BroLee), GUILayout.ExpandWidth(false));
-            GUILayout.EndHorizontal(); GUILayout.Space(25);
+            GUILayout.EndHorizontal();
+            ShowToggles(BroToggle.broTogglesBroforce);
 
             // - Expendabros :
+            GUILayout.Space(25);
             GUILayout.BeginHorizontal("box");
             GUILayout.Label(" - Expendabros :", typeStyle);
-            GUILayout.EndHorizontal(); GUILayout.BeginHorizontal();
-            settings.BroneyRoss = GUILayout.Toggle(settings.BroneyRoss, HeroController.GetHeroName(HeroType.BroneyRoss), GUILayout.ExpandWidth(false));
-            settings.LeeBroxmas = GUILayout.Toggle(settings.LeeBroxmas, HeroController.GetHeroName(HeroType.LeeBroxmas), GUILayout.ExpandWidth(false));
-            settings.BronnarJensen = GUILayout.Toggle(settings.BronnarJensen, HeroController.GetHeroName(HeroType.BronnarJensen), GUILayout.ExpandWidth(false));
-            settings.HaleTheBro = GUILayout.Toggle(settings.HaleTheBro, HeroController.GetHeroName(HeroType.HaleTheBro), GUILayout.ExpandWidth(false));
-            settings.TrentBroser = GUILayout.Toggle(settings.TrentBroser, HeroController.GetHeroName(HeroType.TrentBroser), GUILayout.ExpandWidth(false));
-            settings.Broc = GUILayout.Toggle(settings.Broc, HeroController.GetHeroName(HeroType.Broc), GUILayout.ExpandWidth(false));
-            settings.TollBroad = GUILayout.Toggle(settings.TollBroad, HeroController.GetHeroName(HeroType.TollBroad), GUILayout.ExpandWidth(false));
-            GUILayout.EndHorizontal(); GUILayout.Space(25);
-
-            // - The ? :
-            GUILayout.BeginHorizontal("box");
-            GUILayout.Label(" - The ? :", typeStyle);
-            GUILayout.EndHorizontal(); GUILayout.BeginHorizontal();
-            settings.BrondleFly = GUILayout.Toggle(settings.BrondleFly, HeroController.GetHeroName(HeroType.BrondleFly), GUILayout.ExpandWidth(false));
             GUILayout.EndHorizontal();
+            ShowToggles(BroToggle.broTogglesExpendabros);
+
+            // Hide
+            if (cheat)
+            {
+                GUILayout.Space(25);
+                GUILayout.BeginHorizontal("box");
+                GUILayout.Label(" - Secrets :", typeStyle);
+                GUILayout.EndHorizontal();
+                ShowToggles(BroToggle.broTogglesHide);
+            }
         }
 
-        static void OnSaveGUI(UnityModManager.ModEntry modEntry)
+        private static void ShowToggles(List<BroToggle> broToggles)
         {
+            int i = 0;
+            bool horizontal = false;
+            foreach(BroToggle broToggle in broToggles)
+            {
+                if (i == 0)
+                {
+                    GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false));
+                    horizontal = true;
+                }
+                broToggle.Toggle();
+                i++;
+                if (i == settings.numberOfBroPerLine)
+                {
+                    i = 0;
+                    GUILayout.EndHorizontal();
+                    horizontal = false;
+                }
+            }
+            if(horizontal)
+            {
+                GUILayout.EndHorizontal();
+            }
+        }
+
+
+        private static void OnSaveGUI(UnityModManager.ModEntry modEntry)
+        {
+            List<bool> list = new List<bool>();
+            foreach(BroToggle b in BroToggle.BroToggles)
+            {
+                list.Add(b.enabled);
+            }
+            settings.brosEnable = list;
             settings.Save(modEntry);
         }
 
-        static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
+        private static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
             enabled = value;
             return true;
         }
 
-        static void firstLaunch()
+        private static void firstLaunch()
         {
             SelectAll();
-
-            // The ?
-            settings.BrondleFly = false;
-
-            settings.getFirstLaunch = true;
+            settings.firstLaunch = true;
+            settings.numberOfBroPerLine = 8;
+            settings.brosEnable = new List<bool>();
         }
 
-        static void RemoveBrolander()
+        private static void SelectAll()
         {
-            settings.TheBrolander = false;
+            foreach(BroToggle b in BroToggle.BroToggles)
+            {
+                b.enabled = true;
+            }
+
         }
-        static void SelectAll()
-        {
-            settings.Rambro = true;
-            settings.Brommando = true;
-            settings.BaBroracus = true;
-            settings.BrodellWalker = true;
-            settings.BroHard = true;
-            settings.McBrover = true;
-            settings.Blade = true;
-            settings.BroDredd = true;
-            settings.Brononymous = true;
-            settings.SnakeBroSkin = true;
-            settings.Brominator = true;
-            settings.Brobocop = true;
-            settings.IndianaBrones = true;
-            settings.AshBrolliams = true;
-            settings.Nebro = true;
-            settings.BoondockBros = true;
-            settings.Brochete = true;
-            settings.BronanTheBrobarian = true;
-            settings.EllenRipbro = true;
-            settings.TimeBroVanDamme = true;
-            settings.BroniversalSoldier = true;
-            settings.ColJamesBroddock = true;
-            settings.CherryBroling = true;
-            settings.BroMax = true;
-            settings.TheBrode = true;
-            settings.DoubleBroSeven = true;
-            settings.Predabro = true;
-            settings.TheBrocketeer = true;
-            settings.BroveHeart = true;
-            settings.TheBrofessional = true;
-            settings.Broden = true;
-            settings.TheBrolander = true;
-            settings.DirtyHarry = true;
-            settings.TankBro = true;
-            settings.BroLee = true;
 
-            //Expendabros
-            settings.BroneyRoss = true;
-            settings.LeeBroxmas = true;
-            settings.BronnarJensen = true;
-            settings.HaleTheBro = true;
-            settings.TrentBroser = true;
-            settings.Broc = true;
-            settings.TollBroad = true;
+        private static void SelectNothing()
+        {
+            foreach (BroToggle b in BroToggle.BroToggles)
+            {
+                b.enabled = false;
+            }
+
         }
-        static void SelectNothing()
+
+        private static void SelectOnlyExpendabros()
         {
-            settings.Rambro = false;
-            settings.Brommando = false;
-            settings.BaBroracus = false;
-            settings.BrodellWalker = false;
-            settings.BroHard = false;
-            settings.McBrover = false;
-            settings.Blade = false;
-            settings.BroDredd = false;
-            settings.Brononymous = false;
-            settings.SnakeBroSkin = false;
-            settings.Brominator = false;
-            settings.Brobocop = false;
-            settings.IndianaBrones = false;
-            settings.AshBrolliams = false;
-            settings.Nebro = false;
-            settings.BoondockBros = false;
-            settings.Brochete = false;
-            settings.BronanTheBrobarian = false;
-            settings.EllenRipbro = false;
-            settings.TimeBroVanDamme = false;
-            settings.BroniversalSoldier = false;
-            settings.ColJamesBroddock = false;
-            settings.CherryBroling = false;
-            settings.BroMax = false;
-            settings.TheBrode = false;
-            settings.DoubleBroSeven = false;
-            settings.Predabro = false;
-            settings.TheBrocketeer = false;
-            settings.BroveHeart = false;
-            settings.TheBrofessional = false;
-            settings.Broden = false;
-            settings.TheBrolander = false;
-            settings.DirtyHarry = false;
-            settings.TankBro = false;
-            settings.BroLee = false;
+            foreach (BroToggle b in BroToggle.BroToggles)
+            {
+                b.enabled = b.group == BroToggle.BroGroup.Expendabros;
+            }
 
-            //Expendabros
-            settings.BroneyRoss = false;
-            settings.LeeBroxmas = false;
-            settings.BronnarJensen = false;
-            settings.HaleTheBro = false;
-            settings.TrentBroser = false;
-            settings.Broc = false;
-            settings.TollBroad = false;
-
-            settings.BrondleFly = false;
-        }
-         static void SelectOnlyExpendabros()
-        {
-            settings.Rambro = false;
-            settings.Brommando = false;
-            settings.BaBroracus = false;
-            settings.BrodellWalker = false;
-            settings.BroHard = false;
-            settings.McBrover = false;
-            settings.Blade = false;
-            settings.BroDredd = false;
-            settings.Brononymous = false;
-            settings.SnakeBroSkin = false;
-            settings.Brominator = false;
-            settings.Brobocop = false;
-            settings.IndianaBrones = false;
-            settings.AshBrolliams = false;
-            settings.Nebro = false;
-            settings.BoondockBros = false;
-            settings.Brochete = false;
-            settings.BronanTheBrobarian = false;
-            settings.EllenRipbro = false;
-            settings.TimeBroVanDamme = false;
-            settings.BroniversalSoldier = false;
-            settings.ColJamesBroddock = false;
-            settings.CherryBroling = false;
-            settings.BroMax = false;
-            settings.TheBrode = false;
-            settings.DoubleBroSeven = false;
-            settings.Predabro = false;
-            settings.TheBrocketeer = false;
-            settings.BroveHeart = false;
-            settings.TheBrofessional = false;
-            settings.Broden = false;
-            settings.TheBrolander = false;
-            settings.DirtyHarry = false;
-            settings.TankBro = false;
-            settings.BroLee = false;
-
-            //Expendabros
-            settings.BroneyRoss = true;
-            settings.LeeBroxmas = true;
-            settings.BronnarJensen = true;
-            settings.HaleTheBro = true;
-            settings.TrentBroser = true;
-            settings.Broc = true;
-            settings.TollBroad = true;
-
-            settings.BrondleFly = false;
         }
 
         internal static Dictionary<int, HeroType> UpdateDico()
@@ -330,70 +285,60 @@ namespace FilteredBros
             try
             {
                 int i = 0;
-                foreach (HeroType hero in HeroList)
+                foreach (HeroType hero in heroList)
                 {
-                    bool broBool = GetBroBool(hero);
-                    if(broBool & !BroDico.ContainsValue(hero))
+                    if (GetBroBool(hero) && !BroDico.ContainsValue(hero))
                     {
-                        BroDico.Add(heroInt[i], hero);
-                        i++;
+                        if(IsBroUnlock(hero) || Main.cheat)
+                        {
+                            while(BroDico.ContainsKey(heroInt[i]))
+                            {
+                                i++;
+                            }
+                            BroDico.Add(heroInt[i], hero);
+                        }
+                        else
+                        {
+                            BroToggle b = BroToggle.GetBroToggleFromHeroType(hero);
+                            if(BroDico.ContainsKey(b.unlockNumber))
+                            {
+                                Main.bmod.Log("Keys already exist for hero : " + hero.ToString());
+                            }
+                            else
+                            {
+                                BroDico.Add(b.unlockNumber, hero);
+                            }
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog("Failed to update dictionnary", ex);
+                Main.bmod.logger.ExceptionLog("Failed to update dictionary", ex);
             }
             return BroDico;
         }
 
-        static bool GetBroBool(HeroType broName)
+        private static bool GetBroBool(HeroType broType)
         {
-            switch (broName)
+            foreach(BroToggle b in BroToggle.BroToggles)
             {
-                case HeroType.AshBrolliams: return settings.AshBrolliams;
-                case HeroType.BaBroracus: return settings.BaBroracus;
-                case HeroType.Blade: return settings.Blade;
-                case HeroType.BoondockBros: return settings.BoondockBros;
-                case HeroType.Brobocop: return settings.Brobocop;
-                case HeroType.Broc: return settings.Broc;
-                case HeroType.Brochete: return settings.Brochete;
-                case HeroType.BrodellWalker: return settings.BrodellWalker;
-                case HeroType.Broden: return settings.Broden;
-                case HeroType.BroDredd: return settings.BroDredd;
-                case HeroType.BroHard: return settings.BroHard;
-                case HeroType.BroLee: return settings.BroLee;
-                case HeroType.BroMax: return settings.BroMax;
-                case HeroType.Brominator: return settings.Brominator;
-                case HeroType.Brommando: return settings.Brommando;
-                case HeroType.BronanTheBrobarian: return settings.BronanTheBrobarian;
-                case HeroType.BrondleFly: return settings.BrondleFly;
-                case HeroType.BroneyRoss: return settings.BroneyRoss;
-                case HeroType.BroniversalSoldier: return settings.BroniversalSoldier;
-                case HeroType.BronnarJensen: return settings.BronnarJensen;
-                case HeroType.Brononymous: return settings.Brononymous;
-                case HeroType.BroveHeart: return settings.BroveHeart;
-                case HeroType.CherryBroling: return settings.CherryBroling;
-                case HeroType.ColJamesBroddock: return settings.ColJamesBroddock;
-                case HeroType.DirtyHarry: return settings.DirtyHarry;
-                case HeroType.DoubleBroSeven: return settings.DoubleBroSeven;
-                case HeroType.EllenRipbro: return settings.EllenRipbro;
-                case HeroType.HaleTheBro: return settings.HaleTheBro;
-                case HeroType.IndianaBrones: return settings.IndianaBrones;
-                case HeroType.LeeBroxmas: return settings.LeeBroxmas;
-                case HeroType.McBrover: return settings.McBrover;
-                case HeroType.Nebro: return settings.Nebro;
-                case HeroType.Predabro: return settings.Predabro;
-                case HeroType.Rambro: return settings.Rambro;
-                case HeroType.SnakeBroSkin: return settings.SnakeBroSkin;
-                case HeroType.TimeBroVanDamme: return settings.TimeBroVanDamme;
-                case HeroType.TollBroad: return settings.TollBroad;
-                case HeroType.TankBro: return settings.TankBro;
-                case HeroType.TheBrocketeer: return settings.TheBrocketeer;
-                case HeroType.TheBrode: return settings.TheBrode;
-                case HeroType.TheBrofessional: return settings.TheBrofessional;
-                case HeroType.TheBrolander: return settings.TheBrolander;
-                case HeroType.TrentBroser: return settings.TrentBroser;
+                if(b.heroType == broType)
+                {
+                    return b.enabled;
+                }
+            }
+            return false;
+        }
+
+        private static bool IsBroUnlock(HeroType broType)
+        {
+            foreach(BroToggle b in BroToggle.BroToggles)
+            {
+                if(b.heroType == broType)
+                {
+                    return b.IsBroUnlocked();
+                }
             }
             return false;
         }
@@ -401,56 +346,12 @@ namespace FilteredBros
 
     public class Settings : UnityModManager.ModSettings
     {
-        public bool Brommando;
-        public bool BaBroracus;
-        public bool BrodellWalker;
-        public bool BroHard;
-        public bool McBrover;
-        public bool Blade;
-        public bool BroDredd;
-        public bool Brononymous;
-        public bool SnakeBroSkin;
-        public bool Brominator;
-        public bool Brobocop;
-        public bool IndianaBrones;
-        public bool AshBrolliams;
-        public bool Nebro;
-        public bool BoondockBros;
-        public bool Brochete;
-        public bool BronanTheBrobarian;
-        public bool EllenRipbro;
-        public bool TimeBroVanDamme;
-        public bool BroniversalSoldier;
-        public bool ColJamesBroddock;
-        public bool CherryBroling;
-        public bool BroMax;
-        public bool TheBrode;
-        public bool DoubleBroSeven;
-        public bool Predabro;
-        public bool TheBrocketeer;
-        public bool BroveHeart;
-        public bool TheBrofessional;
-        public bool Broden;
-        public bool TheBrolander;
-        public bool DirtyHarry;
-        public bool TankBro;
-        public bool BroLee;
-        public bool Rambro;
-
-        // Expendabros
-        public bool BroneyRoss;
-        public bool LeeBroxmas;
-        public bool BronnarJensen;
-        public bool HaleTheBro;
-        public bool TrentBroser;
-        public bool Broc;
-        public bool TollBroad;
-        // ?
-        public bool BrondleFly;
-
-        public bool getFirstLaunch;
+        public bool firstLaunch;
         public bool useExpandaMod;
         public int numberOfBro;
+        public int numberOfBroPerLine;
+
+        public List<bool> brosEnable;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
@@ -459,27 +360,31 @@ namespace FilteredBros
     }
 
     // Patch Hero unlock intervals for spawn
-    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")] //Patch for add the Bros
-    static class HeroUnlockController_IsAvailableInCampaign_Patch
+    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")]
+    internal static class HeroUnlockController_IsAvailableInCampaign_Patch
     {
-        static void Prefix()
+        private static void Prefix()
         {
             if (!Main.enabled) return;
 
-            Dictionary<int, HeroType> HeroUnlockIntervals = new Dictionary<int, HeroType>();
-            if (Main.enabled)
-            {
-                    HeroUnlockIntervals = Main.UpdateDico();
-            }
-            if(HeroUnlockIntervals.Count <= 0)
-            {
-                HeroUnlockIntervals = Main.OriginalDico;
-            }
             try
             {
-                Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(HeroUnlockIntervals);
+                Dictionary<int, HeroType> HeroUnlockIntervals = new Dictionary<int, HeroType>();
+                if (Main.enabled)
+                {
+                    HeroUnlockIntervals = Main.UpdateDico();
+                }
+                if (HeroUnlockIntervals.Count > 0 || HeroUnlockIntervals.ContainsKey(0))
+                {
+                    Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(HeroUnlockIntervals);
+                }
+                else
+                {
+                    Main.bmod.logger.WarningLog("You have selected 0 bro, please select at least one. (The one who are name \"???\" don't count)");
+                    HeroUnlockIntervals = Main.originalDict;
+                }
             }
-            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to patch the Unlock intervals", ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch the Unlock intervals", ex); }
         }
     }
 }

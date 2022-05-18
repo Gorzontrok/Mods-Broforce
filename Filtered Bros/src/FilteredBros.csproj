@@ -42,7 +42,8 @@
     <Reference Include="ExpendablesBrosInGame">
       <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Mods\ExpendaBrosInGame\ExpendablesBrosInGame.dll</HintPath>
     </Reference>
-    <Reference Include="RocketLib">
+    <Reference Include="RocketLib, Version=0.6.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Mods\RocketLib\RocketLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -76,6 +77,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Main - Copy.cs.beta" />
+    <Compile Include="BroToggle.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
