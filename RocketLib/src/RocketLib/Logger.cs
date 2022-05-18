@@ -1,33 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using UnityEngine;
 using UnityModManagerNet;
-using HarmonyLib;
-using RocketLib0;
-using RocketLibLoadMod;
+using System.Text;
 
 namespace RocketLib0
 {
     /// <summary>
     ///
     /// </summary>
-    public class BroforceMod
+    public class Logger
     {
-        /// <summary>
-        /// The Unity mod of the class.
-        /// </summary>
-        protected readonly UnityModManager.ModEntry __mod;
         /// <summary>
         /// The ID of the mod.
         /// </summary>
         public readonly string ID = string.Empty;
         /// <summary>
-        /// Is the mod is successfuly load.
+        /// Is the mod is successful load.
         /// </summary>
-        public readonly bool IsLoaded = false;
+        public readonly bool Loaded = false;
 
+        /// <summary>
+        ///
+        /// </summary>
+        protected bool HasStartLog = false;
+
+        /// <summary>
+        /// the current time.
+        /// </summary>
+        protected string TimeNow = string.Empty;
+
+        /// <summary>
+        /// Show debug log.
+        /// </summary>
+        public bool UseDebugLog = false;
+
+        /// <summary>
+        /// Write log locally.
+        /// </summary>
+        public bool UseLocalLog = false;
+
+        /// <summary>
+        /// Path of the file with the mod log.
+        /// </summary>
+        protected string LogFilePath = string.Empty;
 
         // PREFIX
         /// <summary>
@@ -54,73 +70,28 @@ namespace RocketLib0
         /// Debug prefix.
         /// </summary>
         protected readonly string PrefixDebug = "[DEBUG] ";
-        /// <summary>
-        /// the current time.
-        /// </summary>
-        protected string TimeNow = string.Empty;
-
-
-        //
-        /// <summary>
-        /// Write log locally.
-        /// </summary>
-        public bool UseLocalLog = false;
 
         /// <summary>
-        /// Show debug log.
+        ///
         /// </summary>
-        public bool UseDebugLog = false;
-
-        /// <summary>
-        /// </summary>
-        protected bool HasStartLog = false;
-
-        /// <summary>
-        /// Path of the file with the mod log.
-        /// </summary>
-        protected string LogFilePath = string.Empty;
-
-        /// <summary>
-        /// Create the mod.
-        /// </summary>
-        /// <param name="mod">Mod given by UnityModManager</param>
-        /// <param name="_UseLocalLog">Write local log stored in the mod's folder.</param>
-        /// <param name="_UseDebugLog">Show debug log.</param>
-        public BroforceMod(UnityModManager.ModEntry mod, bool _UseLocalLog = false, bool _UseDebugLog = false)
+        /// <param name="mod"></param>
+        public Logger(UnityModManager.ModEntry mod)
         {
-            if(mod == null)
-            {
-                new Exception("The given mod is null.");
-            }
+            this.ID = mod.Info.Id;
 
-            RocketLibLoadMod.Main.Log("Start loading Broforce mod : " + mod.Info.Id);
-            try
-            {
-                this.__mod = mod;
-                this.ID = mod.Info.Id;
+            this.Prefix = $"[{this.ID}]";
+            this.PrefixException = $"[{this.ID}] [Exception]";
+            this.PrefixInformation = $"[{this.ID}] [Information]";
+            this.PrefixWarning = $"[{this.ID}] [Warning]";
+            this.PrefixError = $"[{this.ID}] [Error]";
 
-                this.Prefix = $"[{this.ID}]";
-                this.PrefixException = $"[{this.ID}] [Exception]";
-                this.PrefixInformation = $"[{this.ID}] [Information]";
-                this.PrefixWarning = $"[{this.ID}] [Warning]";
-                this.PrefixError = $"[{this.ID}] [Error]";
+            this.UseLocalLog = false;
+            this.UseDebugLog = false;
 
-                this.UseLocalLog = _UseLocalLog;
-                this.UseDebugLog = _UseDebugLog;
+            this.LogFilePath = Path.Combine(mod.Path, $"{this.ID}_Log.txt");
 
-                this.LogFilePath = Path.Combine(this.__mod.Path, $"{this.ID}_Log.txt");
-
-                this.TimeNow = "[" + DateTime.Now.ToString("HH:mm:ss") + "] ";
-                this.IsLoaded = true;
-                RocketLibLoadMod.Main.BMOD_List.Add(this);
-                this.Log($"Successful loaded the mod : '{this.ID}' ");
-            }
-            catch(Exception ex)
-            {
-                this.IsLoaded = false;
-                RocketLibLoadMod.Main.Log($"Failed Loading : {mod.Info.Id}\n" + ex);
-            }
-
+            this.TimeNow = "[" + DateTime.Now.ToString("HH:mm:ss") + "] ";
+            this.Loaded = true;
         }
 
         /// <summary>
@@ -128,19 +99,20 @@ namespace RocketLib0
         /// </summary>
         public virtual void OnUpdate()
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.TimeNow = "[" + DateTime.Now.ToString("HH:mm:ss") + "] ";
         }
+
 
         /// <summary>
         ///
         /// </summary>
         protected virtual void StartLog()
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
-            if(!this.HasStartLog)
+            if (!this.HasStartLog)
             {
                 DateTime dateTimeNow = DateTime.Now;
                 string thing = new string('=', 24);
@@ -158,7 +130,7 @@ namespace RocketLib0
         /// <param name="Debug"></param>
         public virtual void Log(IEnumerable<object> Message, RLogType LogType = RLogType.Log, bool Debug = false)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.Log(Message.ToString(), LogType, Debug);
         }
@@ -169,7 +141,7 @@ namespace RocketLib0
         /// <param name="Debug"></param>
         public virtual void Log(Exception exception, bool Debug = false)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.ExceptionLog(exception, Debug);
         }
@@ -191,11 +163,11 @@ namespace RocketLib0
         /// <param name="Debug"></param>
         public virtual void Log(object Message, RLogType LogType = RLogType.Log, bool Debug = false)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.StartLog();
 
-            if((!Debug && !this.UseDebugLog) || (Debug && this.UseDebugLog))
+            if ((!Debug && !this.UseDebugLog) || (Debug && this.UseDebugLog))
             {
                 string LocalPrefix = string.Empty;
 
@@ -218,14 +190,14 @@ namespace RocketLib0
                         break;
                 }
 
-                if(string.IsNullOrEmpty(LocalPrefix))
+                if (string.IsNullOrEmpty(LocalPrefix))
                 {
                     LocalPrefix = this.TimeNow + (Debug && this.UseDebugLog ? this.PrefixDebug + this.Prefix : this.Prefix);
                 }
 
-                if (RocketLib.ScreenLogger.isSuccessfullyLoad)
+                if (ScreenLogger.Instance != null)
                 {
-                    RocketLib.ScreenLogger.Log(Message, LocalPrefix);
+                    ScreenLogger.Instance.Log(Message, LocalPrefix);
                 }
                 else
                 {
@@ -244,7 +216,7 @@ namespace RocketLib0
         /// <param name="Debug"></param>
         public virtual void ExceptionLog(Exception exception, bool Debug = false)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.ExceptionLog(exception.ToString(), Debug);
         }
@@ -265,7 +237,7 @@ namespace RocketLib0
         /// <param name="Debug"></param>
         public virtual void ExceptionLog(IEnumerable<object> Message, bool Debug = false)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.ExceptionLog(Message.ToString(), Debug);
         }
@@ -276,7 +248,7 @@ namespace RocketLib0
         /// <param name="Debug"></param>
         public virtual void ExceptionLog(object Message, bool Debug = false)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.Log(Message, RLogType.Exception, Debug);
         }
@@ -290,7 +262,7 @@ namespace RocketLib0
         /// <param name="Debug"></param>
         public virtual void WarningLog(object Message, bool Debug = false)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.Log(Message, RLogType.Warning, Debug);
         }
@@ -313,7 +285,7 @@ namespace RocketLib0
         /// <param name="Debug"></param>
         public virtual void InformationLog(object Message, bool Debug = false)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.Log(Message, RLogType.Information, Debug);
         }
@@ -354,7 +326,7 @@ namespace RocketLib0
         /// <param name="Debug"></param>
         public virtual void ErrorLog(Exception exception, bool Debug = false)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.ExceptionLog(exception.ToString(), Debug);
         }
@@ -379,7 +351,7 @@ namespace RocketLib0
         /// <param name="LogType"></param>
         public virtual void DebugLog(object Message, RLogType LogType = RLogType.Log)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.Log(Message, LogType, true);
         }
@@ -399,7 +371,7 @@ namespace RocketLib0
         /// <param name="LogType"></param>
         public virtual void DebugLog(Exception exception, RLogType LogType = RLogType.Log)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             this.Log(exception.ToString(), LogType);
         }
@@ -411,7 +383,7 @@ namespace RocketLib0
         /// <param name="LogType"></param>
         public virtual void DebugLog(string Message, Exception exception, RLogType LogType = RLogType.Log)
         {
-            this.Log(Message + "\n" + exception, LogType, true) ;
+            this.Log(Message + "\n" + exception, LogType, true);
         }
         // ==============================
 
@@ -422,16 +394,16 @@ namespace RocketLib0
         /// <param name="prefix">The prefix</param>
         protected virtual void WriteLogLocally(string Message, string prefix)
         {
-            if (!this.IsLoaded) return;
+            if (!this.Loaded) return;
 
             try
             {
-                if(this.UseLocalLog)
+                if (this.UseLocalLog)
                 {
 
                     if (!File.Exists(LogFilePath))
                     {
-                        using (File.Create(LogFilePath)); // Ignore warning.
+                        using (File.Create(LogFilePath)) ; // Ignore warning.
                     }
                     if (!string.IsNullOrEmpty(Message))
                     {
@@ -457,22 +429,23 @@ namespace RocketLib0
         /// </summary>
         public virtual void ClearFileLog()
         {
-             if (File.Exists(LogFilePath))
+            if (File.Exists(LogFilePath))
+            {
+                try
                 {
-                    try
-                    {
-                        File.Delete(LogFilePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        Main.bmod.ExceptionLog(ex);
-                    }
+                    File.Delete(LogFilePath);
                 }
+                catch (Exception ex)
+                {
+                    this.ExceptionLog(ex);
+                }
+                this.HasStartLog = false;
+            }
 
-                if (!File.Exists(LogFilePath))
-                {
-                    using (File.Create(LogFilePath)) ; // Ignore warning.
-                }
+            if (!File.Exists(LogFilePath))
+            {
+                using (File.Create(LogFilePath)) ; // Ignore warning.
+            }
         }
     }
 }

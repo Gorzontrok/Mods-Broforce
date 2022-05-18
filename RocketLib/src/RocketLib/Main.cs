@@ -26,8 +26,6 @@ namespace RocketLibLoadMod
 
         internal static BroforceMod bmod;
 
-        internal static List<BroforceMod> BMOD_List = new List<BroforceMod>();
-
         private static int TabSelected = 0;
 
         private static GUIStyle LogStyle = new GUIStyle();
@@ -35,11 +33,37 @@ namespace RocketLibLoadMod
         internal static Harmony harmony;
         static bool Load(UnityModManager.ModEntry modEntry)
         {
-
+            string origCustomRequirements = "Broforce";
+            string CustomRequirements = string.Empty;
+            for (int i = 0; i < 3; i++)
+            {
+                if (i == 0)
+                {
+                    CustomRequirements = "<color=\"#1C59FE\">";
+                }
+                CustomRequirements += origCustomRequirements[i];
+                if (i == 2)
+                {
+                    CustomRequirements += "</color>";
+                }
+            }
+            for (int i = 3; i < origCustomRequirements.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    CustomRequirements += "<color=\"red\">" + origCustomRequirements[i] + "</color>";
+                }
+                else
+                {
+                    CustomRequirements += "<color=\"white\">" + origCustomRequirements[i] + "</color>";
+                }
+            }
             modEntry.OnToggle = OnToggle;
             modEntry.OnGUI = OnGui;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnUpdate = OnUpdate;
+            //modEntry.CustomRequirements = "<color=\"#1C59FE\">The</color><color=\"red\"> G</color><color=\"white\">a</color><color=\"red\">m</color><color=\"white\">e</color>";
+            modEntry.CustomRequirements = CustomRequirements;
 
             settings = Settings.Load<Settings>(modEntry);
 
@@ -59,7 +83,8 @@ namespace RocketLibLoadMod
             try
             {
                 RocketLib.Load();
-                bmod = new BroforceMod(mod);
+                bmod = new BroforceMod();
+                bmod.Load(mod);
             }
             catch (Exception ex)
             {
@@ -71,54 +96,56 @@ namespace RocketLibLoadMod
             return true;
         }
 
+        internal static bool GorzonBuild
+        {
+            get
+            {
+                return Environment.UserName == "Gorzon";
+            }
+        }
+
+        private static string sceneStr;
         static void OnGui(UnityModManager.ModEntry modEntry)
         {
             GUIStyle testBtnStyle = new GUIStyle("button");
             testBtnStyle.normal.textColor = Color.yellow;
-            /*if (GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150)}))
-              {
-                  try
-                  {
-                    bmod.Log("test123");
-                  }
-                  catch (Exception ex)
-                  {
-                      bmod.Log(ex, RLogType.Exception);
 
-                  }
-              }*/
-
-            var TabStyle = new GUIStyle("button");
-
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Main", TabStyle, GUILayout.Width(100))) TabSelected = 0;
-            GUILayout.Space(20);
-            if (settings.OnScreenLog)
+            if (GorzonBuild && GUILayout.Button("TEST", testBtnStyle, new GUILayoutOption[] { GUILayout.Width(150) }))
             {
-                if (GUILayout.Button("Screen Logger", TabStyle, GUILayout.Width(110))) TabSelected = 1;
-                GUILayout.Space(20);
+                try
+                {
+                    bmod.logger.Log("TEST");
+                }
+                catch (Exception ex)
+                {
+                    bmod.logger.Log(ex, RLogType.Exception);
+
+                }
             }
-            if (GUILayout.Button("Log", TabStyle, GUILayout.Width(100))) TabSelected = -1;
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
+            string[] tabs = new string[] { "<color=\"yellow\">Main</color>", "Screen Logger", "Scene Loader", "Log" };
+            TabSelected = RocketLib.RGUI.Tab(tabs, TabSelected, 10, 110);
 
             if (TabSelected == 0)
             {
                 GUILayout.Space(30);
                 MainGUI();
             }
-            else if (TabSelected == 1 && settings.OnScreenLog)
+            else if (TabSelected == 1)
             {
                 GUILayout.Space(30);
                 ScreenLoggerGUI();
             }
-            else if (TabSelected == -1)
+            else if (TabSelected == 2)
+            {
+                GUILayout.Space(30);
+                LoadSceneGUI();
+            }
+            else if (TabSelected == tabs.Length - 1)
             {
                 GUILayout.Space(30);
                 LogGUI();
             }
         }
-
         private static void MainGUI()
         {
             GUILayout.BeginHorizontal();
@@ -136,21 +163,54 @@ namespace RocketLibLoadMod
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Clear Log on screen", GUILayout.Width(150)))
             {
-                RocketLib.ScreenLogger.Clear();
+                ScreenLogger.Instance.Clear();
             }
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
-            bmod.UseDebugLog = GUILayout.Toggle(bmod.UseDebugLog, "Enable Debug log");
+            bmod.logger.UseDebugLog = GUILayout.Toggle(bmod.logger.UseDebugLog, "Enable Debug log");
             settings.ShowManagerLog = GUILayout.Toggle(settings.ShowManagerLog, new GUIContent("Show Unity Mod Manager Log"));
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Time before log disapear : " + settings.logTimer.ToString(), GUILayout.ExpandWidth(false));
+            GUILayout.Label("Time before log disappear : " + settings.logTimer.ToString(), GUILayout.ExpandWidth(false));
             settings.logTimer = (int)GUILayout.HorizontalScrollbar(settings.logTimer, 1f, 1f, 11f, GUILayout.MaxWidth(200));
             GUILayout.EndHorizontal();
 
             GUI.Label(ToolTipRect, GUI.tooltip);
             GUILayout.EndVertical();
+        }
+
+        static void LoadSceneGUI()
+        {
+            GUILayout.BeginHorizontal();
+            sceneStr = GUILayout.TextField(sceneStr, GUILayout.Width(200));
+            GUILayout.Space(10);
+            if (GUILayout.Button("Load Scene", new GUILayoutOption[] { GUILayout.Width(150) }))
+            {
+                try
+                {
+                    Utility.SceneLoader.LoadScene(sceneStr);
+                }
+                catch (Exception ex)
+                {
+                    bmod.logger.Log(ex, RLogType.Exception);
+
+                }
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10);
+            if (GUILayout.Button("Load Main Menu", new GUILayoutOption[] { GUILayout.Width(150) }))
+            {
+                try
+                {
+                    Utility.SceneLoader.LoadScene("MainMenu");
+                }
+                catch (Exception ex)
+                {
+                    bmod.logger.Log(ex, RLogType.Exception);
+
+                }
+            }
         }
 
 
@@ -159,9 +219,9 @@ namespace RocketLibLoadMod
         {
             GUILayout.BeginVertical("box");
             scrollViewVector = GUILayout.BeginScrollView(scrollViewVector, GUILayout.Height(250));
-            foreach (string log in RocketLib.ScreenLogger.FullLogList)
+            foreach (string log in ScreenLogger.Instance.FullLogList)
             {
-                LogStyle.normal.textColor = WhichColor(log);
+                LogStyle.normal.textColor = ScreenLogger.WhichColor(log);
                 GUILayout.Label(log, LogStyle);
                 GUILayout.Space(5);
             }
@@ -179,7 +239,7 @@ namespace RocketLibLoadMod
             if (!LevelEditorGUI.IsActive) ShowMouseController.ShowMouse = false;
             Cursor.lockState = CursorLockMode.None;
 
-            foreach(BroforceMod mod in BMOD_List)
+            foreach (BroforceMod mod in BroforceModController.Get_BroforceModList())
             {
                 mod.OnUpdate();
             }
@@ -188,31 +248,6 @@ namespace RocketLibLoadMod
         {
             enabled = value;
             return true;
-        }
-
-        private static Color WhichColor(string LogMsg)
-        {
-            LogMsg = LogMsg.ToLower();
-            if (LogMsg.Contains("error") || LogMsg.Contains("exception"))
-            {
-                return Color.red;
-            }
-            else if (LogMsg.Contains("warning"))
-            {
-                return Color.yellow;
-            }
-            else if (LogMsg.Contains("[information]"))
-            {
-                return Color.blue;
-            }
-            else if (LogMsg.Contains("successful loaded"))
-            {
-                return Color.green;
-            }
-            else
-            {
-                return Color.white;
-            }
         }
 
         internal static void Log(object str)
@@ -229,7 +264,7 @@ namespace RocketLibLoadMod
                 settings.ShowManagerLog = true;
 
                 settings.HaveItFirstLaunch = true;
-                bmod.InformationLog("Finish Rocketlib first launch.");
+                bmod.logger.InformationLog("Finish RocketLib first launch.");
                 OnSaveGUI(mod);
             }
         }
@@ -327,5 +362,6 @@ namespace RocketLibLoadMod
             return false;
         }
     }
+
 }
 

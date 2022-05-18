@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Xml;
 using HarmonyLib;
-using RocketLib0;
+using UnityEngine;
 using RocketLibLoadMod;
 
 namespace RocketLib0
@@ -17,7 +17,7 @@ namespace RocketLib0
     /// </summary>
     public class IsThisMod
     {
-        private static string xmlFilePath = RocketLib.GameDataPath + "/Managed/UnityModManager/Params.xml";
+        private static string xmlFilePath = Application.dataPath + "/Managed/UnityModManager/Params.xml";
 
         /// <summary>
         /// Return if the mod is Here.
@@ -37,6 +37,7 @@ namespace RocketLib0
         {
             get
             {
+                if (!this.IsHere) return false;
                 return this.GetEnabled();
             }
         }
@@ -44,15 +45,7 @@ namespace RocketLib0
         /// <summary>
         /// The ID of the given mod.
         /// </summary>
-        public string ID
-        {
-            get
-            {
-                return this._ID;
-            }
-        }
-
-        private string _ID = string.Empty;
+        public readonly string ID = string.Empty;
 
         /// <summary>This constructor check if a mod is Here or is Enabled. Actually it don't work.
         /// <example>
@@ -65,7 +58,7 @@ namespace RocketLib0
         /// <param name="ID">Id of the mod.</param>
         public IsThisMod(string ID) // Check if the mod is here and it's enabled
         {
-            this._ID = ID;
+            this.ID = ID;
         }
 
         private bool GetEnabled()
@@ -76,7 +69,7 @@ namespace RocketLib0
             XmlNode node = file.SelectSingleNode("//ModParams");// Get the group <ModParams>
             foreach (XmlNode mods in node) // Get each attribute of each <Mod Id="" Enabled="" />
             {
-                if (mods.Attributes["Enabled"].Value == "true" && mods.Attributes["Id"].Value == this._ID)
+                if (mods.Attributes["Enabled"].Value == "true" && mods.Attributes["Id"].Value == this.ID)
                 {
                     return true;
                 }
@@ -90,9 +83,9 @@ namespace RocketLib0
             file.Load(xmlFilePath); // Initialize the XML Document
 
             XmlNode node = file.SelectSingleNode("//ModParams");// Get the group <ModParams>
-            foreach (XmlNode mods in node) // Get <Mod Id="" /> atribute
+            foreach (XmlNode mods in node) // Get <Mod Id="" /> attribute
             {
-                if (mods.Attributes["Id"].Value == this._ID)
+                if (mods.Attributes["Id"].Value == this.ID)
                 {
                     return true;
                 }
