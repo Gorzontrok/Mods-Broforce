@@ -1,17 +1,18 @@
 # Filtered Bros
 [NexusMods Page](https://www.nexusmods.com/broforce/mods/7)   
 You can now choose which bro can spawn. Like if you want to spawn with only melee bro, you can.  
+If you haven't unlock a bro, their name will be hidden and you won't be able to unchecked their.  
 If you uncheck all, it will not work and use the one from the game.  
 
 **The unlock intervals of Expendabros and Brondfly (if enabled) is :**  
- * 42 rescue for BroneyRoss
- * 52 rescue for LeeBroxmas
- * 62 for BronnarJensen
- * 72 for HaleTheBro
- * 82 for Trent Broser
- * 92 for Broc
- * 102 for TollBroad
- * 861 for Brondfly
+ * 490 rescue for BroneyRoss
+ * 500 rescue for LeeBroxmas
+ * 510 for BronnarJensen
+ * 520 for HaleTheBro
+ * 530 for Trent Broser
+ * 540 for Broc
+ * 550 for TollBroad
+ * 560 for Brondfly
 
 ## Installation :
  * The latest Release it's in the `/Release` folder.
