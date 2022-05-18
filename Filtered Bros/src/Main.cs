@@ -157,6 +157,8 @@ namespace FilteredBros
             if (GUILayout.Button("Select nothing", GUILayout.ExpandWidth(false)))
                 SelectNothing();
             GUILayout.FlexibleSpace();
+            GUILayout.Label("Max number of lives (0 to disabled) :  ");
+            int.TryParse(GUILayout.TextField(settings.maxLifeNumber.ToString(), GUILayout.Width(80)), out settings.maxLifeNumber);
             GUILayout.EndHorizontal();
 
             /*GUILayout.BeginHorizontal();
@@ -350,6 +352,7 @@ namespace FilteredBros
         public bool useExpandaMod;
         public int numberOfBro;
         public int numberOfBroPerLine;
+        public int maxLifeNumber;
 
         public List<bool> brosEnable;
 
@@ -385,6 +388,28 @@ namespace FilteredBros
                 }
             }
             catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch the Unlock intervals", ex); }
+        }
+    }
+
+    [HarmonyPatch(typeof(Player), "AddLife")]
+    static class LifeNumberLimited_Patch
+    {
+        static void Postfix(Player __instance)
+        {
+            try
+            {
+                if(Main.enabled && Main.settings.maxLifeNumber != 0)
+                {
+                    while(__instance.Lives > Main.settings.maxLifeNumber)
+                    {
+                        __instance.Lives--;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Main.bmod.Log(ex);
+            }
         }
     }
 }

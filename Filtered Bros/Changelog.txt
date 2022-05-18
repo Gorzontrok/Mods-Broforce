@@ -6,6 +6,7 @@ v1.1.6 :
  - Automate most of the things
  - setting : Number of bro per ligne
  - Show the number of saves needed for the next bro unlock
+ - Lives can have a maximum
 
 v1.1.5 : 
  - Update to RocketLib last version
