@@ -56,8 +56,6 @@ namespace AutoEnterPassword
 
             settings.smokinggun = InGamePasswordGUI(settings.smokinggun, "smokinggun", Cheats.smokinggun);
 
-            settings.iloveamerica = InGamePasswordGUI(settings.iloveamerica, "iloveamerica", Cheats.iloveamerica);
-
             GUILayout.EndHorizontal();
 
             if(GamePasswordController.GamePasswords.Count > 0)
@@ -132,9 +130,6 @@ namespace AutoEnterPassword
 
             if (settings.smokinggun)
                 Cheats.smokinggun();
-
-            if (settings.iloveamerica)
-                Cheats.iloveamerica();
         }
     }
 
@@ -173,14 +168,6 @@ namespace AutoEnterPassword
         {
             LevelEditorGUI.hackedEditorOn = true;
             Main.Log("'smokinggun' loaded !");
-        }
-
-        public static void iloveamerica()
-        {
-            HeroUnlockController.UnlockAllBros();
-            WorldTerritory3D.allTerritoriesCheat = true;
-            PlayerProgress.Save(true);
-            Main.Log("'iloveamerica' loaded !");
         }
 
     }
