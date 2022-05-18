@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using HarmonyLib;
 using UnityEngine;
 
-namespace TweaksFromPigs
+namespace TweaksFromPigs._HarmonyPatch.BroFix
 {
     [HarmonyPatch(typeof(IndianaBrones), "AnimateMelee")]
     static class IndianaBrones_AchievementRework_Patch
@@ -15,7 +12,7 @@ namespace TweaksFromPigs
             if (!Main.enabled) return;
             try
             {
-                if (Main.settings.FixIndianaAchievement)
+                if (Main.settings.fixIndianaAchievement)
                 {
                     Traverse instTrav = Traverse.Create(__instance);
                     TestVanDammeAnim nearbyMook = instTrav.Field("nearbyMook").GetValue<TestVanDammeAnim>();
@@ -32,7 +29,7 @@ namespace TweaksFromPigs
                     }
                 }
             }
-            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to fix Indiana achievement" + ex); }
+            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to fix Indiana achievement" + ex); }
         }
     }
 
@@ -42,19 +39,18 @@ namespace TweaksFromPigs
     {
         static void Postfix(DoubleBroSeven __instance)
         {
-            if (!Main.enabled || (Main.settings._007Patch_Compatibility && Compatibility._007_Patch.i.IsEnabled)) return;
+            if (!Main.enabled || Compatibility._007_Patch.i.IsEnabled) return;
             try
             {
-                if (Main.settings.UseFifthBondSpecial)
+                if (Main.settings.useFifthBondSpecial)
                 {
-                    Traverse.Create(typeof(DoubleBroSeven)).Field("_specialAmmo").SetValue(5);
-                    __instance.SpecialAmmo = 5;
                     __instance.originalSpecialAmmo = 5;
+                    __instance.SpecialAmmo = 5;
                 }
             }
             catch(Exception ex)
             {
-                Main.bmod.ExceptionLog("Failed to add 5tj bond's special.", ex);
+                Main.bmod.logger.ExceptionLog("Failed to add 5th bond's special.", ex);
             }
         }
     }
@@ -63,10 +59,10 @@ namespace TweaksFromPigs
     {
         static bool Prefix(DoubleBroSeven __instance)
         {
-            if (!Main.enabled || (Main.settings._007Patch_Compatibility && Compatibility._007_Patch.i.IsEnabled)) return true;
+            if (!Main.enabled || Compatibility._007_Patch.i.IsEnabled) return true;
             try
             {
-                if (Main.settings.TeargasAtFeet)
+                if (Main.settings.teargasAtFeet)
                 {
                     DoubleBroSevenSpecialType currentSpecialType = Traverse.Create(__instance).Field("currentSpecialType").GetValue<DoubleBroSevenSpecialType>();
                     if (currentSpecialType == DoubleBroSevenSpecialType.TearGas)
@@ -88,7 +84,7 @@ namespace TweaksFromPigs
                     }
                 }
             }
-            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to patch teargas at feet", ex); }
+            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch teargas at feet", ex); }
             return true;
         }
     }
@@ -100,11 +96,11 @@ namespace TweaksFromPigs
             if (!Main.enabled) return true;
             try
             {
-                if (Main.settings.LessAccurateDrunkSeven)
+                if (Main.settings.lessAccurateDrunkSeven)
                 {
                     if (Traverse.Create(__instance).Field("martinisDrunk").GetValue<int>() > 2)
                     {
-                        int randY = Utility.rand.Next(-25, 25);
+                        int randY = UnityEngine.Random.Range(-25, 25);
                         __instance.gunSprite.SetLowerLeftPixel((float)(32 * 3), 32f);
                         EffectsController.CreateMuzzleFlashEffect(x, y, -25f, xSpeed * 0.01f, ySpeed * 0.01f, __instance.transform);
                         ProjectileController.SpawnProjectileLocally(__instance.projectile, __instance, x, y, xSpeed, ySpeed + randY, __instance.playerNum);
@@ -112,24 +108,8 @@ namespace TweaksFromPigs
                     }
                 }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog("Failed to make 007 more drunk", ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed to make 007 more drunk", ex); }
             return true;
-        }
-    }
-
-    // BrondleFly Patch
-    [HarmonyPatch(typeof(BrondleFly), "Awake")]
-    static class BrondleFly_Awake_Patch
-    {
-        static void Postfix(BrondleFly __instance)
-        {
-            if (!Main.enabled || (Main.settings.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled)) return;
-            try
-            {
-                TestVanDammeAnim baBroracus = HeroController.GetHeroPrefab(HeroType.BaBroracus);
-                __instance.soundHolder.attackSounds = (baBroracus as BaBroracus).soundHolder.attackSounds;
-            }
-            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to change attack sound of Brondle Fly", ex); }
         }
     }
 
@@ -139,16 +119,16 @@ namespace TweaksFromPigs
     {
         static void Postfix(BroneyRoss __instance)
         {
-            if (!Main.enabled || (Main.settings.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled)) return;
+            if (!Main.enabled || (Compatibility.ExpendablesBros.i.IsEnabled)) return;
             try
             {
-                if (Main.settings.FixExpendabros)
+                if (Main.settings.fixExpendabros)
                 {
                     TestVanDammeAnim broHard = HeroController.GetHeroPrefab(HeroType.BroHard);
-                    __instance.soundHolder.attractSounds = broHard.soundHolder.attackSounds;
+                    __instance.soundHolder.attackSounds = broHard.soundHolder.attackSounds;
                 }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog("Failed to patch Bronney Ross", ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch Broney Ross", ex); }
         }
     }
 
@@ -158,11 +138,11 @@ namespace TweaksFromPigs
     {
         static void Postfix(LeeBroxmas __instance)
         {
-            if (!Main.enabled || (Main.settings.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled)) return;
+            if (!Main.enabled || (Compatibility.ExpendablesBros.i.IsEnabled)) return;
 
             try
             {
-                if (Main.settings.FixExpendabros)
+                if (Main.settings.fixExpendabros)
                 {
                     TestVanDammeAnim blade = HeroController.GetHeroPrefab(HeroType.Blade);
                     Texture bladeKnifeTex = (blade as Blade).throwingKnife.gameObject.GetComponent<MeshRenderer>().sharedMaterial.mainTexture;
@@ -171,7 +151,7 @@ namespace TweaksFromPigs
                     __instance.macheteSprayProjectile.gameObject.GetComponent<MeshRenderer>().sharedMaterial.mainTexture = bladeKnifeTex;
                 }
             }
-            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to patch Lee Broxmas", ex); }
+            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch Lee Broxmas", ex); }
         }
     }
     [HarmonyPatch(typeof(LeeBroxmas), "AnimatePushing")]
@@ -182,17 +162,17 @@ namespace TweaksFromPigs
             if (!Main.enabled) return;
             try
             {
-                if (Main.settings.FixPushingAnimation)
+                if (Main.settings.fixPushingAnimation)
                 {
-                    __instance.gunSprite.transform.localPosition = Utility.GetBroGunVector3PositionWhilePushing(HeroType.LeeBroxmas);
+                    __instance.gunSprite.transform.localPosition = TFP_Utility.GetBroGunVector3PositionWhilePushing(HeroType.LeeBroxmas);
                     float pushingTime = Traverse.Create(__instance).Field("pushingTime").GetValue<float>();
                     if (__instance.fire || pushingTime <= 0)
                     {
                         __instance.gunSprite.transform.localScale = new Vector3(-1f, 1f, 1f);
-                        __instance.gunSprite.transform.localPosition = Utility.GetBroGunVector3PositionWhenFinishPushing(__instance.heroType);
+                        __instance.gunSprite.transform.localPosition = TFP_Utility.GetBroGunVector3PositionWhenFinishPushing(__instance.heroType);
                     }
                 }
-            }catch(Exception ex) { Main.bmod.ExceptionLog("Failed to patch Lee Broxmas Pushing", ex); }
+            }catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch Lee Broxmas Pushing", ex); }
         }
     }
 
@@ -202,32 +182,30 @@ namespace TweaksFromPigs
     {
         static bool Prefix(BronnarJensen __instance)
         {
-            if (!Main.enabled || (Main.settings.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled)) return true;
+            if (!Main.enabled || (Compatibility.ExpendablesBros.i.IsEnabled)) return true;
 
             try
             {
-                if (Main.settings.FixExpendabros)
+                if (Main.settings.fixExpendabros)
                 {
                     if (__instance.IsMine)
                     {
                         if (Traverse.Create(__instance).Field("ducking").GetValue<bool>() && __instance.down)
                         {
-                            Traverse.Create(__instance).Method("PlayAttackSound", new object[] { 0.4f }).GetValue();
                             Traverse.Create(__instance).Method("FireWeapon", new object[] { __instance.X + __instance.transform.localScale.x * 6f, __instance.Y + 7f, __instance.transform.localScale.x * (__instance.shootGrenadeSpeedX * 0.3f) + __instance.xI * 0.45f, 25f + ((__instance.yI <= 0f) ? 0f : (__instance.yI * 0.3f)) }).GetValue();
                         }
                         else
                         {
-                            Traverse.Create(__instance).Method("PlayAttackSound", new object[] { 0.4f }).GetValue();
                             Traverse.Create(__instance).Method("FireWeapon", new object[] { __instance.X + __instance.transform.localScale.x * 6f, __instance.Y + 10f, __instance.transform.localScale.x * __instance.shootGrenadeSpeedX + __instance.xI * 0.45f, __instance.shootGrenadeSpeedY + ((__instance.yI <= 0f) ? 0f : (__instance.yI * 0.3f)) }).GetValue();
                         }
+                        Traverse.Create(__instance).Method("PlayAttackSound", new object[] { 0.4f }).GetValue();
                     }
                     Map.DisturbWildLife(__instance.X, __instance.Y, 60f, __instance.playerNum);
                     __instance.fireDelay = 0.6f;
-
                     return false;
                 }
             }
-            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to shoot at Lee Browmas's foot", ex); }
+            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to shoot at Lee Broxmas's foot", ex); }
             return true;
         }
     }
@@ -238,11 +216,11 @@ namespace TweaksFromPigs
     {
         static void Postfix(TrentBroser __instance)
         {
-            if (!Main.enabled || (Main.settings.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled)) return;
+            if (!Main.enabled || (Compatibility.ExpendablesBros.i.IsEnabled)) return;
 
             try
             {
-                if (Main.settings.FixExpendabros)
+                if (Main.settings.fixExpendabros)
                 {
                     TestVanDammeAnim broDredd = HeroController.GetHeroPrefab(HeroType.BroDredd);
                     __instance.soundHolder.attackSounds = broDredd.soundHolder.attackSounds;
@@ -253,7 +231,7 @@ namespace TweaksFromPigs
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog("Failed to patch Trent Broser", ex);
+                Main.bmod.logger.ExceptionLog("Failed to patch Trent Broser", ex);
             }
         }
     }
@@ -268,78 +246,28 @@ namespace TweaksFromPigs
 
             try
             {
-                if (Main.settings.FixPushingAnimation)
+                if (Main.settings.fixPushingAnimation)
                 {
-                    __instance.gunSprite.transform.localPosition = Utility.GetBroGunVector3PositionWhilePushing(HeroType.Brochete);
+                    __instance.gunSprite.transform.localPosition = TFP_Utility.GetBroGunVector3PositionWhilePushing(HeroType.Brochete);
                     float pushingTime = Traverse.Create(__instance).Field("pushingTime").GetValue<float>();
                     if (__instance.fire || pushingTime <= 0)
                     {
                         __instance.gunSprite.transform.localScale = new Vector3(-1f, 1f, 1f);
-                        __instance.gunSprite.transform.localPosition = Utility.GetBroGunVector3PositionWhenFinishPushing(__instance.heroType);
+                        __instance.gunSprite.transform.localPosition = TFP_Utility.GetBroGunVector3PositionWhenFinishPushing(__instance.heroType);
                     }
                 }
             }
-            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to patch Brochete pushing", ex); }
+            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch Brochete pushing", ex); }
         }
     }
+    [HarmonyPatch(typeof(Brochete), "Update")]
+    static class Brochete_Update_Patch
+    {
+        static void Postfix(Brochete __instance)
+        {
+            if (!Main.enabled) return;
 
-    // Patch Broniversal Soldier
-    [HarmonyPatch(typeof(BroniversalSoldier), "Update")]
-    static class AutoReviveAndWaitForSpecial_Patch
-    {
-        public static float TimeBeforeSpecial = 0f;
-        static void Postfix(BroniversalSoldier __instance)
-        {
-            if (!Main.enabled) return;
-            if(Main.settings.LessOPBroniversalRevive)
-            {
-                if (TimeBeforeSpecial > 0) TimeBeforeSpecial -= 0.1f;
-            }
-            if(Main.settings.BroniversalAutoRevive)
-            {
-                if (Time.time - Traverse.Create(__instance).Field("deathTime").GetValue<float>() < Traverse.Create(__instance).Field("deathGracePeriod").GetValue<float>() && __instance.SpecialAmmo > 0)
-                {
-                    __instance.Revive(__instance.playerNum, true, __instance);
-                }
-            }
-        }
-    }
-    [HarmonyPatch(typeof(BroniversalSoldier), "Revive")]
-    static class DecreaseSpecialAmmoOnRevive_Patch
-    {
-        static void Postfix(BroniversalSoldier __instance, ref bool __result)
-        {
-            if (!Main.enabled) return;
-            try
-            {
-                if (Main.settings.LessOPBroniversalRevive)
-                {
-                    if (__result) __instance.SpecialAmmo--;
-                }
-            }
-            catch(Exception ex) { Main.bmod.ExceptionLog("Failed to patch Broniversal Revive", ex); }
-        }
-    }
-    [HarmonyPatch(typeof(BroniversalSoldier), "PressSpecial")]
-    static class WaitBeforeReuseSpecial_Patch
-    {
-        static bool Prefix(BroniversalSoldier __instance)
-        {
-            if (!Main.enabled) return true;
-            try
-            {
-                if (Main.settings.LessOPBroniversalRevive)
-                {
-                    if (AutoReviveAndWaitForSpecial_Patch.TimeBeforeSpecial <= 0)
-                    {
-                        AutoReviveAndWaitForSpecial_Patch.TimeBeforeSpecial = 2f;
-                        return true;
-                    }
-                    return false;
-                }
-            }
-            catch (Exception ex) { Main.bmod.ExceptionLog("Failed to make Broniversal special slower", ex); }
-            return true;
+            Traverse.Create(__instance).Field("test6Frames").SetValue(Main.settings.brocheteAlternateSpecialAnim);
         }
     }
 }

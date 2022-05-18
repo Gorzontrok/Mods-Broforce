@@ -95,6 +95,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".beta\AchievementsMenu.cs" />
+    <None Include=".beta\AssetsCollection.cs" />
+    <None Include=".beta\Compatibility.cs" />
+    <None Include=".beta\Main.cs" />
+    <None Include=".beta\Settings.cs" />
+    <None Include=".beta\TFP_Utility.cs" />
+    <None Include=".beta\UMM_GUI.cs" />
+    <None Include=".beta\_HarmonyPatch\BroFix.cs" />
+    <None Include=".beta\_HarmonyPatch\Doodads.cs" />
+    <None Include=".beta\_HarmonyPatch\GeneralBroFix.cs" />
+    <None Include=".beta\_HarmonyPatch\HUD.cs" />
+    <None Include=".beta\_HarmonyPatch\Levels.cs" />
+    <None Include=".beta\_HarmonyPatch\Menus.cs" />
+    <None Include=".beta\_HarmonyPatch\Mooks.cs" />
+    <None Include=".beta\_HarmonyPatch\Other.cs" />
+    <None Include=".beta\_HarmonyPatch\Projectiles.cs" />
     <Compile Include="AchievementsMenu.cs" />
     <Compile Include="AssetsCollection.cs" />
     <Compile Include="Compatibility.cs" />
@@ -112,6 +128,13 @@
     <Compile Include="Settings.cs" />
     <Compile Include="TFP_Utility.cs" />
     <Compile Include="UMM_GUI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="assets\Gimp_Pig_anim.png" />
+    <EmbeddedResource Include="assets\Grenade_Tear_Gas.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="assets\skeletonFace.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

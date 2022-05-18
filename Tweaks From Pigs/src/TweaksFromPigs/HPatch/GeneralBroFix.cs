@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using HarmonyLib;
 using UnityEngine;
 
-namespace TweaksFromPigs
+namespace TweaksFromPigs.HPatch.GeneralBroFix
 {
     // Patch animation
     [HarmonyPatch(typeof(TestVanDammeAnim), "AnimatePushing")]
     static class AnimatePushing_Patch
     {
-        internal static bool ThisHeroTypePushingBug(HeroType hero)
+        internal static bool __instanceHeroTypePushingBug(HeroType hero)
         {
             List<HeroType> heroBuggy = new List<HeroType>() { HeroType.BroneyRoss, HeroType.Blade, HeroType.BronanTheBrobarian, HeroType.Nebro, HeroType.TheBrolander, HeroType.HaleTheBro, HeroType.TheBrode, HeroType.BroveHeart };
             foreach (HeroType heroBug in heroBuggy)
@@ -23,21 +21,28 @@ namespace TweaksFromPigs
         static void Postfix(TestVanDammeAnim __instance)
         {
             if (!Main.enabled) return;
-            if(Main.settings.FixPushingAnimation)
+            try
             {
-                if (ThisHeroTypePushingBug(__instance.heroType))
+                if (Main.settings.fixPushingAnimation)
                 {
-                    __instance.gunSprite.transform.localPosition = Utility.GetBroGunVector3PositionWhilePushing(__instance.heroType);
-                }
+                    if (__instanceHeroTypePushingBug(__instance.heroType))
+                    {
+                        __instance.gunSprite.transform.localPosition = TFP_Utility.GetBroGunVector3PositionWhilePushing(__instance.heroType);
+                    }
 
-                float pushingTime = Traverse.Create(__instance).Field("pushingTime").GetValue<float>();
-                if (__instance.fire || pushingTime <= 0)
-                {
-                    __instance.gunSprite.transform.localScale = new Vector3(-1f, 1f, 1f);
-                    __instance.gunSprite.transform.localPosition = Utility.GetBroGunVector3PositionWhenFinishPushing(__instance.heroType);
-                    if (ThisHeroTypePushingBug(__instance.heroType))
-                        Traverse.Create(HeroController.GetHeroPrefab(__instance.heroType)).Method("SetGunPosition", new object[] { 0, 0 });
+                    float pushingTime = Traverse.Create(__instance).Field("pushingTime").GetValue<float>();
+                    if (__instance.fire || pushingTime <= 0)
+                    {
+                        __instance.gunSprite.transform.localScale = new Vector3(-1f, 1f, 1f);
+                        __instance.gunSprite.transform.localPosition = TFP_Utility.GetBroGunVector3PositionWhenFinishPushing(__instance.heroType);
+                        if (__instanceHeroTypePushingBug(__instance.heroType))
+                            Traverse.Create(HeroController.GetHeroPrefab(__instance.heroType)).Method("SetGunPosition", new object[] { 0, 0 });
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Main.ExceptionLog(ex);
             }
         }
     }
@@ -46,10 +51,17 @@ namespace TweaksFromPigs
     {
         static bool Prefix(TestVanDammeAnim __instance)
         {
-            if (!Main.enabled || (Main.settings.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled)) return true;
-            if(Main.settings.FixExpendabros)
+            if (!Main.enabled || ( Compatibility.ExpendablesBros.i.IsEnabled)) return true;
+            try
             {
-                if (HeroUnlockController.IsExpendaBro(__instance.heroType)) return false;
+                if (Main.settings.fixExpendabros)
+                {
+                    if (HeroUnlockController.IsExpendaBro(__instance.heroType)) return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Main.ExceptionLog(ex);
             }
             return true;
         }
@@ -59,37 +71,38 @@ namespace TweaksFromPigs
     {
         static bool Prefix(TestVanDammeAnim __instance)
         {
-            if (!Main.enabled || (Main.settings.ExpendablesBros_Compatibility && Compatibility.ExpendablesBros.i.IsEnabled)) return true;
-            if(Main.settings.FixExpendabros)
+            if (!Main.enabled || ( Compatibility.ExpendablesBros.i.IsEnabled)) return true;
+            try
             {
-                if (HeroUnlockController.IsExpendaBro(__instance.heroType))
+                if (Main.settings.fixExpendabros)
                 {
-                    Traverse.Create(__instance).Method("AnimateActualDeath").GetValue();
-                    return false;
+                    if (HeroUnlockController.IsExpendaBro(__instance.heroType))
+                    {
+                        Traverse.Create(__instance).Method("AnimateActualDeath").GetValue();
+                        return false;
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                Main.ExceptionLog(ex);
             }
             return true;
         }
     }
 
     // Patch BroBase
-    [HarmonyPatch(typeof(BroBase))]
-    [HarmonyPatch("Update")]
-    static class UpdateBrobase_Patch
+    [HarmonyPatch(typeof(BroBase), "Update")]
+    static class UpdateBroBase_Patch
     {
-        internal static float TearGasTime;
         static void Postfix(BroBase __instance)
         {
             if (!Main.enabled) return;
-            if (TearGasTime >= 0)
-            {
-                TearGasTime -= Time.deltaTime;
-                Map.ForgetPlayer(__instance.playerNum, false, false);
-            }
-            if (__instance.down || Traverse.Create(__instance).Field("ducking").GetValue<bool>())
+
+            /*if (Traverse.Create(__instance).Field("ducking").GetValue<bool>())
             {
                 __instance.gunSprite.gameObject.SetActive(true);
-            }
+            }*/
         }
     }
     [HarmonyPatch(typeof(BroBase), "Awake")]
@@ -98,8 +111,30 @@ namespace TweaksFromPigs
         static void Postfix(BroBase __instance)
         {
             if (!Main.enabled) return;
-            if (Main.settings.UsePushingFrame && !AnimatePushing_Patch.ThisHeroTypePushingBug(__instance.heroType)) __instance.useNewPushingFrames = true;
-            if (Main.settings.UseNewLadderFrame) __instance.useNewLadderClimbingFrames = true;
+            try
+            {
+                __instance.useNewPushingFrames = Main.settings.usePushingFrame && !AnimatePushing_Patch.__instanceHeroTypePushingBug(__instance.heroType);
+                __instance.useNewLadderClimbingFrames = Main.settings.useNewLadderFrame;
+            }
+            catch(Exception ex)
+            {
+                Main.ExceptionLog(ex);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(BroBase), "Start")]
+    static class BroBase_Start_Patch
+    {
+        static void Postfix(BroBase __instance)
+        {
+            if (!Main.enabled) return;
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+                Main.ExceptionLog(ex);
+            }
         }
     }
 
@@ -112,7 +147,7 @@ namespace TweaksFromPigs
             if (!Main.enabled) return true;
             try
             {
-                if (Main.settings.FixHidingInGrass)
+                if (Main.settings.fixHidingInGrass)
                 {
                     Extensions.DrawCircle(x, y, range, Color.magenta, 0f);
                     for (int i = 0; i < Map.grassAndBlood.Count; i++)
@@ -133,21 +168,21 @@ namespace TweaksFromPigs
             }
             catch(Exception ex)
             {
-                Main.bmod.ExceptionLog("Failed to hide player in grass", ex);
+                Main.bmod.logger.ExceptionLog("Failed to hide player in grass", ex);
             }
             return true;
         }
     }
 
-    // Remember pocketted special on bro swap.
+    // Remember pocketed special on bro swap.
     [HarmonyPatch(typeof(Player), "SpawnHero")]
-    class RememberPockettedSpecial_Patch
+    static class RememberPockettedSpecial_Patch
     {
         static List<PockettedSpecialAmmoType> listp = new List<PockettedSpecialAmmoType>();
         static void Prefix(Player __instance)
         {
             if (!Main.enabled) return;
-            if(Main.settings.RememberPockettedSpecial)
+            if(Main.settings.rememberPockettedSpecial)
             {
                 try
                 {
@@ -160,7 +195,7 @@ namespace TweaksFromPigs
                         }
                     }
                 }
-                catch (Exception ex) { Main.bmod.ExceptionLog("Failed while remembering pocketted special list.", ex); }
+                catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed while remembering pocketed special list.", ex); }
             }
         }
         static void Postfix(Player __instance)
@@ -168,7 +203,7 @@ namespace TweaksFromPigs
             if (!Main.enabled) return;
             try
             {
-                if(Main.settings.RememberPockettedSpecial)
+                if(Main.settings.rememberPockettedSpecial)
                 {
                     BroBase bro = __instance.character as BroBase;
                     if (bro)
@@ -179,9 +214,7 @@ namespace TweaksFromPigs
                     }
                 }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog("Failed while assigne pocketted special list.", ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed while assign pocketed special list.", ex); }
         }
     }
-
-
 }

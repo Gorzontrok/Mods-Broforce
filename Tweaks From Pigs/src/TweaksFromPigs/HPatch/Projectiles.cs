@@ -5,7 +5,7 @@ using System.Text;
 using HarmonyLib;
 using UnityEngine;
 
-namespace TweaksFromPigs
+namespace TweaksFromPigs.HPatch.Projectiles
 {
     [HarmonyPatch(typeof(GrenadePrimaryFire), "Launch")]
     class d

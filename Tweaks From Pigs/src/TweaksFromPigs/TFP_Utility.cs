@@ -1,40 +1,96 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.IO;
 using System.Reflection;
+using System.Collections.Generic;
 using RocketLib0;
 using UnityEngine;
 using HarmonyLib;
 
 namespace TweaksFromPigs
 {
-    public class Utility
+    public static class TFP_Utility
     {
-        public static System.Random rand = new System.Random();
+        public static bool CantChangeMapValue
+        {
+            get
+            {
+                return Map.isEditing || LevelSelectionController.loadCustomCampaign || LevelEditorGUI.IsActive;
+            }
+        }
 
-        public static List<HeroType> HeroList = RocketLib._HeroUnlockController.HeroTypeFullList;
-        public static List<int> HeroInt = new List<int> { 1, 3, 5, 8, 11, 15, 20, 25, 31, 37, 46, 56, 65, 75, 87, 99, 115, 132, 145, 160, 175, 193, 222, 249, 274, 300, 326, 350, 374, 400, 420, 440, 465, 460, 480, 500, 510, 524, 534, 540, 548, 560, 600 };
+        public static Material CreateMaterialFromFile(string ImagePath, Shader shader)
+        {
+            Material mat = new Material(shader);
+
+            Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            tex.LoadImage(File.ReadAllBytes(Path.Combine(Main.assetsFolder, ImagePath+".png")));
+            tex.filterMode = FilterMode.Point;
+            tex.anisoLevel = 1;
+            tex.mipMapBias = 0;
+            tex.wrapMode = TextureWrapMode.Repeat;
+
+            mat.mainTexture = tex;
+
+            return mat;
+        }
+
+        public static Material CreateMaterialFromResources(string ImageName, Shader shader)
+        {
+            try
+            {
+                Material mat = new Material(shader);
+                Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                tex.LoadImage(ExtractResource(ImageName));
+                tex.filterMode = FilterMode.Point;
+                tex.anisoLevel = 1;
+                tex.mipMapBias = 0;
+                tex.wrapMode = TextureWrapMode.Repeat;
+
+                mat.mainTexture = tex;
+                return mat;
+            }
+            catch(Exception ex)
+            {
+                Main.ExceptionLog(ex);
+            }
+            return CreateMaterialFromFile(ImageName, shader);
+
+        }
+
+        public static byte[] ExtractResource(String filename)
+        {
+            Assembly a = Assembly.GetExecutingAssembly();
+            using (Stream resFilestream = a.GetManifestResourceStream("TweaksFromPigs.assets." + filename + ".png"))
+            {
+                if (resFilestream == null) return null;
+                byte[] ba = new byte[resFilestream.Length];
+                resFilestream.Read(ba, 0, ba.Length);
+                return ba;
+            }
+        }
+
         public static Dictionary<int, HeroType> BuildHeroDictionary()
         {
+            List<HeroType> HeroList = new List<HeroType>(RocketLib._HeroUnlockController.Full_HeroType);
+            List<int> HeroInt = new List<int>(RocketLib._HeroUnlockController.Hero_Unlock_Intervals);
+            HeroInt.AddRange(new int[] { 610, 620, 630, 640, 650, 660, 670, 690, 710, 730 });
+
             Dictionary<int, HeroType> HeroDictionary = new Dictionary<int, HeroType>();
 
             for (int i = 0; i< HeroList.Count; i++)
             {
                 HeroType hero = HeroList[i];
-                if(HeroUnlockController.IsExpendaBro(hero) && Main.settings.SpawnWithExpendabros)
+                if(HeroUnlockController.IsExpendaBro(hero) && Main.settings.spawnWithExpendabros)
                 {
-                    /* Bronney Ross : 500
-                     * LeeBroxmas : 510
-                     * Bronnar Jensen : 524
-                     * Bro Ceasar : 534
-                     * Trent Broser : 540
-                     * Broc : 548
-                     * Toll broad : 560
+                    /* Broney Ross : 610
+                     * LeeBroxmas : 620
+                     * Bronnar Jensen : 630
+                     * Bro Ceasar : 640
+                     * Trent Broser : 650
+                     * Broc : 660
+                     * Toll broad : 670
                      */
-                    HeroDictionary.Add(HeroInt[i], hero);
-                }
-                else if(hero == HeroType.BrondleFly && Main.settings.SpawnBrondeFly)
-                {
-                    // Brondle Fly : 600
                     HeroDictionary.Add(HeroInt[i], hero);
                 }
                 else
@@ -44,16 +100,6 @@ namespace TweaksFromPigs
                 }
             }
             return HeroDictionary;
-        }
-
-
-        public static Texture2D CreateTexFromMat(string ImagePath, Material origMat)
-        {
-            return RocketLib.CreateTexFromMat(Main.ResFolder + ImagePath, origMat);
-        }
-        public static Texture2D CreateTexFromSpriteSM(string ImagePath, SpriteSM sprite)
-        {
-            return RocketLib.CreateTexFromSpriteSM(Main.ResFolder + ImagePath, sprite);
         }
 
         public static Vector3 GetBroGunVector3PositionWhenFinishPushing(HeroType hero)

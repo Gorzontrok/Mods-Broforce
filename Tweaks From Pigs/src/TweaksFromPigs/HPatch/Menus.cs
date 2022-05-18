@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
-using Utility;
-using UnityEngine.SceneManagement;
 
-namespace TweaksFromPigs
+namespace TweaksFromPigs.HPatch.Menus
 {
     // Playing multiple Arcade Campaign
     [HarmonyPatch(typeof(LevelSelectionController), "ResetLevelAndGameModeToDefault")]
@@ -14,7 +12,7 @@ namespace TweaksFromPigs
         static void Postfix()
         {
             if (!Main.enabled) return;
-            string c = Main.CurentArcade;
+            string c = Main.CurrentArcade;
             if (c == "Hell Arcade")
             {
                 LevelSelectionController.DefaultCampaign = LevelSelectionController.HellArcade;
@@ -22,7 +20,6 @@ namespace TweaksFromPigs
             else if (c == "Expendabros")
             {
                 LevelSelectionController.DefaultCampaign = LevelSelectionController.ExpendabrosCampaign;
-
             }
             else if (c == "TWITCHCON")
             {
@@ -38,7 +35,7 @@ namespace TweaksFromPigs
             }
             else
             {
-               LevelSelectionController.DefaultCampaign = LevelSelectionController.OfflineCampaign;
+                LevelSelectionController.DefaultCampaign = LevelSelectionController.OfflineCampaign;
             }
         }
     }
@@ -47,7 +44,7 @@ namespace TweaksFromPigs
     {
         static int GetMaxAracadeLevel(string ArcadeLevel)
         {
-            if (Main.settings.MaxArcadeLevelEnabled)
+            if (Main.settings.fixMaxArcadeLevel)
             {
                 switch (ArcadeLevel)
                 {
@@ -62,7 +59,7 @@ namespace TweaksFromPigs
         }
         static void Postfix()
         {
-           LevelSelectionController.totalNumberOfArcadeLevels = GetMaxAracadeLevel(Main.CurentArcade);
+            LevelSelectionController.totalNumberOfArcadeLevels = GetMaxAracadeLevel(Main.CurrentArcade);
         }
     }
 
@@ -73,7 +70,7 @@ namespace TweaksFromPigs
         static void Prefix(OptionsMenu __instance)
         {
             if (!Main.enabled) return;
-            if(Main.settings.LanguageMenuEnabled)
+            if (Main.settings.languageMenuEnabled)
             {
                 Traverse trav = Traverse.Create(__instance);
                 MenuBarItem[] masterItems = trav.Field("masterItems").GetValue() as MenuBarItem[];
@@ -96,11 +93,11 @@ namespace TweaksFromPigs
         }
     }
     // Patch Main Menu
-     [HarmonyPatch(typeof(MainMenu), "SetupItems")]
-     static class p_Patch
-     {
-         static void Prefix(MainMenu __instance)
-         {
+    [HarmonyPatch(typeof(MainMenu), "SetupItems")]
+    static class p_Patch
+    {
+        static void Prefix(MainMenu __instance)
+        {
             if (!Main.enabled) return;
             try
             {
@@ -141,12 +138,12 @@ namespace TweaksFromPigs
 
                 trav.Field("masterItems").SetValue(list.ToArray());
             }
-            catch(Exception ex) { Main.bmod.Log(ex, RLogType.Exception); }
+            catch (Exception ex) { Main.bmod.Log(ex, RLogType.Exception); }
         }
-     }
+    }
 
-     [HarmonyPatch(typeof(MainMenu), "GoToSteamPage")]
-     static class GoToAchievements_Patch
+    [HarmonyPatch(typeof(MainMenu), "GoToSteamPage")]
+    static class GoToAchievements_Patch
     {
         static bool Prefix(MainMenu __instance)
         {
@@ -161,7 +158,8 @@ namespace TweaksFromPigs
                 aMenu.TransitionIn();
 
                 return false;
-            }catch(Exception ex) { Main.bmod.Log(ex, RLogType.Exception); }
+            }
+            catch (Exception ex) { Main.bmod.Log(ex, RLogType.Exception); }
 
             return true;
         }
@@ -198,6 +196,18 @@ namespace TweaksFromPigs
              return false;
          }
      }*/
-
-
+    /*
+    [HarmonyPatch(typeof(ContinueMenu), "Awake")]
+    static class fjd
+    {
+        static void Postfix(ContinueMenu __instance)
+        {
+            Traverse trav = Traverse.Create(__instance);
+            MenuBarItem[] masterItems = trav.Field("masterItems").GetValue() as MenuBarItem[];
+            foreach(MenuBarItem i in masterItems)
+            {
+                Main.mod.Logger.Log(i.localisedKey);
+            }
+        }
+    }*/
 }
