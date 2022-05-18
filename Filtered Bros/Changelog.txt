@@ -4,7 +4,7 @@ v1.1.6 :
  - Secrets bro can only be selected in cheat mode
  - If a bro is not unlocked, their name will be hidden
  - Automate most of the things
- - setting : Number of bro per ligne
+ - setting : Number of bro per line
  - Show the number of saves needed for the next bro unlock
  - Lives can have a maximum
 
