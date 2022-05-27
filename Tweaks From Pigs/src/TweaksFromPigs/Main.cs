@@ -94,16 +94,6 @@ namespace TweaksFromPigs
         private static void Start()
         {
             UMM_GUI.Init();
-            Compatibility.Load();
-            for (int i = 0; i < Compatibility.BroforceModsList.Count; i++)
-            {
-                Compatibility.IsThisModTFP broforcemod = Compatibility.BroforceModsList[i];
-                if (broforcemod.i.IsHere)
-                {
-                    string end = broforcemod.i.IsEnabled ? " and is active." : ".";
-                    bmod.logger.InformationLog("'" + broforcemod.i.ID + "' is here" + end, true);
-                }
-            }
 
             reloadStyle = new GUIStyle();
             reloadStyle.fontSize = 15;
