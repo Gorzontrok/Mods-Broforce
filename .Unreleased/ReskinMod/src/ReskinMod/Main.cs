@@ -14,16 +14,17 @@ namespace ReskinMod
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
-        public static Settings settings;
+       // public static Settings settings;
 
+        public static string assetsFolderPath;
         internal static BroforceMod bmod;
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             modEntry.OnGUI = OnGUI;
-            modEntry.OnSaveGUI = OnSaveGUI;
+            //modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
-            settings = Settings.Load<Settings>(modEntry);
+            //settings = Settings.Load<Settings>(modEntry);
             mod = modEntry;
 
             var harmony = new Harmony(modEntry.Info.Id);
@@ -37,54 +38,71 @@ namespace ReskinMod
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
 
-            bmod = new BroforceMod(mod, _UseLocalLog: false);
+            bmod = new BroforceMod(mod);
             Start();
             return true;
         }
 
         static void Start()
         {
-            List<string> FolderList = new List<string>();
+            /*List<string> FolderList = new List<string>();
             Utility.Mook_Folder = mod.Path + "Assets\\Mook\\";
             Utility.Bro_Folder = mod.Path + "Assets\\Bro\\";
             Utility.HUD_Folder = mod.Path + "Assets\\Interface\\HUD\\";
             Utility.Interface_Folder = mod.Path + "Assets\\Interface\\";
             Utility.Other_Character_Folder = mod.Path + "Assets\\Other_Character\\";
 
-            FolderList.AddRange(new string[] { Utility.Mook_Folder, Utility.Bro_Folder, Utility.Interface_Folder, Utility.HUD_Folder, Utility.Other_Character_Folder });
-            foreach (string folder in FolderList)
+            FolderList.AddRange(new string[] { Utility.Mook_Folder, Utility.Bro_Folder, Utility.Interface_Folder, Utility.HUD_Folder, Utility.Other_Character_Folder });*/
+            /* foreach (string folder in FolderList)
+             {
+             }*/
+            assetsFolderPath = Path.Combine(mod.Path, "assets");
+            if (!Directory.Exists(assetsFolderPath))
             {
-                if (!Directory.Exists(folder))
-                {
-                    Directory.CreateDirectory(folder);
-                }
+                Directory.CreateDirectory(assetsFolderPath);
             }
+            SkinCollection.Init();
+           /* foreach(SkinCollection s in SkinCollection.skinCollections)
+            {
+                Main.bmod.Log(s.name + " " + s.skins.Count);
+            }*/
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
-            settings.Debug = GUILayout.Toggle(bmod.UseDebugLog, "Debug log");
-            bmod.UseDebugLog = settings.Debug;
+            if(GUILayout.Button(new GUIContent("Reload Mod"), GUILayout.Width(200)))
+            {
+                SkinCollection.Init();
+            }
         }
 
-        static void OnSaveGUI(UnityModManager.ModEntry modEntry)
+       /*static void OnSaveGUI(UnityModManager.ModEntry modEntry)
         {
             settings.Save(modEntry);
-        }
+        }*/
 
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
             enabled = value;
             return true;
         }
+
+        public static void ErrorLog(object msg)
+        {
+            bmod.logger.ErrorLog(msg);
+        }
+
+        public static void WarningLog(object msg)
+        {
+            bmod.logger.WarningLog(msg);
+        }
     }
 
-    public class Settings : UnityModManager.ModSettings
+   /* public class Settings : UnityModManager.ModSettings
     {
-        public bool Debug;
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
         }
-    }
+    }*/
 }
