@@ -11,26 +11,45 @@ namespace ReskinMod.Patch
         {
             try
             {
-                HeroType CurrentHero = __instance.heroType;
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin characterSkin = skinCollection.GetSkin(Skin.SkinType.Character);
+                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
 
-                var cInfo = Utility.GetBroReskinInfo(CurrentHero);
+                    Skin avatarSkin = skinCollection.GetSkin(Skin.SkinType.Avatar);
+                    Skin avatar2 = skinCollection.GetSkin(Skin.SkinType.Avatar2);
 
-                cInfo.CheckTex(CurrentHero, __instance);
-                cInfo.CheckSecondTex(__instance.humanBrominator, __instance.humanGunBrominator);
-                cInfo.CheckAvatarTex2(__instance.brominatorRobotAvatar);
-
-                __instance.humanBrominator.mainTexture = cInfo.CharacterTex;
-                //(__instance as Brominator).humanBrominator.SetTexture("_MainTex", CharacterTex);
-                __instance.humanGunBrominator.mainTexture = cInfo.GunTex;
-                __instance.humanGunBrominator.SetTexture("_MainTex", cInfo.GunTex);
-
-                __instance.metalBrominator.mainTexture = cInfo.GetCharacterTex2(__instance.metalBrominator);
-                __instance.metalGunBrominator.mainTexture = cInfo.GetGunTex2(__instance.metalGunBrominator);
-
-                __instance.brominatorHumanAvatar.mainTexture = cInfo.AvatarTex;
-                __instance.brominatorRobotAvatar.mainTexture = cInfo.GetAvatarTex2(__instance.brominatorRobotAvatar);
+                    Skin gun = skinCollection.GetSkin(Skin.SkinType.Gun);
+                    Skin gun2 = skinCollection.GetSkin(Skin.SkinType.Gun2);
+                    if(characterSkin != null)
+                    {
+                        __instance.humanBrominator.mainTexture = character2.texture;
+                    }
+                    if (character2 != null)
+                    {
+                        __instance.metalBrominator.mainTexture = character2.texture;
+                    }
+                    if (avatarSkin != null)
+                    {
+                        __instance.brominatorHumanAvatar.mainTexture = avatarSkin.texture;
+                    }
+                    if (avatar2 != null)
+                    {
+                        __instance.brominatorRobotAvatar.mainTexture = avatar2.texture;
+                    }
+                    if (gun != null)
+                    {
+                        __instance.humanGunBrominator.mainTexture = gun.texture;
+                        __instance.humanGunBrominator.SetTexture("_MainTex", gun.texture);
+                    }
+                    if (gun2 != null)
+                    {
+                        __instance.metalGunBrominator.mainTexture = gun2.texture;
+                    }
+                }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
     [HarmonyPatch(typeof(Nebro), "Start")]
@@ -40,19 +59,22 @@ namespace ReskinMod.Patch
         {
             try
             {
-                HeroType CurrentHero = __instance.heroType;
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin characterSkin = skinCollection.GetSkin(Skin.SkinType.Character);
+                    Skin armless = skinCollection.GetSkin(Skin.SkinType.Armless);
+                    if(armless != null)
+                    {
+                        __instance.materialArmless.mainTexture = armless.texture;
+                    }
 
-                var cInfo = Utility.GetBroReskinInfo(CurrentHero);
-                cInfo.CheckTex(CurrentHero, __instance);
-                cInfo.CheckSecondTex(__instance.materialArmless);
-
-                __instance.materialArmless.mainTexture = cInfo.GetCharacterTex2(__instance.materialArmless);
-
-                Material materialNormal = Material.Instantiate(__instance.materialArmless);
-                materialNormal.mainTexture = cInfo.CharacterTex;
-                Traverse.Create(__instance).Field("materialNormal").SetValue(materialNormal);
+                    Material materialNormal = Material.Instantiate(__instance.materialArmless);
+                    materialNormal.mainTexture = characterSkin.texture;
+                    Traverse.Create(__instance).Field("materialNormal").SetValue(materialNormal);
+                }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
     [HarmonyPatch(typeof(AshBrolliams), "Start")]
@@ -62,14 +84,17 @@ namespace ReskinMod.Patch
         {
             try
             {
-                HeroType CurrentHero = __instance.heroType;
-
-                var cInfo = Utility.GetBroReskinInfo(CurrentHero);
-                cInfo.CheckTex(CurrentHero, __instance);
-                cInfo.CheckAvatarTex2(__instance.bloodyAvatar);
-                __instance.bloodyAvatar.mainTexture = cInfo.GetAvatarTex2(__instance.bloodyAvatar);
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin avatar2 = skinCollection.GetSkin(Skin.SkinType.Avatar2);
+                    if(avatar2 != null)
+                    {
+                        __instance.bloodyAvatar.mainTexture = avatar2.texture;
+                    }
+                }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
 }

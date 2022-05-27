@@ -5,6 +5,47 @@ using HarmonyLib;
 
 namespace ReskinMod.Patch
 {
+    /*
+     SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+     if(skinCollection != null)
+     {
+
+     }
+     */
+    [HarmonyPatch(typeof(TestVanDammeAnim), "Awake")]
+    static class ReSkin_Patch
+    {
+        static void Postfix(TestVanDammeAnim __instance)
+        {
+            try
+            {
+                TestVanDammeAnim inst = __instance;
+                //Main.bmod.Log(inst.GetType().Name);
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(inst.GetType().Name.ToLower());
+                if(skinCollection != null)
+                {
+                    Skin characterSkin = skinCollection.GetSkin(Skin.SkinType.Character);
+                    Skin gunSkin = skinCollection.GetSkin(Skin.SkinType.Gun);
+
+                    if (characterSkin != null)
+                    {
+                        SpriteSM sprite = inst.gameObject.GetComponent<SpriteSM>();
+                        sprite.meshRender.sharedMaterial.SetTexture("_MainTex", characterSkin.texture);
+                    }
+                    if (gunSkin != null)
+                    {
+                        inst.gunSprite.GetComponent<Renderer>().material.mainTexture = gunSkin.texture;
+                        inst.gunSprite.GetComponent<Renderer>().sharedMaterial.SetTexture("_MainTex", gunSkin.texture);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Main.bmod.Log(ex);
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(BroBase), "Start")]
     static class ReskinBro_Patch
     {
@@ -14,57 +55,62 @@ namespace ReskinMod.Patch
 
             try
             {
-                HeroType CurrentHero = __instance.heroType;
-                if (CurrentHero == HeroType.BoondockBros) return;
-
-                var cInfo = Utility.GetBroReskinInfo(CurrentHero);
-                cInfo.CheckTex(CurrentHero, __instance);
-
-                /*if (cInfo.CharacterTex != null)
+                BroBase inst = __instance;
+                //Main.bmod.Log(inst.GetType().Name);
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(inst.GetType().Name.ToLower());
+                HeroType heroType = inst.heroType;
+                if(skinCollection != null)
                 {
-                    __instance.gameObject.GetComponent<SpriteSM>().meshRender.sharedMaterial.SetTexture("_MainTex", cInfo.CharacterTex);
-                }
-                if (cInfo.GunTex != null)
-                {
-                    __instance.gunSprite.GetComponent<Renderer>().material.mainTexture = cInfo.GunTex;
-                    __instance.gunSprite.GetComponent<Renderer>().sharedMaterial.SetTexture("_MainTex", cInfo.GunTex);
-                }
-                if (cInfo.AvatarTex != null)
-                {
-                    __instance.player.hud.avatar.meshRender.sharedMaterial.SetTexture("_MainTex", cInfo.AvatarTex);
-                }*/
-                __instance = cInfo.ApplyReskin(__instance) as BroBase;
+                    Skin characterSkin = skinCollection.GetSkin(Skin.SkinType.Character);
+                    Skin avatarSkin = skinCollection.GetSkin(Skin.SkinType.Avatar);
+                    Skin gun2 = skinCollection.GetSkin(Skin.SkinType.Gun2);
+                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    Skin armless = skinCollection.GetSkin(Skin.SkinType.Armless);
 
-                if (CurrentHero == HeroType.DoubleBroSeven && (__instance as DoubleBroSeven))
-                {
-                    DoubleBroSeven bro = __instance as DoubleBroSeven;
-                    cInfo.CheckSecondTex(bro.balaclavaMaterial);
-                    bro.balaclavaMaterial.mainTexture = cInfo.GetCharacterTex2(bro.balaclavaMaterial);
+                    if (avatarSkin != null)
+                    {
+                        __instance.player.hud.avatar.meshRender.sharedMaterial.SetTexture("_MainTex", avatarSkin.texture);
+                    }
 
-                    Material normalMat = Material.Instantiate(bro.balaclavaMaterial);
-                    normalMat.mainTexture = cInfo.CharacterTex;
-                    Traverse.Create(bro).Field("normalMaterial").SetValue(normalMat);
-                }
-                else if (CurrentHero == HeroType.IndianaBrones && (__instance as IndianaBrones))
-                {
-                    IndianaBrones bro = __instance as IndianaBrones;
-                    cInfo.CheckSecondTex(bro.materialArmless);
-                    bro.materialArmless.mainTexture = cInfo.GetCharacterTex2(bro.materialArmless);
+                    if ((__instance as DoubleBroSeven) && inst.GetType().Name == "DoubleBroSeven")
+                    {
+                        DoubleBroSeven bro = __instance as DoubleBroSeven;
+                        if(character2 != null)
+                        {
+                            bro.balaclavaMaterial.mainTexture = character2.texture;
+                        }
 
-                    Material materialNormal = Material.Instantiate(bro.materialArmless);
-                    materialNormal.mainTexture = cInfo.CharacterTex;
-                    Traverse.Create(bro).Field("materialNormal").SetValue(materialNormal);
-                }
-                else if(CurrentHero == HeroType.Predabro && (__instance as Predabro))
-                {
-                    Predabro bro = __instance as Predabro;
-                    cInfo.CheckSecondTex(bro.stealthMaterial, bro.stealthGunMaterial);
+                        Material normalMat = Material.Instantiate(bro.balaclavaMaterial);
+                        normalMat.mainTexture = characterSkin.texture;
+                        Traverse.Create(bro).Field("normalMaterial").SetValue(normalMat);
+                    }
+                    else if ((__instance as IndianaBrones) && inst.GetType().Name == "IndianaBrones")
+                    {
+                        IndianaBrones bro = __instance as IndianaBrones;
+                        if (armless != null)
+                        {
+                            bro.materialArmless.mainTexture = armless.texture;
+                        }
 
-                    bro.stealthMaterial.mainTexture = cInfo.GetCharacterTex2(bro.stealthMaterial);
-                    bro.stealthGunMaterial.mainTexture = cInfo.GetGunTex2(bro.stealthGunMaterial);
+                        Material materialNormal = Material.Instantiate(bro.materialArmless);
+                        materialNormal.mainTexture = characterSkin.texture;
+                        Traverse.Create(bro).Field("materialNormal").SetValue(materialNormal);
+                    }
+                    else if ((__instance as Predabro) && inst.GetType().Name == "Predabro")
+                    {
+                        Predabro bro = __instance as Predabro;
+                        if(character2 != null)
+                        {
+                            bro.stealthMaterial.mainTexture = character2.texture;
+                        }
+                        if(gun2 != null)
+                        {
+                            bro.stealthGunMaterial.mainTexture = gun2.texture;
+                        }
+                    }
                 }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
 
@@ -78,38 +124,40 @@ namespace ReskinMod.Patch
 
             try
             {
-                //if (__instance as Satan) return;
-
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-                __instance = cInfo.ApplyReskin(__instance) as Mook;
-
-                // FOR OTHER MATERIAL
-                if (__instance as MookRiotShield)
+                Mook inst = __instance;
+                //Main.bmod.Log(inst.GetType().Name);
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(inst.GetType().Name.ToLower());
+                if(skinCollection != null)
                 {
-                    try
+                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+
+                    if (__instance as MookRiotShield && inst.GetType().Name == "MookRiotShield")
                     {
-                        MookRiotShield mook = __instance as MookRiotShield;
-                        cInfo.CheckSecondTex(mook.unarmedMaterial);
-                        mook.unarmedMaterial.mainTexture = cInfo.GetCharacterTex2(mook.unarmedMaterial);
+                        try
+                        {
+                            MookRiotShield mook = __instance as MookRiotShield;
+                            if(character2 != null)
+                            {
+                                mook.unarmedMaterial.mainTexture =character2.texture;
+                            }
+                        }
+                        catch (Exception ex) { Main.bmod.logger.ExceptionLog("Shield", ex); }
                     }
-                    catch (Exception ex) { Main.bmod.ExceptionLog("Shield", ex); }
-                }
-                else if (__instance as MookDog)
-                {
-                    try
+                    else if (__instance as MookDog && inst.GetType().Name == "MookDog")
                     {
-                        if (!(__instance as HellDog) && !(__instance as Alien))
+                        try
                         {
                             MookDog mook = __instance as MookDog;
-                            cInfo.CheckSecondTex(mook.upgradedMaterial);
-                            mook.upgradedMaterial.mainTexture = cInfo.GetCharacterTex2(mook.upgradedMaterial);
+                            if(character2 != null)
+                            {
+                                mook.upgradedMaterial.mainTexture = character2.texture;
+                            }
                         }
+                        catch (Exception ex) { Main.bmod.logger.ExceptionLog("Dog", ex); }
                     }
-                    catch(Exception ex) { Main.bmod.ExceptionLog("Dog", ex); }
                 }
             }
-            catch(Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch(Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
     [HarmonyPatch(typeof(ThemeHolder), "DisableAllBlockPrefabs")]
@@ -119,7 +167,7 @@ namespace ReskinMod.Patch
         {
             try
             {
-                Main.bmod.Log("dd");
+                /*Main.bmod.Log("dd");
                 Villager villagerMale = __instance.villager1[0] as Villager;
                 {
                     Villager_Reskin.MaleVillager = new ReskinInfo("MaleVillager", Utility.Other_Character_Folder, "_armed");
@@ -128,8 +176,8 @@ namespace ReskinMod.Patch
                     cInfo.CheckSecondTex(Traverse.Create(villagerMale).Field("armedMaterial").GetValue<Material>());
                     cInfo.ApplyReskin(villagerMale);
                     Traverse.Create(villagerMale).Field("armedMaterial").SetValue(cInfo.GetCharacterTex2(Traverse.Create(villagerMale).Field("armedMaterial").GetValue<Material>()));
-                }
-            }catch(Exception ex) { Main.bmod.ExceptionLog("Villager", ex); }
+                }*/
+            }catch(Exception ex) { Main.bmod.logger.ExceptionLog("Villager", ex); }
 
         }
     }

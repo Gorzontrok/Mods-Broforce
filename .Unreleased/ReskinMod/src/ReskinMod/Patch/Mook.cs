@@ -3,6 +3,17 @@ using HarmonyLib;
 
 namespace ReskinMod.Patch
 {
+    /*
+     SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+     if(skinCollection != null)
+     {
+         Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
+         if(decapitated != null)
+         {
+             __instance.decapitatedMaterial.mainTexture = decapitated.texture;
+         }
+     }
+     */
     [HarmonyPatch(typeof(MookTrooper), "Awake")]
     static class MookTrooper_reskin_Patch
     {
@@ -10,47 +21,17 @@ namespace ReskinMod.Patch
         {
             try
             {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-
-                MookTrooper mook = __instance;
-                if (__instance as MookBazooka)
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if(skinCollection != null)
                 {
-                    mook = __instance as MookBazooka;
+                    Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
+                    if(decapitated != null)
+                    {
+                        __instance.decapitatedMaterial.mainTexture = decapitated.texture;
+                    }
                 }
-                mook.decapitatedMaterial.mainTexture = cInfo.GetDecapitated();
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
-        }
-    }
-    [HarmonyPatch(typeof(MookJetpack), "Start")]
-    static class MookJetPack_Reskin_Patch
-    {
-        static void Prefix(MookJetpack __instance)
-        {
-            try
-            {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-
-                __instance.decapitatedMaterial.mainTexture = cInfo.GetDecapitated();
-            }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
-        }
-    }
-    [HarmonyPatch(typeof(UndeadTrooper), "Awake")]
-    static class UndeadTrooper_Reskin_Patch
-    {
-        static void Postfix(UndeadTrooper __instance)
-        {
-            try
-            {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-
-                __instance.decapitatedMaterial.mainTexture = cInfo.GetDecapitated();
-            }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
     [HarmonyPatch(typeof(MookSuicide), "Start")]
@@ -60,14 +41,24 @@ namespace ReskinMod.Patch
         {
             try
             {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-                cInfo.CheckSecondTex(__instance.warningMaterial);
 
-                __instance.decapitatedMaterial.mainTexture = cInfo.GetDecapitated();
-                __instance.warningMaterial.mainTexture = cInfo.GetCharacterTex2(__instance.warningMaterial);
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
+                    Skin char2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    if(decapitated != null)
+                    {
+                        __instance.decapitatedMaterial.mainTexture = decapitated.texture;
+                    }
+
+                    if(char2 != null)
+                    {
+                        __instance.warningMaterial.mainTexture = char2.texture;
+                    }
+                }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
     [HarmonyPatch(typeof(MookBigGuy), "Awake")]
@@ -77,37 +68,17 @@ namespace ReskinMod.Patch
         {
             try
             {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-
-                MookBigGuy mook = __instance;
-                if (__instance as MookHellBigGuy)
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
                 {
-                    mook = __instance as MookHellBigGuy;
+                    Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
+                    if(decapitated != null)
+                    {
+                        __instance.decapitatedMaterial.mainTexture = decapitated.texture;
+                    }
                 }
-                else if (__instance as MookHellArmouredBigGuy)
-                {
-                    mook = __instance as MookHellArmouredBigGuy;
-                }
-                mook.decapitatedMaterial.mainTexture = cInfo.GetDecapitated();
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
-        }
-    }
-
-    [HarmonyPatch(typeof(MookArmouredGuy), "Awake")]
-    static class MookArmouredGuy_Reskin_Patch
-    {
-        static void Postfix(MookArmouredGuy __instance)
-        {
-            try
-            {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-
-                __instance.decapitatedMaterial.mainTexture = cInfo.GetDecapitated();
-            }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
     [HarmonyPatch(typeof(SkinnedMook), "Start")]
@@ -117,14 +88,17 @@ namespace ReskinMod.Patch
         {
             try
             {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-                //cInfo.CheckSecondTex(__instance.warningMaterial); = null
-
-                __instance.decapitatedMaterial.mainTexture = cInfo.GetDecapitated();
-                //__instance.warningMaterial.mainTexture = cInfo.GetCharacterTex2(__instance.warningMaterial);
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
+                    if (decapitated != null)
+                    {
+                        __instance.decapitatedMaterial.mainTexture = decapitated.texture;
+                    }
+                }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
 
@@ -135,18 +109,17 @@ namespace ReskinMod.Patch
         {
             try
             {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-                cInfo.CheckSecondTex(__instance.warningMaterial);
-
-                MookHellBoomer mook = __instance;
-                if (__instance as MookHellSoulCatcher)
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
                 {
-                    mook = __instance as MookHellSoulCatcher;
+                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    if (character2 != null)
+                    {
+                        __instance.warningMaterial.mainTexture = character2.texture;
+                    }
                 }
-                mook.warningMaterial.mainTexture = cInfo.GetCharacterTex2(mook.warningMaterial);
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
 
@@ -157,12 +130,17 @@ namespace ReskinMod.Patch
         {
             try
             {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-                cInfo.CheckSecondTex(__instance.warningMaterial);
-                __instance.warningMaterial.mainTexture = cInfo.GetCharacterTex2(__instance.warningMaterial);
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    if (character2 != null)
+                    {
+                        __instance.warningMaterial.mainTexture = character2.texture;
+                    }
+                }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
 
@@ -173,14 +151,17 @@ namespace ReskinMod.Patch
         {
             try
             {
-                var cInfo = Utility.GetMookReskinInfo(__instance);
-                cInfo.CheckTex(__instance);
-                cInfo.CheckSecondTex(__instance.disarmedMaterial/*, __instance.disarmedGunMaterial*/);
-
-                __instance.disarmedMaterial.mainTexture = cInfo.GetCharacterTex2(__instance.disarmedMaterial);
-                //__instance.disarmedGunMaterial.mainTexture = cInfo.GetGunTex2(__instance.disarmedGunMaterial);
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    if (character2 != null)
+                    {
+                        __instance.disarmedMaterial.mainTexture = character2.texture;
+                    }
+                }
             }
-            catch (Exception ex) { Main.bmod.ExceptionLog(ex); }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
         }
     }
 }
