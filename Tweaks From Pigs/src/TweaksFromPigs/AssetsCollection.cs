@@ -37,5 +37,18 @@ namespace TweaksFromPigs
         }
         private static Material _grenade_Tear_Gas;
 
+        public static Material Sick_Pig_anim
+        {
+            get
+            {
+                if (_sick_Pig_anim == null)
+                {
+                    _sick_Pig_anim = TFP_Utility.CreateMaterialFromResources("pig_animStinky", characterShader);
+                }
+                return _sick_Pig_anim;
+            }
+        }
+        private static Material _sick_Pig_anim;
+
     }
 }
