@@ -57,6 +57,8 @@ namespace TweaksFromPigs
         public bool moreBroInDeathMatch;
         public bool mechDropDoesSmoke;
         public bool pigAreAlwaysTerror;
+        public bool sickPigs;
+        public float sickPigsPobability;
         public bool setCustomMouse; public bool customMouseIsSet;
         public string customPlayerName;
         public bool fixTakeScreenshots;

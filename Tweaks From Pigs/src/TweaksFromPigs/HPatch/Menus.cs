@@ -44,7 +44,7 @@ namespace TweaksFromPigs.HPatch.Menus
     {
         static int GetMaxAracadeLevel(string ArcadeLevel)
         {
-            if (Main.settings.fixMaxArcadeLevel)
+            if (Main.enabled && Main.settings.fixMaxArcadeLevel)
             {
                 switch (ArcadeLevel)
                 {
@@ -69,8 +69,7 @@ namespace TweaksFromPigs.HPatch.Menus
     {
         static void Prefix(OptionsMenu __instance)
         {
-            if (!Main.enabled) return;
-            if (Main.settings.languageMenuEnabled)
+            if (Main.enabled && Main.settings.languageMenuEnabled)
             {
                 Traverse trav = Traverse.Create(__instance);
                 MenuBarItem[] masterItems = trav.Field("masterItems").GetValue() as MenuBarItem[];
@@ -87,10 +86,6 @@ namespace TweaksFromPigs.HPatch.Menus
                 trav.Field("masterItems").SetValue(list.ToArray());
             }
         }
-        static void Postfix(OptionsMenu __instance)
-        {
-            Traverse trav = Traverse.Create(__instance);
-        }
     }
     // Patch Main Menu
     [HarmonyPatch(typeof(MainMenu), "SetupItems")]
@@ -104,38 +99,39 @@ namespace TweaksFromPigs.HPatch.Menus
                 Traverse trav = Traverse.Create(__instance);
                 MenuBarItem[] masterItems = trav.Field("masterItems").GetValue() as MenuBarItem[];
                 List<MenuBarItem> list = new List<MenuBarItem>(masterItems);
-
-                /* list.Insert(5, new MenuBarItem
-                 {
-                     color = list[0].color,
-                     size = list[0].size,
-                     name = "EXPLOSION RUN",
-                     invokeMethod = "StartExplosionRun"
-                 });
-
-                 list.Insert(5, new MenuBarItem
-                 {
-                     color = list[0].color,
-                     size = list[0].size,
-                     name = "SUICIDE HORDE",
-                     invokeMethod = "StartSuicideHorde"
-                 });
-                 list.Insert(5, new MenuBarItem
-                 {
-                     color = list[0].color,
-                     size = list[0].size,
-                     name = "Race",
-                     invokeMethod = "StartRace"
-                 });*/
-
-                /*list.Insert(list.Count - 2, new MenuBarItem
+                if(Main.enabled && Main.GorzonBuild)
                 {
-                    color = Color.green,
-                    size = list[0].size,
-                    name = "ACHIEVEMENTS",
-                    invokeMethod = "GoToSteamPage"
-                });*/
+                    list.Insert(5, new MenuBarItem
+                    {
+                        color = list[0].color,
+                        size = list[0].size,
+                        name = "EXPLOSION RUN",
+                        invokeMethod = "StartExplosionRun"
+                    });
 
+                    list.Insert(5, new MenuBarItem
+                    {
+                        color = list[0].color,
+                        size = list[0].size,
+                        name = "SUICIDE HORDE",
+                        invokeMethod = "StartSuicideHorde"
+                    });
+                    list.Insert(5, new MenuBarItem
+                    {
+                        color = list[0].color,
+                        size = list[0].size,
+                        name = "Race",
+                        invokeMethod = "StartRace"
+                    });
+
+                    /*list.Insert(list.Count - 2, new MenuBarItem
+                    {
+                        color = Color.green,
+                        size = list[0].size,
+                        name = "ACHIEVEMENTS",
+                        invokeMethod = "GoToSteamPage"
+                    });*/
+                }
                 trav.Field("masterItems").SetValue(list.ToArray());
             }
             catch (Exception ex) { Main.bmod.Log(ex, RLogType.Exception); }
@@ -147,31 +143,33 @@ namespace TweaksFromPigs.HPatch.Menus
     {
         static bool Prefix(MainMenu __instance)
         {
-            if (!Main.enabled) return true;
-
             try
             {
-                var mainMenuItems = Traverse.Create(__instance).Field("items").GetValue<Localisation.MenuBarItemUI[]>();
-                AchievementsMenu aMenu = new AchievementsMenu(__instance, __instance.transform);
-                __instance.MenuActive = false;
-                aMenu.MenuActive = true;
-                aMenu.TransitionIn();
-
-                return false;
+                if(Main.enabled && Main.GorzonBuild)
+                {
+                    var mainMenuItems = Traverse.Create(__instance).Field("items").GetValue<Localisation.MenuBarItemUI[]>();
+                    AchievementsMenu aMenu = new AchievementsMenu(__instance, __instance.transform);
+                    __instance.MenuActive = false;
+                    aMenu.MenuActive = true;
+                    aMenu.TransitionIn();
+                    return false;
+                }
             }
-            catch (Exception ex) { Main.bmod.Log(ex, RLogType.Exception); }
-
+            catch (Exception ex)
+            {
+                Main.bmod.Log(ex, RLogType.Exception);
+            }
             return true;
         }
     }
 
-    /*
+
      [HarmonyPatch(typeof(MainMenu), "StartSuicideHorde")]
      static class cc
      {
          static void Prefix()
          {
-             Main.Log("suicide load");
+             Main.bmod.Log("suicide load");
          }
      }
      [HarmonyPatch(typeof(MainMenu), "StartExplosionRun")]
@@ -179,7 +177,7 @@ namespace TweaksFromPigs.HPatch.Menus
      {
          static bool Prefix()
          {
-             Main.Log("explosion run load");
+             Main.bmod.Log("explosion run load");
 
              LevelSelectionController.ResetLevelAndGameModeToDefault();
              LevelSelectionController.usingOnlineDMLevelRotation = false;
@@ -195,19 +193,5 @@ namespace TweaksFromPigs.HPatch.Menus
 
              return false;
          }
-     }*/
-    /*
-    [HarmonyPatch(typeof(ContinueMenu), "Awake")]
-    static class fjd
-    {
-        static void Postfix(ContinueMenu __instance)
-        {
-            Traverse trav = Traverse.Create(__instance);
-            MenuBarItem[] masterItems = trav.Field("masterItems").GetValue() as MenuBarItem[];
-            foreach(MenuBarItem i in masterItems)
-            {
-                Main.mod.Logger.Log(i.localisedKey);
-            }
-        }
-    }*/
+     }
 }

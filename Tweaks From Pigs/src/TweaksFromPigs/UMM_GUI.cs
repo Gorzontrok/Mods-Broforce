@@ -18,6 +18,14 @@ namespace TweaksFromPigs
         private static int TabSelected;
         private static int SaveSlotToDelete;
 
+        private static Settings Sett
+        {
+            get
+            {
+                return Main.settings;
+            }
+        }
+
         internal static void Init()
         {
             ToolTipStyle = new GUIStyle();
@@ -64,21 +72,24 @@ namespace TweaksFromPigs
             GUILayout.BeginVertical("box");
 
             GUILayout.BeginHorizontal();
-            Main.settings.useCustomFramerate = GUILayout.Toggle(Main.settings.useCustomFramerate, new GUIContent("Use custom Frame-rate"));
+            Sett.useCustomFramerate = GUILayout.Toggle(Sett.useCustomFramerate, new GUIContent("Use custom Frame-rate"));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.Space(20);
                 GUILayout.Label("Max Frame-rate :", GUILayout.ExpandWidth(false));
-                int.TryParse(GUILayout.TextField(Main.settings.maxFramerate.ToString(), GUILayout.Width(100)), out Main.settings.maxFramerate);
+                int.TryParse(GUILayout.TextField(Sett.maxFramerate.ToString(), GUILayout.Width(100)), out Sett.maxFramerate);
                 GUILayout.EndHorizontal();
             }
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Player Name :", GUILayout.ExpandWidth(false));
-            Main.settings.customPlayerName = GUILayout.TextField(Main.settings.customPlayerName, GUILayout.MinWidth(100));
-            GUILayout.EndHorizontal();
+            if(Main.GorzonBuild)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Player Name :", GUILayout.ExpandWidth(false));
+                Sett.customPlayerName = GUILayout.TextField(Sett.customPlayerName, GUILayout.MinWidth(100));
+                GUILayout.EndHorizontal();
+            }
 
             GUILayout.EndVertical();
             GUI.Label(ToolTipRect, GUI.tooltip, ToolTipStyle);
@@ -90,7 +101,9 @@ namespace TweaksFromPigs
 
             BeginVerticalBox($"- {SecretText("Pigs")} :");
             GUILayout.BeginHorizontal();
-            Main.settings.pigAreAlwaysTerror = GUILayout.Toggle(Main.settings.pigAreAlwaysTerror, new GUIContent($"Terrorist {SecretText("Pigs")}", $"Terrorist {SecretText("Pigs")} are the best <3"));
+            Sett.pigAreAlwaysTerror = GUILayout.Toggle(Sett.pigAreAlwaysTerror, new GUIContent($"Terrorist {SecretText("Pigs")}", $"Terrorist {SecretText("Pigs")} are the best <3"));
+            Sett.sickPigs = GUILayout.Toggle(Sett.sickPigs, new GUIContent($"Sick {SecretText("Pigs")}", $"{SecretText("Pigs")} explode when you finish to ride them."));
+            Sett.sickPigsPobability = ProbalityScrollBar(Sett.sickPigsPobability, $"Sick {SecretText("Pigs")} probability");
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -102,45 +115,45 @@ namespace TweaksFromPigs
             GUILayout.BeginVertical("box");
 
             GUILayout.BeginHorizontal();
-            Main.settings.fixIndianaAchievement = GUILayout.Toggle(Main.settings.fixIndianaAchievement, new GUIContent("Fix Front Row Ticket", "Fix the achievement for unlock it."));
+            Sett.fixIndianaAchievement = GUILayout.Toggle(Sett.fixIndianaAchievement, new GUIContent("Fix Front Row Ticket", "Fix the achievement for unlock it."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
             BeginVerticalBox("- Animation :");
             GUILayout.BeginHorizontal();
-            Main.settings.usePushingFrame = GUILayout.Toggle(Main.settings.usePushingFrame, new GUIContent("Use Pushing Frame", "Animation when you push a block."));
-            Main.settings.useNewLadderFrame = GUILayout.Toggle(Main.settings.useNewLadderFrame, new GUIContent("Use New Ladder Animation", "Animation when you climb/are on a ladder."));
-            Main.settings.fixPushingAnimation = GUILayout.Toggle(Main.settings.fixPushingAnimation, new GUIContent("Fix Pushing Animation", "Fix animation bug of some bro."));
-            Main.settings.brocheteAlternateSpecialAnim = GUILayout.Toggle(Main.settings.brocheteAlternateSpecialAnim, new GUIContent("Brochete Alternate Special Animation", "Change the Special Animation."));
+            Sett.usePushingFrame = GUILayout.Toggle(Sett.usePushingFrame, new GUIContent("Use Pushing Frame", "Animation when you push a block."));
+            Sett.useNewLadderFrame = GUILayout.Toggle(Sett.useNewLadderFrame, new GUIContent("Use New Ladder Animation", "Animation when you climb/are on a ladder."));
+            Sett.fixPushingAnimation = GUILayout.Toggle(Sett.fixPushingAnimation, new GUIContent("Fix Pushing Animation", "Fix animation bug of some bro."));
+            Sett.brocheteAlternateSpecialAnim = GUILayout.Toggle(Sett.brocheteAlternateSpecialAnim, new GUIContent("Brochete Alternate Special Animation", "Change the Special Animation."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
             BeginVerticalBox("- Double Bro Seven :");
             GUILayout.BeginHorizontal();
-            Main.settings.useFifthBondSpecial = GUILayout.Toggle(Main.settings.useFifthBondSpecial, new GUIContent("Use the 5th special of 007", "This is a Tear Gas"));
-            Main.settings.teargasAtFeet = GUILayout.Toggle(Main.settings.teargasAtFeet, new GUIContent("Teargas at feet", "If you are ducking you throw the teargas at your feet."));
-            Main.settings.lessAccurateDrunkSeven = GUILayout.Toggle(Main.settings.lessAccurateDrunkSeven, new GUIContent($"I'm {SecretText("drunk")}", $"007 is less accurate when {SecretText("drunk")}."));
+            Sett.useFifthBondSpecial = GUILayout.Toggle(Sett.useFifthBondSpecial, new GUIContent("Use the 5th special of 007", "This is a Tear Gas"));
+            Sett.teargasAtFeet = GUILayout.Toggle(Sett.teargasAtFeet, new GUIContent("Teargas at feet", "If you are ducking you throw the teargas at your feet."));
+            Sett.lessAccurateDrunkSeven = GUILayout.Toggle(Sett.lessAccurateDrunkSeven, new GUIContent($"I'm {SecretText("drunk")}", $"007 is less accurate when {SecretText("drunk")}."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
             BeginVerticalBox("- Global Fix :");
             GUILayout.BeginHorizontal();
-            Main.settings.tbagEnabled = GUILayout.Toggle(Main.settings.tbagEnabled, new GUIContent("Enabled T-Bag", "You have a good taste."));
-            Main.settings.rememberPockettedSpecial = GUILayout.Toggle(Main.settings.rememberPockettedSpecial, new GUIContent("Remember Pocketed Special", "When alive, if you change your bro, you keep pocketed special. (Work with Swap Bros Mod)"));
-            Main.settings.fixExpendabros = GUILayout.Toggle(Main.settings.fixExpendabros, new GUIContent("Fix Expendabros", "Some tweaks change for Expendabros."));
+            Sett.tbagEnabled = GUILayout.Toggle(Sett.tbagEnabled, new GUIContent("Enabled T-Bag", "You have a good taste."));
+            Sett.rememberPockettedSpecial = GUILayout.Toggle(Sett.rememberPockettedSpecial, new GUIContent("Remember Pocketed Special", "When alive, if you change your bro, you keep pocketed special. (Work with Swap Bros Mod)"));
+            Sett.fixExpendabros = GUILayout.Toggle(Sett.fixExpendabros, new GUIContent("Fix Expendabros", "Some tweaks change for Expendabros."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
             BeginVerticalBox("- Hero Unlock Controller :");
             GUILayout.BeginHorizontal();
-            Main.settings.changeHeroUnlock = GUILayout.Toggle(Main.settings.changeHeroUnlock, new GUIContent("Use custom HeroUnlock of this mod", "If you have active compatibility of a mod which change the Unlock Intervals, Tweaks From Pigs will do nothing."));
-            Main.settings.spawnWithExpendabros = GUILayout.Toggle(Main.settings.spawnWithExpendabros, new GUIContent("Spawn With Expendabros"));
+            Sett.changeHeroUnlock = GUILayout.Toggle(Sett.changeHeroUnlock, new GUIContent("Use custom HeroUnlock of this mod", "If you have active compatibility of a mod which change the Unlock Intervals, Tweaks From Pigs will do nothing."));
+            Sett.spawnWithExpendabros = GUILayout.Toggle(Sett.spawnWithExpendabros, new GUIContent("Spawn With Expendabros"));
             if (Main.cheat)
             {
-                Main.settings.spawnWithBrondleFly = SecretToggle(Main.settings.spawnWithBrondleFly, new GUIContent("Spawn With Brondle Fly"));
+                Sett.spawnWithBrondleFly = SecretToggle(Sett.spawnWithBrondleFly, new GUIContent("Spawn With Brondle Fly"));
             }
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
@@ -156,7 +169,7 @@ namespace TweaksFromPigs
             GUILayout.BeginVertical("box");
 
             GUILayout.BeginHorizontal();
-            Main.settings.christmasAmmoBox = GUILayout.Toggle(Main.settings.christmasAmmoBox, new GUIContent("Christmas Ammo Box", ""));
+            Sett.christmasAmmoBox = GUILayout.Toggle(Sett.christmasAmmoBox, new GUIContent("Christmas Ammo Box", ""));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -169,14 +182,14 @@ namespace TweaksFromPigs
             GUILayout.BeginVertical("box");
 
             GUILayout.BeginHorizontal();
-            Main.settings.fasterZombie = GUILayout.Toggle(Main.settings.fasterZombie, new GUIContent("Faster Zombie", "The zombie get a custom speed."));
+            Sett.fasterZombie = GUILayout.Toggle(Sett.fasterZombie, new GUIContent("Faster Zombie", "The zombie get a custom speed."));
             GUILayout.EndHorizontal();
-            Main.settings.zombieSpeedModifier = ProbalityScrollBar(Main.settings.zombieSpeedModifier, " Zombie Speed modifier : ", 5);
+            Sett.zombieSpeedModifier = ProbalityScrollBar(Sett.zombieSpeedModifier, " Zombie Speed modifier : ", 5);
             GUILayout.Space(15);
 
             GUILayout.BeginHorizontal();
-            Main.settings.canTeargasedEveryone = GUILayout.Toggle(Main.settings.canTeargasedEveryone, new GUIContent("Tear Gas everyone", "Some enemies can't be stunt by tear gas."));
-            Main.settings.customSkinned = SecretToggle(Main.settings.customSkinned, new GUIContent("Custom Skinned Mook", ""));
+            Sett.canTeargasedEveryone = GUILayout.Toggle(Sett.canTeargasedEveryone, new GUIContent("Tear Gas everyone", "Some enemies can't be stunt by tear gas."));
+            Sett.customSkinned = GUILayout.Toggle(Sett.customSkinned, new GUIContent("Custom Skinned Mook", "When brodator melee a mook, the enemy have a \"unique\" skin."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -190,8 +203,8 @@ namespace TweaksFromPigs
 
             BeginVerticalBox("- HUD :");
             GUILayout.BeginHorizontal();
-            Main.settings.showFacehuggerHUD = GUILayout.Toggle(Main.settings.showFacehuggerHUD, new GUIContent("Show FaceHugger", "Show a Face Hugger on the avatar when you have an alien on the head."));
-            Main.settings.skeletonDeadFace = GUILayout.Toggle(Main.settings.skeletonDeadFace, new GUIContent("Show skeleton Dead Face", "Show the Skeleton head of Expendabros when you are dead"));
+            Sett.showFacehuggerHUD = GUILayout.Toggle(Sett.showFacehuggerHUD, new GUIContent("Show FaceHugger", "Show a Face Hugger on the avatar when you have an alien on the head."));
+            Sett.skeletonDeadFace = GUILayout.Toggle(Sett.skeletonDeadFace, new GUIContent("Show skeleton Dead Face", "Show the Skeleton head of Expendabros when you are dead"));
 
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
@@ -199,8 +212,8 @@ namespace TweaksFromPigs
 
             BeginVerticalBox("- Menu :");
             GUILayout.BeginHorizontal();
-            Main.settings.fixMaxArcadeLevel = GUILayout.Toggle(Main.settings.fixMaxArcadeLevel, new GUIContent("Fix Max Arcade Level", "On a different arcade campaign, fix the maximum of arcade level."));
-            Main.settings.languageMenuEnabled = GUILayout.Toggle(Main.settings.languageMenuEnabled, new GUIContent("Enabled Language menu", "You can change language of the game in option menu."));
+            Sett.fixMaxArcadeLevel = GUILayout.Toggle(Sett.fixMaxArcadeLevel, new GUIContent("Fix Max Arcade Level", "On a different arcade campaign, fix the maximum of arcade level."));
+            Sett.languageMenuEnabled = GUILayout.Toggle(Sett.languageMenuEnabled, new GUIContent("Enabled Language menu", "You can change language of the game in option menu."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -217,16 +230,16 @@ namespace TweaksFromPigs
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Label(new GUIContent("Arcade Campaign :", "Play other arcade campaign. Work Online."));
-            Main.settings.arcadeIndex = RocketLib.RGUI.ArrowList(Main.arcadeCampaigns, Main.settings.arcadeIndex, 200);
+            Sett.arcadeIndex = RocketLib.RGUI.ArrowList(Main.arcadeCampaigns, Sett.arcadeIndex, 200);
             GUILayout.FlexibleSpace();
 
             GUILayout.EndHorizontal();
             GUILayout.Space(15);
             GUILayout.BeginHorizontal();
-            Main.settings.useAcidBarrel = GUILayout.Toggle(Main.settings.useAcidBarrel, new GUIContent("Enabled Acid barrel to spawn", "They are not used in Campaign, makes the spawn."));
+            Sett.useAcidBarrel = GUILayout.Toggle(Sett.useAcidBarrel, new GUIContent("Enabled Acid barrel to spawn", "They are not used in Campaign, makes the spawn."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            Main.settings.acidBarrelSpawnProbability = ProbalityScrollBar(Main.settings.acidBarrelSpawnProbability, "Acid Barrel spawn probability : ");
+            Sett.acidBarrelSpawnProbability = ProbalityScrollBar(Sett.acidBarrelSpawnProbability, "Acid Barrel spawn probability : ");
             GUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
@@ -240,9 +253,9 @@ namespace TweaksFromPigs
             GUILayout.Space(10);
             GUILayout.BeginVertical("box");
             GUILayout.BeginHorizontal();
-            Main.settings.setCustomMouse = GUILayout.Toggle(Main.settings.setCustomMouse, new GUIContent("Cursor from level Editor", "Why ? Why not."));
-            Main.settings.mechDropDoesSmoke = GUILayout.Toggle(Main.settings.mechDropDoesSmoke, new GUIContent("Mech drop smoke", "Grenade of mech drop does smoke like Tank Bro grenade."));
-            Main.settings.fixTakeScreenshots = GUILayout.Toggle(Main.settings.fixTakeScreenshots, new GUIContent("Fix screenshots", "If you press F9 in game you crash, now not anymore."));
+            Sett.setCustomMouse = GUILayout.Toggle(Sett.setCustomMouse, new GUIContent("Cursor from level Editor", "Why ? Why not."));
+            Sett.mechDropDoesSmoke = GUILayout.Toggle(Sett.mechDropDoesSmoke, new GUIContent("Mech drop smoke", "Grenade of mech drop does smoke like Tank Bro grenade."));
+            Sett.fixTakeScreenshots = GUILayout.Toggle(Sett.fixTakeScreenshots, new GUIContent("Fix screenshots", "If you press F9 in game you crash, now not anymore."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();

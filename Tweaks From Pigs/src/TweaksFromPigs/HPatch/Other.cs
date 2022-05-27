@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
+using RocketLib0;
 
 namespace TweaksFromPigs.HPatch
 {
@@ -19,7 +20,10 @@ namespace TweaksFromPigs.HPatch
                 PlayerOptions.Instance.vSync = true;
                 Main.bmod.Log("Active vSync On Exit", RLogType.Information);
             }
-            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to active V-Sync on exit.\n" + ex); }
+            catch(Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to active V-Sync on exit.\n" + ex);
+            }
         }
     }
 
@@ -36,9 +40,14 @@ namespace TweaksFromPigs.HPatch
                 {
                     AssetsCollection.characterShader = __instance.material.shader;
                 }
-                if (Main.settings.pigAreAlwaysTerror || Map.MapData.theme == LevelTheme.Hell)
+
+                __instance.isRotten = Main.settings.sickPigs && UnityEngine.Random.value < Main.settings.sickPigsPobability;
+                if(__instance.isRotten)
                 {
-                    //__instance.material.mainTexture = TFP_Utility.CreateTexFromMat("Gimp_Pig_anim.png", __instance.material);
+                    __instance.material = AssetsCollection.Sick_Pig_anim;
+                }
+                else if (Main.settings.pigAreAlwaysTerror || Map.MapData.theme == LevelTheme.Hell)
+                {
                     __instance.material = AssetsCollection.Gimp_Pig_anim;
                 }
             }
@@ -57,10 +66,7 @@ namespace TweaksFromPigs.HPatch
         {
             try
             {
-                Settings sett = Main.settings;
-                if (!Main.enabled || (Compatibility.FilteredBros.i.IsEnabled) || (Compatibility.ExpendablesBros.i.IsEnabled) || (Compatibility.ForBralef.i.IsEnabled)) return;
-
-                if (Main.settings.changeHeroUnlock && Main.heroDictionary.Count > 0)
+                if (Main.enabled && Main.settings.changeHeroUnlock && Main.heroDictionary.Count > 0)
                 {
                     Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(Main.heroDictionary);
                    PlayerProgress.Instance.unlockedHeroes.AddRange(PlayerProgress.Instance.yetToBePlayedUnlockedHeroes);
@@ -75,21 +81,21 @@ namespace TweaksFromPigs.HPatch
     {
         static bool Prefix(HeroType nextHeroType, ref bool __result)
         {
-            if (!Main.enabled) return true;
-
-            Main.settings.moreBroInDeathMatch = true;
-
-            if(Main.settings.moreBroInDeathMatch)
+            if(Main.GorzonBuild)
             {
-                switch(nextHeroType)
+                Main.settings.moreBroInDeathMatch = true;
+                if (Main.enabled && Main.settings.moreBroInDeathMatch)
                 {
-                    case HeroType.BrondleFly:
-                    case HeroType.TheBrofessional:
-                    case HeroType.Predabro:
-                    case HeroType.CherryBroling:
-                    case HeroType.BoondockBros:
-                        __result = true;
-                        return false;
+                    switch (nextHeroType)
+                    {
+                        case HeroType.BrondleFly:
+                        case HeroType.TheBrofessional:
+                        case HeroType.Predabro:
+                        case HeroType.CherryBroling:
+                        case HeroType.BoondockBros:
+                            __result = true;
+                            return false;
+                    }
                 }
             }
             return true;
@@ -103,12 +109,14 @@ namespace TweaksFromPigs.HPatch
     {
         static void Prefix(BroBase __instance)
         {
-            if (!Main.enabled) return;
             try
             {
-                    (ProjectileController.GetMechDropGrenadePrefab() as GrenadeAirstrike).callInTank = Main.settings.mechDropDoesSmoke;
+                (ProjectileController.GetMechDropGrenadePrefab() as GrenadeAirstrike).callInTank = Main.enabled && Main.settings.mechDropDoesSmoke;
             }
-            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to add pink smoke to Mech Drop.\n" + ex); }
+            catch(Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to add pink smoke to Mech Drop.\n" + ex);
+            }
         }
     }
 
@@ -117,8 +125,7 @@ namespace TweaksFromPigs.HPatch
     {
         static bool Prefix(ref string __result)
         {
-            if (!Main.enabled) return true;
-            if(!string.IsNullOrEmpty(Main.settings.customPlayerName))
+            if(Main.GorzonBuild && Main.enabled && !string.IsNullOrEmpty(Main.settings.customPlayerName))
             {
                 __result = Main.settings.customPlayerName;
                 return false;
@@ -132,10 +139,14 @@ namespace TweaksFromPigs.HPatch
     {
         static bool Prefix(ref bool __result)
         {
-            CutsceneController.holdPlayersStill = false;
-            CutsceneController.Instance.CloseAllCutscenes();
-            __result = false;
-            return false;
+            if(Main.GorzonBuild)
+            {
+                CutsceneController.holdPlayersStill = false;
+                CutsceneController.Instance.CloseAllCutscenes();
+                __result = false;
+                return false;
+            }
+            return true;
         }
     }
 }

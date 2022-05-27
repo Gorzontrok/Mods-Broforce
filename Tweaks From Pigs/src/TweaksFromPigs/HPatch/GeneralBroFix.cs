@@ -20,10 +20,9 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
         }
         static void Postfix(TestVanDammeAnim __instance)
         {
-            if (!Main.enabled) return;
             try
             {
-                if (Main.settings.fixPushingAnimation)
+                if (Main.enabled && Main.settings.fixPushingAnimation)
                 {
                     if (__instanceHeroTypePushingBug(__instance.heroType))
                     {
@@ -51,19 +50,7 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
     {
         static bool Prefix(TestVanDammeAnim __instance)
         {
-            if (!Main.enabled || ( Compatibility.ExpendablesBros.i.IsEnabled)) return true;
-            try
-            {
-                if (Main.settings.fixExpendabros)
-                {
-                    if (HeroUnlockController.IsExpendaBro(__instance.heroType)) return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Main.ExceptionLog(ex);
-            }
-            return true;
+            return Main.enabled && Main.settings.fixExpendabros && HeroUnlockController.IsExpendaBro(__instance.heroType);
         }
     }
     [HarmonyPatch(typeof(TestVanDammeAnim), "AnimateInseminationFrames")]
@@ -71,16 +58,12 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
     {
         static bool Prefix(TestVanDammeAnim __instance)
         {
-            if (!Main.enabled || ( Compatibility.ExpendablesBros.i.IsEnabled)) return true;
             try
             {
-                if (Main.settings.fixExpendabros)
+                if (Main.enabled && Main.settings.fixExpendabros && HeroUnlockController.IsExpendaBro(__instance.heroType))
                 {
-                    if (HeroUnlockController.IsExpendaBro(__instance.heroType))
-                    {
-                        Traverse.Create(__instance).Method("AnimateActualDeath").GetValue();
-                        return false;
-                    }
+                     Traverse.Create(__instance).Method("AnimateActualDeath").GetValue();
+                     return false;
                 }
             }
             catch(Exception ex)
@@ -110,11 +93,10 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
     {
         static void Postfix(BroBase __instance)
         {
-            if (!Main.enabled) return;
             try
             {
-                __instance.useNewPushingFrames = Main.settings.usePushingFrame && !AnimatePushing_Patch.__instanceHeroTypePushingBug(__instance.heroType);
-                __instance.useNewLadderClimbingFrames = Main.settings.useNewLadderFrame;
+                __instance.useNewPushingFrames = Main.enabled && Main.settings.usePushingFrame && !AnimatePushing_Patch.__instanceHeroTypePushingBug(__instance.heroType);
+                __instance.useNewLadderClimbingFrames = Main.enabled && Main.settings.useNewLadderFrame;
             }
             catch(Exception ex)
             {
@@ -144,24 +126,17 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
     {
         static bool Prefix(Map __instance, ref Doodad __result, float x, float y, float range)
         {
-            if (!Main.enabled) return true;
             try
             {
-                if (Main.settings.fixHidingInGrass)
+                if (Main.enabled && Main.settings.fixHidingInGrass)
                 {
                     Extensions.DrawCircle(x, y, range, Color.magenta, 0f);
                     for (int i = 0; i < Map.grassAndBlood.Count; i++)
                     {
-                        if (i >= 0 && Map.grassAndBlood[i] != null && Map.grassAndBlood[i].SubMergesUnit())
+                        if (i >= 0 && Map.grassAndBlood[i] != null && Map.grassAndBlood[i].SubMergesUnit() && Mathf.Abs(Map.grassAndBlood[i].centerX - x) <= range + Map.grassAndBlood[i].width / 2f && Mathf.Abs(Map.grassAndBlood[i].centerY - y) <= range + Map.grassAndBlood[i].height / 2f)
                         {
-                            if (Mathf.Abs(Map.grassAndBlood[i].centerX - x) <= range + Map.grassAndBlood[i].width / 2f)
-                            {
-                                if (Mathf.Abs(Map.grassAndBlood[i].centerY - y) <= range + Map.grassAndBlood[i].height / 2f)
-                                {
-                                    __result = Map.grassAndBlood[i];
-                                    return false;
-                                }
-                            }
+                            __result = Map.grassAndBlood[i];
+                            return false;
                         }
                     }
                 }
@@ -181,8 +156,7 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
         static List<PockettedSpecialAmmoType> listp = new List<PockettedSpecialAmmoType>();
         static void Prefix(Player __instance)
         {
-            if (!Main.enabled) return;
-            if(Main.settings.rememberPockettedSpecial)
+            if(Main.enabled && Main.settings.rememberPockettedSpecial)
             {
                 try
                 {
@@ -195,15 +169,17 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
                         }
                     }
                 }
-                catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed while remembering pocketed special list.", ex); }
+                catch (Exception ex)
+                {
+                    Main.bmod.logger.ExceptionLog("Failed while remembering pocketed special list.", ex);
+                }
             }
         }
         static void Postfix(Player __instance)
         {
-            if (!Main.enabled) return;
             try
             {
-                if(Main.settings.rememberPockettedSpecial)
+                if(Main.enabled && Main.settings.rememberPockettedSpecial)
                 {
                     BroBase bro = __instance.character as BroBase;
                     if (bro)

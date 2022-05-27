@@ -9,10 +9,9 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static void Prefix(IndianaBrones __instance)
         {
-            if (!Main.enabled) return;
             try
             {
-                if (Main.settings.fixIndianaAchievement)
+                if (Main.enabled && Main.settings.fixIndianaAchievement)
                 {
                     Traverse instTrav = Traverse.Create(__instance);
                     TestVanDammeAnim nearbyMook = instTrav.Field("nearbyMook").GetValue<TestVanDammeAnim>();
@@ -29,7 +28,10 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
                     }
                 }
             }
-            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to fix Indiana achievement" + ex); }
+            catch(Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to fix Indiana achievement" + ex);
+            }
         }
     }
 
@@ -39,10 +41,9 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static void Postfix(DoubleBroSeven __instance)
         {
-            if (!Main.enabled || Compatibility._007_Patch.i.IsEnabled) return;
             try
             {
-                if (Main.settings.useFifthBondSpecial)
+                if (Main.enabled && Main.settings.useFifthBondSpecial)
                 {
                     __instance.originalSpecialAmmo = 5;
                     __instance.SpecialAmmo = 5;
@@ -59,10 +60,9 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static bool Prefix(DoubleBroSeven __instance)
         {
-            if (!Main.enabled || Compatibility._007_Patch.i.IsEnabled) return true;
             try
             {
-                if (Main.settings.teargasAtFeet)
+                if (Main.enabled && Main.settings.teargasAtFeet)
                 {
                     DoubleBroSevenSpecialType currentSpecialType = Traverse.Create(__instance).Field("currentSpecialType").GetValue<DoubleBroSevenSpecialType>();
                     if (currentSpecialType == DoubleBroSevenSpecialType.TearGas)
@@ -84,7 +84,10 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
                     }
                 }
             }
-            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch teargas at feet", ex); }
+            catch(Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to patch teargas at feet", ex);
+            }
             return true;
         }
     }
@@ -93,10 +96,9 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static bool Prefix(DoubleBroSeven __instance, float x, float y, float xSpeed, float ySpeed)
         {
-            if (!Main.enabled) return true;
             try
             {
-                if (Main.settings.lessAccurateDrunkSeven)
+                if (Main.enabled && Main.settings.lessAccurateDrunkSeven)
                 {
                     if (Traverse.Create(__instance).Field("martinisDrunk").GetValue<int>() > 2)
                     {
@@ -108,7 +110,10 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
                     }
                 }
             }
-            catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed to make 007 more drunk", ex); }
+            catch (Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to make 007 more drunk", ex);
+            }
             return true;
         }
     }
@@ -119,16 +124,18 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static void Postfix(BroneyRoss __instance)
         {
-            if (!Main.enabled || (Compatibility.ExpendablesBros.i.IsEnabled)) return;
             try
             {
-                if (Main.settings.fixExpendabros)
+                if (Main.enabled && Main.settings.fixExpendabros)
                 {
                     TestVanDammeAnim broHard = HeroController.GetHeroPrefab(HeroType.BroHard);
                     __instance.soundHolder.attackSounds = broHard.soundHolder.attackSounds;
                 }
             }
-            catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch Broney Ross", ex); }
+            catch (Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to patch Broney Ross", ex);
+            }
         }
     }
 
@@ -138,11 +145,9 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static void Postfix(LeeBroxmas __instance)
         {
-            if (!Main.enabled || (Compatibility.ExpendablesBros.i.IsEnabled)) return;
-
             try
             {
-                if (Main.settings.fixExpendabros)
+                if (Main.enabled && Main.settings.fixExpendabros)
                 {
                     TestVanDammeAnim blade = HeroController.GetHeroPrefab(HeroType.Blade);
                     Texture bladeKnifeTex = (blade as Blade).throwingKnife.gameObject.GetComponent<MeshRenderer>().sharedMaterial.mainTexture;
@@ -151,7 +156,10 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
                     __instance.macheteSprayProjectile.gameObject.GetComponent<MeshRenderer>().sharedMaterial.mainTexture = bladeKnifeTex;
                 }
             }
-            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch Lee Broxmas", ex); }
+            catch(Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to patch Lee Broxmas", ex);
+            }
         }
     }
     [HarmonyPatch(typeof(LeeBroxmas), "AnimatePushing")]
@@ -159,10 +167,9 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static void Postfix(LeeBroxmas __instance)
         {
-            if (!Main.enabled) return;
             try
             {
-                if (Main.settings.fixPushingAnimation)
+                if (Main.enabled && Main.settings.fixPushingAnimation)
                 {
                     __instance.gunSprite.transform.localPosition = TFP_Utility.GetBroGunVector3PositionWhilePushing(HeroType.LeeBroxmas);
                     float pushingTime = Traverse.Create(__instance).Field("pushingTime").GetValue<float>();
@@ -172,7 +179,11 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
                         __instance.gunSprite.transform.localPosition = TFP_Utility.GetBroGunVector3PositionWhenFinishPushing(__instance.heroType);
                     }
                 }
-            }catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch Lee Broxmas Pushing", ex); }
+            }
+            catch(Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to patch Lee Broxmas Pushing", ex);
+            }
         }
     }
 
@@ -182,11 +193,9 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static bool Prefix(BronnarJensen __instance)
         {
-            if (!Main.enabled || (Compatibility.ExpendablesBros.i.IsEnabled)) return true;
-
             try
             {
-                if (Main.settings.fixExpendabros)
+                if (Main.enabled && Main.settings.fixExpendabros)
                 {
                     if (__instance.IsMine)
                     {
@@ -205,7 +214,10 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
                     return false;
                 }
             }
-            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to shoot at Lee Broxmas's foot", ex); }
+            catch(Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to shoot at Lee Broxmas's foot", ex);
+            }
             return true;
         }
     }
@@ -216,11 +228,9 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static void Postfix(TrentBroser __instance)
         {
-            if (!Main.enabled || (Compatibility.ExpendablesBros.i.IsEnabled)) return;
-
             try
             {
-                if (Main.settings.fixExpendabros)
+                if (Main.enabled && Main.settings.fixExpendabros)
                 {
                     TestVanDammeAnim broDredd = HeroController.GetHeroPrefab(HeroType.BroDredd);
                     __instance.soundHolder.attackSounds = broDredd.soundHolder.attackSounds;
@@ -242,11 +252,9 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static void Postfix(Brochete __instance)
         {
-            if (!Main.enabled) return;
-
             try
             {
-                if (Main.settings.fixPushingAnimation)
+                if (Main.enabled && Main.settings.fixPushingAnimation)
                 {
                     __instance.gunSprite.transform.localPosition = TFP_Utility.GetBroGunVector3PositionWhilePushing(HeroType.Brochete);
                     float pushingTime = Traverse.Create(__instance).Field("pushingTime").GetValue<float>();
@@ -257,7 +265,10 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
                     }
                 }
             }
-            catch(Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch Brochete pushing", ex); }
+            catch(Exception ex)
+            {
+                Main.bmod.logger.ExceptionLog("Failed to patch Brochete pushing", ex);
+            }
         }
     }
     [HarmonyPatch(typeof(Brochete), "Update")]
@@ -265,9 +276,10 @@ namespace TweaksFromPigs._HarmonyPatch.BroFix
     {
         static void Postfix(Brochete __instance)
         {
-            if (!Main.enabled) return;
-
-            Traverse.Create(__instance).Field("test6Frames").SetValue(Main.settings.brocheteAlternateSpecialAnim);
+            if(Main.enabled)
+            {
+                Traverse.Create(__instance).Field("test6Frames").SetValue(Main.settings.brocheteAlternateSpecialAnim);
+            }
         }
     }
 }

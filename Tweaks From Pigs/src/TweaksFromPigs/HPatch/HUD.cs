@@ -12,8 +12,7 @@ namespace TweaksFromPigs.HPatch.HUD
     {
         static void Prefix(PlayerHUD __instance)
         {
-            if (!Main.enabled || Compatibility.AvatarFaceHugger.i.IsEnabled) return;
-            if (Main.settings.showFacehuggerHUD)
+            if (Main.enabled && Main.settings.showFacehuggerHUD)
             {
                 __instance.showFaceHugger = true;
                 __instance.faceHugger1.SetSize(Traverse.Create(__instance).Field("avatarFacingDirection").GetValue<int>() * __instance.faceHugger1.width, __instance.faceHugger1.height);
@@ -28,12 +27,11 @@ namespace TweaksFromPigs.HPatch.HUD
     {
         static void Prefix(PlayerHUD __instance, HeroType type)
         {
-            if (!Main.enabled || Compatibility._007_Patch.i.IsEnabled) return;
             if(AssetsCollection.grenadeShader == null)
             {
                 AssetsCollection.grenadeShader = __instance.alienPheromones.shader;
             }
-            if (type == HeroType.DoubleBroSeven && __instance.doubleBroGrenades.Length < 5)
+            if (Main.enabled && type == HeroType.DoubleBroSeven && __instance.doubleBroGrenades.Length < 5)
             {
                 List<Material> tempList = __instance.doubleBroGrenades.ToList();
                 tempList.Add(AssetsCollection.Grenade_Tear_Gas);

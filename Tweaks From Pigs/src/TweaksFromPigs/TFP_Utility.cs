@@ -11,11 +11,11 @@ namespace TweaksFromPigs
 {
     public static class TFP_Utility
     {
-        public static bool CantChangeMapValue
+        public static bool CanChangeMapValue
         {
             get
             {
-                return Map.isEditing || LevelSelectionController.loadCustomCampaign || LevelEditorGUI.IsActive;
+                return !Map.isEditing || !LevelSelectionController.loadCustomCampaign || !LevelEditorGUI.IsActive;
             }
         }
 
@@ -74,7 +74,7 @@ namespace TweaksFromPigs
         {
             List<HeroType> HeroList = new List<HeroType>(RocketLib._HeroUnlockController.Full_HeroType);
             List<int> HeroInt = new List<int>(RocketLib._HeroUnlockController.Hero_Unlock_Intervals);
-            HeroInt.AddRange(new int[] { 610, 620, 630, 640, 650, 660, 670, 690, 710, 730 });
+            HeroInt.AddRange(new int[] { 490, 500, 510, 520, 530, 540, 550, 560 });
 
             Dictionary<int, HeroType> HeroDictionary = new Dictionary<int, HeroType>();
 
@@ -83,14 +83,18 @@ namespace TweaksFromPigs
                 HeroType hero = HeroList[i];
                 if(HeroUnlockController.IsExpendaBro(hero) && Main.settings.spawnWithExpendabros)
                 {
-                    /* Broney Ross : 610
-                     * LeeBroxmas : 620
-                     * Bronnar Jensen : 630
-                     * Bro Ceasar : 640
-                     * Trent Broser : 650
-                     * Broc : 660
-                     * Toll broad : 670
+                    /* Broney Ross : 490
+                     * LeeBroxmas : 500
+                     * Bronnar Jensen : 510
+                     * Bro Ceasar : 520
+                     * Trent Broser : 530
+                     * Broc : 540
+                     * Toll broad : 550
                      */
+                    HeroDictionary.Add(HeroInt[i], hero);
+                }
+                else if (hero == HeroType.BrondleFly && Main.settings.spawnWithBrondleFly)
+                {
                     HeroDictionary.Add(HeroInt[i], hero);
                 }
                 else
