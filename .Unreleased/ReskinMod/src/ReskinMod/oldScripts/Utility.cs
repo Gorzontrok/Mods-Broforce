@@ -6,7 +6,7 @@ using RocketLib0;
 namespace ReskinMod
 {
 
-    internal static partial class Utility
+    /*internal static partial class Utility
     {
         // bool ? true : false
 
@@ -24,7 +24,7 @@ namespace ReskinMod
             }
             else
             {
-                Main.bmod.WarningLog($"'{Path.GetFileName(ImagePath)}' not found.", true);
+                Main.bmod.logger.WarningLog($"'{Path.GetFileName(ImagePath)}' not found.", true);
                 return material.mainTexture;
             }
         }
@@ -60,6 +60,6 @@ namespace ReskinMod
         // VILLAGER - CITIZEN
         // Villager: num = 0 -> male
         // Villager: num = 1 -> female
-    }
+    }*/
 }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ReskinMod
 {
-    internal static partial class Utility
+   /* internal static partial class Utility
     {
         internal static RI_Mook GetMookReskinInfo(Mook mook)
         {
@@ -178,5 +178,5 @@ namespace ReskinMod
             return Bro_Reskin.Rambro;
         }
 
-    }
+    }*/
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ReskinMod
 {
-    internal static class Mook_Reskin
+   /* internal static class Mook_Reskin
     {
         public static RI_Mook MookTrooper = new RI_Mook();
         public static RI_Mook Bazooka = new RI_Mook();
@@ -88,5 +88,5 @@ namespace ReskinMod
     {
         public static ReskinInfo MaleVillager = new ReskinInfo();
         public static ReskinInfo FemaleVillager = new ReskinInfo();
-    }
+    }*/
 }

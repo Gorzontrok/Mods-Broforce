@@ -5,7 +5,7 @@ using ReskinMod;
 
 namespace ReskinMod
 {
-    // Never instantiate SpriteSM, the bro will not disappear when it should.
+    /*// Never instantiate SpriteSM, the bro will not disappear when it should.
     internal class ReskinInfo
     {
         public ReskinInfo()
@@ -65,7 +65,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed to check Texture of {this.instance.GetType()}.", ex);
+                Main.bmod.logger.ExceptionLog($"Failed to check Texture of {this.instance.GetType()}.", ex);
             }
         }
 
@@ -89,7 +89,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed to Check Second Texture of {this.instance.GetType()}", ex);
+                Main.bmod.logger.ExceptionLog($"Failed to Check Second Texture of {this.instance.GetType()}", ex);
             }
             this.IsSecondMaterial = false;
         }
@@ -111,7 +111,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed to apply the Re-skin of {this.instance.GetType()}.", ex);
+                Main.bmod.logger.ExceptionLog($"Failed to apply the Re-skin of {this.instance.GetType()}.", ex);
             }
             return instance;
         }
@@ -127,7 +127,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed To Get Second Character Texture of {this.instance.GetType()}.", ex);
+                Main.bmod.logger.ExceptionLog($"Failed To Get Second Character Texture of {this.instance.GetType()}.", ex);
             }
             return Mat.mainTexture;
         }
@@ -142,7 +142,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed To Get Second Gun Texture of {this.instance.GetType()}.", ex);
+                Main.bmod.logger.ExceptionLog($"Failed To Get Second Gun Texture of {this.instance.GetType()}.", ex);
             }
             return Mat.mainTexture;
         }
@@ -189,7 +189,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed to check Texture with: {i.GetType()}.", ex);
+                Main.bmod.logger.ExceptionLog($"Failed to check Texture with: {i.GetType()}.", ex);
             }
         }
 
@@ -205,7 +205,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed To Get Decapitated Texture of {this.instance.GetType()}.", ex);
+                Main.bmod.logger.ExceptionLog($"Failed To Get Decapitated Texture of {this.instance.GetType()}.", ex);
             }
             return this.CharacterTex;
         }
@@ -361,7 +361,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed to Check Second Texture of {instance.GetType()}", ex);
+                Main.bmod.logger.ExceptionLog($"Failed to Check Second Texture of {instance.GetType()}", ex);
             }
             return instance;
         }
@@ -394,7 +394,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed to check Texture of {this.instance.GetType()}.", ex);
+                Main.bmod.logger.ExceptionLog($"Failed to check Texture of {this.instance.GetType()}.", ex);
             }
         }
 
@@ -407,7 +407,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed to check the Second Avatar Texture of {this.instance.GetType()}.", ex);
+                Main.bmod.logger.ExceptionLog($"Failed to check the Second Avatar Texture of {this.instance.GetType()}.", ex);
             }
             this.IsSecondMaterial = false;
         }
@@ -423,7 +423,7 @@ namespace ReskinMod
             }
             catch (Exception ex)
             {
-                Main.bmod.ExceptionLog($"Failed To Get Second Avatar Texture of {this.instance.GetType()}.", ex);
+                Main.bmod.logger.ExceptionLog($"Failed To Get Second Avatar Texture of {this.instance.GetType()}.", ex);
             }
             return Mat.mainTexture;
         }
@@ -472,5 +472,5 @@ namespace ReskinMod
             }
             return "";
         }
-    }
+    }*/
 }
