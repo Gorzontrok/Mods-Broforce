@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using RocketLib0;
 
-namespace ReskinMod
+namespace ReskinMod.Skins
 {
     public class SkinCollection
     {
@@ -21,8 +21,15 @@ namespace ReskinMod
 
         public static void Init()
         {
-            skinCollections.Clear();
-            BrowseDirectory(Main.assetsFolderPath);
+            try
+            {
+                skinCollections.Clear();
+                BrowseDirectory(Main.assetsFolderPath);
+            }
+            catch(Exception ex)
+            {
+                Main.ErrorLog(ex);
+            }
         }
 
         public static SkinCollection GetSkinCollection(string name)
@@ -61,18 +68,27 @@ namespace ReskinMod
 
         public bool AddNewSkin(string path)
         {
-            Skin skin = new Skin(path);
-            if(skin.skinType == Skin.SkinType.None || skin.texture == null)
+            Skin skin = null;
+            try
+            {
+                skin = new Skin(path);
+            }
+            catch(Exception ex)
+            {
+                Main.ErrorLog(ex);
+            }
+
+            if(skin == null || skin.skinType == SkinType.None || skin.texture == null)
             {
                 Main.ErrorLog($"Failed Create skin for the file '{path}'");
                 return false;
             }
             else
             {
-                Skin skin1 = GetSkin(skin.skinType);
+                Skin skin1 = GetSkin(skin.skinType, skin.skinNumber);
                 if (skin1 != null)
                 {
-                    Main.WarningLog($"File conflict :\t{skin.path}\n\t{skin1.path}");
+                    Main.WarningLog($"File conflict :\t{skin.path}\n\t{skin1.path}\nSecond file has been choses");
                     return false;
                 }
                 else
@@ -83,11 +99,11 @@ namespace ReskinMod
             }
         }
 
-        public Skin GetSkin(Skin.SkinType skinType)
+        public Skin GetSkin(SkinType skinType, int skinNumber)
         {
             foreach(Skin skin in skins)
             {
-                if(skin.skinType == skinType)
+                if(skin.skinType == skinType && skin.skinNumber == skinNumber)
                 {
                     return skin;
                 }
@@ -99,56 +115,49 @@ namespace ReskinMod
     public class Skin
     {
         public Texture texture;
-        public readonly SkinType skinType;
+        public SkinType skinType;
         public readonly string path;
+        public int skinNumber = 0;
 
         public Skin(string p)
         {
             path = p;
-            string fileName = path.Split('\\').Last();
-            skinType = GetSkinType(fileName);
+            GetSkinType();
             texture = CreateTexture();
         }
 
-        private SkinType GetSkinType(string fileName)
+        private void GetSkinType()
         {
-            string fileNameNoExtension = fileName.Split('.')[0].ToLower();
+            string fileNameNoExtension = Path.GetFileNameWithoutExtension(path).ToLower();
 
-            if(fileNameNoExtension.Contains("_gun_anim2"))
+            if (fileNameNoExtension.Contains("_gun_anim"))
             {
-                return SkinType.Gun2;
-            }
-            else if (fileNameNoExtension.Contains("_gun_anim"))
-            {
-                return SkinType.Gun;
+                skinType = SkinType.Gun;
             }
             else if (fileNameNoExtension.Contains("_armless_anim"))
             {
-                return SkinType.Armless;
+                skinType = SkinType.Armless;
             }
             else if (fileNameNoExtension.Contains("_decapitated_anim"))
             {
-                return SkinType.Decapitated;
-            }
-            else if (fileNameNoExtension.Contains("_anim2"))
-            {
-                return SkinType.Character2;
+                skinType = SkinType.Decapitated;
             }
             else if (fileNameNoExtension.Contains("_anim"))
             {
-                return SkinType.Character;
-            }
-            else if (fileNameNoExtension.Contains("_avatar2"))
-            {
-                return SkinType.Avatar2;
+                skinType = SkinType.Character;
             }
             else if (fileNameNoExtension.Contains("_avatar"))
             {
-                return SkinType.Avatar;
+                skinType = SkinType.Avatar;
             }
             else
             {
-                return SkinType.None;
+                skinType = SkinType.None;
+            }
+
+            if(skinType != SkinType.None)
+            {
+                skinNumber = fileNameNoExtension.Last() - '0';
             }
         }
 
@@ -164,17 +173,18 @@ namespace ReskinMod
             return tex;
         }
 
-        public enum SkinType
+        public override string ToString()
         {
-            None,
-            Character,
-            Gun,
-            Armless,
-            Decapitated,
-            Character2,
-            Gun2,
-            Avatar,
-            Avatar2
+            return skinType.ToString() + " " + skinNumber.ToString();
         }
+    }
+    public enum SkinType
+    {
+        None,
+        Character,
+        Gun,
+        Armless,
+        Decapitated,
+        Avatar,
     }
 }

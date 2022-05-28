@@ -1,5 +1,6 @@
 ﻿using System;
 using HarmonyLib;
+using ReskinMod.Skins;
 
 namespace ReskinMod.Patch
 {
@@ -7,7 +8,7 @@ namespace ReskinMod.Patch
      SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
      if(skinCollection != null)
      {
-         Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
+         Skin decapitated = skinCollection.GetSkin(SkinType.Decapitated);
          if(decapitated != null)
          {
              __instance.decapitatedMaterial.mainTexture = decapitated.texture;
@@ -24,7 +25,7 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if(skinCollection != null)
                 {
-                    Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
+                    Skin decapitated = skinCollection.GetSkin(SkinType.Decapitated, 0);
                     if(decapitated != null)
                     {
                         __instance.decapitatedMaterial.mainTexture = decapitated.texture;
@@ -45,8 +46,8 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
-                    Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
-                    Skin char2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    Skin decapitated = skinCollection.GetSkin(SkinType.Decapitated, 0);
+                    Skin char2 = skinCollection.GetSkin(SkinType.Character, 1);
                     if(decapitated != null)
                     {
                         __instance.decapitatedMaterial.mainTexture = decapitated.texture;
@@ -71,7 +72,7 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
-                    Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
+                    Skin decapitated = skinCollection.GetSkin(SkinType.Decapitated, 0);
                     if(decapitated != null)
                     {
                         __instance.decapitatedMaterial.mainTexture = decapitated.texture;
@@ -91,7 +92,7 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
-                    Skin decapitated = skinCollection.GetSkin(Skin.SkinType.Decapitated);
+                    Skin decapitated = skinCollection.GetSkin(SkinType.Decapitated, 0);
                     if (decapitated != null)
                     {
                         __instance.decapitatedMaterial.mainTexture = decapitated.texture;
@@ -112,7 +113,7 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
-                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
                     if (character2 != null)
                     {
                         __instance.warningMaterial.mainTexture = character2.texture;
@@ -133,7 +134,7 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
-                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
                     if (character2 != null)
                     {
                         __instance.warningMaterial.mainTexture = character2.texture;
@@ -154,7 +155,7 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
-                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
                     if (character2 != null)
                     {
                         __instance.disarmedMaterial.mainTexture = character2.texture;

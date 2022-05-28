@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using HarmonyLib;
+using ReskinMod.Skins;
 
 namespace ReskinMod.Patch
 {
@@ -24,8 +25,8 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(inst.GetType().Name.ToLower());
                 if(skinCollection != null)
                 {
-                    Skin characterSkin = skinCollection.GetSkin(Skin.SkinType.Character);
-                    Skin gunSkin = skinCollection.GetSkin(Skin.SkinType.Gun);
+                    Skin characterSkin = skinCollection.GetSkin(SkinType.Character, 0);
+                    Skin gunSkin = skinCollection.GetSkin(SkinType.Gun, 0);
 
                     if (characterSkin != null)
                     {
@@ -61,11 +62,11 @@ namespace ReskinMod.Patch
                 HeroType heroType = inst.heroType;
                 if(skinCollection != null)
                 {
-                    Skin characterSkin = skinCollection.GetSkin(Skin.SkinType.Character);
-                    Skin avatarSkin = skinCollection.GetSkin(Skin.SkinType.Avatar);
-                    Skin gun2 = skinCollection.GetSkin(Skin.SkinType.Gun2);
-                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
-                    Skin armless = skinCollection.GetSkin(Skin.SkinType.Armless);
+                    Skin characterSkin = skinCollection.GetSkin(SkinType.Character, 0);
+                    Skin avatarSkin = skinCollection.GetSkin(SkinType.Avatar, 0);
+                    Skin gun2 = skinCollection.GetSkin(SkinType.Gun, 1);
+                    Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
+                    Skin armless = skinCollection.GetSkin(SkinType.Armless, 0);
 
                     if (avatarSkin != null)
                     {
@@ -129,7 +130,7 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(inst.GetType().Name.ToLower());
                 if(skinCollection != null)
                 {
-                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
 
                     if (__instance as MookRiotShield && inst.GetType().Name == "MookRiotShield")
                     {
@@ -138,7 +139,7 @@ namespace ReskinMod.Patch
                             MookRiotShield mook = __instance as MookRiotShield;
                             if(character2 != null)
                             {
-                                mook.unarmedMaterial.mainTexture =character2.texture;
+                                mook.unarmedMaterial.mainTexture = character2.texture;
                             }
                         }
                         catch (Exception ex) { Main.bmod.logger.ExceptionLog("Shield", ex); }

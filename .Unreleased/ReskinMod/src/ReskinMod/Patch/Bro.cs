@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using HarmonyLib;
+using ReskinMod.Skins;
 
 namespace ReskinMod.Patch
 {
@@ -14,14 +15,14 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
-                    Skin characterSkin = skinCollection.GetSkin(Skin.SkinType.Character);
-                    Skin character2 = skinCollection.GetSkin(Skin.SkinType.Character2);
+                    Skin characterSkin = skinCollection.GetSkin(SkinType.Character, 0);
+                    Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
 
-                    Skin avatarSkin = skinCollection.GetSkin(Skin.SkinType.Avatar);
-                    Skin avatar2 = skinCollection.GetSkin(Skin.SkinType.Avatar2);
+                    Skin avatarSkin = skinCollection.GetSkin(SkinType.Avatar, 0);
+                    Skin avatar2 = skinCollection.GetSkin(SkinType.Avatar, 1);
 
-                    Skin gun = skinCollection.GetSkin(Skin.SkinType.Gun);
-                    Skin gun2 = skinCollection.GetSkin(Skin.SkinType.Gun2);
+                    Skin gun = skinCollection.GetSkin(SkinType.Gun, 0);
+                    Skin gun2 = skinCollection.GetSkin(SkinType.Gun, 1);
                     if(characterSkin != null)
                     {
                         __instance.humanBrominator.mainTexture = character2.texture;
@@ -62,8 +63,8 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
-                    Skin characterSkin = skinCollection.GetSkin(Skin.SkinType.Character);
-                    Skin armless = skinCollection.GetSkin(Skin.SkinType.Armless);
+                    Skin characterSkin = skinCollection.GetSkin(SkinType.Character, 0);
+                    Skin armless = skinCollection.GetSkin(SkinType.Armless, 0);
                     if(armless != null)
                     {
                         __instance.materialArmless.mainTexture = armless.texture;
@@ -87,7 +88,7 @@ namespace ReskinMod.Patch
                 SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
-                    Skin avatar2 = skinCollection.GetSkin(Skin.SkinType.Avatar2);
+                    Skin avatar2 = skinCollection.GetSkin(SkinType.Avatar, 1);
                     if(avatar2 != null)
                     {
                         __instance.bloodyAvatar.mainTexture = avatar2.texture;

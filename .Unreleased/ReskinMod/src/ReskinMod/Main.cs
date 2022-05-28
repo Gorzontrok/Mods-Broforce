@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityModManagerNet;
 using RocketLib0;
 
+using ReskinMod.Skins;
+
 namespace ReskinMod
 {
     static class Main
@@ -62,9 +64,13 @@ namespace ReskinMod
                 Directory.CreateDirectory(assetsFolderPath);
             }
             SkinCollection.Init();
-           /* foreach(SkinCollection s in SkinCollection.skinCollections)
+            /*foreach(SkinCollection s in SkinCollection.skinCollections)
             {
                 Main.bmod.Log(s.name + " " + s.skins.Count);
+                foreach(Skin skin in s.skins)
+                {
+                    Main.bmod.Log("\t"+skin);
+                }
             }*/
         }
 
