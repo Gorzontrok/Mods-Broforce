@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".beta\RocketLib._HeroUnlockController.cs" />
     <Compile Include="BroforceMod.cs" />
     <Compile Include="BroforceModController.cs" />
     <Compile Include="GamePassword.cs" />
