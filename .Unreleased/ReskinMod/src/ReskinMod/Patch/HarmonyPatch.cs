@@ -81,9 +81,7 @@ namespace ReskinMod.Patch
                             bro.balaclavaMaterial.mainTexture = character2.texture;
                         }
 
-                        Material normalMat = Material.Instantiate(bro.balaclavaMaterial);
-                        normalMat.mainTexture = characterSkin.texture;
-                        Traverse.Create(bro).Field("normalMaterial").SetValue(normalMat);
+                        Traverse.Create(bro).Field("normalMaterial").GetValue<Material>().mainTexture = characterSkin.texture;
                     }
                     else if ((__instance as IndianaBrones) && inst.GetType().Name == "IndianaBrones")
                     {
@@ -92,10 +90,7 @@ namespace ReskinMod.Patch
                         {
                             bro.materialArmless.mainTexture = armless.texture;
                         }
-
-                        Material materialNormal = Material.Instantiate(bro.materialArmless);
-                        materialNormal.mainTexture = characterSkin.texture;
-                        Traverse.Create(bro).Field("materialNormal").SetValue(materialNormal);
+                        Traverse.Create(bro).Field("materialNormal").GetValue<Material>().mainTexture = characterSkin.texture;
                     }
                     else if ((__instance as Predabro) && inst.GetType().Name == "Predabro")
                     {
