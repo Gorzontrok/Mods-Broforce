@@ -69,10 +69,7 @@ namespace ReskinMod.Patch
                     {
                         __instance.materialArmless.mainTexture = armless.texture;
                     }
-
-                    Material materialNormal = Material.Instantiate(__instance.materialArmless);
-                    materialNormal.mainTexture = characterSkin.texture;
-                    Traverse.Create(__instance).Field("materialNormal").SetValue(materialNormal);
+                    Traverse.Create(__instance).Field("materialNormal").GetValue<Material>().mainTexture = characterSkin.texture;
                 }
             }
             catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
@@ -96,6 +93,92 @@ namespace ReskinMod.Patch
                 }
             }
             catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
+        }
+    }
+    [HarmonyPatch(typeof(BroveHeart), "Awake")]
+    static class BroveHeart_Reskin_Patch
+    {
+        static void Postfix(BroveHeart __instance)
+        {
+            try
+            {
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin character = skinCollection.GetSkin(SkinType.Character, 0);
+                    Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
+                    if (character != null)
+                    {
+                        __instance.defaultGunMaterial.mainTexture = character.texture;
+                    }
+                    if (character2 != null)
+                    {
+                        __instance.disarmedGunMaterial.mainTexture = character2.texture;
+                    }
+                }
+            }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
+        }
+    }
+
+    [HarmonyPatch(typeof(BoondockBro), "Awake")]
+    static class BoondockBro_Leader_Reskin_Patch
+    {
+        static void Postfix(BoondockBro __instance)
+        {
+            try
+            {
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    if (__instance.isLeadBro)
+                    {
+                        Skin character = skinCollection.GetSkin(SkinType.Character, 0);
+                        Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
+                        if (character != null)
+                        {
+                            __instance.gameObject.GetComponent<SpriteSM>().meshRender.sharedMaterial.SetTexture("_MainTex", character.texture);
+                        }
+                        if (character2 != null)
+                        {
+                            __instance.secondBroMaterial.mainTexture = character2.texture;
+                        }
+                        Skin gun = skinCollection.GetSkin(SkinType.Gun, 0);
+                        if (gun != null)
+                        {
+                            __instance.gunSprite.GetComponent<Renderer>().sharedMaterial.SetTexture("_MainTex", gun.texture);
+                        }
+                    }
+
+                    Skin avatar = skinCollection.GetSkin(SkinType.Avatar, 0);
+                    Skin avatar2 = skinCollection.GetSkin(SkinType.Avatar, 1);
+                    if(avatar != null)
+                    {
+                        __instance.avatar1.mainTexture = avatar.texture;
+                    }
+                    if (avatar2 != null)
+                    {
+                        __instance.avatar2.mainTexture = avatar2.texture;
+                    }
+                }
+            }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
+        }
+    }
+    [HarmonyPatch(typeof(BoondockBro), "SetUpTrailingBro")]
+    static class BoondockBro_TrailingBro_Reskin_Patch
+    {
+        static void Postfix(BoondockBro __instance)
+        {
+            SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+            if (skinCollection != null)
+            {
+                Skin gun2 = skinCollection.GetSkin(SkinType.Gun, 1);
+                if (gun2 != null)
+                {
+                    __instance.gunSprite.GetComponent<Renderer>().sharedMaterial.SetTexture("_MainTex", gun2.texture);
+                }
+            }
         }
     }
 }
