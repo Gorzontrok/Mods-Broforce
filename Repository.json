@@ -13,12 +13,12 @@
         {"Id": "Surprise", "Version": "0.5.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Satan%20Surprise/Release/SurpriseMod.zip"},
         {"Id": "TrophyManagerMod", "Version": "1.2.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Trophy%20Manager/Release/TrophyManager.zip"},
 
-        {"Id": "PigstiniMod", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/Pigstini/Release/PigstiniMod.zip"},
+        {"Id": "PigstiniMod", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Pigstini/Release/PigstiniMod.zip"},
         {"Id": "OnlyPockettedSpecialAmmoMod", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Only%20Pocketted%20Special%20Ammo/Release/OnlyPockettedSpecialAmmoMod.zip"},
         {"Id": "SpooktoberMod", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Spooktober/Release/SpooktoberMod.zip"},
         {"Id": "MapDataControllerMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/MapDataController/Release/MapDataControllerMod.zip"},
-        {"Id": "TankBroRocketForBrominator", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/TankBroRocketForBrominator/Release/TankBroRocketForBrominator.zip"},
-        {"Id": "Proc_Gen_Mod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/Proc_Gen_Mod/Release/Proc_Gen_Mod.zip"},
-        {"Id": "ReplaceRambroWithCasey", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/ReplaceRambroWithCasey/Release/ReplaceRambroWithCasey.zip"}
+        {"Id": "TankBroRocketForBrominator", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/TankBroRocketForBrominator/Release/TankBroRocketForBrominator.zip"},
+        {"Id": "Proc_Gen_Mod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Proc_Gen_Mod/Release/Proc_Gen_Mod.zip"},
+        {"Id": "AutoEnterPassword", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/AutoEnterPassword/Release/AutoEnterPassword.zip"}
     ]
 }
