@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using HarmonyLib;
 using ReskinMod.Skins;
 
@@ -159,6 +160,83 @@ namespace ReskinMod.Patch
                     if (character2 != null)
                     {
                         __instance.disarmedMaterial.mainTexture = character2.texture;
+                    }
+                }
+            }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
+        }
+    }
+    [HarmonyPatch(typeof(SatanMiniboss), "Start")]
+    static class SatanMiniboss_Reskin_Patch
+    {
+        static void Prefix(SatanMiniboss __instance)
+        {
+            try
+            {
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
+                    if (character2 != null)
+                    {
+                        __instance.satanStage2Material.mainTexture = character2.texture;
+                    }
+                }
+            }
+            catch (Exception ex) { Main.bmod.logger.ExceptionLog(ex); }
+        }
+    }
+
+    [HarmonyPatch(typeof(MookArmouredGuy), "Start")]
+    static class MookArmouredGuy_Reskin_Patch
+    {
+        static void Postfix(MookArmouredGuy __instance)
+        {
+            try
+            {
+                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                if (skinCollection != null)
+                {
+                    Skin character = skinCollection.GetSkin(SkinType.Character, 0);
+                    if (character != null)
+                    {
+                       Traverse.Create(__instance).Field("originalMaterial").GetValue<Material>().mainTexture = character.texture;
+                    }
+                    character = skinCollection.GetSkin(SkinType.Character, 1);
+                    if (character != null)
+                    {
+                        __instance.hurtMaterial.mainTexture = character.texture;
+                    }
+                    character = skinCollection.GetSkin(SkinType.Character, 2);
+                    if (character != null)
+                    {
+                        __instance.americaOriginalMaterial.mainTexture = character.texture;
+                    }
+                    character = skinCollection.GetSkin(SkinType.Character, 3);
+                    if (character != null)
+                    {
+                        __instance.americaHurtMaterial.mainTexture = character.texture;
+                    }
+
+                    Skin gun = skinCollection.GetSkin(SkinType.Gun, 0);
+                    if (gun != null)
+                    {
+                        Traverse.Create(__instance).Field("originalGunMaterial").GetValue<Material>().mainTexture = gun.texture;
+                    }
+                    gun = skinCollection.GetSkin(SkinType.Gun, 1);
+                    if (gun != null)
+                    {
+                        __instance.hurtGunMaterial.mainTexture = gun.texture;
+                    }
+                    gun = skinCollection.GetSkin(SkinType.Gun, 2);
+                    if (gun != null)
+                    {
+                        __instance.americaOriginalGunMaterial.mainTexture = gun.texture;
+                    }
+                    gun = skinCollection.GetSkin(SkinType.Gun, 3);
+                    if (gun != null)
+                    {
+                        __instance.americaHurtGunMaterial.mainTexture = gun.texture;
                     }
                 }
             }
