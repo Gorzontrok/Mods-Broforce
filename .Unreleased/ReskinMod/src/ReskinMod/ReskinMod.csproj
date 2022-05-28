@@ -71,10 +71,10 @@
     <Compile Include="Patch\Mook.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="oldScripts\ReskinInfo.cs" />
-    <Compile Include="oldScripts\ReskinInfo_Collection.cs" />
-    <Compile Include="oldScripts\Utility.cs" />
-    <Compile Include="oldScripts\Utility.ReskinInfo.cs" />
+    <None Include="oldScripts\ReskinInfo.cs" />
+    <None Include="oldScripts\ReskinInfo_Collection.cs" />
+    <None Include="oldScripts\Utility.cs" />
+    <None Include="oldScripts\Utility.ReskinInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
