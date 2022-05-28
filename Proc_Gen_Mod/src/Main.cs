@@ -13,11 +13,15 @@ namespace Proc_Gen_Mod
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
+        public static int Seed = 0;
+        public static Settings settings;
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             modEntry.OnGUI = OnGUI;
             modEntry.OnToggle = OnToggle;
+            modEntry.OnSaveGUI = OnSaveGUI;
+            settings = Settings.Load<Settings>(modEntry);
 
             mod = modEntry;
 
@@ -69,6 +73,11 @@ namespace Proc_Gen_Mod
                     }
                 }
             }
+            settings.ReplaceRambroWithCasey = GUILayout.Toggle(settings.ReplaceRambroWithCasey, "Replace Rambro To Casey");
+        }
+        static void OnSaveGUI(UnityModManager.ModEntry modEntry)
+        {
+            settings.Save(modEntry);
         }
 
 
@@ -87,6 +96,27 @@ namespace Proc_Gen_Mod
             mod.Logger.Log(str.ToString());
         }
 
-        public static int Seed = 0;
+    }
+    public class Settings : UnityModManager.ModSettings
+    {
+        public bool ReplaceRambroWithCasey;
+        public override void Save(UnityModManager.ModEntry modEntry)
+        {
+            Save(this, modEntry);
+        }
+    }
+
+    [HarmonyPatch(typeof(HeroController), "OnAfterDeserialize")]
+    static class ReplaceRambroWithCasey_Patch
+    {
+        static void Postfix(HeroController __instance)
+        {
+            if(Main.settings.ReplaceRambroWithCasey)
+            {
+                Dictionary<HeroType, HeroController.HeroDefinition> _heroData = Traverse.Create(__instance).Field("_heroData").GetValue<Dictionary<HeroType, HeroController.HeroDefinition>>();
+                _heroData[HeroType.Rambro].characterReference = _heroData[HeroType.CaseyBroback].characterReference;
+                Traverse.Create(__instance).Field("_heroData").SetValue(_heroData);
+            }
+        }
     }
 }
