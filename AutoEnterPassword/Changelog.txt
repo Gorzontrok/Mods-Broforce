@@ -1,0 +1,6 @@
+v1.0.2 :
+ - Add RocketLib as a requirements
+ - Add Rocketlib's password
+
+v1.0.0 :
+ - Initial Release
