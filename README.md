@@ -11,8 +11,6 @@
 
  Contact : Gorzon#4430
 
- Join the Free Lives discord : [https://discord.gg/gNFyemmUMW](https://discord.gg/gNFyemmUMW)
-
 ## Mods
 
 * All ? :
@@ -20,13 +18,23 @@
 * Enemies :
   * [Satan Surprise](Satan%20Surprise/)
   * [Spooktober](Spooktober/)
+* Bros :
+  * [007_Patch](Tweaks%20From%20Pigs%20-%20Mod%20Standalone/007_Patch)
+  * [Pigstini](Pigstini/)
+  * [Tank Bro Rocket For Brominator](TankBroRocketForBrominator/)
 * Bro Spawn :
+  * [Expendables Bros In Game](Tweaks%20From%20Pigs%20-%20Mod%20Standalone/Expendables%20Bros%20In%20Game/)
   * [Filtered Bros](Filtered%20Bros/)
   * [ForBralef](ForBralef/)
+* HUD :
+  * [Show Avatar FaceHugger](Tweaks%20From%20Pigs%20-%20Mod%20Standalone/Show%20Avatar%20FaceHugger/)
+  * [Skeleton Dead Face](Tweaks%20From%20Pigs%20-%20Mod%20Standalone/Skeleton%20Dead%20Face/)
 * Map :
   * [Map Data Controller](MapDataController/)
   * [Spooktober](Spooktober/)
 * Other :
+  * [Auto Enter Password](AutoEnterPassword/)
+  * [PROC_GEN_MOD](Proc_Gen_Mod/)
   * [RocketLib](RocketLib/)
   * [Trophy Manager](Trophy%20Manager/)
 * Special :
@@ -44,8 +52,8 @@ Le guide d'installation est [ici](https://steamcommunity.com/sharedfiles/filedet
 ## Modding
 
 If you are looking for how to made mod. I recommend you to see the [template of alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods)  
-Or join the Free Lives discord and go to `#🛠-bf-mods` channel
+Or join the [Free Lives discord](https://discord.gg/apF89qZzQ2) and go to `#🛠-bf-mods` channel
   
 **Français :**  
 Si vous souhaitez faire des mods je vous recommande d'allez voir l'[exemple d'alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods) (*en anglais*).
-Ou rejoigne le discord de Free Lives et diriger vous vers `#🛠-bf-mods`.
+Ou rejoigne le [discord de Free Lives](https://discord.gg/apF89qZzQ2) et diriger vous vers `#🛠-bf-mods`.
