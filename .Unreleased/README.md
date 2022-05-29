@@ -5,11 +5,5 @@
 
 ## Finish
 
-* Bro :
-  * [Pigstini](Pigstini/)
-  * [Tank Bro Rocket For Brominator](TankBroRocketForBrominator/)
-  * [Replace Rambro With Casey](ReplaceRambroWithCasey/)
 * Other
-  * [AutoEnterPassword](AutoEnterPassword/)
   * [Custom Hero Name](Custom%20Hero%20Name/)
-  * [Proc_Gen_Mod](Proc_Gen_Mod/)
