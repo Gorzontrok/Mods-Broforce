@@ -21,6 +21,10 @@ namespace ReskinMod
         public static string assetsFolderPath;
         internal static BroforceMod bmod;
 
+        private static SkinCollection _selectedSkinCollection;
+        private static Vector2 _scrollViewVector;
+        private static Vector2 _scrollViewVectorUnused;
+
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             modEntry.OnGUI = OnGUI;
@@ -47,31 +51,17 @@ namespace ReskinMod
 
         static void Start()
         {
-            /*List<string> FolderList = new List<string>();
-            Utility.Mook_Folder = mod.Path + "Assets\\Mook\\";
-            Utility.Bro_Folder = mod.Path + "Assets\\Bro\\";
-            Utility.HUD_Folder = mod.Path + "Assets\\Interface\\HUD\\";
-            Utility.Interface_Folder = mod.Path + "Assets\\Interface\\";
-            Utility.Other_Character_Folder = mod.Path + "Assets\\Other_Character\\";
-
-            FolderList.AddRange(new string[] { Utility.Mook_Folder, Utility.Bro_Folder, Utility.Interface_Folder, Utility.HUD_Folder, Utility.Other_Character_Folder });*/
-            /* foreach (string folder in FolderList)
-             {
-             }*/
             assetsFolderPath = Path.Combine(mod.Path, "assets");
             if (!Directory.Exists(assetsFolderPath))
             {
                 Directory.CreateDirectory(assetsFolderPath);
             }
+
             SkinCollection.Init();
-            /*foreach(SkinCollection s in SkinCollection.skinCollections)
+            if(SkinCollection.skinCollections.Count>0)
             {
-                Main.bmod.Log(s.name + " " + s.skins.Count);
-                foreach(Skin skin in s.skins)
-                {
-                    Main.bmod.Log("\t"+skin);
-                }
-            }*/
+                _selectedSkinCollection = SkinCollection.skinCollections[0];
+            }
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
@@ -80,6 +70,41 @@ namespace ReskinMod
             {
                 SkinCollection.Init();
             }
+
+            GUILayout.Space(15);
+            GUILayout.BeginHorizontal();
+
+            GUILayout.BeginVertical("Skins' Name", GUI.skin.box, GUILayout.Width(200), GUILayout.Height(250));
+            GUILayout.Space(15);
+            _scrollViewVector = GUILayout.BeginScrollView(_scrollViewVector, GUILayout.Height(250));
+            foreach(SkinCollection skinCollection in SkinCollection.skinCollections)
+            {
+                if(GUILayout.Button(skinCollection.name))
+                {
+                    _selectedSkinCollection = skinCollection;
+                }
+            }
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
+
+            GUILayout.Space(30);
+            bool skinCollectionNull = _selectedSkinCollection == null;
+            GUILayout.BeginVertical(skinCollectionNull ? "" : _selectedSkinCollection.name, GUI.skin.box, GUILayout.Width(500), GUILayout.Height(250));
+            GUILayout.Space(5);
+            _scrollViewVectorUnused = GUILayout.BeginScrollView(_scrollViewVectorUnused, GUILayout.Height(250));
+            if(!skinCollectionNull)
+            {
+                foreach (Skin skin in _selectedSkinCollection.skins)
+                {
+                    GUILayout.Label(skin.ToString());
+                    GUILayout.Space(7);
+                }
+            }
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
+
+            GUILayout.EndHorizontal();
+
         }
 
        /*static void OnSaveGUI(UnityModManager.ModEntry modEntry)
