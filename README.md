@@ -1,13 +1,13 @@
 # Broforce Mods
 
  Here's my mods for Broforce.  
- The `.img/` folder contains the showcase of the mod and are not in the zip file.  
- The `Release/` folder contains the latest release of the mod.
- I recommend you to use [RocketLib](RocketLib/), because it fix some bug with Broforce modding.
+ The `.img/` folders contains the showcase of the mods and are not in the `.zip` files.  
+ The `Release/` folders contains the latest release of the mods.
+ Most of my mods are using [RocketLib](RocketLib/).
 
  **Français :**  
- Ici sont répertoriés mes mods pour Broforce. Les dossier `.img/` contiennent les showcases de mes mods, il n'est pas inclus dans le fichier zip du mod.  
- Le dossier `Release/` contient la dernier version du mod.
+ Ici sont répertoriés mes mods pour Broforce. Les dossiers `.img/` contiennent les aperçus de mes mods, il n'est pas inclus dans le fichier `.zip` du mod.  
+ Les dossiers `Release/` contiennent la dernière version du mod en question.
 
  Contact : Gorzon#4430
 
@@ -46,14 +46,14 @@ All of my mods require [Unity Mod Manager](https://www.nexusmods.com/site/mods/2
 The installation guide can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2434812447).  
 
 **Français :**  
-Tout mes mods requiert [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
+Tout mes mods utilise [Unity Mod Manager](https://www.nexusmods.com/site/mods/21).  
 Le guide d'installation est [ici](https://steamcommunity.com/sharedfiles/filedetails/?id=2489196482).
 
 ## Modding
 
-If you are looking for how to made mod. I recommend you to see the [template of alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods)  
+If you are looking for how to make a mod. I recommend you to look at the [template of alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods)  
 Or join the [Free Lives discord](https://discord.gg/apF89qZzQ2) and go to `#🛠-bf-mods` channel
   
 **Français :**  
 Si vous souhaitez faire des mods je vous recommande d'allez voir l'[exemple d'alexneargarder](https://github.com/alexneargarder/BroforceMods#how-to-create-your-own-mods) (*en anglais*).
-Ou rejoigne le [discord de Free Lives](https://discord.gg/apF89qZzQ2) et diriger vous vers `#🛠-bf-mods`.
+Ou rejoignez le [discord de Free Lives](https://discord.gg/apF89qZzQ2) et diriger vous vers `#🛠-bf-mods`.
