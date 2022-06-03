@@ -10,13 +10,16 @@ namespace ReskinMod.Skins
     public class SkinCollection
     {
         public static List<SkinCollection> skinCollections = new List<SkinCollection>();
+        public static List<SkinCollection> villagerSkinCollections = new List<SkinCollection>();
 
         public readonly string name;
+        public readonly int skinCollectionNumber;
         public List<Skin> skins = new List<Skin>();
 
-        public SkinCollection(string n)
+        public SkinCollection(string n, int i)
         {
             name = n;
+            skinCollectionNumber = i;
         }
 
         public static void Init()
@@ -32,8 +35,12 @@ namespace ReskinMod.Skins
             }
         }
 
-        public static SkinCollection GetSkinCollection(string name)
+        public static SkinCollection GetSkinCollection(string name, bool isVillager = false)
         {
+            if(isVillager && villagerSkinCollections.Count > 0)
+            {
+                return villagerSkinCollections[UnityEngine.Random.Range(0, villagerSkinCollections.Count)];
+            }
             foreach(SkinCollection skinCollection in skinCollections)
             {
                 if(skinCollection.name == name)
@@ -51,12 +58,17 @@ namespace ReskinMod.Skins
                 string fileName = file.Split('\\').Last();
                 string fileNameNoExtension = fileName.Split('.')[0].ToLower();
                 string skinCollectionName = fileNameNoExtension.Split('_')[0].ToLower();
+                bool isVillager = skinCollectionName.Remove(skinCollectionName.Length - 1) == "villager";
 
                 SkinCollection skinCollection = GetSkinCollection(skinCollectionName);
                 if(skinCollection == null)
                 {
                     skinCollection = new SkinCollection(skinCollectionName);
                     skinCollections.Add(skinCollection);
+                    if(isVillager)
+                    {
+                        villagerSkinCollections.Add(skinCollection);
+                    }
                 }
                 skinCollection.AddNewSkin(file);
             }
