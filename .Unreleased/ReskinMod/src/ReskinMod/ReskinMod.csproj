@@ -65,11 +65,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Patch\Aliens.cs" />
+    <Compile Include="Patches\Aliens.cs" />
+    <Compile Include="Patches\Villagers.cs" />
     <Compile Include="SkinCollection.cs" />
-    <Compile Include="Patch\HarmonyPatch.cs" />
-    <Compile Include="Patch\Bro.cs" />
-    <Compile Include="Patch\Mook.cs" />
+    <Compile Include="Patches\HarmonyPatch.cs" />
+    <Compile Include="Patches\Bros.cs" />
+    <Compile Include="Patches\Mooks.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="oldScripts\ReskinInfo.cs" />
