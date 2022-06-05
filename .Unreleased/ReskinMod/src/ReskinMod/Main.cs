@@ -24,6 +24,9 @@ namespace ReskinMod
         private static SkinCollection _selectedSkinCollection;
         private static Vector2 _scrollViewVector;
         private static Vector2 _scrollViewVectorUnused;
+        private static Vector2 _scrollViewVectorUnused2;
+        private static int _selectedTab;
+        private static string[] _tabs;
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
@@ -62,6 +65,7 @@ namespace ReskinMod
             {
                 _selectedSkinCollection = SkinCollection.skinCollections[0];
             }
+            _tabs = new string[] { "Main", "Conflicts"};
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
@@ -72,14 +76,29 @@ namespace ReskinMod
             }
 
             GUILayout.Space(15);
+
+            _selectedTab = GUILayout.SelectionGrid(_selectedTab, _tabs, 2, GUILayout.Width(500));
+
+            if(_selectedTab == 0)
+            {
+                MainGUI();
+            }
+            else
+            {
+                ConflictGUI();
+            }
+        }
+
+        private static void MainGUI()
+        {
             GUILayout.BeginHorizontal();
 
             GUILayout.BeginVertical("Skins' Name", GUI.skin.box, GUILayout.Width(200), GUILayout.Height(250));
             GUILayout.Space(15);
             _scrollViewVector = GUILayout.BeginScrollView(_scrollViewVector, GUILayout.Height(250));
-            foreach(SkinCollection skinCollection in SkinCollection.skinCollections)
+            foreach (SkinCollection skinCollection in SkinCollection.skinCollections)
             {
-                if(GUILayout.Button(skinCollection.name))
+                if (GUILayout.Button(skinCollection.name))
                 {
                     _selectedSkinCollection = skinCollection;
                 }
@@ -92,7 +111,7 @@ namespace ReskinMod
             GUILayout.BeginVertical(skinCollectionNull ? "" : _selectedSkinCollection.name, GUI.skin.box, GUILayout.Width(500), GUILayout.Height(250));
             GUILayout.Space(5);
             _scrollViewVectorUnused = GUILayout.BeginScrollView(_scrollViewVectorUnused, GUILayout.Height(250));
-            if(!skinCollectionNull)
+            if (!skinCollectionNull)
             {
                 foreach (Skin skin in _selectedSkinCollection.skins)
                 {
@@ -104,7 +123,27 @@ namespace ReskinMod
             GUILayout.EndVertical();
 
             GUILayout.EndHorizontal();
+        }
 
+        private static void ConflictGUI()
+        {
+            GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(500), GUILayout.Height(250));
+            GUILayout.Space(5);
+            _scrollViewVectorUnused2 = GUILayout.BeginScrollView(_scrollViewVectorUnused2, GUILayout.Height(250));
+            if (SkinCollection.conflictsAndErrors.Count > 0)
+            {
+                foreach (string msg in SkinCollection.conflictsAndErrors)
+                {
+                    GUILayout.Label(msg);
+                    GUILayout.Space(7);
+                }
+            }
+            else
+            {
+                GUILayout.Label("No conflicts or errors");
+            }
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
         }
 
        /*static void OnSaveGUI(UnityModManager.ModEntry modEntry)
