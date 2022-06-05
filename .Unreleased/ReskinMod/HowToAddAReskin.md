@@ -1,9 +1,9 @@
 # Add a Skin
 
- To adding a skin, you need to put the `.png` image in the `assets` folder (they can be in subdirectories of `assets`) and with the correct name.  
- Every file are stored in `assets` folder .
+To add a skin, you need to put the `.png` image in the `assets` folder (they can be in subdirectories of `assets`) and with the correct name.  
+Every file is stored in `assets` folder .
 
- For the moment only Bros and Enemies can be Reskin.  
+For the moment only Bros and Enemies can be Reskin.  
 
 ## Name the file
 
