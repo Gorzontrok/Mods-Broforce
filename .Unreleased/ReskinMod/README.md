@@ -1,6 +1,6 @@
 # ReskinMod
 
- Replace texture 
+A mod where you can change the texture of Bros and Enemies.
 
 ## Installation
 
