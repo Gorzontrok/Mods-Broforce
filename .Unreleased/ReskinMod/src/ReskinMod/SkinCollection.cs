@@ -11,6 +11,7 @@ namespace ReskinMod.Skins
     {
         public static List<SkinCollection> skinCollections = new List<SkinCollection>();
         public static List<SkinCollection> villagerSkinCollections = new List<SkinCollection>();
+        public static List<string> conflictsAndErrors = new List<string>();
 
         public readonly string name;
         public readonly int skinCollectionNumber;
@@ -63,7 +64,7 @@ namespace ReskinMod.Skins
                 SkinCollection skinCollection = GetSkinCollection(skinCollectionName);
                 if(skinCollection == null)
                 {
-                    skinCollection = new SkinCollection(skinCollectionName);
+                    skinCollection = new SkinCollection(skinCollectionName, 0);
                     skinCollections.Add(skinCollection);
                     if(isVillager)
                     {
@@ -92,7 +93,9 @@ namespace ReskinMod.Skins
 
             if(skin == null || skin.skinType == SkinType.None || skin.texture == null)
             {
-                Main.ErrorLog($"Failed Create skin for the file '{path}'");
+                string msg = $"Failed Create skin for the file '{path}'";
+                conflictsAndErrors.Add("<color=\"yellow\">" + msg + "</color>");
+                Main.ErrorLog(msg);
                 return false;
             }
             else
@@ -100,7 +103,9 @@ namespace ReskinMod.Skins
                 Skin skin1 = GetSkin(skin.skinType, skin.skinNumber);
                 if (skin1 != null)
                 {
-                    Main.WarningLog($"File conflict :\t{skin.path}\n\t{skin1.path}\nSecond file has been choses");
+                    string msg = $"File conflict :\t{skin.path}\n\t{skin1.path}\nSecond file has been choses";
+                    conflictsAndErrors.Add("<color=\"red\">" + msg + "</color>");
+                    Main.WarningLog(msg);
                     return false;
                 }
                 else
