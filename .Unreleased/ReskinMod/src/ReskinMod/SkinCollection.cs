@@ -54,8 +54,9 @@ namespace ReskinMod.Skins
 
         private static void BrowseDirectory(string directory)
         {
-            foreach (string file in Directory.GetFiles(directory))
+            foreach (string file in Directory.GetFiles(directory, "*.png"))
             {
+                Main.WarningLog(file);
                 string fileName = file.Split('\\').Last();
                 string fileNameNoExtension = fileName.Split('.')[0].ToLower();
                 string skinCollectionName = fileNameNoExtension.Split('_')[0].ToLower();
