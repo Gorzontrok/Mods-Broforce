@@ -1,8 +1,8 @@
 {
     "Releases":
     [
-        {"Id": "AutoEnterPassword", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/AutoEnterPassword/Release/AutoEnterPassword.zip"}, 
-        {"Id": "ForBralef", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/ForBralef/Release/ForBralef.zip"},
+        {"Id": "AutoEnterPassword", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/AutoEnterPassword/Release/AutoEnterPassword.zip"}, 
+        {"Id": "ForBralef", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/ForBralef/Release/ForBralef.zip"},
         {"Id": "CustomHeroNameMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/.Unreleased/Custom%20Hero%20Name/Release/CustomHeroNameMod.zip"}
     ]
 }
