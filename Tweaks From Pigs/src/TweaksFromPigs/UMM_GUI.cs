@@ -141,7 +141,6 @@ namespace TweaksFromPigs
             BeginVerticalBox("- Global Fix :");
             GUILayout.BeginHorizontal();
             Sett.tbagEnabled = GUILayout.Toggle(Sett.tbagEnabled, new GUIContent("Enabled T-Bag", "You have a good taste."));
-            Sett.rememberPockettedSpecial = GUILayout.Toggle(Sett.rememberPockettedSpecial, new GUIContent("Remember Pocketed Special", "When alive, if you change your bro, you keep pocketed special. (Work with Swap Bros Mod)"));
             Sett.fixExpendabros = GUILayout.Toggle(Sett.fixExpendabros, new GUIContent("Fix Expendabros", "Some tweaks change for Expendabros."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
@@ -151,6 +150,18 @@ namespace TweaksFromPigs
             GUILayout.BeginHorizontal();
             Sett.changeHeroUnlock = GUILayout.Toggle(Sett.changeHeroUnlock, new GUIContent("Use custom HeroUnlock of this mod", "If you have active compatibility of a mod which change the Unlock Intervals, Tweaks From Pigs will do nothing."));
             Sett.spawnWithExpendabros = GUILayout.Toggle(Sett.spawnWithExpendabros, new GUIContent("Spawn With Expendabros"));
+            if (Main.cheat)
+            {
+                Sett.spawnWithBrondleFly = SecretToggle(Sett.spawnWithBrondleFly, new GUIContent("Spawn With Brondle Fly"));
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+
+            BeginVerticalBox("- Pocketed Special :");
+            GUILayout.BeginHorizontal();
+            Sett.rememberPockettedSpecial = GUILayout.Toggle(Sett.rememberPockettedSpecial, new GUIContent("Remember Pocketed Special", "When alive, if you change your bro, you keep pocketed special. (Work with Swap Bros Mod)"));
+            Sett.steroidsThrowEveryone = GUILayout.Toggle(Sett.steroidsThrowEveryone, new GUIContent("Steroids can throw more mooks", "Bruisers and some other enemies can be thrown with steroids."));
             if (Main.cheat)
             {
                 Sett.spawnWithBrondleFly = SecretToggle(Sett.spawnWithBrondleFly, new GUIContent("Spawn With Brondle Fly"));

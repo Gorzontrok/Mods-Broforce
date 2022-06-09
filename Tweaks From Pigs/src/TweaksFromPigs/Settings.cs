@@ -27,8 +27,10 @@ namespace TweaksFromPigs
         public bool spawnWithBrondleFly;
         // Global Fix
         public bool tbagEnabled;
-        public bool rememberPockettedSpecial;
         public bool fixExpendabros;
+        // Pocketed Special
+        public bool rememberPockettedSpecial;
+        public bool steroidsThrowEveryone;
 
         // - Doodads
         public bool christmasAmmoBox;

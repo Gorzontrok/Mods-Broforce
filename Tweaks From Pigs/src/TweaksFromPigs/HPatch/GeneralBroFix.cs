@@ -1,6 +1,6 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
-using HarmonyLib;
 using UnityEngine;
 
 namespace TweaksFromPigs.HPatch.GeneralBroFix
@@ -75,17 +75,38 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
     }
 
     // Patch BroBase
-    [HarmonyPatch(typeof(BroBase), "Update")]
+    [HarmonyPatch(typeof(BroBase), "AnimateMeleeCommon")]
     static class UpdateBroBase_Patch
     {
-        static void Postfix(BroBase __instance)
+        static bool Prefix(BroBase __instance)
         {
-            if (!Main.enabled) return;
-
-            /*if (Traverse.Create(__instance).Field("ducking").GetValue<bool>())
+            if (Main.enabled && Main.settings.steroidsThrowEveryone)
             {
-                __instance.gunSprite.gameObject.SetActive(true);
-            }*/
+                Traverse t = Traverse.Create(__instance);
+                t.Method("SetSpriteOffset", new object[] { 0f, 0f }).GetValue();
+                t.Field("rollingFrames").SetValue(0);
+                if (__instance.frame == 1)
+                {
+                    __instance.counter -= 0.0334f;
+                }
+                if (__instance.frame == 6 && t.Field("meleeFollowUp").GetValue<bool>())
+                {
+                    __instance.counter -= 0.08f;
+                    __instance.frame = 1;
+                    t.Field("meleeFollowUp").SetValue(false);
+                    t.Method("ResetMeleeValues").GetValue();
+                }
+                t.Field("frameRate").SetValue(0.025f);
+                Mook nearbyMook = t.Field("nearbyMook").GetValue<Mook>();
+                if (__instance.frame == 2 && nearbyMook != null && (nearbyMook.CanBeThrown() || __instance.IsPerformanceEnhanced) && t.Field("highFive").GetValue<bool>())
+                {
+                    t.Method("CancelMelee").GetValue();
+                    t.Method("ThrowBackMook", new object[] { nearbyMook }).GetValue();
+                    nearbyMook = null;
+                }
+                return false;
+            }
+            return true;
         }
     }
     [HarmonyPatch(typeof(BroBase), "Awake")]

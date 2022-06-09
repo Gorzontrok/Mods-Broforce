@@ -96,7 +96,7 @@ namespace TweaksFromPigs.HPatch.Menus
             if (!Main.enabled) return;
             try
             {
-                Traverse trav = Traverse.Create(__instance);
+               /* Traverse trav = Traverse.Create(__instance);
                 MenuBarItem[] masterItems = trav.Field("masterItems").GetValue() as MenuBarItem[];
                 List<MenuBarItem> list = new List<MenuBarItem>(masterItems);
                 if(Main.enabled && Main.GorzonBuild)
@@ -124,15 +124,15 @@ namespace TweaksFromPigs.HPatch.Menus
                         invokeMethod = "StartRace"
                     });
 
-                    /*list.Insert(list.Count - 2, new MenuBarItem
+                    list.Insert(list.Count - 2, new MenuBarItem
                     {
                         color = Color.green,
                         size = list[0].size,
                         name = "ACHIEVEMENTS",
                         invokeMethod = "GoToSteamPage"
-                    });*/
+                    });
                 }
-                trav.Field("masterItems").SetValue(list.ToArray());
+                trav.Field("masterItems").SetValue(list.ToArray());*/
             }
             catch (Exception ex) { Main.bmod.Log(ex, RLogType.Exception); }
         }
@@ -189,7 +189,7 @@ namespace TweaksFromPigs.HPatch.Menus
              Traverse.Create(typeof(LevelSelectionController)).Method("LoadNextVersusCampaign").GetValue();
              GameState.Instance.loadMode = MapLoadMode.Campaign;
              LevelEditorGUI.levelEditorActive = false;
-             SceneLoader.LoadScene(LevelSelectionController.JoinScene, LoadSceneMode.Single);
+             Utility.SceneLoader.LoadScene(LevelSelectionController.JoinScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
 
              return false;
          }
