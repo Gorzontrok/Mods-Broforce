@@ -17,6 +17,7 @@ namespace TweaksFromPigs
 
         private static int TabSelected;
         private static int SaveSlotToDelete;
+        private static Vector2 _scrollViewVector;
 
         private static Settings Sett
         {
@@ -53,6 +54,7 @@ namespace TweaksFromPigs
             Rect ToolTipRect = GUILayoutUtility.GetLastRect();
             GUILayout.Space(5);
 
+            _scrollViewVector = GUILayout.BeginScrollView(_scrollViewVector, GUILayout.Height(400));
             switch (TabSelected)
             {
                 case 0: GUI_Main(TitleStyle, ToolTipRect); break;
@@ -64,7 +66,7 @@ namespace TweaksFromPigs
                 case 6: GUI_Map(TitleStyle, ToolTipRect); break;
                 case 7: GUI_Other(TitleStyle, ToolTipRect); break;
             }
-
+            GUILayout.EndScrollView();
         }
 
         private static void GUI_Main(GUIStyle TitleStyle, Rect ToolTipRect)
@@ -162,10 +164,6 @@ namespace TweaksFromPigs
             GUILayout.BeginHorizontal();
             Sett.rememberPockettedSpecial = GUILayout.Toggle(Sett.rememberPockettedSpecial, new GUIContent("Remember Pocketed Special", "When alive, if you change your bro, you keep pocketed special. (Work with Swap Bros Mod)"));
             Sett.steroidsThrowEveryone = GUILayout.Toggle(Sett.steroidsThrowEveryone, new GUIContent("Steroids can throw more mooks", "Bruisers and some other enemies can be thrown with steroids."));
-            if (Main.cheat)
-            {
-                Sett.spawnWithBrondleFly = SecretToggle(Sett.spawnWithBrondleFly, new GUIContent("Spawn With Brondle Fly"));
-            }
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -216,7 +214,6 @@ namespace TweaksFromPigs
             GUILayout.BeginHorizontal();
             Sett.showFacehuggerHUD = GUILayout.Toggle(Sett.showFacehuggerHUD, new GUIContent("Show FaceHugger", "Show a Face Hugger on the avatar when you have an alien on the head."));
             Sett.skeletonDeadFace = GUILayout.Toggle(Sett.skeletonDeadFace, new GUIContent("Show skeleton Dead Face", "Show the Skeleton head of Expendabros when you are dead"));
-
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -243,15 +240,14 @@ namespace TweaksFromPigs
             GUILayout.Label(new GUIContent("Arcade Campaign :", "Play other arcade campaign. Work Online."));
             Sett.arcadeIndex = RocketLib.RGUI.ArrowList(Main.arcadeCampaigns, Sett.arcadeIndex, 200);
             GUILayout.FlexibleSpace();
-
             GUILayout.EndHorizontal();
+
             GUILayout.Space(15);
             GUILayout.BeginHorizontal();
             Sett.useAcidBarrel = GUILayout.Toggle(Sett.useAcidBarrel, new GUIContent("Enabled Acid barrel to spawn", "They are not used in Campaign, makes the spawn."));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             Sett.acidBarrelSpawnProbability = ProbalityScrollBar(Sett.acidBarrelSpawnProbability, "Acid Barrel spawn probability : ");
-            GUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
             GUI.Label(ToolTipRect, GUI.tooltip, ToolTipStyle);
