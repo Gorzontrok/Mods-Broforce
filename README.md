@@ -9,7 +9,7 @@
  Ici sont répertoriés mes mods pour Broforce. Les dossiers `.img/` contiennent les aperçus de mes mods, il n'est pas inclus dans le fichier `.zip` du mod.  
  Les dossiers `Release/` contiennent la dernière version du mod en question.
 
- Contact : Gorzon#4430
+ Discord tag : Gorzon#4430
 
 ## Mods
 
@@ -35,6 +35,7 @@
 * Other :
   * [Auto Enter Password](AutoEnterPassword/)
   * [PROC_GEN_MOD](Proc_Gen_Mod/)
+  * [ReskinMOD](ReskinMod/)
   * [RocketLib](RocketLib/)
   * [Trophy Manager](Trophy%20Manager/)
 * Special :
