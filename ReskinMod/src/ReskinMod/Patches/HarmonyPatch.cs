@@ -18,11 +18,17 @@ namespace ReskinMod.Patches
     {
         static void Postfix(TestVanDammeAnim __instance)
         {
+            if (Main.CantPatch) return;
             try
             {
                 TestVanDammeAnim inst = __instance;
-                //Main.bmod.Log(inst.GetType().Name);
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(inst.GetType().Name.ToLower());
+                Main.actualVillagerProb = UnityEngine.Random.value;
+                if ((__instance.GetType().Name.ToLower() == "villager" || __instance.GetType().Name.ToLower() == "citizen") && Main.actualVillagerProb < Main.settings.citizenVillagerCanHaveDefaultSkinProb)
+                {
+                    return;
+                }
+
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(inst.GetType().Name.ToLower());
                 if(skinCollection != null)
                 {
                     Skin characterSkin = skinCollection.GetSkin(SkinType.Character, 0);
@@ -52,14 +58,15 @@ namespace ReskinMod.Patches
     {
         static void Postfix(BroBase __instance)
         {
-            if (!Main.enabled) return;
+            if (Main.CantPatch) return;
 
             try
             {
                 BroBase inst = __instance;
                 //Main.bmod.Log(inst.GetType().Name);
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(inst.GetType().Name.ToLower());
-                HeroType heroType = inst.heroType;
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(inst.GetType().Name.ToLower());
+
+
                 if(skinCollection != null)
                 {
                     Skin characterSkin = skinCollection.GetSkin(SkinType.Character, 0);
@@ -116,13 +123,13 @@ namespace ReskinMod.Patches
     {
         static void Postfix(Mook __instance)
         {
-            if (!Main.enabled) return;
+            if (Main.CantPatch) return;
 
             try
             {
                 Mook inst = __instance;
                 //Main.bmod.Log(inst.GetType().Name);
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(inst.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(inst.GetType().Name.ToLower());
                 if(skinCollection != null)
                 {
                     Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);

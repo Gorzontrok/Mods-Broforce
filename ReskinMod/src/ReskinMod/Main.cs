@@ -16,7 +16,16 @@ namespace ReskinMod
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
-       // public static Settings settings;
+        public static Settings settings;
+
+        public static bool CantPatch
+        {
+            get
+            {
+                return !Main.enabled || Map.isEditing;
+            }
+        }
+        public static float actualVillagerProb;
 
         public static string assetsFolderPath;
         internal static BroforceMod bmod;
@@ -31,9 +40,9 @@ namespace ReskinMod
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             modEntry.OnGUI = OnGUI;
-            //modEntry.OnSaveGUI = OnSaveGUI;
+            modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
-            //settings = Settings.Load<Settings>(modEntry);
+            settings = Settings.Load<Settings>(modEntry);
             mod = modEntry;
 
             var harmony = new Harmony(modEntry.Info.Id);
@@ -60,32 +69,36 @@ namespace ReskinMod
                 Directory.CreateDirectory(assetsFolderPath);
             }
 
-            SkinCollection.Init();
-            if(SkinCollection.skinCollections.Count>0)
+            SkinCollectionController.Init();
+            if(SkinCollectionController.skinCollections.Count>0)
             {
-                _selectedSkinCollection = SkinCollection.skinCollections[0];
+                _selectedSkinCollection = SkinCollectionController.skinCollections[0];
             }
-            _tabs = new string[] { "Main", "Conflicts"};
+            _tabs = new string[] { "Main", "Conflicts", "Settings"};
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
             if(GUILayout.Button(new GUIContent("Reload Mod"), GUILayout.Width(200)))
             {
-                SkinCollection.Init();
+                SkinCollectionController.Init();
             }
 
             GUILayout.Space(15);
 
-            _selectedTab = GUILayout.SelectionGrid(_selectedTab, _tabs, 2, GUILayout.Width(500));
+            _selectedTab = GUILayout.SelectionGrid(_selectedTab, _tabs, _tabs.Length, GUILayout.Width(1000));
 
             if(_selectedTab == 0)
             {
                 MainGUI();
             }
-            else
+            else if(_selectedTab == 1)
             {
                 ConflictGUI();
+            }
+            else if(_selectedTab == 2)
+            {
+                SettingGUI();
             }
         }
 
@@ -96,7 +109,7 @@ namespace ReskinMod
             GUILayout.BeginVertical("Skins' Name", GUI.skin.box, GUILayout.Width(200), GUILayout.Height(250));
             GUILayout.Space(15);
             _scrollViewVector = GUILayout.BeginScrollView(_scrollViewVector, GUILayout.Height(250));
-            foreach (SkinCollection skinCollection in SkinCollection.skinCollections)
+            foreach (SkinCollection skinCollection in SkinCollectionController.skinCollections)
             {
                 if (GUILayout.Button(skinCollection.name))
                 {
@@ -130,9 +143,9 @@ namespace ReskinMod
             GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(500), GUILayout.Height(250));
             GUILayout.Space(5);
             _scrollViewVectorUnused2 = GUILayout.BeginScrollView(_scrollViewVectorUnused2, GUILayout.Height(250));
-            if (SkinCollection.conflictsAndErrors.Count > 0)
+            if (SkinCollectionController.conflictsAndErrors.Count > 0)
             {
-                foreach (string msg in SkinCollection.conflictsAndErrors)
+                foreach (string msg in SkinCollectionController.conflictsAndErrors)
                 {
                     GUILayout.Label(msg);
                     GUILayout.Space(7);
@@ -146,10 +159,26 @@ namespace ReskinMod
             GUILayout.EndVertical();
         }
 
-       /*static void OnSaveGUI(UnityModManager.ModEntry modEntry)
+        private static void SettingGUI()
+        {
+            GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(1000), GUILayout.Height(250));
+            _scrollViewVectorUnused2 = GUILayout.BeginScrollView(_scrollViewVectorUnused2, GUILayout.Height(250));
+
+            settings.citizenVillagerCanHaveDefaultSkin = GUILayout.Toggle(settings.citizenVillagerCanHaveDefaultSkin, "Citizen and Villager can have default skins");
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Probability :");
+            int.TryParse(GUILayout.TextField(settings.citizenVillagerCanHaveDefaultSkinProb.ToString(), GUILayout.Width(150)), out settings.citizenVillagerCanHaveDefaultSkinProb);
+            GUILayout.Label("%");
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
+        }
+       static void OnSaveGUI(UnityModManager.ModEntry modEntry)
         {
             settings.Save(modEntry);
-        }*/
+        }
 
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
@@ -166,13 +195,28 @@ namespace ReskinMod
         {
             bmod.logger.WarningLog(msg);
         }
+
+        private static float FloatBarWithEnter(float value)
+        {
+            value = GUILayout.HorizontalScrollbar(value, 5, 0, 1);
+            return value;
+        }
     }
 
-   /* public class Settings : UnityModManager.ModSettings
+    public class Settings : UnityModManager.ModSettings
     {
+        public float citizenVillagerProb
+        {
+            get
+            {
+                return citizenVillagerCanHaveDefaultSkinProb / 100;
+            }
+        }
+        public bool citizenVillagerCanHaveDefaultSkin;
+        public int citizenVillagerCanHaveDefaultSkinProb;
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
         }
-    }*/
+    }
 }

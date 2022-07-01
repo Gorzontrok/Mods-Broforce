@@ -10,9 +10,10 @@ namespace ReskinMod.Patches.Bros
     {
         static void Postfix(Brominator __instance)
         {
+            if (Main.CantPatch) return;
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin characterSkin = skinCollection.GetSkin(SkinType.Character, 0);
@@ -58,9 +59,10 @@ namespace ReskinMod.Patches.Bros
     {
         static void Postfix(Nebro __instance)
         {
+            if (Main.CantPatch) return;
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin characterSkin = skinCollection.GetSkin(SkinType.Character, 0);
@@ -80,9 +82,10 @@ namespace ReskinMod.Patches.Bros
     {
         static void Postfix(AshBrolliams __instance)
         {
+            if (Main.CantPatch) return;
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin avatar2 = skinCollection.GetSkin(SkinType.Avatar, 1);
@@ -100,9 +103,10 @@ namespace ReskinMod.Patches.Bros
     {
         static void Postfix(BroveHeart __instance)
         {
+            if (Main.CantPatch) return;
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin character = skinCollection.GetSkin(SkinType.Character, 0);
@@ -126,9 +130,10 @@ namespace ReskinMod.Patches.Bros
     {
         static void Postfix(BoondockBro __instance)
         {
+            if (Main.CantPatch) return;
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     if (__instance.isLeadBro)
@@ -170,7 +175,8 @@ namespace ReskinMod.Patches.Bros
     {
         static void Postfix(BoondockBro __instance)
         {
-            SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+            if (Main.CantPatch) return;
+            SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
             if (skinCollection != null)
             {
                 Skin gun2 = skinCollection.GetSkin(SkinType.Gun, 1);

@@ -10,9 +10,10 @@ namespace ReskinMod.Patches.Aliens
     {
         static void Prefix(AlienXenomorph __instance)
         {
+            if (Main.CantPatch) return;
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin character = skinCollection.GetSkin(SkinType.Character, 0);

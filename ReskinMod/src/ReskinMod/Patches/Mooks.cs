@@ -23,7 +23,7 @@ namespace ReskinMod.Patches.Moks
         {
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if(skinCollection != null)
                 {
                     Skin decapitated = skinCollection.GetSkin(SkinType.Decapitated, 0);
@@ -44,7 +44,7 @@ namespace ReskinMod.Patches.Moks
             try
             {
 
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin decapitated = skinCollection.GetSkin(SkinType.Decapitated, 0);
@@ -70,7 +70,7 @@ namespace ReskinMod.Patches.Moks
         {
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin decapitated = skinCollection.GetSkin(SkinType.Decapitated, 0);
@@ -90,7 +90,7 @@ namespace ReskinMod.Patches.Moks
         {
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin decapitated = skinCollection.GetSkin(SkinType.Decapitated, 0);
@@ -111,7 +111,7 @@ namespace ReskinMod.Patches.Moks
         {
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
@@ -132,7 +132,7 @@ namespace ReskinMod.Patches.Moks
         {
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
@@ -153,7 +153,7 @@ namespace ReskinMod.Patches.Moks
         {
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
@@ -173,7 +173,7 @@ namespace ReskinMod.Patches.Moks
         {
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin character2 = skinCollection.GetSkin(SkinType.Character, 1);
@@ -194,7 +194,7 @@ namespace ReskinMod.Patches.Moks
         {
             try
             {
-                SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower());
+                SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
                 if (skinCollection != null)
                 {
                     Skin character = skinCollection.GetSkin(SkinType.Character, 0);

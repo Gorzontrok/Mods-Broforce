@@ -10,8 +10,10 @@ namespace ReskinMod.Patches.Villagers
     {
         static void Postfix(Villager __instance)
         {
-             SkinCollection skinCollection = SkinCollection.GetSkinCollection(__instance.GetType().Name.ToLower(), true);
-             if(skinCollection != null)
+            if (Main.CantPatch || (__instance as Citizen)) return;
+
+            SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(__instance.GetType().Name.ToLower());
+             if(skinCollection != null && UnityEngine.Random.value < Main.settings.citizenVillagerProb)
             {
                 Skin character = skinCollection.GetSkin(SkinType.Character, 0);
                 Skin characterArmed = skinCollection.GetSkin(SkinType.Character, 1);
@@ -39,6 +41,28 @@ namespace ReskinMod.Patches.Villagers
                         SpriteSM sprite = __instance.gameObject.GetComponent<SpriteSM>();
                         sprite.meshRender.sharedMaterial.SetTexture("_MainTex", characterArmed.texture);
                     }
+                }
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Citizen), "Start")]
+    static class Citizen_Reskin_Patch
+    {
+        static void Postfix(Citizen __instance)
+        {
+            if (Main.CantPatch) return;
+            string skinCollectionName = __instance.runRightAfterHighFive ? "clinton" : ( __instance.becomeTerroristOnGunfire ? "agent" : __instance.GetType().Name.ToLower());
+            SkinCollection skinCollection = SkinCollectionController.GetSkinCollection(skinCollectionName);
+            if (skinCollection != null && UnityEngine.Random.value < Main.settings.citizenVillagerProb)
+            {
+                Main.ErrorLog(1);
+                Skin character = skinCollection.GetSkin(SkinType.Character, 0);
+
+                if (character != null)
+                {
+                    SpriteSM sprite = __instance.gameObject.GetComponent<SpriteSM>();
+                    sprite.meshRender.sharedMaterial.SetTexture("_MainTex", character.texture);
                 }
             }
         }

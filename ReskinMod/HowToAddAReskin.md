@@ -3,7 +3,7 @@
 To add a skin, you need to put the `.png` image in the `assets` folder (they can be in subdirectories of `assets`) and with the correct name.  
 Every file is stored in `assets` folder .
 
-For the moment only Bros and Enemies can be Reskinned.  
+For the moment only Bros and Enemies can be reskinned.  
 
 ## Name the file
 
@@ -14,9 +14,9 @@ For the name of the file, refer to the [Google SpreadSheet](https://docs.google.
  For the animation of the character, add `_anim0` after the character's name.  
  e.g. 'Rambro_anim0.png' *or* 'rambro_anim0.png'  
 
- Some characters have more than 1 character's spritesheets, like Double Bro Seven with his balaclava. In this case, you need to increase the '0' after the `_anim`.  
+ Some characters have more than one spritesheet, like Double Bro Seven, who as another because of his balaclava. In this case, you need to increase the '0' after the `_anim`.  
  e.g. 'DoubleBroSeven_anim1.png'  
- *It's the same thing for every SpriteSheets*
+ *It's the same thing for every SpriteSheet*
 
 ### Gun's SpriteSheet
 
@@ -25,7 +25,7 @@ For the name of the file, refer to the [Google SpreadSheet](https://docs.google.
 
 ### Armless' SpriteSheet
 
- If the character have an armless Spritesheet, add `_armless_anim0` after the character's name.  
+ If the character has an armless Spritesheet, add `_armless_anim0` after the character's name.  
  e.g. 'Nebro_armless_anim.png' *or* 'nebro_armless_anim.png'  
 
 ### Avatar's SpriteSheet
