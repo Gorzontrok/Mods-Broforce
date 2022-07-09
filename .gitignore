@@ -4,4 +4,5 @@
 *obj/
 *.cs.beta
 *.beta/
+*.DS_Stores
 ReskinMod/Skins/Textures/
