@@ -105,8 +105,10 @@ namespace TweaksFromPigs
             GUILayout.BeginHorizontal();
             Sett.pigAreAlwaysTerror = GUILayout.Toggle(Sett.pigAreAlwaysTerror, new GUIContent($"Terrorist {SecretText("Pigs")}", $"Terrorist {SecretText("Pigs")} are the best <3"));
             Sett.sickPigs = GUILayout.Toggle(Sett.sickPigs, new GUIContent($"Sick {SecretText("Pigs")}", $"{SecretText("Pigs")} explode when you finish to ride them."));
-            Sett.sickPigsPobability = ProbalityScrollBar(Sett.sickPigsPobability, $"Sick {SecretText("Pigs")} probability");
             GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            Sett.sickPigsPobability = ProbalityScrollBar(Sett.sickPigsPobability, $"Sick {SecretText("Pigs")} probability");
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
