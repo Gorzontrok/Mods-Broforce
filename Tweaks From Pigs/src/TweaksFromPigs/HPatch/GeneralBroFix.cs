@@ -50,7 +50,11 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
     {
         static bool Prefix(TestVanDammeAnim __instance)
         {
-            return Main.enabled && Main.settings.fixExpendabros && HeroUnlockController.IsExpendaBro(__instance.heroType);
+            if(Main.enabled && HeroUnlockController.IsExpendaBro(__instance.heroType))
+            {
+                return !Main.settings.fixExpendabros;
+            }
+            return true;
         }
     }
     [HarmonyPatch(typeof(TestVanDammeAnim), "AnimateInseminationFrames")]
@@ -108,6 +112,17 @@ namespace TweaksFromPigs.HPatch.GeneralBroFix
             }
             return true;
         }
+    }
+    [HarmonyPatch(typeof(BroBase), "Update")]
+    static class Update_Brobase
+    {
+        /*static void Postfix(BroBase __instance)
+        {
+            if(Main.cheat && Input.GetKeyDown(KeyCode.P))
+            {
+                Traverse.Create(__instance).Method("UseJetpack").GetValue();
+            }
+        }*/
     }
     [HarmonyPatch(typeof(BroBase), "Awake")]
     static class BroBase_Awake_Patch
