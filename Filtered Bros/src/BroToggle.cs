@@ -91,7 +91,7 @@ namespace FilteredBros
 
         public bool IsBroUnlocked()
         {
-            return unlockNumber <= PlayerProgress.Instance.freedBros;
+            return unlockNumber <= PlayerProgress.Instance.freedBros || Main.cheat;
         }
 
         public static BroToggle GetBroToggleFromHeroType(HeroType hero)
