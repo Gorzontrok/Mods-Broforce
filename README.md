@@ -34,6 +34,7 @@
   * [Spooktober](Spooktober/)
 * Other :
   * [Auto Enter Password](AutoEnterPassword/)
+  * [NoMoreCutscenes](NoMoreCutscenes/)
   * [PROC_GEN_MOD](Proc_Gen_Mod/)
   * [ReskinMOD](ReskinMod/)
   * [RocketLib](RocketLib/)
