@@ -1,0 +1,11 @@
+﻿{
+  "Id": "NoMoreCutscenes",
+  "DisplayName": "No More Cutscenes",
+  "Author": "Gorzon",
+  "Version": "1.0",
+  // "Requirements": [ "RocketLib" ],
+  // "LoadAfter": [ "RocketLib" ],
+  "AssemblyName": "NoMoreCutscenes.dll",
+  "EntryMethod": "NoMoreCutscenes.Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}
