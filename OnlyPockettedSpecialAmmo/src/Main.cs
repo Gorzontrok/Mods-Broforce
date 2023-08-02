@@ -4,7 +4,7 @@ using System.Reflection;
 using HarmonyLib;
 using UnityEngine;
 using UnityModManagerNet;
-using RocketLib0;
+using System.Linq;
 
 namespace OnlyPockettedSpecialAmmo
 {
@@ -14,11 +14,7 @@ namespace OnlyPockettedSpecialAmmo
         public static bool enabled;
         public static Settings settings;
 
-        internal static BroforceMod bmod;
-
-        private static System.Random rnd = new System.Random();
-
-        static List<PockettedSpecialAmmoType> pockettedList = new List<PockettedSpecialAmmoType>();
+        static List<PockettedSpecialAmmoType> pockettedList = RocketLib.Collections.PockettedSpecial.SpecialAmmo.ToList();
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
@@ -40,23 +36,11 @@ namespace OnlyPockettedSpecialAmmo
             {
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
-
-            try
-            {
-                pockettedList.AddRange(RocketLib._HeroUnlockController.ListPockettedSpecialAmmoTypes);
-                pockettedList.Remove(PockettedSpecialAmmoType.Standard);
-            }catch(Exception ex) { mod.Logger.Log("Failed while modifying the pockettedList !\n" + ex); }
-
-            try
-            {
-                bmod = new BroforceMod();
-                bmod.Load(mod);
-            }catch(Exception ex) { mod.Logger.Log("Failed to create Broforce Mod\n" + ex.ToString()); }
             return true;
         }
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
-            settings.Infinity = GUILayout.Toggle(settings.Infinity, "Infinity mode");
+            settings.infinity = GUILayout.Toggle(settings.infinity, "Infinity mode");
         }
 
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
@@ -65,9 +49,9 @@ namespace OnlyPockettedSpecialAmmo
             return true;
         }
 
-        internal static void Log(object str, RLogType type = RLogType.Log)
+        internal static void Log(object str)
         {
-            bmod.Log(str, type);
+            mod.Logger.Log(str.ToString());
         }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
@@ -77,13 +61,13 @@ namespace OnlyPockettedSpecialAmmo
 
         internal static PockettedSpecialAmmoType GetRandomPockettedSpecialAmmo()
         {
-            return pockettedList[rnd.Next(pockettedList.Count)];
+            return pockettedList.RandomElement();
         }
     }
 
     public class Settings : UnityModManager.ModSettings
     {
-        public bool Infinity;
+        public bool infinity;
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
@@ -102,15 +86,13 @@ namespace OnlyPockettedSpecialAmmo
             {
                 __instance.SpecialAmmo = 0;
                 __instance.originalSpecialAmmo = 0;
-                Traverse.Create(__instance).Field("_specialAmmo").SetValue(0);
-
+                __instance.SetFieldValue("_specialAmmo", 0);
                 __instance.PickupPockettableAmmo(Main.GetRandomPockettedSpecialAmmo());
             }
             catch(Exception ex)
             {
-                Main.Log("Failed to assign Pocketted special ammo !\n" + ex, RLogType.Exception);
+                Main.Log("Failed to assign Pocketted special ammo !\n" + ex);
             }
-
         }
     }
 
@@ -122,10 +104,13 @@ namespace OnlyPockettedSpecialAmmo
             if (!Main.enabled) return;
             try
             {
-                if (Main.settings.Infinity)
+                if (Main.settings.infinity)
                     __instance.PickupPockettableAmmo(Main.GetRandomPockettedSpecialAmmo());
             }
-            catch (Exception ex) { Main.Log("Failed to add special ammo on reset !\n" + ex, RLogType.Exception); }
+            catch (Exception ex)
+            {
+                Main.Log("Failed to add special ammo on reset !\n" + ex);
+            }
 
         }
     }
@@ -139,10 +124,13 @@ namespace OnlyPockettedSpecialAmmo
             if (!Main.enabled) return;
             try
             {
-                if(Main.settings.Infinity)
+                if(Main.settings.infinity)
                     __instance.PickupPockettableAmmo(Main.GetRandomPockettedSpecialAmmo());
             }
-            catch (Exception ex) { Main.Log("Failed to add special ammo on reset for The Brolander !\n" + ex, RLogType.Exception); }
+            catch (Exception ex)
+            {
+                Main.Log("Failed to add special ammo on reset for The Brolander !\n" + ex);
+            }
 
         }
     }
@@ -159,13 +147,13 @@ namespace OnlyPockettedSpecialAmmo
                 __instance.maxSpecialAmmo = 0;
                 __instance.SpecialAmmo = 0;
                 __instance.originalSpecialAmmo = 0;
-                Traverse.Create(__instance).Field("_specialAmmo").SetValue(0);
+                __instance.SetFieldValue("_specialAmmo", 0);
 
                 __instance.PickupPockettableAmmo(Main.GetRandomPockettedSpecialAmmo());
             }
             catch(Exception ex)
             {
-                Main.Log("Failed to assign Pocketted special ammo for The Brolander !\n" + ex, RLogType.Exception);
+                Main.Log("Failed to assign Pocketted special ammo for The Brolander !\n" + ex);
             }
         }
     }

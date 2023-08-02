@@ -1,0 +1,11 @@
+{
+    "Id": "OnlyPockettedSpecialAmmoMod",
+    "DisplayName": "Only Pocketted Special Ammo",
+    "Author": "Gorzontrok",
+    "Version": "1.1.0",
+    "Requirements": ["RocketLib"],
+    "LoadAfter": ["RocketLib"],
+    "AssemblyName": "OnlyPockettedSpecialAmmo.dll",
+    "EntryMethod": "OnlyPockettedSpecialAmmo.Main.Load",
+    "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}
