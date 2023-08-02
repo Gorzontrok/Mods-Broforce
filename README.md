@@ -14,21 +14,21 @@
 ## Mods
 
 * All ? :
-  * [Tweaks From Pigs](Tweak%20From%20Pigs/)
+  * [Tweaks From Pigs](TweakFromPigs/)
 * Enemies :
-  * [Satan Surprise](Satan%20Surprise/)
+  * [Satan Surprise](SatanSurprise/)
   * [Spooktober](Spooktober/)
 * Bros :
-  * [007_Patch](Tweaks%20From%20Pigs%20-%20Mod%20Standalone/007_Patch)
+  * [007_Patch](TweaksFromPigs-ModStandalone/007_Patch)
   * [Pigstini](Pigstini/)
   * [Tank Bro Rocket For Brominator](TankBroRocketForBrominator/)
 * Bro Spawn :
-  * [Expendables Bros In Game](Tweaks%20From%20Pigs%20-%20Mod%20Standalone/Expendables%20Bros%20In%20Game/)
-  * [Filtered Bros](Filtered%20Bros/)
+  * [Expendables Bros In Game](TweaksFromPigs-ModStandalone/ExpendablesBrosInGame/)
+  * [Filtered Bros](FilteredBros/)
   * [ForBralef](ForBralef/)
 * HUD :
-  * [Show Avatar FaceHugger](Tweaks%20From%20Pigs%20-%20Mod%20Standalone/Show%20Avatar%20FaceHugger/)
-  * [Skeleton Dead Face](Tweaks%20From%20Pigs%20-%20Mod%20Standalone/Skeleton%20Dead%20Face/)
+  * [Show Avatar FaceHugger](TweaksFromPigs-ModStandalone/ShowAvatarFaceHugger/)
+  * [Skeleton Dead Face](TweaksFromPigs-ModStandalone/SkeletonDeadFace/)
 * Map :
   * [Map Data Controller](MapDataController/)
   * [Spooktober](Spooktober/)
@@ -38,9 +38,9 @@
   * [PROC_GEN_MOD](Proc_Gen_Mod/)
   * [ReskinMOD](ReskinMod/)
   * [RocketLib](RocketLib/)
-  * [Trophy Manager](Trophy%20Manager/)
+  * [Trophy Manager](TrophyManager/)
 * Special :
-  * [Only Pocketted Special Ammo](Only%20Pocketted%20Special%20Ammo/)
+  * [Only Pocketted Special Ammo](OnlyPockettedSpecialAmmo/)
 
 ## Installation
 
