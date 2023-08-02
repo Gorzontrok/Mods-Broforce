@@ -1,0 +1,5 @@
+﻿v1.1.0:
+Added sick pigs ;  Wearers name: "SickPig"
+
+v1.0.0:
+Release

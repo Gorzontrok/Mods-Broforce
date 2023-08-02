@@ -1,0 +1,11 @@
+{
+  "Id": "DresserMod",
+  "DisplayName": "Dresser",
+  "Author": "Gorzontrok",
+  "Version": "1.0.0",
+  "Requirements": [ "RocketLib" ],
+  "LoadAfter": [ "RocketLib" ],
+  "AssemblyName": "DresserMod.dll",
+  "EntryMethod": "DresserMod.Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}
