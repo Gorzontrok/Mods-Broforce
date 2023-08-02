@@ -5,7 +5,7 @@ In this mod you can load a custom seed. And replace Rambro to Casey, which is on
 ## Installation
 
 * Work only in proc_gen beta
-* The latest Release it's in the `/Release` folder.
+* The all and [latest](./Release/Proc_Gen_Mod.zip) release are in the [Release](./Release/) folder.
 
 ## Know Issue
 
