@@ -1,0 +1,10 @@
+{
+    "id": "ExpendaBrosInGame",
+    "DisplayName": "Expendables Bros in Game",
+    "Author": "Gorzon",
+    "Version": "1.3.0",
+    "LoadAfter": ["FilteredBrosMod"],
+    "AssemblyName": "ExpendablesBrosInGame.dll",
+    "EntryMethod": "ExpendablesBrosInGame.Main.Load",
+    "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}
