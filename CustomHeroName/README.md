@@ -6,7 +6,7 @@ Compatible with [Filtered Bros](https://www.nexusmods.com/broforce/mods/7).
   
 ## Installation
 
-* The [latest Release](./Release/CustomHeroNameMod.zip) it's in the `/Release` folder.
+* The all and [latest](./Release/CustomHeroNameMod.zip) release are in the [Release](./Release/) folder.
 * Dependency: [RocketLib](https://www.nexusmods.com/broforce/mods/9)
 
 ## Know Issue
