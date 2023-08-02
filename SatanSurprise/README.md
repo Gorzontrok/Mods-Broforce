@@ -1,11 +1,15 @@
 # SATAN SURPRISE
- It's a mod that increase difficulty by modifying enemies. The modification are list [here](./Modification) 
 
-## Installation :
- * The latest Release it's in the `/Release` folder.
+This mod increase difficulty by modifying enemies. The modification are list [here](./Modification)
 
-## Know Issue :
+## Installation
+
+* The all and [latest](./Release/SurpriseMod.zip) release are in the [Release](./Release/) folder.
+
+## Know Issue
+
 * I got some sometimes, hope you have a good computer.
 
-## Incompatible :
- * None
+## Incompatible
+
+* None
