@@ -1,17 +1,18 @@
 # ForBralef
- It's a mod that Bralef (aka Colonel Mustache) ask me to Do.  
-   
- The mod come with the possibilities to Unlock/Lock all bro, randomize the unlock order and limit the number of bro you can spawn with.
- ![](.img/1.jpg?raw=true)
 
- Turn that it's an really fun mod, i decided to "Officially" release it.
+It's a mod that Bralef (aka Colonel Mustache) request me.  
+The mod come with the possibilities to Unlock/Lock all bro, randomize the unlock order and limit the number of bro you can spawn with.  
+![image](.img/1.jpg?raw=true)
 
-## Installation :
- * The latest Release it's in the `/Release` folder.
+## Installation
 
-## Know Issue :
+* The all and [latest](./Release/ForBralef.zip) release are in the [Release](./Release/) folder.
+
+## Know Issue
+
 * None.
 
- ## Incompatible :
- * Filtered Bros
- * Expendables Bros In Game
+## Incompatible
+
+* Filtered Bros
+* Expendables Bros In Game
