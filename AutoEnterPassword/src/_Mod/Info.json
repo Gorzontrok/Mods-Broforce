@@ -1,0 +1,11 @@
+{
+    "Id": "AutoEnterPassword",
+    "DisplayName": "Auto Enter Password",
+    "Author": "Gorzon",
+    "Version": "1.1.0",
+    "Requirements": ["RocketLib"],
+    "LoadAfter": ["RocketLib"],
+    "AssemblyName": "AutoEnterPassword.dll",
+    "EntryMethod": "AutoEnterPassword.Main.Load",
+    "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}

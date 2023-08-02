@@ -5,7 +5,7 @@ More information about them [here](https://steamcommunity.com/sharedfiles/filede
   
 ## Installation
 
-* The latest Release it's in the `/Release` folder.
+* The [latest Release](./Release/AutoEnterPassword.zip) it's in the `/Release` folder.
 
 ## Know Issue
 

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
-using System.Linq;
-using RocketLib0;
-using HarmonyLib;
 using UnityEngine;
 using UnityModManagerNet;
 
@@ -23,76 +18,49 @@ namespace AutoEnterPassword
             settings = Settings.Load<Settings>(modEntry);
             mod = modEntry;
 
-            var harmony = new Harmony(modEntry.Info.Id);
             try
             {
-                var myAssembly = Assembly.GetExecutingAssembly();
-                harmony.PatchAll(myAssembly);
+                if(settings.autoLoad.IsNullOrEmpty())
+                    settings.autoLoad = new string[0];
+                Mod.Initialize();
             }
             catch (Exception ex)
             {
-                mod.Logger.Log("Fail\n" +ex.ToString());
+                Main.Log("Failed Mod Initialization\n" + ex);
             }
-
-
-            try { AutoLoad(); } catch (Exception ex) { Main.Log("Failed to AutoLoad the cheats !\n" + ex); }
 
             return true;
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
+            GUILayout.Label("Vanilla Password :");
             GUILayout.BeginHorizontal();
 
-            settings.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay = InGamePasswordGUI(settings.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay, "IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay", Cheats.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay);
-
-            settings.alaskanpipeline = InGamePasswordGUI(settings.alaskanpipeline, "alaskanpipeline", Cheats.alaskanpipeline);
-
-            settings.seagull = InGamePasswordGUI(settings.seagull, "seagull", Cheats.seagull);
-
-            settings.mranderbro = InGamePasswordGUI(settings.mranderbro, "mranderbro", Cheats.mranderbro);
-
-            settings.abrahamlincoln = InGamePasswordGUI(settings.abrahamlincoln, "abrahamlincoln", Cheats.abrahamlincoln);
-
-            settings.smokinggun = InGamePasswordGUI(settings.smokinggun, "smokinggun", Cheats.smokinggun);
+            foreach(var vanilla in Mod.vanillaPasswords)
+            {
+                Mod.GamePasswordUI(vanilla);
+            }
 
             GUILayout.EndHorizontal();
 
-            if(GamePasswordController.GamePasswords.Count > 0)
+            if (Mod.passwords.Count <= 0) return;
+
+            GUILayout.Label("RocketLib Password :");
+            for (int i = 0; i < Mod.passwords.Count; i++)
             {
-                GUILayout.Label("RocketLib Password :");
-            }
-            for (int i = 0; i < GamePasswordController.GamePasswords.Count; i++)
-            {
-                if(i == 0)
+                if (i == 0)
                 {
                     GUILayout.BeginHorizontal();
                 }
-                if (GUILayout.Button(GamePasswordController.GamePasswords[i].password, GUILayout.ExpandWidth(false)))
-                {
-                    GamePasswordController.GamePasswords[i].action();
-                }
-                if (i % 5 == 0 || i == GamePasswordController.GamePasswords.Count)
+
+                Mod.GamePasswordUI(Mod.passwords[i]);
+
+                if (i % 5 == 0 || i == Mod.passwords.Count)
                 {
                     GUILayout.EndHorizontal();
                 }
             }
-        }
-
-        static bool InGamePasswordGUI(bool active, string text, Action action)
-        {
-            GUILayout.BeginVertical();
-            if (GUILayout.Button(text))
-            {
-                action();
-            }
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            active = GUILayout.Toggle(active, "AutoLoad");
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-            return active;
         }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
@@ -110,79 +78,15 @@ namespace AutoEnterPassword
         {
             mod.Logger.Log(str.ToString());
         }
-
-        static void AutoLoad()
-        {
-            if (settings.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay)
-                Cheats.IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay();
-
-            if (settings.alaskanpipeline)
-                Cheats.alaskanpipeline();
-
-            if (settings.seagull)
-                Cheats.seagull();
-
-            if (settings.mranderbro)
-                Cheats.mranderbro();
-
-            if (settings.abrahamlincoln)
-                Cheats.abrahamlincoln();
-
-            if (settings.smokinggun)
-                Cheats.smokinggun();
-        }
     }
 
-    public static class Cheats
-    {
-        public static void IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay()
-        {
-            TestVanDammeAnim.teaBagCheatEnabled = true;
-            Main.Log("'IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay' loaded !");
-        }
-        public static void alaskanpipeline()
-        {
-            HeroUnlockController.UnlockAllBros();
-            PlayerProgress.Save(true);
-            Main.Log("'alaskanpipeline' loaded !");
-        }
-        public static void seagull()
-        {
-            HeroUnlockController.UnlockEverythingButBroheart(); // False ! Unlock all until The Brode !
-            PlayerProgress.Save(true);
-            Main.Log("'seagull' loaded !");
-        }
-        public static void mranderbro()
-        {
-            Map.SetTryReduceLoadingTimes(true);
-            Main.Log("'mranderbro' loaded !");
-        }
-
-        public static void abrahamlincoln()
-        {
-            GameModeController.CheatsEnabled = true;
-            Main.Log("'abrahamlincoln' loaded !");
-        }
-
-        public static void smokinggun()
-        {
-            LevelEditorGUI.hackedEditorOn = true;
-            Main.Log("'smokinggun' loaded !");
-        }
-
-    }
     public class Settings : UnityModManager.ModSettings
     {
-        public bool IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay;
-        public bool alaskanpipeline;
-        public bool seagull;
-        public bool mranderbro;
-        public bool abrahamlincoln;
-        public bool smokinggun;
-        public bool iloveamerica;
+        public string[] autoLoad;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
+            autoLoad = Mod.autoLoadSession.ToArray();
             Save(this, modEntry);
         }
     }
