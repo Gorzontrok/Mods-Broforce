@@ -1,0 +1,11 @@
+{
+    "Id": "CustomHeroNameMod",
+    "DisplayName": "Custom Hero Name",
+    "Author": "Gorzontrok",
+    "Version": "1.0.0",
+    "Requirements": ["RocketLib"],
+    "LoadAfter": ["RocketLib"],
+    "AssemblyName": "CustomHeroName.dll",
+    "EntryMethod": "CustomHeroName.Main.Load",
+    "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}
