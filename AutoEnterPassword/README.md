@@ -5,7 +5,7 @@ More information about them [here](https://steamcommunity.com/sharedfiles/filede
   
 ## Installation
 
-* The [latest Release](./Release/AutoEnterPassword.zip) it's in the `/Release` folder.
+* The all and [latest](./Release/AutoEnterPassword.zip) release are in the [Release](./Release/) folder.
 * Dependency: [RocketLib](https://www.nexusmods.com/broforce/mods/9)
 
 ## Know Issue
