@@ -1,12 +1,12 @@
-# Pigstini (idea by DragonightFury)
+# Pigstini (requested by DragonightFury)
 
 In this mod everyone throw the martini when firing and the martini have the skin of the pig.  
 It's a little hard to play with.  
-You need RocketLib.
 
 ## Installation
 
-* The latest Release it's in the `/Release` folder.
+* The all and [latest](./Release/PigstiniMod.zip) release are in the [Release](./Release/) folder.
+* Dependency: [RocketLib](https://www.nexusmods.com/broforce/mods/9)
 
 ## Know Issue
 
@@ -14,4 +14,4 @@ You need RocketLib.
 
 ## Incompatible
 
-* None
+* Everything which make the bros shoot

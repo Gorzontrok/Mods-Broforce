@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\UnityModManager\0Harmony.dll</HintPath>
+      <HintPath>..\..\lib\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="RocketLib">
       <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Mods\RocketLib\RocketLib.dll</HintPath>
@@ -47,25 +47,29 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\lib\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityModManager">
-      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
+      <HintPath>..\..\lib\UnityModManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="_Mod\Changelog.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_Mod\Info.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\Mods\$(ProjectName)Mod\$(ProjectName).dll*"</PostBuildEvent>
+    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(ProjectDir)\_Mod\$(ProjectName).dll*"
+start XCOPY /Y /I "$(ProjectDir)\_Mod\*.*" "E:\SteamLibrary\steamapps\common\Broforce\Mods\$(ProjectName)Mod\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

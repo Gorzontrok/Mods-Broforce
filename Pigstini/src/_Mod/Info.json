@@ -1,0 +1,11 @@
+{
+    "Id": "PigstiniMod",
+    "DisplayName": "Pigstini",
+    "Author": "Gorzontrok",
+    "Version": "1.0.3",
+    "Requirements": ["RocketLib"],
+    "LoadAfter": ["RocketLib"],
+    "AssemblyName": "Pigstini.dll",
+    "EntryMethod": "Pigstini.Main.Load",
+    "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}

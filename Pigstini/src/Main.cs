@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using RocketLib0;
+using RocketLib;
 using HarmonyLib;
 using UnityEngine;
 using UnityModManagerNet;
@@ -45,9 +43,12 @@ namespace Pigstini
             try
             {
                 pigstini = (HeroController.GetHeroPrefab(HeroType.DoubleBroSeven) as DoubleBroSeven).martiniGlass;
-                pigstini.gameObject.GetComponent<MeshRenderer>().material.mainTexture = RocketLib.CreateTexFromMat(mod.Path + "pigstini.png", pigstini.gameObject.GetComponent<MeshRenderer>().material);
+                pigstini.gameObject.GetComponent<MeshRenderer>().material.mainTexture = RocketLib.Utils.CreateTexture.FromMat(mod.Path + "pigstini.png", pigstini.gameObject.GetComponent<MeshRenderer>().material);
             }
-            catch (Exception ex) { bmod.logger.ExceptionLog("Failed to create Pistini :(", ex); }
+            catch (Exception ex)
+            {
+                bmod.logger.ExceptionLog("Failed to create Pistini :(", ex);
+            }
         }
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
