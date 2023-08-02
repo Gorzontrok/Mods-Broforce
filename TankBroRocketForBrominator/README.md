@@ -4,7 +4,7 @@ Tank Bro Rocket For Brominator
 
 ## Installation
 
-* The latest Release it's in the `/Release` folder.
+* The all and [latest](./Release/TankBroRocketForBrominator.zip) release are in the [Release](./Release/) folder.
 
 ## Know Issue
 
