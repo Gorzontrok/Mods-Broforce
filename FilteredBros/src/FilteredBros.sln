@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1525
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32510.428
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilteredBros", "FilteredBros.csproj", "{45354712-869E-4445-8FF5-929A9DAFFC1C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilteredBrosMod", "FilteredBrosMod.csproj", "{45354712-869E-4445-8FF5-929A9DAFFC1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

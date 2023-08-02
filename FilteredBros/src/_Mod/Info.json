@@ -1,0 +1,11 @@
+{
+    "Id": "FilteredBrosMod",
+    "DisplayName": "Filtered Bros",
+    "Author": "Gorzontrok",
+    "Version": "1.1.8",
+    "Requirements": ["RocketLib"],
+    "LoadAfter": ["RocketLib", "CustomHeroNameMod"],
+    "AssemblyName": "FilteredBrosMod.dll",
+    "EntryMethod": "FilteredBros.Main.Load",
+    "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}

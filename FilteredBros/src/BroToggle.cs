@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
-using UnityModManagerNet;
-using HarmonyLib;
-using RocketLib0;
 
 namespace FilteredBros
 {
@@ -62,17 +57,13 @@ namespace FilteredBros
 
         public void Toggle()
         {
-            if(group == BroGroup.Hide && !Main.cheat)
+            if(Main.cheat || IsBroUnlocked())
             {
-                enabled = GUILayout.Toggle(false, "<color=\"gray\">???</color>", GUILayout.ExpandWidth(false));
-            }
-            else if (!IsBroUnlocked() && !Main.cheat)
-            {
-                enabled = GUILayout.Toggle(true, "<color=\"gray\">???</color>", GUILayout.ExpandWidth(false));
+                enabled = GUILayout.Toggle(enabled, HeroController.GetHeroName(heroType), GUILayout.ExpandWidth(false));
             }
             else
             {
-                enabled = GUILayout.Toggle(enabled, HeroController.GetHeroName(heroType), GUILayout.ExpandWidth(false));
+                enabled = GUILayout.Toggle(false, "<color=\"gray\">???</color>", GUILayout.ExpandWidth(false));
             }
 
             if(lastValue != enabled)
@@ -91,7 +82,7 @@ namespace FilteredBros
 
         public bool IsBroUnlocked()
         {
-            return unlockNumber <= PlayerProgress.Instance.freedBros || Main.cheat;
+            return unlockNumber <= PlayerProgress.Instance.freedBros || group == BroGroup.Expendabros || group == BroGroup.Hide;
         }
 
         public static BroToggle GetBroToggleFromHeroType(HeroType hero)

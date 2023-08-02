@@ -1,7 +1,7 @@
 using HarmonyLib;
-using RocketLib0;
+using RocketLib;
+using RocketLib.Collections;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -15,15 +15,14 @@ namespace FilteredBros
         public static bool enabled;
         public static Settings settings;
 
-        public static Dictionary<int, HeroType> originalDict = RocketLib._HeroUnlockController.Original_Unlock_Intervals;
-        public static BroforceMod bmod;
+        public static Dictionary<int, HeroType> originalDict = Heroes.OriginalUnlockIntervals;
 
         public static List<HeroType> heroList = new List<HeroType>();
-        public static List<int> heroInt = new List<int>(RocketLib._HeroUnlockController.Hero_Unlock_Intervals);
+        public static List<int> heroInt = new List<int>(Heroes.HeroSaveInterval);
         public static bool cheat;
-        public static HeroType[] broforceBros = RocketLib._HeroUnlockController.HeroTypes_Intervals;
-        public static HeroType[] expendabrosBros = RocketLib._HeroUnlockController.Expendabros_HeroTypes_Intervals;
-        public static HeroType[] otherBros = RocketLib._HeroUnlockController.Other_Bros_HeroTypes;
+        public static HeroType[] broforceBros = Heroes.CampaignBro;
+        public static HeroType[] expendabrosBros = Heroes.Expendabros;
+        public static HeroType[] unusedBros = Heroes.Unused;
         public static List<HeroType> broList = new List<HeroType>();
 
         private static bool Load(UnityModManager.ModEntry modEntry)
@@ -46,23 +45,18 @@ namespace FilteredBros
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
             cheat = Environment.UserName == "Gorzon";
-            if (!settings.firstLaunch)
-                firstLaunch();
             Start();
             return true;
         }
 
         private static void Start()
         {
-            bmod = new BroforceMod();
-            bmod.Load(mod);
-
             heroList.AddRange(broforceBros);
             heroList.AddRange(expendabrosBros);
-            heroList.AddRange(otherBros);
+            heroList.AddRange(unusedBros);
             BuildBroToggles(broforceBros, BroToggle.BroGroup.Broforce);
             BuildBroToggles(expendabrosBros, BroToggle.BroGroup.Expendabros);
-            BuildBroToggles(otherBros, BroToggle.BroGroup.Hide);
+            BuildBroToggles(unusedBros, BroToggle.BroGroup.Hide);
 
             if (BroToggle.BroToggles.Count == settings.brosEnable.Count)
             {
@@ -118,7 +112,7 @@ namespace FilteredBros
                 }
                 catch (Exception ex)
                 {
-                    Main.bmod.Log(ex);
+                    Main.Log(ex);
                 }
             }
         }
@@ -214,6 +208,7 @@ namespace FilteredBros
                     horizontal = true;
                 }
                 broToggle.Toggle();
+                GUILayout.Space(10);
                 i++;
                 if (i == settings.numberOfBroPerLine)
                 {
@@ -246,12 +241,13 @@ namespace FilteredBros
             return true;
         }
 
-        private static void firstLaunch()
+        public static void Log(object msg)
         {
-            SelectAll();
-            settings.firstLaunch = true;
-            settings.numberOfBroPerLine = 8;
-            settings.brosEnable = new List<bool>();
+            mod.Logger.Log(msg.ToString());
+        }
+        public static void Log(object msg, Exception ex)
+        {
+           Log(msg + "\n" + ex);
         }
 
         private static void SelectAll()
@@ -304,7 +300,7 @@ namespace FilteredBros
                             BroToggle b = BroToggle.GetBroToggleFromHeroType(hero);
                             if(BroDico.ContainsKey(b.unlockNumber))
                             {
-                                Main.bmod.Log("Keys already exist for hero : " + hero.ToString());
+                                Main.Log("Keys already exist for hero : " + hero.ToString());
                             }
                             else
                             {
@@ -316,7 +312,7 @@ namespace FilteredBros
             }
             catch (Exception ex)
             {
-                Main.bmod.logger.ExceptionLog("Failed to update dictionary", ex);
+                Main.Log("Failed to update dictionary", ex);
             }
             return BroDico;
         }
@@ -348,11 +344,8 @@ namespace FilteredBros
 
     public class Settings : UnityModManager.ModSettings
     {
-        public bool firstLaunch;
-        public bool useExpandaMod;
-        public int numberOfBro;
-        public int numberOfBroPerLine;
-        public int maxLifeNumber;
+        public int numberOfBroPerLine = 8;
+        public int maxLifeNumber = 0;
 
         public List<bool> brosEnable;
 
@@ -368,7 +361,7 @@ namespace FilteredBros
     {
         private static void Prefix()
         {
-            if (!Main.enabled) return;
+            if (!Main.enabled || LevelEditorGUI.IsActive || Map.isEditing || LevelSelectionController.IsCustomCampaign()) return;
 
             try
             {
@@ -383,11 +376,11 @@ namespace FilteredBros
                 }
                 else
                 {
-                    Main.bmod.logger.WarningLog("You have selected 0 bro, please select at least one. (The one who are name \"???\" don't count)");
+                    Main.Log("You have selected 0 bro, please select at least one. (The one who are name \"???\" don't count)");
                     HeroUnlockIntervals = Main.originalDict;
                 }
             }
-            catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed to patch the Unlock intervals", ex); }
+            catch (Exception ex) { Main.Log("Failed to patch the Unlock intervals", ex); }
         }
     }
 
@@ -396,6 +389,7 @@ namespace FilteredBros
     {
         static void Postfix(Player __instance)
         {
+            if (!Main.enabled || LevelEditorGUI.IsActive || Map.isEditing || LevelSelectionController.IsCustomCampaign()) return;
             try
             {
                 if(Main.enabled && Main.settings.maxLifeNumber != 0)
@@ -408,7 +402,7 @@ namespace FilteredBros
             }
             catch(Exception ex)
             {
-                Main.bmod.Log(ex);
+                Main.Log(ex);
             }
         }
     }
