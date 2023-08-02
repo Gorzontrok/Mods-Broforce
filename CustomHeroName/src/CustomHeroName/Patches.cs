@@ -1,8 +1,5 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace CustomHeroName
@@ -22,7 +19,7 @@ namespace CustomHeroName
 
             try
             {
-                __result = Mod.GetHeroIntro(type)?.GetName();
+                __result = Mod.GetHeroName(type);
             }
             catch (Exception ex)
             {
@@ -52,8 +49,8 @@ namespace CustomHeroName
 
             try
             {
-                HeroIntro heroIntro = Mod.GetHeroIntro(Main.currentHero);
-                if (heroIntro == null) return true;
+                string heroName = Mod.GetHeroName(Main.currentHero);
+                if (heroName.IsNullOrEmpty()) return true;
 
                 CutsceneIntroData _curIntroData = (CutsceneIntroData)asset;
                 __instance.SetFieldValue("_curIntroData", _curIntroData);
@@ -63,14 +60,14 @@ namespace CustomHeroName
                     __instance.EndCutscene();
                     return false;
                 }
-                __instance.headingMesh.TextString = heroIntro.GetName() ?? _curIntroData.heading;
+                __instance.headingMesh.TextString = heroName;
                 __instance.headingMesh.transform.localScale = new Vector3(_curIntroData.headingScale, _curIntroData.headingScale, _curIntroData.headingScale);
                 __instance.headingMesh.UpdateText();
                 if (__instance.subtitle1Mesh != null)
                 {
                     if (!string.IsNullOrEmpty(_curIntroData.subtitle1))
                     {
-                        __instance.subtitle1Mesh.TextString = heroIntro.GetSubtitle1() ?? _curIntroData.subtitle1;
+                        __instance.subtitle1Mesh.TextString =  _curIntroData.subtitle1;
                         __instance.subtitle1Mesh.transform.localScale = new Vector3(_curIntroData.subtitleScale, _curIntroData.subtitleScale, _curIntroData.subtitleScale);
                     }
                     __instance.subtitle1Mesh.UpdateText();
@@ -80,7 +77,7 @@ namespace CustomHeroName
                     if (!string.IsNullOrEmpty(_curIntroData.subtitle2))
                     {
                         __instance.subtitle2Mesh.gameObject.SetActive(true);
-                        __instance.subtitle2Mesh.TextString = heroIntro.GetSubtitle1() ?? _curIntroData.subtitle2;
+                        __instance.subtitle2Mesh.TextString = _curIntroData.subtitle2;
                         __instance.subtitle2Mesh.UpdateText();
                     }
                     else

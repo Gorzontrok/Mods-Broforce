@@ -11,11 +11,11 @@ namespace CustomHeroName
         {
             get
             {
-                return Path.Combine(Main.mod.Path, "Names.json");
+                return Path.Combine(Main.mod.Path, "HeroesNames.json");
             }
         }
 
-        public static Dictionary<HeroType, HeroIntro> names = null;
+        public static Dictionary<string, string> heroesName = null;
 
         private static bool _deserializeError = false;
 
@@ -39,13 +39,11 @@ namespace CustomHeroName
             {
                 CheckFile();
 
-                names = new Dictionary<HeroType, HeroIntro>();
-                Dictionary<string, HeroIntro> temp = JsonConvert.DeserializeObject<Dictionary<string, HeroIntro>>(File.ReadAllText(FilePath));
-                foreach (KeyValuePair<string, HeroIntro> pair in temp)
+                heroesName = new Dictionary<string, string>();
+                Dictionary<string, string> temp = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(FilePath));
+                foreach (KeyValuePair<string, string> pair in temp)
                 {
-                    pair.Value.type = GetHeroType(pair.Key);
-                    names.Add(GetHeroType(pair.Key), pair.Value);
-
+                    heroesName.Add(pair.Key, pair.Value);
                 }
             }
             catch(Exception e)
@@ -60,10 +58,10 @@ namespace CustomHeroName
             try
             {
                 CheckFile();
-                Dictionary<string, HeroIntro> temp = new Dictionary<string, HeroIntro>();
+                Dictionary<string, string> temp = new Dictionary<string, string>();
                 foreach (var hero in RocketLib.Collections.Heroes.Playables)
                 {
-                    temp.Add(GetHeroKey(hero), new HeroIntro(hero));
+                    temp.Add(GetHeroKey(hero), string.Empty);
                 }
                 string json = JsonConvert.SerializeObject(temp, Formatting.Indented);
                 File.WriteAllText(FilePath, json);
@@ -75,15 +73,15 @@ namespace CustomHeroName
             }
         }
 
-        public static HeroIntro GetHeroIntro(HeroType type)
+        public static string GetHeroName(HeroType type)
         {
             try
             {
-                if (names.IsNullOrEmpty())
+                if (heroesName.IsNullOrEmpty())
                     Deserialize();
 
-                names.TryGetValue(type, out HeroIntro hero);
-                return hero;
+                heroesName.TryGetValue(GetHeroKey(type), out string result);
+                return result;
             }
             catch (Exception e)
             {
