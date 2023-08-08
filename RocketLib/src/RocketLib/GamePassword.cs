@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RocketLibLoadMod;
 using HarmonyLib;
+using RocketLib.Loggers;
 
-namespace RocketLib0
+namespace RocketLib
 {
     /// <summary>
     /// Add password to the game
     /// </summary>
     public class GamePassword
     {
-        /// <summary>
-        ///
-        /// </summary>
         public readonly string password = string.Empty;
-        /// <summary>
-        ///
-        /// </summary>
         public readonly Action action;
 
         /// <summary>
@@ -33,7 +27,7 @@ namespace RocketLib0
         }
 
         /// <summary>
-        /// ToString method
+        /// Return password
         /// </summary>
         /// <returns></returns>
         public override string ToString()
@@ -42,9 +36,6 @@ namespace RocketLib0
         }
     }
 
-    /// <summary>
-    ///
-    /// </summary>
     public static class GamePasswordController
     {
         private static List<GamePassword> gamePasswords = new List<GamePassword>();
@@ -53,9 +44,6 @@ namespace RocketLib0
         {
             gamePasswords.Add(gp);
         }
-        /// <summary>
-        ///
-        /// </summary>
         public static List<GamePassword> GamePasswords
         {
             get
@@ -69,19 +57,21 @@ namespace RocketLib0
         {
             static void Postfix(MainMenu __instance)
             {
-                if (!Main.enabled) return;
                 foreach (GamePassword password in gamePasswords)
                 {
                     try
                     {
-                        if(Traverse.Create(__instance).Method("CheckCheatString", new object[] {password.password}).GetValue<bool>())
+                        if(__instance.CallMethod<bool>("CheckCheatString", new object[] {password.password}))
                         {
                             Sound sound7 = Sound.GetInstance();
                             sound7.PlaySoundEffect(__instance.drumSounds.specialSounds[0], 0.75f);
                             password.action();
                         }
                     }
-                    catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed apply the password: " + password.password, ex); }
+                    catch (Exception ex)
+                    {
+                        ScreenLogger.Instance.ExceptionLog("Failed to apply the password: " + password.password, ex);
+                    }
                 }
             }
         }

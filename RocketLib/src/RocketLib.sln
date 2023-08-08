@@ -1,14 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31410.357
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLib", "RocketLib\RocketLib.csproj", "{2590E579-ACFD-41BA-8FD2-1448DD2D9E9D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{659A7544-E283-4BA2-A38E-8A08497B591C}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLibUMM", "RocketLibUMM\RocketLibUMM.csproj", "{A6375EB5-1A4C-48E5-B2BF-2CED7175EDF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +17,10 @@ Global
 		{2590E579-ACFD-41BA-8FD2-1448DD2D9E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2590E579-ACFD-41BA-8FD2-1448DD2D9E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2590E579-ACFD-41BA-8FD2-1448DD2D9E9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6375EB5-1A4C-48E5-B2BF-2CED7175EDF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6375EB5-1A4C-48E5-B2BF-2CED7175EDF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6375EB5-1A4C-48E5-B2BF-2CED7175EDF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6375EB5-1A4C-48E5-B2BF-2CED7175EDF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

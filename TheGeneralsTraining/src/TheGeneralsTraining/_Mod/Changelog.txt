@@ -1,0 +1,29 @@
+﻿- v0.3
+Bro Dredd takes less time to explode it's enemies with his taser. (optional)
+Broffy kick does more damage
+Bro Heart can retrieve his sword in ammo box
+Fix glaive erro with Neo
+Chev Brolios flammes burn ground does no more damage
+
+- v0.2 :
+The changes are optional in customs campaign.
+Grenade don't explode if they are not on screen (optional)
+Fix Brade glaive
+Mariachis no longer steal lives from Desperabro (optional)
+In the Rambro's menu, you can trigger unused animations (optional)
+No more recoil for Chev Brolios (optional)
+Car battery idea for Chev (optional)
+Melee in stealth mode for Scorpion Bro (optional)
+When the special of scorpion bro is active, if the player press down, the enemies forget the player. (optional)
+Fix Dirty Brory reload on punch.
+Casey Broback has a higher knockback. (optional)
+Casey has a grenade that spawn a pig (optional)
+
+
+- v0.1 :
+Seth Brondle will not be cover by acid if he has at least one special left. (optional)
+Grenade Tear gas on the hud
+Face hugger on hud (optional)
+Brochete alternate special animation
+Fix immortals Bros
+**STILL DON'T WORK** Reload on punch

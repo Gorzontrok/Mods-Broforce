@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{88351619-B935-4581-8C8E-7EA2E2C80291}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TheGeneralsTraining</RootNamespace>
+    <AssemblyName>The General%27s Training</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\DLL\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\DLL\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="RocketLib, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Mods\RocketLib\RocketLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\DLL\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>..\..\DLL\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\DLL\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\DLL\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\..\DLL\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DLL\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\..\DLL\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityModManager">
+      <HintPath>..\..\DLL\UnityModManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\Bros.cs" />
+    <Compile Include="Patches\Bros\Brade.cs" />
+    <Compile Include="Patches\Bros\Brochete.cs" />
+    <Compile Include="BroController.cs" />
+    <Compile Include="Patches\Bros\BroDredd.cs" />
+    <Compile Include="Patches\Bros\BroHard.cs" />
+    <Compile Include="Patches\Bros\BroHeart.cs" />
+    <Compile Include="Patches\Bros\Buffy.cs" />
+    <Compile Include="Patches\Bros\CaseyBroback.cs" />
+    <Compile Include="Patches\Bros\ChevBrolios.cs" />
+    <Compile Include="Patches\Bros\Desperabros.cs" />
+    <Compile Include="Patches\Bros\DirtyBrorry.cs" />
+    <Compile Include="Patches\Bros\DoubleBroSeven.cs" />
+    <Compile Include="Patches\Bros\EveryBro.cs" />
+    <Compile Include="Patches\Bros\Expendabros\BroneyRoss.cs" />
+    <Compile Include="Patches\Bros\Expendabros\BronnarJensen.cs" />
+    <Compile Include="Patches\Bros\Expendabros\LeeBroxmas.cs" />
+    <Compile Include="Patches\Bros\Expendabros\TrentBroser.cs" />
+    <Compile Include="Patches\Bros\IndianaBrones.cs" />
+    <Compile Include="Patches\Bros\ScorpionBro.cs" />
+    <Compile Include="Patches\Bros\SethBrondle.cs" />
+    <Compile Include="GUI_UMM.cs" />
+    <Compile Include="Patches\HUD\HUD.cs" />
+    <Compile Include="Patches\HUD\Specials.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="Patches\Projectiles\Chakram.cs" />
+    <Compile Include="Patches\Projectiles\EveryProjectiles.cs" />
+    <Compile Include="Patches\Explosions.cs" />
+    <Compile Include="Patches\Grenades\Grenades.cs" />
+    <Compile Include="Components\PigGrenade_Comp.cs" />
+    <Compile Include="Patches\Projectiles\RotateProjectile_Comp.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Patches\Bros\TheBrolander.cs" />
+    <Compile Include="Patches\Bros\Xena.cs" />
+    <Compile Include="ResourcesController.cs" />
+    <Compile Include="Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_Mod\Changes.md" />
+    <None Include="_Mod\Info.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_Mod\assets\Grenade_Tear_Gas.png" />
+    <None Include="_Mod\assets\ThrowingGlaive.png" />
+    <Content Include="_Mod\Changelog.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(ProjectDir)\_Mod\$(ProjectName).dll*"
+start XCOPY /I /Y /S "$(ProjectDir)_Mod\" "E:\SteamLibrary\steamapps\common\Broforce\Mods\$(ProjectName)\"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

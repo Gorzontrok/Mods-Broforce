@@ -3,9 +3,8 @@ using System.Reflection;
 using System.Xml;
 using HarmonyLib;
 using UnityEngine;
-using RocketLibLoadMod;
 
-namespace RocketLib0
+namespace RocketLib.Utils
 {
     /// <summary>This constructor check if a mod is Here or is Enabled.
     /// <example>
@@ -15,6 +14,7 @@ namespace RocketLib0
     /// </code>
     /// </example>
     /// </summary>
+    [Obsolete("Use UnityModManager.FindMod() instead", true)]
     public class IsThisMod
     {
         private static string xmlFilePath = Application.dataPath + "/Managed/UnityModManager/Params.xml";

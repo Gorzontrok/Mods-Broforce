@@ -5,10 +5,9 @@ using System.IO;
 using UnityEngine;
 using UnityModManagerNet;
 using HarmonyLib;
-using RocketLib0;
-using RocketLibLoadMod;
+using RocketLib.Loggers;
 
-namespace RocketLib0
+namespace RocketLib
 {
     /// <summary>
     /// Class
@@ -41,7 +40,7 @@ namespace RocketLib0
         /// <summary>
         /// Here you access Logger method.
         /// </summary>
-        public Logger logger { get; protected set; }
+        public Loggers.Logger logger { get; protected set; }
 
         /// <summary>
         /// Call when exiting game.
@@ -84,13 +83,13 @@ namespace RocketLib0
                     new Exception("The given mod is null.");
                 }
 
-                RocketLibLoadMod.Main.Log("Start loading Broforce mod : " + mod.Info.Id);
+                ScreenLogger.Instance.Log("Start loading Broforce mod : " + mod.Info.Id);
                 try
                 {
                     this.__mod = mod;
                     this.__ID = mod.Info.Id;
 
-                    this.logger = new Logger(this.__mod);
+                    this.logger = new Loggers.Logger(this.__mod);
 
                     this.Loaded = true;
                     UnityModManager.Logger.Log($" Successful loaded the Broforce Mod", $"[{this.ID}]");
@@ -99,7 +98,7 @@ namespace RocketLib0
                 catch (Exception ex)
                 {
                     this.Loaded = false;
-                    RocketLibLoadMod.Main.Log($"Failed Loading : {mod.Info.Id}\n" + ex);
+                    ScreenLogger.Instance.ExceptionLog($"Failed Loading : {mod.Info.Id}", ex);
                 }
             }
             else

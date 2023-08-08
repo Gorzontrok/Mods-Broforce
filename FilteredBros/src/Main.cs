@@ -27,16 +27,23 @@ namespace FilteredBros
 
         private static bool Load(UnityModManager.ModEntry modEntry)
         {
-            modEntry.OnGUI = OnGUI;
-            modEntry.OnSaveGUI = OnSaveGUI;
-            modEntry.OnToggle = OnToggle;
-            settings = Settings.Load<Settings>(modEntry);
-
-            mod = modEntry;
-
-            var harmony = new Harmony(modEntry.Info.Id);
             try
             {
+                modEntry.OnGUI = OnGUI;
+                modEntry.OnSaveGUI = OnSaveGUI;
+                modEntry.OnToggle = OnToggle;
+                settings = Settings.Load<Settings>(modEntry);
+
+                mod = modEntry;
+            }
+            catch(Exception e)
+            {
+                UnityModManager.Logger.Log(e.ToString(), "[FilteredBros]");
+            }
+
+            try
+            {
+                var harmony = new Harmony(modEntry.Info.Id);
                 var assembly = Assembly.GetExecutingAssembly();
                 harmony.PatchAll(assembly);
             }
@@ -44,36 +51,50 @@ namespace FilteredBros
             {
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
-            cheat = Environment.UserName == "Gorzon";
-            Start();
+            try
+            {
+                cheat = Environment.UserName == "Gorzon";
+                Start();
+            }
+            catch(Exception ex)
+            {
+                Main.Log(ex);
+            }
             return true;
         }
 
         private static void Start()
         {
-            heroList.AddRange(broforceBros);
-            heroList.AddRange(expendabrosBros);
-            heroList.AddRange(unusedBros);
-            BuildBroToggles(broforceBros, BroToggle.BroGroup.Broforce);
-            BuildBroToggles(expendabrosBros, BroToggle.BroGroup.Expendabros);
-            BuildBroToggles(unusedBros, BroToggle.BroGroup.Hide);
-
-            if (BroToggle.BroToggles.Count == settings.brosEnable.Count)
+            try
             {
-                int i = 0;
-                foreach (BroToggle broToggle in BroToggle.BroToggles)
+                heroList.AddRange(broforceBros);
+                heroList.AddRange(expendabrosBros);
+                heroList.AddRange(unusedBros);
+                BuildBroToggles(broforceBros, BroToggle.BroGroup.Broforce);
+                BuildBroToggles(expendabrosBros, BroToggle.BroGroup.Expendabros);
+                BuildBroToggles(unusedBros, BroToggle.BroGroup.Hide);
+
+                if (BroToggle.BroToggles.Count == settings.brosEnable.Count)
                 {
-                    broToggle.enabled = settings.brosEnable[i];
-                    i++;
+                    int i = 0;
+                    foreach (BroToggle broToggle in BroToggle.BroToggles)
+                    {
+                        broToggle.enabled = settings.brosEnable[i];
+                        i++;
+                    }
                 }
-            }
 
-            foreach (BroToggle b in BroToggle.BroToggles)
+                foreach (BroToggle b in BroToggle.BroToggles)
+                {
+                    heroInt.Add(b.unlockNumber);
+                }
+
+                new GamePassword("iaminthematrix", InTheMatrix);
+            }
+            catch(Exception ex )
             {
-                heroInt.Add(b.unlockNumber);
+                Main.Log(ex);
             }
-
-            new GamePassword("iaminthematrix", InTheMatrix);
         }
 
         private static void BuildBroToggles(HeroType[] heroArray, BroToggle.BroGroup group)

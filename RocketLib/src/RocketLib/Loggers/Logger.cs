@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using UnityModManagerNet;
 using System.Text;
+#pragma warning disable 642
 
-namespace RocketLib0
+namespace RocketLib.Loggers
 {
-    /// <summary>
-    ///
-    /// </summary>
+
     public class Logger
     {
         /// <summary>
@@ -441,7 +440,6 @@ namespace RocketLib0
                 }
                 this.HasStartLog = false;
             }
-
             if (!File.Exists(LogFilePath))
             {
                 using (File.Create(LogFilePath)) ; // Ignore warning.

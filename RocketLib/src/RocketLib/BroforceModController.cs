@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityModManagerNet;
+using RocketLib.Loggers;
 using HarmonyLib;
-using RocketLibLoadMod;
 
-namespace RocketLib0
+namespace RocketLib
 {
-    static class BroforceModController
+    /// <summary>
+    ///
+    /// </summary>
+    public static class BroforceModController
     {
 
         private static List<BroforceMod> BroforceMod_List = new List<BroforceMod>();
@@ -37,13 +39,11 @@ namespace RocketLib0
         }
     }
 
-    [HarmonyPatch(typeof(GameModeController), "Update")]
+    [HarmonyPatch(typeof(GameModeController), "LevelFinish", typeof(LevelResult))]
     static class OnLevelFinish_Patch
     {
-        static void Prefix(GameModeController __instance)
+        static void Prefix(LevelResult result)
         {
-            if (!Main.enabled) return;
-
             if (GameModeController.LevelFinished)
             {
                 foreach (var bmod in BroforceModController.Get_BroforceModList())
@@ -53,7 +53,7 @@ namespace RocketLib0
                         if (bmod.OnLevelFinished != null)
                             bmod.OnLevelFinished();
                     }
-                    catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed to load OnLevelFinished from: " + bmod.ID, ex); }
+                    catch (Exception ex) { ScreenLogger.Instance.ExceptionLog("Failed to load OnLevelFinished from: " + bmod.ID, ex); }
                 }
             }
         }
@@ -64,7 +64,6 @@ namespace RocketLib0
     {
         static void Prefix()
         {
-            if (!Main.enabled) return;
             foreach (var bmod in BroforceModController.Get_BroforceModList())
             {
                 try
@@ -72,7 +71,7 @@ namespace RocketLib0
                     if (bmod.OnExitGame != null)
                         bmod.OnExitGame.Invoke();
                 }
-                catch (Exception ex) { Main.bmod.logger.ExceptionLog("Failed to load OnExitGame from: " + bmod.ID, ex); }
+                catch (Exception ex) { ScreenLogger.Instance.ExceptionLog("Failed to load OnExitGame from: " + bmod.ID, ex); }
             }
         }
     }
@@ -115,11 +114,10 @@ namespace RocketLib0
                             bmod.OnAfterLoadMods.Invoke();
                         }
                     }
-                    catch (Exception ex) { Main.bmod.logger.Log("Failed to load OnAfterLoadMod from: " + bmod.ID, ex); }
+                    catch (Exception ex) { ScreenLogger.Instance.ExceptionLog("Failed to load OnAfterLoadMod from: " + bmod.ID, ex); }
                 }
                 LoadMods = true;
             }
-
         }
     }
 }
