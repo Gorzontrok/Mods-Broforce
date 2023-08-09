@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TFBGames;
 
 namespace RocketLib.Collections
 {
@@ -52,8 +51,7 @@ namespace RocketLib.Collections
                 if (_campaignBro == null || _campaignBro.Length <= 0)
                 {
                     var temp = Playables.ToList();
-                    temp.RemoveAllFrom(Expendabros);
-                    temp.RemoveAllFrom(Unused);
+                    temp.RemoveAll(item => Expendabros.Contains(item) || Unused.Contains(item));
                     _campaignBro = temp.ToArray();
                 }
                 return _campaignBro;

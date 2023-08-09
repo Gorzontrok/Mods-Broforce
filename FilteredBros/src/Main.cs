@@ -27,19 +27,11 @@ namespace FilteredBros
 
         private static bool Load(UnityModManager.ModEntry modEntry)
         {
-            try
-            {
-                modEntry.OnGUI = OnGUI;
-                modEntry.OnSaveGUI = OnSaveGUI;
-                modEntry.OnToggle = OnToggle;
-                settings = Settings.Load<Settings>(modEntry);
-
-                mod = modEntry;
-            }
-            catch(Exception e)
-            {
-                UnityModManager.Logger.Log(e.ToString(), "[FilteredBros]");
-            }
+            modEntry.OnGUI = OnGUI;
+            modEntry.OnSaveGUI = OnSaveGUI;
+            modEntry.OnToggle = OnToggle;
+            settings = Settings.Load<Settings>(modEntry);
+            mod = modEntry;
 
             try
             {
@@ -70,6 +62,7 @@ namespace FilteredBros
                 heroList.AddRange(broforceBros);
                 heroList.AddRange(expendabrosBros);
                 heroList.AddRange(unusedBros);
+
                 BuildBroToggles(broforceBros, BroToggle.BroGroup.Broforce);
                 BuildBroToggles(expendabrosBros, BroToggle.BroGroup.Expendabros);
                 BuildBroToggles(unusedBros, BroToggle.BroGroup.Hide);
