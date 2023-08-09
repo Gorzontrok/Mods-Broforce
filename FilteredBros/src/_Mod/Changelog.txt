@@ -1,3 +1,6 @@
+v1.1.9:
+-Fix a critical bug
+
 v1.1.8:
 - Update for the Forever Update
 - Added more space between Toggles
