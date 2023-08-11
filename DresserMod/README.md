@@ -2,7 +2,7 @@
 
 Let you change most of the game textures.  
 [Some Wardrobes](./Wardrobes/)  
-[Instructions](./INSTRUCTION.md)
+[Instructions](./INSTRUCTIONS.md)
 
 ## Installation
 
