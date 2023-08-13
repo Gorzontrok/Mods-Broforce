@@ -11,6 +11,22 @@ namespace FilteredBros
 {
     public static class Main
     {
+        public static bool CanUsePatch
+        {
+            get
+            {
+                if (Main.enabled)
+                {
+                    if (LevelEditorGUI.IsActive || Map.isEditing || LevelSelectionController.IsCustomCampaign())
+                    {
+                        return settings.patchInCustomsLevel;
+                    }
+                    return true;
+                }
+                return false;
+            }
+        }
+
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
         public static Settings settings;
@@ -169,16 +185,15 @@ namespace FilteredBros
             int.TryParse(GUILayout.TextField(settings.maxLifeNumber.ToString(), GUILayout.Width(80)), out settings.maxLifeNumber);
             GUILayout.EndHorizontal();
 
-            /*GUILayout.BeginHorizontal();
-            GUILayout.Label("Number of bro saved : " + PlayerProgress.Instance.freedBros);
-            GUILayout.EndHorizontal();*/
+            GUILayout.BeginHorizontal();
             int numberOfRescuesToNextUnlock = HeroUnlockController.GetNumberOfRescuesToNextUnlock();
             if (numberOfRescuesToNextUnlock != -1)
             {
-                GUILayout.BeginHorizontal();
                 GUILayout.Label(String.Format("Next unlock in {0} saves", HeroUnlockController.GetNumberOfRescuesToNextUnlock()));
-                GUILayout.EndHorizontal();
             }
+            GUILayout.FlexibleSpace();
+            settings.patchInCustomsLevel = GUILayout.Toggle(settings.patchInCustomsLevel, new GUIContent("Enable in custom level"));
+            GUILayout.EndHorizontal();
             GUILayout.Space(10);
 
             var typeStyle = new GUIStyle();
@@ -360,6 +375,7 @@ namespace FilteredBros
     {
         public int numberOfBroPerLine = 8;
         public int maxLifeNumber = 0;
+        public bool patchInCustomsLevel = false;
 
         public List<bool> brosEnable;
 
@@ -370,28 +386,35 @@ namespace FilteredBros
     }
 
     // Patch Hero unlock intervals for spawn
-    [HarmonyPatch(typeof(HeroUnlockController), "IsAvailableInCampaign")]
+    [HarmonyPatch(typeof(PlayerProgress), "IsHeroUnlocked")]
     internal static class HeroUnlockController_IsAvailableInCampaign_Patch
     {
-        private static void Prefix()
+        private static void Prefix(PlayerProgress __instance)
         {
-            if (!Main.enabled || LevelEditorGUI.IsActive || Map.isEditing || LevelSelectionController.IsCustomCampaign()) return;
+            if (!Main.CanUsePatch) return;
 
             try
             {
-                Dictionary<int, HeroType> HeroUnlockIntervals = new Dictionary<int, HeroType>();
-                if (Main.enabled)
+                Dictionary<int, HeroType> heroUnlockIntervals = Main.UpdateDico();
+                if (heroUnlockIntervals.Count > 0 || heroUnlockIntervals.ContainsKey(0))
                 {
-                    HeroUnlockIntervals = Main.UpdateDico();
-                }
-                if (HeroUnlockIntervals.Count > 0 || HeroUnlockIntervals.ContainsKey(0))
-                {
-                    Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(HeroUnlockIntervals);
+                    Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(heroUnlockIntervals);
+                    __instance.unlockedHeroes.Clear();
+                    foreach(var heroType in heroUnlockIntervals.Values)
+                    {
+                        __instance.unlockedHeroes.Add(heroType);
+                    }
+                    var yetToBePlayedUnlockedHeroes = __instance.yetToBePlayedUnlockedHeroes.ToArray();
+                    foreach(var hero in yetToBePlayedUnlockedHeroes)
+                    {
+                        if (!heroUnlockIntervals.ContainsValue(hero))
+                            __instance.yetToBePlayedUnlockedHeroes.Remove(hero);
+                    }
                 }
                 else
                 {
                     Main.Log("You have selected 0 bro, please select at least one. (The one who are name \"???\" don't count)");
-                    HeroUnlockIntervals = Main.originalDict;
+                    heroUnlockIntervals = Main.originalDict;
                 }
             }
             catch (Exception ex) { Main.Log("Failed to patch the Unlock intervals", ex); }
@@ -403,7 +426,7 @@ namespace FilteredBros
     {
         static void Postfix(Player __instance)
         {
-            if (!Main.enabled || LevelEditorGUI.IsActive || Map.isEditing || LevelSelectionController.IsCustomCampaign()) return;
+            if (!Main.CanUsePatch) return;
             try
             {
                 if(Main.enabled && Main.settings.maxLifeNumber != 0)

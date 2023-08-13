@@ -1,3 +1,7 @@
+v1.2.0:
+The list is updated at each spawn, so no more needed to load a level to change the spawnable bros
+Can now be use in custom campaigns, if the map has no forced bros.
+
 v1.1.9:
 -Fix a critical bug
 
