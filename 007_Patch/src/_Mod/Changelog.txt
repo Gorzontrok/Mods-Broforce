@@ -1,0 +1,20 @@
+v1.4.0:
+Fix the special
+Remove the image in folder.
+
+v1.3.0 :
+ - 007 can shoot tear gas at foot
+ - All mook can be teargased without major bug
+
+v1.2.1 :
+ - Fix the icon of Rambro for being the TearGas
+
+v1.2.0 :
+ - The Teargas have now a icon in the HUD (from Broforce).
+
+v1.1.0 :
+ - Add weird Martini behaviour (from DragonightFury)
+ - Add an option for toggle the teargased patch.
+
+v1.0.0 :
+ - Intial release.
