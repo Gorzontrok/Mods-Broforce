@@ -1,0 +1,11 @@
+﻿{
+  "Id": "SmallerHUD",
+  "DisplayName": "Smaller HUD",
+  "Author": "Gorzontrok",
+  "Version": "1.0.0",
+  // "Requirements": [ "RocketLib" ],
+  // "LoadAfter": [ "RocketLib" ],
+  "AssemblyName": "SmallerHUD.dll",
+  "EntryMethod": "SmallerHUD.Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}
