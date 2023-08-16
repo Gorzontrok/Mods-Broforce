@@ -1,5 +1,6 @@
 # Spooktober
 
+[NexusMods Page](https://www.nexusmods.com/broforce/mods/17)  
 Spooky
 
 ## Installation

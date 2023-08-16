@@ -1,5 +1,6 @@
 # Custom Hero Name
 
+[NexusMods Page](https://www.nexusmods.com/broforce/mods/27)  
 Rename any bro. Custom names are shown in Cutscenes and in the Level Editor.  
 Compatible with [Filtered Bros](https://www.nexusmods.com/broforce/mods/7).  
 [Instructions](./INSTRUCTION.md)

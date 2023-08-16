@@ -1,5 +1,6 @@
 # Only Pocketted Special Ammo
 
+[NexusMods Page](https://www.nexusmods.com/broforce/mods/16)  
 It's a mod where you can play with only the pocketted special ammo (Time slow, steroids, mech drop, ect.)  
 
 ## Installation

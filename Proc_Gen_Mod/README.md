@@ -1,5 +1,6 @@
 # Proc_Gen_Mod
 
+[NexusMods Page](https://www.nexusmods.com/broforce/mods/25)  
 In this mod you can load a custom seed. And replace Rambro to Casey, which is only a texture swap.
 
 ## Installation

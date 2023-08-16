@@ -1,5 +1,6 @@
 # TankBroRocketForBrominator (original mod by Brennfeu)
 
+[NexusMods Page](https://www.nexusmods.com/broforce/mods/24)  
 Tank Bro Rocket For Brominator
 
 ## Installation
