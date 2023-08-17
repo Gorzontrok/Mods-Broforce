@@ -45,7 +45,7 @@ namespace CustomHeroName
     {
         static bool Prefix(CutsceneIntroRoot __instance, string resourceName, object asset)
         {
-            if (!Main.enabled) return true;
+            if (!Main.enabled || !resourceName.StartsWith("Intro_Bro")) return true;
 
             try
             {
