@@ -17,7 +17,7 @@ Discord tag : Gorzontrok
   * [Satan Surprise](SatanSurprise/)
   * [Spooktober](Spooktober/)
 * Bros :
-  * [007_Patch (DISCONTINUED)](007_Patch/)
+  * [007_Patch](007_Patch/)
   * [Pigstini](Pigstini/)
   * [Tank Bro Rocket For Brominator](TankBroRocketForBrominator/)
 * Bro Spawn :
@@ -27,6 +27,7 @@ Discord tag : Gorzontrok
 * HUD :
   * [Show Avatar FaceHugger (DISCONTINUED)](ShowAvatarFaceHugger/)
   * [Skeleton Dead Face (OBSOLETE)](SkeletonDeadFace/)
+  * [Smaller HUD](SmallerHUD/)
 * Map :
   * [Map Data Controller](MapDataController/)
   * [Spooktober](Spooktober/)
