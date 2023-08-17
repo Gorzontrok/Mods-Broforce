@@ -57,13 +57,13 @@ namespace FilteredBros
 
         public void Toggle()
         {
-            if(Main.cheat || IsBroUnlocked())
+            if(IsBroUnlocked())
             {
                 enabled = GUILayout.Toggle(enabled, HeroController.GetHeroName(heroType), GUILayout.ExpandWidth(false));
             }
             else
             {
-                enabled = GUILayout.Toggle(false, "<color=\"gray\">???</color>", GUILayout.ExpandWidth(false));
+                enabled = GUILayout.Toggle(true, "<color=\"gray\">???</color>", GUILayout.ExpandWidth(false));
             }
 
             if(lastValue != enabled)
@@ -82,7 +82,7 @@ namespace FilteredBros
 
         public bool IsBroUnlocked()
         {
-            return unlockNumber <= PlayerProgress.Instance.freedBros || group == BroGroup.Expendabros || group == BroGroup.Hide;
+            return unlockNumber <= PlayerProgress.Instance.freedBros || Main.cheat;
         }
 
         public static BroToggle GetBroToggleFromHeroType(HeroType hero)
