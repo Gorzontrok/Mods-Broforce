@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="BroToggle.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="_Mod\Info.json" />
   </ItemGroup>

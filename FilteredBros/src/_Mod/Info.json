@@ -2,7 +2,7 @@
     "Id": "FilteredBrosMod",
     "DisplayName": "Filtered Bros",
     "Author": "Gorzontrok",
-    "Version": "1.2.0",
+    "Version": "1.3.0",
     "Requirements": ["RocketLib"],
     "LoadAfter": ["RocketLib", "CustomHeroNameMod"],
     "AssemblyName": "FilteredBrosMod.dll",

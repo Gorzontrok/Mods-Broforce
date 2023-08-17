@@ -3,6 +3,7 @@ using RocketLib;
 using RocketLib.Collections;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityModManagerNet;
@@ -75,6 +76,10 @@ namespace FilteredBros
         {
             try
             {
+                var temp = unusedBros.ToList();
+                temp.Remove(HeroType.SuicideBro);
+                unusedBros = temp.ToArray();
+
                 heroList.AddRange(broforceBros);
                 heroList.AddRange(expendabrosBros);
                 heroList.AddRange(unusedBros);
@@ -98,45 +103,34 @@ namespace FilteredBros
                     heroInt.Add(b.unlockNumber);
                 }
 
-                new GamePassword("iaminthematrix", InTheMatrix);
+                new GamePassword("iaminthematrix", IAmInTheMatrix);
             }
             catch(Exception ex )
             {
                 Main.Log(ex);
             }
         }
-
+        private static int _intervalMax = -1;
         private static void BuildBroToggles(HeroType[] heroArray, BroToggle.BroGroup group)
         {
             Dictionary<int, HeroType> dict = new Dictionary<int, HeroType>(originalDict);
+            if(_intervalMax == -1)
+                _intervalMax = originalDict.Last().Key;
+
             foreach (HeroType hero in heroArray)
             {
                 try
                 {
                     int interval = -1;
-                    foreach (KeyValuePair<int, HeroType> pair in dict)
+                    if (dict.ContainsValue(hero))
                     {
-                        if (pair.Value == hero)
-                        {
-                            interval = pair.Key;
-                            dict.Remove(pair.Key);
-                            break;
-                        }
+                        interval = dict.First(x => x.Value == hero).Key;
                     }
+
                     if(interval == -1)
                     {
-                        interval = 490;
-                        foreach (BroToggle broToggle in BroToggle.BroToggles)
-                        {
-                            if(broToggle.unlockNumber >= interval)
-                            {
-                                interval = broToggle.unlockNumber + 10;
-                                while (broToggle.unlockNumber >= interval)
-                                {
-                                    interval += 10;
-                                }
-                            }
-                        }
+                        interval = _intervalMax + 10;
+                        _intervalMax = interval;
                     }
                     new BroToggle(hero, interval, group);
                 }
@@ -147,21 +141,20 @@ namespace FilteredBros
             }
         }
 
-        private static void InTheMatrix()
+        private static void IAmInTheMatrix()
         {
             cheat = true;
         }
 
         private static void OnGUI(UnityModManager.ModEntry modEntry)
         {
-
             var s = new GUIStyle();
             s.normal.textColor = Color.yellow;
             s.fontStyle = FontStyle.Italic;
 
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUILayout.Label("I am in The Matrix", s);
+            GUILayout.Label("I Am In The Matrix", s);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.Space(10);
@@ -186,14 +179,15 @@ namespace FilteredBros
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            int numberOfRescuesToNextUnlock = HeroUnlockController.GetNumberOfRescuesToNextUnlock();
-            if (numberOfRescuesToNextUnlock != -1)
-            {
-                GUILayout.Label(String.Format("Next unlock in {0} saves", HeroUnlockController.GetNumberOfRescuesToNextUnlock()));
-            }
+            settings.ignoreForcedBros = GUILayout.Toggle(settings.ignoreForcedBros, new GUIContent("Ignore forced bros in campaigns"));
             GUILayout.FlexibleSpace();
             settings.patchInCustomsLevel = GUILayout.Toggle(settings.patchInCustomsLevel, new GUIContent("Enable in custom level"));
             GUILayout.EndHorizontal();
+            int numberOfRescuesToNextUnlock = HeroUnlockController.GetNumberOfRescuesToNextUnlock();
+            if (numberOfRescuesToNextUnlock != -1)
+            {
+                GUILayout.Label(String.Format("Next unlock in {0} saves", numberOfRescuesToNextUnlock));
+            }
             GUILayout.Space(10);
 
             var typeStyle = new GUIStyle();
@@ -215,14 +209,11 @@ namespace FilteredBros
             ShowToggles(BroToggle.broTogglesExpendabros);
 
             // Hide
-            if (cheat)
-            {
-                GUILayout.Space(25);
-                GUILayout.BeginHorizontal("box");
-                GUILayout.Label(" - Secrets :", typeStyle);
-                GUILayout.EndHorizontal();
-                ShowToggles(BroToggle.broTogglesHide);
-            }
+            GUILayout.Space(25);
+            GUILayout.BeginHorizontal("box");
+            GUILayout.Label(" - Secrets :", typeStyle);
+            GUILayout.EndHorizontal();
+            ShowToggles(BroToggle.broTogglesHide);
         }
 
         private static void ShowToggles(List<BroToggle> broToggles)
@@ -306,36 +297,17 @@ namespace FilteredBros
 
         }
 
-        internal static Dictionary<int, HeroType> UpdateDico()
+        internal static Dictionary<int, HeroType> UpdateDictionary()
         {
-            Dictionary<int, HeroType> BroDico = new Dictionary<int, HeroType>();
+            Dictionary<int, HeroType> broDict = new Dictionary<int, HeroType>();
             try
             {
-                int i = 0;
                 foreach (HeroType hero in heroList)
                 {
-                    if (GetBroBool(hero) && !BroDico.ContainsValue(hero))
+                    BroToggle broToggle = BroToggle.GetBroToggleFromHeroType(hero);
+                    if (broToggle.enabled)
                     {
-                        if(IsBroUnlock(hero) || Main.cheat)
-                        {
-                            while(BroDico.ContainsKey(heroInt[i]))
-                            {
-                                i++;
-                            }
-                            BroDico.Add(heroInt[i], hero);
-                        }
-                        else
-                        {
-                            BroToggle b = BroToggle.GetBroToggleFromHeroType(hero);
-                            if(BroDico.ContainsKey(b.unlockNumber))
-                            {
-                                Main.Log("Keys already exist for hero : " + hero.ToString());
-                            }
-                            else
-                            {
-                                BroDico.Add(b.unlockNumber, hero);
-                            }
-                        }
+                        broDict.Add(broToggle.unlockNumber, hero);
                     }
                 }
             }
@@ -343,31 +315,7 @@ namespace FilteredBros
             {
                 Main.Log("Failed to update dictionary", ex);
             }
-            return BroDico;
-        }
-
-        private static bool GetBroBool(HeroType broType)
-        {
-            foreach(BroToggle b in BroToggle.BroToggles)
-            {
-                if(b.heroType == broType)
-                {
-                    return b.enabled;
-                }
-            }
-            return false;
-        }
-
-        private static bool IsBroUnlock(HeroType broType)
-        {
-            foreach(BroToggle b in BroToggle.BroToggles)
-            {
-                if(b.heroType == broType)
-                {
-                    return b.IsBroUnlocked();
-                }
-            }
-            return false;
+            return broDict;
         }
     }
 
@@ -376,71 +324,13 @@ namespace FilteredBros
         public int numberOfBroPerLine = 8;
         public int maxLifeNumber = 0;
         public bool patchInCustomsLevel = false;
+        public bool ignoreForcedBros = false;
 
         public List<bool> brosEnable;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
-        }
-    }
-
-    // Patch Hero unlock intervals for spawn
-    [HarmonyPatch(typeof(PlayerProgress), "IsHeroUnlocked")]
-    internal static class HeroUnlockController_IsAvailableInCampaign_Patch
-    {
-        private static void Prefix(PlayerProgress __instance)
-        {
-            if (!Main.CanUsePatch) return;
-
-            try
-            {
-                Dictionary<int, HeroType> heroUnlockIntervals = Main.UpdateDico();
-                if (heroUnlockIntervals.Count > 0 || heroUnlockIntervals.ContainsKey(0))
-                {
-                    Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(heroUnlockIntervals);
-                    __instance.unlockedHeroes.Clear();
-                    foreach(var heroType in heroUnlockIntervals.Values)
-                    {
-                        __instance.unlockedHeroes.Add(heroType);
-                    }
-                    var yetToBePlayedUnlockedHeroes = __instance.yetToBePlayedUnlockedHeroes.ToArray();
-                    foreach(var hero in yetToBePlayedUnlockedHeroes)
-                    {
-                        if (!heroUnlockIntervals.ContainsValue(hero))
-                            __instance.yetToBePlayedUnlockedHeroes.Remove(hero);
-                    }
-                }
-                else
-                {
-                    Main.Log("You have selected 0 bro, please select at least one. (The one who are name \"???\" don't count)");
-                    heroUnlockIntervals = Main.originalDict;
-                }
-            }
-            catch (Exception ex) { Main.Log("Failed to patch the Unlock intervals", ex); }
-        }
-    }
-
-    [HarmonyPatch(typeof(Player), "AddLife")]
-    static class LifeNumberLimited_Patch
-    {
-        static void Postfix(Player __instance)
-        {
-            if (!Main.CanUsePatch) return;
-            try
-            {
-                if(Main.enabled && Main.settings.maxLifeNumber != 0)
-                {
-                    while(__instance.Lives > Main.settings.maxLifeNumber)
-                    {
-                        __instance.Lives--;
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                Main.Log(ex);
-            }
         }
     }
 }
