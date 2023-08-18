@@ -1,0 +1,10 @@
+{
+  "Id": "SkipIntroMod",
+  "DisplayName": "SkipIntroMod",
+  "Author": "Gorzontrok",
+  "Version": "1.0.0",
+  "ManagerVersion": "0.27.6",
+  "AssemblyName": "SkipIntroMod.dll",
+  "EntryMethod": "SkipIntroMod.Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}

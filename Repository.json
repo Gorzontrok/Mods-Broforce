@@ -16,6 +16,7 @@
         {"Id": "OnlyPockettedSpecialAmmoMod", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/OnlyPockettedSpecialAmmo/Release/OnlyPockettedSpecialAmmoMod.zip"},
         {"Id": "RocketLib", "Version": "2.0.1", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/RocketLib/Release/RocketLib.zip"},
         {"Id": "SkeletonDeadFaceMod", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/SkeletonDeadFace/Release/SkeletonDeadFace.zip"},
+        {"Id": "SkipIntroMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/SkipIntro/Release/SkipIntroMod.zip"},
         {"Id": "SmallerHUD", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/SmallerHUD/Release/SkeletonDeadFace.zip"},
         {"Id": "SpooktoberMod", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/Spooktober/Release/SpooktoberMod.zip"},
         {"Id": "Surprise", "Version": "0.5.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/SatanSurprise/Release/SurpriseMod.zip"},
