@@ -1,6 +1,6 @@
 # Skip Intro
 
-[NexusMods Page](https://www.nexusmods.com/broforce/mods/5)  
+[NexusMods Page](https://www.nexusmods.com/broforce/mods/30)  
 Skip the introductions of the game
 
 ## Installation
