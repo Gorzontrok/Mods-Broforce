@@ -1,0 +1,9 @@
+{
+  "Id": "LevelEditorExtended",
+  "DisplayName": "Level Editor Extended",
+  "Author": "Gorzontrok",
+  "Version": "1.0.0",
+  "AssemblyName": "LevelEditorExtended.dll",
+  "EntryMethod": "LevelEditorExtended.Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}
