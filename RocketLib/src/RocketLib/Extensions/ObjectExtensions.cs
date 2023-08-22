@@ -27,4 +27,47 @@ public static class ObjectExtensions
     {
         return source as T;
     }
+
+    /// <summary>
+    /// Not great
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="obj"></param>
+    /// <param name="baseType"></param>
+    /// <param name="methodName"></param>
+    /// <returns></returns>
+    /// <exception cref="MissingMethodException"></exception>
+    /// <exception cref="Exception"></exception>
+    public static void InvokeBaseMethod(this object obj, Type baseType, string methodName)
+    {
+        obj.InvokeBaseMethod<object>(baseType, methodName);
+    }
+    /// <summary>
+    /// Not great
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="obj"></param>
+    /// <param name="baseType"></param>
+    /// <param name="methodName"></param>
+    /// <returns></returns>
+    /// <exception cref="MissingMethodException"></exception>
+    /// <exception cref="Exception"></exception>
+    public static T InvokeBaseMethod<T>(this object obj, Type baseType, string methodName) where T : class
+    {
+        var type = obj.GetType();
+
+        var method = baseType.GetMethod(methodName);
+        if (method == null)
+            throw new MissingMethodException(methodName);
+        if (type == baseType)
+        {
+            return method.Invoke(obj, null) as T;
+        }
+        if (!type.IsSubclassOf(baseType))
+            throw new Exception($"{type} is not a subclass of {baseType}");
+
+        var ptr = method.MethodHandle.GetFunctionPointer();
+        var baseMethod = (Func<T>)Activator.CreateInstance(typeof(Func<T>), obj, ptr);
+        return baseMethod.Invoke() as T;
+    }
 }
