@@ -94,7 +94,9 @@ public static class HarmonyExtensions
                     setter(field, kvp.Key, kvp.Value);
                 }
             }
+#pragma warning disable 0168
             catch (NullReferenceException e)
+#pragma warning restore 0168
             { }
             catch (Exception e)
             {
