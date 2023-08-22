@@ -1,0 +1,11 @@
+{
+  "Id": "TerroristC4ProgramsMod",
+  "DisplayName": "Terrorist C4 Programs",
+  "Author": "Gorzontrok",
+  "Version": "1.0.0",
+  "Requirements": [ "RocketLib" ],
+  "LoadAfter": [ "RocketLib" ],
+  "AssemblyName": "TerroristC4Programs.dll",
+  "EntryMethod": "TerroristC4Programs.Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}
