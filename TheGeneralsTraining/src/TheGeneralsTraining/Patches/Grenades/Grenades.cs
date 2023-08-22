@@ -42,4 +42,22 @@ namespace TheGeneralsTraining.Patches.Grenades
         }
     }
 
+    [HarmonyPatch(typeof(Grenade), "SetupGrenade")]
+    static class PigGrenadeForCasey_Patch
+    {
+        static void Postfix(Grenade __instance, MonoBehaviour _FiredBy)
+        {
+            if (Main.CanUsePatch && Main.settings.pigGrenade && _FiredBy is CaseyBroback)
+            {
+                try
+                {
+                    __instance.gameObject.AddComponent<PigGrenade_Comp>();
+                }
+                catch (Exception ex)
+                {
+                    Main.Log(ex);
+                }
+            }
+        }
+    }
 }

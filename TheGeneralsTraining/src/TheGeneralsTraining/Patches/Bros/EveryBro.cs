@@ -459,33 +459,17 @@ namespace TheGeneralsTraining.Patches.Bros.EveryBros
      }*/
 
     [HarmonyPatch(typeof(BroBase), "HolyWaterRevive")]
-    static class TestVanDammeAnim_SetWillComebackToLife_Patch
+    static class PanicUnits_OnHolyWaterRevive_Patch
     {
-        static void Postfix(TestVanDammeAnim __instance)
+        static void Prefix(BroBase __instance)
         {
-            if (Main.CanUsePatch && Main.settings.holyWaterReviveFlashBang)
+            if (Main.CanUsePatch && Main.settings.holyWaterPanicUnits)
             {
-                try
-                {
-                    FlashBang flashBang = HeroController.GetHeroPrefab(HeroType.BroHard).specialGrenade as FlashBang;
-                    flashBang.flashBangExplosion.totalExplosions = 20;
-                    Grenade grenade = ProjectileController.SpawnGrenadeOverNetwork(flashBang, __instance,
-                        __instance.X + Mathf.Sign(__instance.transform.localScale.x) * 8f, __instance.Y + 8f,
-                        0.001f, 0.011f,
-                        Mathf.Sign(__instance.transform.localScale.x) * 200f,
-                        150f,
-                        __instance.playerNum,
-                        1f
-                        );
-                    grenade.ReduceLife(-999);
-                }
-                catch (Exception e)
-                {
-                    Main.Log(e);
-                }
+                Map.PanicUnits(__instance.X, __instance.Y, 64, 0.5f, true, true);
             }
         }
     }
+
 
     [HarmonyPatch(typeof(BroBase), "TriggerFlexEvent")]
     static class BroBase_TriggerFlexEvent_Patch
@@ -540,6 +524,25 @@ namespace TheGeneralsTraining.Patches.Bros.EveryBros
             if (broveHeart)
             {
                 broveHeart.CallMethod("SetDisarmed", false);
+            }
+        }
+    }
+
+
+    [HarmonyPatch(typeof(TestVanDammeAnim), "CalculateZombieInput")]
+    static class FlexIfReviveSourceFlex_Patch
+    {
+        static void Postfix(TestVanDammeAnim __instance)
+        {
+            if (Main.CanUsePatch && Main.settings.flexIfReviveSourceFlex)
+            {
+                var reviveSource = __instance.GetFieldValue<TestVanDammeAnim>("reviveSource");
+                if (reviveSource == null || !reviveSource.IsGesturing()) return;
+
+                if (__instance as BroBase)
+                {
+                    __instance.SetGestureAnimation(GestureElement.Gestures.Flex);
+                }
             }
         }
     }

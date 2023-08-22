@@ -1,9 +1,13 @@
-﻿- v0.3
+﻿- v0.3.0
 Bro Dredd takes less time to explode it's enemies with his taser. (optional)
 Broffy kick does more damage
 Bro Heart can retrieve his sword in ammo box
 Fix glaive erro with Neo
 Chev Brolios flammes burn ground does no more damage
+Holy water panic units instead of spawning flash bangs
+Bros who get revived will flex if the revive source is flexing
+Holy water don't explode hell units anymore
+Remove tear gas grenade image
 
 - v0.2 :
 The changes are optional in customs campaign.

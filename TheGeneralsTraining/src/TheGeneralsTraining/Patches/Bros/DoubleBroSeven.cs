@@ -39,7 +39,7 @@ namespace TheGeneralsTraining.Patches.Bros.DoubleBroSeven0
                     DoubleBroSevenSpecialType currentSpecialType = t.GetFieldValue<DoubleBroSevenSpecialType>("currentSpecialType");
                     if (currentSpecialType == DoubleBroSevenSpecialType.TearGas)
                     {
-                        Networking.Networking.RPC<float>(PID.TargetAll, new RpcSignature<float>(__instance.PlayThrowLightSound), 0.5f, false);
+                        Networking.Networking.RPC(PID.TargetAll, new RpcSignature<float>(__instance.PlayThrowLightSound), 0.5f, false);
                         if (__instance.IsMine)
                         {
                             if (t.GetFieldValue<bool>("ducking") && __instance.down)
@@ -87,7 +87,7 @@ namespace TheGeneralsTraining.Patches.Bros.DoubleBroSeven0
                 }
                 catch (Exception ex)
                 {
-                    Main.ExceptionLog("Failed to make 007 more drunk", ex);
+                    Main.ExceptionLog("Failed to make 007 drunker", ex);
                 }
             }
             return true;

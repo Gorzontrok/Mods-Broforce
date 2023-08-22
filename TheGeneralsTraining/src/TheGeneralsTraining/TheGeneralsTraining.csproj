@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TheGeneralsTraining</RootNamespace>
-    <AssemblyName>The General%27s Training</AssemblyName>
+    <AssemblyName>TheGeneralsTraining</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -39,6 +39,9 @@
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\DLL\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BitCode.AssetManagement">
+      <HintPath>..\..\..\lib\BitCode.AssetManagement.dll</HintPath>
     </Reference>
     <Reference Include="RocketLib, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -98,10 +101,11 @@
     <Compile Include="Patches\Bros\IndianaBrones.cs" />
     <Compile Include="Patches\Bros\ScorpionBro.cs" />
     <Compile Include="Patches\Bros\SethBrondle.cs" />
-    <Compile Include="GUI_UMM.cs" />
+    <Compile Include="ModUI.cs" />
     <Compile Include="Patches\HUD\HUD.cs" />
     <Compile Include="Patches\HUD\Specials.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Patches\Mooks\Mooks.cs" />
     <Compile Include="Patches\Projectiles\Chakram.cs" />
     <Compile Include="Patches\Projectiles\EveryProjectiles.cs" />
     <Compile Include="Patches\Explosions.cs" />

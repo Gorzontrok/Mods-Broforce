@@ -65,7 +65,7 @@ return true;
             }
         }
 
-        static void Postfix(CaseyBroback __instance)
+       /* static void Postfix(CaseyBroback __instance)
         {
             if(Main.CanUsePatch && Main.settings.pigGrenade)
             {
@@ -82,6 +82,6 @@ return true;
                     Main.Log(ex);
                 }
             }
-        }
+        }*/
     }
 }

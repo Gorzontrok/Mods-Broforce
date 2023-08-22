@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using TFBGames.Systems;
 using UnityEngine;
 
 namespace TheGeneralsTraining
@@ -62,7 +64,13 @@ namespace TheGeneralsTraining
             }
             else
             {
-                result = CreateMaterial(resourceName, shader);
+                if (resourceName.Contains(":"))
+                {
+                    result = GameSystems.ResourceManager.LoadAssetSync<Material>(resourceName);
+                }
+                else
+                    result = CreateMaterial(resourceName, shader);
+
                 if (result != null)
                 {
                     materialResources.Add(resourceName, result);

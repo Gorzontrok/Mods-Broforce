@@ -9,9 +9,16 @@ namespace TheGeneralsTraining.Components
 {
     internal class PigGrenade_Comp : MonoBehaviour
     {
+        private void Awake()
+        {
+
+            Material material = ResourcesController.GetMaterialResource("pigGrenade.png", ResourcesController.Unlit_DepthCutout);
+            this.GetComponent<Renderer>().sharedMaterial = material;
+        }
         public void Explode(Grenade grenade)
         {
-            MapController.SpawnTestVanDamme_Networked(Map.Instance.activeTheme.animals[0].GetComponent<TestVanDammeAnim>(), grenade.X, grenade.Y, 0f, 0f, false, false, false, false);
+            if (grenade.IsMine)
+                MapController.SpawnTestVanDamme_Networked(Map.Instance.activeTheme.animals[0].GetComponent<TestVanDammeAnim>(), grenade.X, grenade.Y, 0f, 0f, false, false, false, false);
             MakeEffects(grenade);
         }
 

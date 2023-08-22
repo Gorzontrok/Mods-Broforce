@@ -20,7 +20,7 @@ namespace TheGeneralsTraining.Patches.Bros.Buffy
 
                     DamageType damageType = !t.GetFieldValue<bool>("dashingMelee") ? DamageType.SilencedBullet : DamageType.Melee;
                     Map.DamageDoodads(3, DamageType.Knifed, __instance.X + (float)(__instance.Direction * 4), __instance.Y, 0f, 0f, 6f, __instance.playerNum, out bool flag, null);
-                    t.Method("KickDoors", new object[] { 24f }).GetValue();
+                    t.CallMethod("KickDoors", 24f);
                     bool knock = false;
                     float xI = 0f;
                     float yI = 0f;
@@ -55,4 +55,5 @@ namespace TheGeneralsTraining.Patches.Bros.Buffy
             return true;
         }
     }
+
 }

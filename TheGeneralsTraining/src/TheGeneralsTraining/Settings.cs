@@ -37,9 +37,13 @@ namespace TheGeneralsTraining
         /// </summary>
         public bool pushAnimation;
         /// <summary>
-        /// Blind Revive
+        /// Panic Revive
         /// </summary>
-        public bool holyWaterReviveFlashBang;
+        public bool holyWaterPanicUnits;
+        /// <summary>
+        ///
+        /// </summary>
+        public bool flexIfReviveSourceFlex;
 
         /// <summary>
         /// Brolander & Broden
@@ -111,10 +115,6 @@ namespace TheGeneralsTraining
         /// </summary>
         public bool noRecoil;
 
-        /// <summary>
-        /// Desperabros
-        /// </summary>
-        public bool mariachisNoLongerStealLivesFromDesperabro;
         /// <summary>
         /// Desperabros
         /// </summary>

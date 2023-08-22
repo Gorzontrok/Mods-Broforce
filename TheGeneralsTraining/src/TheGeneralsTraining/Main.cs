@@ -62,14 +62,14 @@ namespace TheGeneralsTraining
             {
                 mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
             }
-            GUI_UMM.Init();
+            ModUI.Init();
 
             return true;
         }
 
         private static void OnGUI(UnityModManager.ModEntry modEntry)
         {
-            GUI_UMM.OnGUI();
+            ModUI.OnGUI();
         }
 
         private static void OnSaveGUI(UnityModManager.ModEntry modEntry)

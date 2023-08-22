@@ -17,7 +17,7 @@ namespace TheGeneralsTraining.Patches.HUD.Specials
                 if (type == HeroType.DoubleBroSeven && __instance.doubleBroGrenades.Length < 5)
                 {
                     List<Material> tempList = __instance.doubleBroGrenades.ToList();
-                    tempList.Add(ResourcesController.GetMaterialResource("Grenade_Tear_Gas.png", ResourcesController.Unlit_DepthCutout));
+                    tempList.Add(ResourcesController.GetMaterialResource("sharedtextures:GrenadeTearGas", ResourcesController.Unlit_DepthCutout));
                     __instance.doubleBroGrenades = tempList.ToArray();
                 }
             }

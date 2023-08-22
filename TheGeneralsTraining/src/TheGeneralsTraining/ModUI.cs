@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TheGeneralsTraining
 {
-    internal static class GUI_UMM
+    internal static class ModUI
     {
         private static GUIStyle toolTipStyle = new GUIStyle();
         private static GUIStyle titleStyle = new GUIStyle();
@@ -37,8 +37,8 @@ namespace TheGeneralsTraining
             titleStyle.normal.textColor = Color.white;
 
 
-            tabs = new string[] { "Global", "Brade", "Brochete", "BroDredd", "BroHard", "BroHeart", "Buffy", "Casey Broback", "Chev Brolios", "Desperabro", "Dirty Brorry", "Double Bro Seven", "Rambro", "Scorpion Bro", "SethBrondle", "Xena" };
-            actions = new Action[] { Global, Brade, Brochete, BroDredd, BroHard, BroHeart, Buffy, CaseyBroback, ChevBrolios, Desperabro, DirtyHarry, DoubleBroSeven, Rambro, ScorpionBro, SethBrondle, Xena };
+            tabs = new string[] { "Global", "Brade", "Brochete", "BroDredd", "BroHard", "BroHeart", /*"Broniversal Soldier",*/ "Buffy", "Casey Broback", "Chev Brolios", "Desperabro", "Dirty Brorry", "Double Bro Seven", "Rambro", "Scorpion Bro", "SethBrondle", "Xena" };
+            actions = new Action[] { Global, Brade, Brochete, BroDredd, BroHard, BroHeart, /*BroniversalSoldier,*/ Buffy, CaseyBroback, ChevBrolios, Desperabro, DirtyHarry, DoubleBroSeven, Rambro, ScorpionBro, SethBrondle, Xena };
         }
 
         public static void OnGUI()
@@ -61,15 +61,18 @@ namespace TheGeneralsTraining
         private static void Global()
         {
             Sett.strongerThrow = GUILayout.Toggle(Sett.strongerThrow, new GUIContent("Stronger throw", "Depends of the bro and it's state"));
-            Sett.faceHugger = GUILayout.Toggle(Sett.faceHugger, new GUIContent("Face Hugger", "Show a face hugger on the hud if you have one on you."));
-            Sett.electricThrow = GUILayout.Toggle(Sett.electricThrow, new GUIContent("Electric Throw ", "Broden and The Brolander (if ammo > 2) make mook electric when throw"));
+            Sett.electricThrow = GUILayout.Toggle(Sett.electricThrow, new GUIContent("Electric Throw ", "Broden and The Brolander (if ammo >= 2) make mook electric when throw"));
             Sett.rememberPockettedSpecial = GUILayout.Toggle(Sett.rememberPockettedSpecial, new GUIContent("Remember Pocketed Special", "When you swap your bro alive, you keep the special ammo (Time Slow, AirStrike, Remote Control Car, Mech Drop, ect.)"));
             Sett.ladderAnimation = GUILayout.Toggle(Sett.ladderAnimation, new GUIContent("Ladder Animation", "Animation of climbing a ladder"));
             Sett.pushAnimation = GUILayout.Toggle(Sett.pushAnimation, new GUIContent("Push Animation", "Animation of pushing a box"));
             Sett.grenadeExplodeIfNotVisible = GUILayout.Toggle(Sett.grenadeExplodeIfNotVisible, new GUIContent("Grenade explode if not visible", "The grenades explode if they are not visible by the camera."));
-            Sett.goldenFlexBrosProjectile = GUILayout.Toggle(Sett.goldenFlexBrosProjectile, new GUIContent("Bro's projectile with golden light", "The grenades explode if they are not visible by the camera."));
-            Sett.holyWaterReviveFlashBang = GUILayout.Toggle(Sett.holyWaterReviveFlashBang, new GUIContent("Flashbang on holy water revive", "The grenades explode if they are not visible by the camera."));
-            GUILayout.FlexibleSpace();
+            Sett.goldenFlexBrosProjectile = GUILayout.Toggle(Sett.goldenFlexBrosProjectile, new GUIContent("Bro's projectile with golden light", "Golden Light Projectile are replace by bros default projectile."));
+            Sett.holyWaterPanicUnits = GUILayout.Toggle(Sett.holyWaterPanicUnits, new GUIContent("Panic units on holy water revive", ""));
+            Sett.flexIfReviveSourceFlex = GUILayout.Toggle(Sett.flexIfReviveSourceFlex, new GUIContent("Flex if revive source is flexing"));
+            GUILayout.EndVertical();
+            GUILayout.Space(10);
+            GUILayout.BeginVertical(new GUIContent("HUD"), GUI.skin.box);
+            Sett.faceHugger = GUILayout.Toggle(Sett.faceHugger, new GUIContent("Face Hugger", "Show a face hugger on the hud if you have one on you."));
         }
 
         private static void Brade()
@@ -100,6 +103,11 @@ namespace TheGeneralsTraining
             GUILayout.FlexibleSpace();
         }
 
+        private static void BroniversalSoldier()
+        {
+            GUILayout.FlexibleSpace();
+        }
+
         private static void Buffy()
         {
             Sett.hollywaterMookToVillager = GUILayout.Toggle(Sett.hollywaterMookToVillager, new GUIContent("Mook to villager with Holy Water", "Convert basic Mooks into villager with holy water"));
@@ -121,8 +129,7 @@ namespace TheGeneralsTraining
 
         private static void Desperabro()
         {
-            Sett.mariachisNoLongerStealLivesFromDesperabro = GUILayout.Toggle(Sett.mariachisNoLongerStealLivesFromDesperabro, new GUIContent("Mariachis has no lives", "Mariachis no longer steal lives from Desperabro"));
-            //Sett.mariachisPlayMusic = GUILayout.Toggle(Sett.mariachisPlayMusic, new GUIContent("Mariachis Play Music", "When they have no enemies to shoot at, they play music."));
+            Sett.mariachisPlayMusic = GUILayout.Toggle(Sett.mariachisPlayMusic, new GUIContent("Mariachis Play Music", "When they have no enemies to shoot at, they play music."));
             GUILayout.FlexibleSpace();
         }
         private static void DirtyHarry()

@@ -39,7 +39,7 @@ namespace TheGeneralsTraining.Patches.Explosions
                 );
         }
 
-        static void SwapMookToVillager(List<FlashBangPoint> persistentPoints, int i)
+        static void Swaper(List<FlashBangPoint> persistentPoints, int i, int playerNum)
         {
             if (!Main.settings.hollywaterMookToVillager) return;
 
@@ -50,20 +50,36 @@ namespace TheGeneralsTraining.Patches.Explosions
             {
                 if (unit != null && (unit as Mook) && !unit.invulnerable && unit.IsAlive())
                 {
-                    if ((unit as MookTrooper && !(unit as UndeadTrooper)) || unit as MookRiotShield || unit as MookSuicide || unit as ScoutMook)
+                    if (CanSwapToMook(unit))
                     {
-                        Villager villager = MapController.SpawnVillager_Networked(Map.Instance.activeTheme.villager1[0].GetComponent<Villager>(), unit.X, unit.Y, 0, 0, false, false, false, false, true, 0);
-                        villager.Blind(0.3f);
-                        UnityEngine.Object.Destroy(unit.gameObject);
+                        SwapMookToVillager(unit, playerNum);
                     }
-                    else if (unit is MookDog && !(unit is Alien) && !(unit is HellDog) && !(unit as MookDog).isMegaDog)
+                    else if (CanSwapToPig(unit))
                     {
-                        TestVanDammeAnim tvda = MapController.SpawnTestVanDamme_Networked(Map.Instance.activeTheme.animals[2].GetComponent<TestVanDammeAnim>(), unit.X, unit.Y, 0f, 0f, false, false, false, false);
-                        tvda.Blind(0.3f);
-                        UnityEngine.Object.Destroy(unit.gameObject);
+                        SwapMookToPig(unit);
                     }
                 }
             }
+        }
+        static bool CanSwapToMook(Unit unit)
+        {
+            return unit is MookTrooper || unit is UndeadTrooper || unit is MookRiotShield || unit is MookSuicide || unit is ScoutMook || unit is MookBazooka;
+        }
+        static void SwapMookToVillager(Unit unit, int playerNum)
+        {
+            Villager villager = MapController.SpawnVillager_Networked(Map.Instance.activeTheme.villager1[0].GetComponent<Villager>(), unit.X, unit.Y, 0, 0, false, false, false, false, true, playerNum);
+            villager.Panic(0.3f, true);
+            unit.DestroyNetworked();
+        }
+        static bool CanSwapToPig(Unit unit)
+        {
+            return (unit is MookDog && !unit.As<MookDog>().isMegaDog) && !(unit is Alien) && !(unit is HellDog) && !(unit as MookDog).isMegaDog;
+        }
+        static void SwapMookToPig(Unit unit)
+        {
+            TestVanDammeAnim tvda = MapController.SpawnTestVanDamme_Networked(Map.Instance.activeTheme.animals[2].GetComponent<TestVanDammeAnim>(), unit.X, unit.Y, 0f, 0f, false, false, false, false);
+            tvda.Panic(0.3f, true);
+            unit.DestroyNetworked();
         }
 
         static void DoTheLoop(HolyWaterExplosion holyWaterExplosion, List<FlashBangPoint> persistentPoints, float burnTimer, float invulnerabilityTimer)
@@ -72,8 +88,8 @@ namespace TheGeneralsTraining.Patches.Explosions
             {
                 if (burnTimer >= 0.5f)
                 {
-                    if(!HitHellUnits(holyWaterExplosion, persistentPoints, i))
-                        SwapMookToVillager(persistentPoints, i);
+                    if (!HitHellUnits(holyWaterExplosion, persistentPoints, i))
+                        Swaper(persistentPoints, i, holyWaterExplosion.playerNum);
                 }
 
                 if (invulnerabilityTimer >= 0.2f)
@@ -90,13 +106,13 @@ namespace TheGeneralsTraining.Patches.Explosions
                 try
                 {
                     List<FlashBangPoint> persistentPoints = __instance.GetFieldValue< List<FlashBangPoint> >("persistentPoints");
-                    float counter = __instance.GetFieldValue<float>("counter");
-                    float burnTimer = __instance.GetFieldValue<float>("burnTimer");
-                    float invulnerabilityTimer = __instance.GetFieldValue<float>("invulnerabilityTimer");
-                    float frameRate = __instance.GetFieldValue<float>("frameRate");
+                    float counter = __instance.GetFloat("counter");
+                    float burnTimer = __instance.GetFloat("burnTimer");
+                    float invulnerabilityTimer = __instance.GetFloat("invulnerabilityTimer");
+                    float frameRate = __instance.GetFloat("frameRate");
 
-                    float maxTime = __instance.GetFieldValue<float>("maxTime");
-                    float startTime = __instance.GetFieldValue<float>("startTime");
+                    float maxTime = __instance.GetFloat("maxTime");
+                    float startTime = __instance.GetFloat("startTime");
 
                     __instance.FirstUpdateFromPool();
 
@@ -129,12 +145,6 @@ namespace TheGeneralsTraining.Patches.Explosions
                             persistentPoints.RemoveAt(k);
                         }
                     }
-
-                    /*persistentPoints.SetThisValueToObject("persistentPoints", __instance);
-                    counter.SetThisValueToObject("counter", __instance);
-                    burnTimer.SetThisValueToObject("burnTimer", __instance);
-                    invulnerabilityTimer.SetThisValueToObject("invulnerabilityTimer", __instance);
-                    frameRate.SetThisValueToObject("frameRate", __instance);*/
 
                     __instance.SetFieldValue("persistentPoints", persistentPoints);
                     __instance.SetFieldValue("counter", counter);
