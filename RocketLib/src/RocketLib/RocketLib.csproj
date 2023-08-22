@@ -41,6 +41,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="BitCode.AssetManagement, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\BitCode.AssetManagement.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -81,6 +85,8 @@
     <Compile Include="BroforceMod.cs" />
     <Compile Include="BroforceModController.cs" />
     <Compile Include="Collections\Heroes.cs" />
+    <None Include="Collections\Doodads.cs" />
+    <Compile Include="Collections\Nums.cs" />
     <Compile Include="Collections\Pickups.cs" />
     <Compile Include="Collections\PockettedSpecial.cs" />
     <Compile Include="Constants.cs" />
@@ -88,9 +94,12 @@
     <Compile Include="Extensions\EnumeratorExtensions.cs" />
     <Compile Include="Extensions\GameObjectExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\NetworkedUnitExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\PlayerHUDExtensions.cs" />
     <Compile Include="Extensions\SpriteSMExtensions.cs" />
     <Compile Include="Extensions\TestVanDammeAnimExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FloatRange.cs" />
     <Compile Include="GamePassword.cs" />
     <Compile Include="JsonConverters\RectConverter.cs" />
@@ -105,7 +114,6 @@
     <Compile Include="Utils\IsThisMod.cs" />
     <Compile Include="Loggers\Logger.cs" />
     <None Include="packages.config" />
-    <None Include="ResourcesController.cs" />
     <Compile Include="Utils\HeroUnlockCollection.cs" />
     <Compile Include="Loggers\ScreenLogger.cs" />
     <Compile Include="Main.cs" />
