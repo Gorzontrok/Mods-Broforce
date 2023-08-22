@@ -1,5 +1,14 @@
 The Changelog of 'Rocketlib.dll'
 
+v2.1.0:
+Added .ToGameObjects() extensions to Component[]
+Added PlayerHUDExtensions
+Added NetworkedUnitsExtensions
+Added Collections.Nums
+Added ComponentExtensions.ToGameObjects<T>(this Component[])
+Added ObjectExtensions.InvokeBaseMethod(this object) ; it's not great to use
+Removed ResourcesController.cs
+
 v2.0.1:
 replace unkown method 'RemoveAllFrom' to 'RemoveAll' in Collections.Heroes.CampaignBro
 
