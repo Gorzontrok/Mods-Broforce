@@ -670,6 +670,30 @@
             Cast to a different type, exception-safe.
             </summary>
         </member>
+        <member name="M:ObjectExtensions.InvokeBaseMethod(System.Object,System.Type,System.String)">
+            <summary>
+            Not great
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="baseType"></param>
+            <param name="methodName"></param>
+            <returns></returns>
+            <exception cref="T:System.MissingMethodException"></exception>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:ObjectExtensions.InvokeBaseMethod``1(System.Object,System.Type,System.String)">
+            <summary>
+            Not great
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="baseType"></param>
+            <param name="methodName"></param>
+            <returns></returns>
+            <exception cref="T:System.MissingMethodException"></exception>
+            <exception cref="T:System.Exception"></exception>
+        </member>
         <member name="T:RLogType">
             <summary>
             Type of log for the log. They each have a "custom" color.
