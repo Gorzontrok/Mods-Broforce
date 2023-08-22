@@ -47,5 +47,15 @@ namespace RocketLib
             }
             return null;
         }
+
+        public static GameObject[] ToGameObjects<T>(this T[] components) where T : Component
+        {
+            List<GameObject> list = new List<GameObject>();
+            foreach (var component in components)
+            {
+                list.Add(component.gameObject);
+            }
+            return list.ToArray();
+        }
     }
 }
