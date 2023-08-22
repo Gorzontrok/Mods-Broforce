@@ -62,11 +62,6 @@ namespace RocketLibUMM
         public static void MainGUI()
         {
             GUILayout.BeginVertical("box");
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Show current unlock intervals"))
-                RocketLib.Utils.HeroUnlockCollection.ShowHeroUnlockIntervals();
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
             RMain.showLogOnScreen = GUILayout.Toggle(RMain.showLogOnScreen, "Enable OnScreenLog");
             GUILayout.EndVertical();
         }
