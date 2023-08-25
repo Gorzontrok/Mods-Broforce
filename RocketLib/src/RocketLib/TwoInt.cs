@@ -3,8 +3,10 @@ using UnityEngine;
 
 
 [Serializable]
-public class TwoInt
+public struct TwoInt
 {
+    public static readonly TwoInt zero = new TwoInt(0, 0);
+
     public int x;
     public int y;
 

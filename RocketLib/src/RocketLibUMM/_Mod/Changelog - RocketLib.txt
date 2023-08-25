@@ -22,4 +22,3 @@ Rename 'Main_' to 'Main'
 Remove 'RocketLibUMM' dependencie
 Added Newtonsoft.Json assembly
 Add Converters for Json serialization
-

@@ -22,17 +22,25 @@ public static class IEnumerableExtensions
     }
 
     /// <summary>
-    /// Is list null or empty
+    /// Is Collection null or empty
     /// </summary>
     public static bool IsNullOrEmpty<T>(this IEnumerable<T> self)
     {
         return self == null || self.Count() == 0;
     }
     /// <summary>
-    /// Is list NOT null or empty
+    /// Is Collection NOT null or empty
     /// </summary>
     public static bool IsNotNullOrEmpty<T>(this IEnumerable<T> self)
     {
         return !self.IsNullOrEmpty();
+    }
+
+    public static T[] Append<T>(this T[] array, T obj)
+    {
+        var temp = array.ToList();
+        temp.Add(obj);
+        array = temp.ToArray();
+        return array;
     }
 }

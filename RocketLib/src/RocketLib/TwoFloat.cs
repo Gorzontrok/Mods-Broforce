@@ -2,8 +2,10 @@
 using UnityEngine;
 
 [Serializable]
-public class TwoFloat
+public struct TwoFloat
 {
+    public static readonly TwoFloat zero = new TwoFloat(0, 0);
+
     public float x;
     public float y;
 
