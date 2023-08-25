@@ -1,0 +1,11 @@
+﻿{
+  "Id": "BroforceOverhaul",
+  "DisplayName": "Broforce Overhaul",
+  "Author": "Gorzon",
+  "Version": "0.0.1",
+  "Requirements": [ "RocketLib", "BroMaker" ],
+  "LoadAfter": [ "RocketLib", "BroMaker" ],
+  "AssemblyName": "BroforceOverhaul.dll",
+  "EntryMethod": "Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}

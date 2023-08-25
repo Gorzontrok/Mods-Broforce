@@ -1,0 +1,12 @@
+﻿v0.0.2 :
+- Mariachi don't make the player loose lifes.
+- Xena's chakram comes back only if you press special back
+
+v0.0.1 :
+- Skinless Sprite for jet-pack mooks
+- down melee only if press down
+- Bronobi WIP
+- I really need to write what i'm doing
+
+v0.0.0 :
+- Initial release
