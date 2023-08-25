@@ -1,0 +1,11 @@
+v1.1.0 :
+ - Update for beta
+ - Every password can be auto loaded
+ - Clean up dependencies
+
+v1.0.2 :
+ - Add RocketLib as a requirements
+ - Add Rocketlib passwords
+
+v1.0.0 :
+ - Initial Release

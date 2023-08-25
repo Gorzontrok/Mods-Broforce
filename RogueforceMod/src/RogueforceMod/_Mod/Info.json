@@ -1,0 +1,11 @@
+{
+  "Id": "RogueforceMod",
+  "DisplayName": "Rogueforce Mod",
+  "Author": "Gorzontrok",
+  "Version": "1.0.0",
+  "Requirements": [ "RocketLib" ],
+  "LoadAfter": [ "RocketLib" ],
+  "AssemblyName": "RogueforceMod.dll",
+  "EntryMethod": "RogueforceMod.Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}
