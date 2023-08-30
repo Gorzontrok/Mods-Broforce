@@ -109,6 +109,7 @@
     <Compile Include="KeyBindingForPlayers.cs" />
     <Compile Include="RGUI.cs" />
     <Compile Include="Extensions\HarmonyExtensions.cs" />
+    <Compile Include="Countdown.cs" />
     <Compile Include="TwoInt.cs" />
     <Compile Include="TwoFloat.cs" />
     <Compile Include="Utils\IsThisMod.cs" />

@@ -25,5 +25,26 @@ namespace RocketLib.Extensions
                     playerHUD.grenadeIcons[i].GetComponent<Renderer>().material = materials[i];
             }
         }
+
+        public static Material GetPockettedMaterial(this PlayerHUD hud, PockettedSpecialAmmoType type)
+        {
+            switch (type)
+            {
+                case PockettedSpecialAmmoType.Airstrike:
+                    return hud.brodellWalkerIcon;
+                case PockettedSpecialAmmoType.Timeslow:
+                    return hud.timebroIcon;
+                case PockettedSpecialAmmoType.RemoteControlCar:
+                    return hud.bronnarIcon;
+                case PockettedSpecialAmmoType.MechDrop:
+                    return hud.mechDropIcon;
+                case PockettedSpecialAmmoType.AlienPheromones:
+                    return hud.alienPheromones;
+                case PockettedSpecialAmmoType.Steroids:
+                    return hud.steroids;
+                default:
+                    return hud.rambroIcon;
+            }
+        }
     }
 }

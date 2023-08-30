@@ -30,4 +30,14 @@ public static class TestVanDammeAnimExtensions
         var size = self.GetSpriteSize();
         self.Sprite().SetLowerLeftPixel(x * size.x, y * size.y);
     }
+
+    public static void SetRendererTexture<T>(this T anim, Texture texture) where T : TestVanDammeAnim
+    {
+        anim.GetComponent<Renderer>().sharedMaterial.SetTexture("_MainTex", texture);
+    }
+
+    public static void SetRendererMaterial<T>(this T anim, Material mat) where T : TestVanDammeAnim
+    {
+        anim.GetComponent<Renderer>().sharedMaterial = mat;
+    }
 }

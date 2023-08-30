@@ -652,12 +652,12 @@
         </member>
         <member name="M:IEnumerableExtensions.IsNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            Is list null or empty
+            Is Collection null or empty
             </summary>
         </member>
         <member name="M:IEnumerableExtensions.IsNotNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
-            Is list NOT null or empty
+            Is Collection NOT null or empty
             </summary>
         </member>
         <member name="M:ObjectExtensions.Is``1(System.Object)">

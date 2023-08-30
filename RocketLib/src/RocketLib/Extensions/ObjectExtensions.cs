@@ -28,6 +28,16 @@ public static class ObjectExtensions
         return source as T;
     }
 
+    public static bool NotAs<T>(this object source) where T : class
+    {
+        return source as T == null;
+    }
+
+    public static bool IsTypeOf(this  object obj, Type type)
+    {
+        return obj.GetType() == type;
+    }
+
     /// <summary>
     /// Not great
     /// </summary>
