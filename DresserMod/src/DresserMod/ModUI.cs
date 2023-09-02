@@ -71,7 +71,7 @@ namespace DresserMod
             {
                 if (_wardrobeError) return;
                 // Wardrobes
-                GUILayout.BeginVertical("Wardrobes", GUI.skin.box, GUILayout.Width(200), GUILayout.Height(200));
+                GUILayout.BeginVertical("Wardrobes", GUI.skin.box, GUILayout.Width(250), GUILayout.Height(200));
                 GUILayout.Space(15);
                 _scrollViewVectorWardrobes = GUILayout.BeginScrollView(_scrollViewVectorWardrobes, GUILayout.Height(200));
                 foreach (KeyValuePair<string, Wardrobe> pair in StorageRoom.wardrobes)
@@ -93,7 +93,7 @@ namespace DresserMod
 
             try
             {
-                if (_attireError) return;
+                if (_attireError || _selectedWardrobe == null) return;
                 // Attires
                 GUILayout.Space(30);
                 GUILayout.BeginVertical(_selectedWardrobe.wearers, GUI.skin.box, GUILayout.Width(200), GUILayout.Height(200));
@@ -117,15 +117,17 @@ namespace DresserMod
 
             try
             {
-                if (_clothesError) return;
+                if (_clothesError || _selectedAttire == null) return;
                 // Clothes
                 GUILayout.Space(30);
                 GUILayout.BeginVertical(_selectedAttire.name, GUI.skin.box, GUILayout.Width(500), GUILayout.Height(200));
                 GUILayout.Space(15);
+                GUILayout.Label("Path: \n" + _selectedAttire.directory);
+                GUILayout.Space(10);
                 _scrollViewVectorClothes = GUILayout.BeginScrollView(_scrollViewVectorClothes, GUILayout.Height(200));
                 foreach (KeyValuePair<string, string> pair in _selectedAttire.clothes)
                 {
-                    GUILayout.Label(pair.Key + ": \"" + pair.Value + "\"");
+                    GUILayout.Label($"\"{pair.Key}\": \"{pair.Value}\"");
                 }
                 GUILayout.EndScrollView();
                 GUILayout.EndVertical();
@@ -148,7 +150,7 @@ namespace DresserMod
             _fileName = GUILayout.TextField(_fileName, GUILayout.Width(200), GUILayout.ExpandWidth(false));
             if(GUILayout.Button("Create JSON File", GUILayout.Width(200)))
             {
-                StorageRoom.CreateJsonFile(_fileName);
+                StorageRoom.CreateJsonFile(_fileName, StorageRoom.AssetDirectory);
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();

@@ -43,7 +43,7 @@ E.g.
 
 The suported variable are only of type `SpriteSM`, `Material`, `Texture` and `Texture2D`. 
 
-However if you need to access a type of a supported variable through another, add `/` between each variable until you reach the desired variable. 
+However if you need to access a type of a supported variable through another, add `.` between each variable until you reach the desired variable. 
 
 *I'll use the player avatar as example.*  
 The avatar is not in the Bro class (there is exception if the bro have more than 2), the avatar is store in the `PlayerHUD` class.  
@@ -53,7 +53,7 @@ So in the Json file it looks like this :
 ```
 {
 	"Wearer": "Rambro",
-	"player/hud/avatar": "CoolAvatar.png"
+	"player.hud.avatar": "CoolAvatar.png"
 }
 ```
 

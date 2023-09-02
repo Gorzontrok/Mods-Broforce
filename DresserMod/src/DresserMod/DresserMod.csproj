@@ -81,7 +81,6 @@
     <None Include="_Mod\INSTRUCTIONS.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TODO.txt" />
     <Content Include="_Mod\Changelog.txt" />
   </ItemGroup>
   <ItemGroup />

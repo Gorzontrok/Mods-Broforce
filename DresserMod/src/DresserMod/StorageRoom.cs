@@ -21,16 +21,22 @@ namespace DresserMod
 
         public static Dictionary<string, Wardrobe> wardrobes = new Dictionary<string, Wardrobe>();
 
+        private static List<string> subscribers = new List<string>();
+
         public static void Init()
         {
             wardrobes.Clear();
             CheckDirectory();
-            ReadFiles();
+            ReadFiles(AssetDirectory, SearchOption.AllDirectories);
+            foreach(var subscriber in subscribers)
+            {
+                ReadFiles(subscriber, SearchOption.AllDirectories);
+            }
         }
 
-        public static void ReadFiles()
+        public static void ReadFiles(string directory, SearchOption searchOption = SearchOption.AllDirectories)
         {
-            string[] files = Directory.GetFiles(AssetDirectory, "*.json", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(directory, "*.json", searchOption);
             foreach (string file in files)
             {
                 try
@@ -51,21 +57,39 @@ namespace DresserMod
             }
         }
 
-        public static void CheckDirectory()
-        {
-            if(!Directory.Exists(AssetDirectory))
-            {
-                Directory.CreateDirectory(AssetDirectory);
-            }
-        }
-
-        public static void CreateJsonFile(string fileName)
+        public static void CreateJsonFile(string fileName, string directory)
         {
             var settings = new JsonSerializerSettings()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
-            File.WriteAllText(Path.Combine(AssetDirectory, fileName + ".json"), JsonConvert.SerializeObject(defaultJson, settings));
+            File.WriteAllText(Path.Combine(directory, fileName + ".json"), JsonConvert.SerializeObject(defaultJson, settings));
         }
+
+        public static void AddSubscriber(string path)
+        {
+            if (!subscribers.Contains(path))
+            {
+                subscribers.Add(path);
+                ReadFiles(path);
+            }
+        }
+        public static void RemoveSubscriber(string path)
+        {
+            if(subscribers.Contains(path))
+            {
+                subscribers.Remove(path);
+                Init();
+            }
+        }
+
+        private static void CheckDirectory()
+        {
+            if (!Directory.Exists(AssetDirectory))
+            {
+                Directory.CreateDirectory(AssetDirectory);
+            }
+        }
+
     }
 }

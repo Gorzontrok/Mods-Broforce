@@ -1,5 +1,10 @@
 ﻿v1.1.0:
 Added sick pigs ;  Wearers name: "SickPig"
+Added Denizen ; Wearers name: "Denizen"
+Added Snakes ; Wearers name: "Snake"
+Changed the method StorageRoom.ReadFiles so anyone can call it
+Added 'StorageRoom.AddSubscriber' and 'StorageRoom.RemoveSubscriber' to add/remove a directory which contains Attires
+Show attire path in GUI
 
 v1.0.0:
 Release

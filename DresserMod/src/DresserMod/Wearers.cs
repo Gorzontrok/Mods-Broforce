@@ -64,6 +64,18 @@ namespace DresserMod
                 if(animal.gameObject.name.Contains(SICK_PIG_GAMEOBJECT))
                     return SICK_PIG;
             }
+            else if (obj is AlienFaceHugger)
+            {
+                var animal = obj as AlienFaceHugger;
+                if(animal.gameObject.name.Contains(SNAKE_GAMEOBJECT))
+                    return SNAKE;
+            }
+            else if (obj is Villager)
+            {
+                var animal = obj as Villager;
+                if(animal.gameObject.name.Contains(DENIZEN))
+                    return DENIZEN;
+            }
             return obj.GetType().Name;
         }
         #region Characters
@@ -84,6 +96,9 @@ namespace DresserMod
         public const string SUICIDE_BRUISER = "SuicideBruiser";
         private const string SUICIDE_BRUISER_GAMEOBJECT = "ZMookSuicideBigGuy";
 
+        public const string SNAKE = "Snake";
+        private const string SNAKE_GAMEOBJECT = "ZSnake";
+
         #region Alien
         public const string XENOMORPHE_BRAINBOX = "XenomorpheBrainbox";
         private const string XENOMORPHE_BRAINBOX_GAMEOBJECT = "ZAlienXenomorphBrainBox";
@@ -94,6 +109,7 @@ namespace DresserMod
         // Citizens
         public const string PRESIDANT_US = "PresidantUS";
         private const string PRESIDANT_US_GAMEOBJECT = "Presidant_BillClinton";
+        public const string DENIZEN = "Denizen";
 
         public const string AGENT = "AgentCIA";
         private const string AGENT_GAMEOBJECT = "Agent";
