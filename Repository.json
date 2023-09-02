@@ -3,7 +3,7 @@
     [
         {"Id": "007_Patch", "Version": "1.4.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/007_Patch/Release/007_Patch.zip"},
         {"Id": "AutoEnterPassword", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/AutoEnterPassword/Release/AutoEnterPassword.zip"},
-        {"Id": "AvatarFaceHuggerMod", "Version": "1.0.2", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/AvatarFaceHugger/Release/AvatarFaceHuggerMod.zip"},
+        {"Id": "AvatarFaceHuggerMod", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/AvatarFaceHugger/Release/AvatarFaceHuggerMod.zip"},
         {"Id": "CustomHeroNameMod", "Version": "1.0.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/CustomHeroNameMod/Release/CustomHeroNameMod.zip"},
         {"Id": "DresserMod", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/DresserMod/Release/DresserMod.zip"},
         {"Id": "ExpendaBrosInGame", "Version": "1.3.0", "DownloadUrl": "https://github.com/Gorzon38/Mods-Broforce/raw/main/ExpendablesBrosInGame/Release/ExpendaBrosInGame.zip"},
