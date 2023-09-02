@@ -5,7 +5,7 @@ using System.Text;
 using TFBGames.Systems;
 using UnityEngine;
 
-namespace RocketLib.Extensions
+namespace RocketLib
 {
     public static class PlayerHUDExtensions
     {

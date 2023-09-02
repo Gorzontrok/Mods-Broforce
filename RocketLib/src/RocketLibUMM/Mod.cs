@@ -42,8 +42,7 @@ namespace RocketLibUMM
                 if (bindings.IsDown(i) && HeroController.PlayerIsAlive(i))
                 {
                     var character = HeroController.players[i].character;
-                    if(character.Is<Rambro>() || character.Is<TheBrocketeer>())
-                        character.SetGestureAnimation(gesture);
+                    character.SetGestureAnimation(gesture);
                 }
             }
         }

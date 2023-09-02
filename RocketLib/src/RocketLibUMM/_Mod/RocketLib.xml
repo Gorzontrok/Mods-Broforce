@@ -138,6 +138,16 @@
             <typeparam name="T">The component type.</typeparam>
             <param name="self"></param>
         </member>
+        <member name="M:RocketLib.StringExtensions.Dye(System.String,UnityEngine.Color)">
+            <summary>
+            Surround string with xml "color" tag
+            </summary>
+        </member>
+        <member name="M:RocketLib.StringExtensions.Dye(System.String,System.String)">
+            <summary>
+            Surround string with xml "color" tag
+            </summary>
+        </member>
         <member name="T:RocketLib.GamePassword">
             <summary>
             Add password to the game

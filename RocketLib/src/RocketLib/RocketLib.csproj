@@ -98,6 +98,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\PlayerHUDExtensions.cs" />
     <Compile Include="Extensions\SpriteSMExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TestVanDammeAnimExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="FloatRange.cs" />
