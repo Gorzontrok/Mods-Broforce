@@ -4,46 +4,22 @@ using UnityEngine;
 using UnityModManagerNet;
 using System.Reflection;
 
-namespace Avatar_FaceHugger_Mod
+namespace AvatarFaceHuggerMod
 {
     public static class Main
     {
         public static UnityModManager.ModEntry mod;
         public static bool enabled;
-        public static Settings settings;
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
             mod = modEntry;
-
-            //modEntry.OnGUI = OnGUI;
-            modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
-            settings = Settings.Load<Settings>(modEntry);
+
             var harmony = new Harmony(modEntry.Info.Id);
-            try
-            {
-                 var assembly = Assembly.GetExecutingAssembly();
-                 harmony.PatchAll(assembly);
-            }
-            catch (Exception ex)
-            {
-                mod.Logger.Log("Failed to Patch Harmony !\n" + ex.ToString());
-            }
-
+            var assembly = Assembly.GetExecutingAssembly();
+            harmony.PatchAll(assembly);
             return true;
-        }
-
-        /*static void OnGUI(UnityModManager.ModEntry modEntry)
-        {
-            //GUILayout.BeginHorizontal();
-            // OPTION FOR THE BUBBLE
-            //GUILayout.EndVertical();
-        }*/
-
-        static void OnSaveGUI(UnityModManager.ModEntry modEntry)
-        {
-            settings.Save(modEntry);
         }
 
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
@@ -51,21 +27,6 @@ namespace Avatar_FaceHugger_Mod
             enabled = value;
             return true;
         }
-        public static void Log(object str)
-        {
-            mod.Logger.Log(str.ToString());
-        }
-    }
-
-    public class Settings : UnityModManager.ModSettings
-    {
-        public bool bubbleEnabled;
-
-        public override void Save(UnityModManager.ModEntry modEntry)
-        {
-            Save(this, modEntry);
-        }
-
     }
 
     [HarmonyPatch(typeof(PlayerHUD), "ShowFaceHugger")]
@@ -73,17 +34,30 @@ namespace Avatar_FaceHugger_Mod
     {
         static void Prefix(PlayerHUD __instance)
         {
-            if (!Main.enabled) //If facehugger not enabled
-                return;        //Do nothing
+            if (!Main.enabled) return;
 
-            //Otherwise show the facehugger when alien on head of the Bro
-            //This code is just the opposite of HideFaceHugger()
             __instance.showFaceHugger = true;
             __instance.faceHugger1.SetSize(Traverse.Create(__instance).Field("avatarFacingDirection").GetValue<int>() * __instance.faceHugger1.width, __instance.faceHugger1.height);
-            __instance.avatar.SetLowerLeftPixel(new Vector2(__instance.faceHugger1.lowerLeftPixel.x, 1f)); //For some reason he makes the avatar transparent.
+            __instance.avatar.SetLowerLeftPixel(new Vector2(__instance.faceHugger1.lowerLeftPixel.x, 1f));
             __instance.faceHugger1.gameObject.SetActive(true);
+        }
+    }
+    [HarmonyPatch(typeof(PlayerHUD), "Start")]
+    static class Start_Patch
+    {
+        static void Postfix(PlayerHUD __instance)
+        {
+            if (!Main.enabled) return;
 
-            //Add a bubble
+            var shader = __instance.avatar.MeshRenderer.material.shader;
+            if (shader != null)
+            {
+                __instance.faceHugger1.meshRender.material.shader = shader;
+                __instance.faceHugger1.meshRender.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
+
+                __instance.faceHugger2.meshRender.material.shader = shader;
+                __instance.faceHugger2.meshRender.material.SetColor("_TintColor", new Color(0.5f, 0.5f, 0.5f, 0.5f));
+            }
         }
     }
 }

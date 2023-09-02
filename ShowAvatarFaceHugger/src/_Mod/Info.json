@@ -1,0 +1,9 @@
+ {
+    "Id": "AvatarFaceHuggerMod",
+    "DisplayName": "Face Hugger On Avatar",
+    "Author": "Gorzontrok",
+    "Version": "1.1.0",
+    "AssemblyName": "AvatarFaceHuggerMod.dll",
+    "EntryMethod": "AvatarFaceHuggerMod.Main.Load",
+    "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+}

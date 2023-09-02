@@ -7,8 +7,8 @@
     <ProjectGuid>{79C07EEC-D1A1-4129-A477-6026B516B949}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Avatar_FaceHugger</RootNamespace>
-    <AssemblyName>Avatar_FaceHugger</AssemblyName>
+    <RootNamespace>AvatarFaceHuggerMod</RootNamespace>
+    <AssemblyName>AvatarFaceHuggerMod</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,10 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\..\Program Files\UNITY_MOD_UTILITY\UnityModManager\0Harmony.dll</HintPath>
+      <HintPath>..\..\lib\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>D:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,29 +46,28 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>D:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\lib\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Broforce\Broforce_beta_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityModManager">
-      <HintPath>..\..\..\..\..\..\Program Files\UNITY_MOD_UTILITY\UnityModManager\UnityModManager.dll</HintPath>
+      <HintPath>..\..\lib\UnityModManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="_Mod\Changelog.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_Mod\Info.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "E:\SteamLibrary\steamapps\common\Broforce\Mods\AvatarFaceHuggerMod\$(ProjectName).dll*"</PostBuildEvent>
+    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(ProjectDir)\_Mod\$(ProjectName).dll*"
+start XCOPY /Y /I /S "$(ProjectDir)_Mod\*.*" "E:\SteamLibrary\steamapps\common\Broforce\Mods\$(ProjectName)\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

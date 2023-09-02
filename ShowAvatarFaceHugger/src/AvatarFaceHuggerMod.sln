@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1500
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avatar_FaceHugger", "Avatar_FaceHugger.csproj", "{79C07EEC-D1A1-4129-A477-6026B516B949}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvatarFaceHuggerMod", "AvatarFaceHuggerMod.csproj", "{79C07EEC-D1A1-4129-A477-6026B516B949}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
