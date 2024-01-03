@@ -78,6 +78,11 @@ namespace DresserMod
         private void PutOn(Traverse field, string key, object value)
         {
             string choice = (string)value;
+            if (string.IsNullOrEmpty(choice))
+            {
+                return;
+            }
+
             Type fieldType = field.GetValueType();
             if (fieldType == typeof(SpriteSM))
             {
