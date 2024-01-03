@@ -1,4 +1,7 @@
-﻿v1.1.0:
+﻿v1.2.0:
+Change the Wardrobe directory to 'Broforce\DM_Wardrobes\'. The old one is still use.
+
+v1.1.0:
 Added sick pigs ;  Wearers name: "SickPig"
 Added Denizen ; Wearers name: "Denizen"
 Added Snakes ; Wearers name: "Snake"
