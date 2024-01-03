@@ -7,7 +7,10 @@ namespace DresserMod
 {
     public static class StorageRoom
     {
+        [Obsolete("Use 'dresserModDirectory' instead")]
         public static readonly string AssetDirectory;
+        public static readonly string WardrobesDirectory;
+
         public static readonly Dictionary<string, string> defaultJson =  new Dictionary<string, string>()
         {
             { "Wearer", "" },
@@ -17,6 +20,11 @@ namespace DresserMod
         static StorageRoom()
         {
             AssetDirectory = Path.Combine(Main.mod.Path, "assets");
+            WardrobesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "DM_Wardrobes");
+            Main.Log(WardrobesDirectory);
+            subscribers = new List<string>();
+            subscribers.Add(AssetDirectory);
+            subscribers.Add(WardrobesDirectory);
         }
 
         public static Dictionary<string, Wardrobe> wardrobes = new Dictionary<string, Wardrobe>();
@@ -27,7 +35,6 @@ namespace DresserMod
         {
             wardrobes.Clear();
             CheckDirectory();
-            ReadFiles(AssetDirectory, SearchOption.AllDirectories);
             foreach(var subscriber in subscribers)
             {
                 ReadFiles(subscriber, SearchOption.AllDirectories);
@@ -88,6 +95,10 @@ namespace DresserMod
             if (!Directory.Exists(AssetDirectory))
             {
                 Directory.CreateDirectory(AssetDirectory);
+            }
+            if (!Directory.Exists(WardrobesDirectory))
+            {
+                Directory.CreateDirectory(WardrobesDirectory);
             }
         }
 

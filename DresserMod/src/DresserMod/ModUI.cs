@@ -150,7 +150,7 @@ namespace DresserMod
             _fileName = GUILayout.TextField(_fileName, GUILayout.Width(200), GUILayout.ExpandWidth(false));
             if(GUILayout.Button("Create JSON File", GUILayout.Width(200)))
             {
-                StorageRoom.CreateJsonFile(_fileName, StorageRoom.AssetDirectory);
+                StorageRoom.CreateJsonFile(_fileName, StorageRoom.WardrobesDirectory);
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
