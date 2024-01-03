@@ -5,3 +5,4 @@
 *.cs.beta
 *.beta/
 *.DS_Store
+**/_Mod/*.dll
