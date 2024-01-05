@@ -7,8 +7,8 @@
     <ProjectGuid>{59C1B0B9-CCB8-40E8-B3DE-7EC10A40514A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>_007_Patch</RootNamespace>
-    <AssemblyName>007_Patch</AssemblyName>
+    <RootNamespace>DoubleBroSevenTrained</RootNamespace>
+    <AssemblyName>DoubleBroSevenTrained</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -40,6 +40,9 @@
     <Reference Include="BitCode.AssetManagement">
       <HintPath>..\..\lib\BitCode.AssetManagement.dll</HintPath>
     </Reference>
+    <Reference Include="RocketLib">
+      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Mods\RocketLib\RocketLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +55,10 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\..\lib\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
@@ -60,8 +67,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DoubleBroSevenPatches.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Trained007.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="_Mod\Info.json" />
