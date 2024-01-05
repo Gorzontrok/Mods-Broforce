@@ -1,3 +1,12 @@
+v2.0.0:
+Rename the mod "007_Patch" to "007 Trained"
+Removed the weird Martini
+Rework the UI
+Added RocketLib as a Dependency
+Add a balaclava on the avatar. Thanks to BruxelasCouveRocko !
+Add some configs to tweak 007
+[Internal] Moved patches to 'DoubleBroSevenPatches' file
+
 v1.4.0:
 Fix the special
 Remove the image in folder.

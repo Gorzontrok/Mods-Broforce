@@ -1,9 +1,11 @@
 {
-    "Id": "007_Patch",
-    "DisplayName": "007_Patch",
-    "Author": "Gorzon",
-    "Version": "1.4.0",
-    "AssemblyName": "007_Patch.dll",
-    "EntryMethod": "_007_Patch.Main.Load",
-    "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+  "Id": "007_Patch",
+  "DisplayName": "007 Trained",
+  "Author": "Gorzontrok",
+  "Version": "2.0.0",
+  "Requirements": [ "RocketLib" ],
+  "LoadAfter": [ "RocketLib" ],
+  "AssemblyName": "DoubleBroSevenTrained.dll",
+  "EntryMethod": "DoubleBroSevenTrained.Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/main/Repository.json"
 }
