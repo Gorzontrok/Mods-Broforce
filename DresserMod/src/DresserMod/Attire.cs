@@ -50,29 +50,6 @@ namespace DresserMod
             string[] keys = clothes.Keys.ToArray();
 
             obj.DynamicFieldsValueSetter(clothes.ToDictionary((p) =>  p.Key, (p) => (object)p.Value), new string[] { WEARER_KEY, NAME_KEY }, PutOn);
-            /*
-            foreach (string key in keys)
-            {
-                if (key == WEARER_KEY || key == NAME_KEY) continue;
-                try
-                {
-                    string choice = clothes[key];
-                    var field = traverse;
-                    string[] path = key.Split('/');
-                    foreach (string variable in path)
-                    {
-                        field = field.Field(variable);
-                    }
-                    PutOn(field, choice);
-                }
-                catch (NullReferenceException e)
-                { }
-                catch (Exception e)
-                {
-                    Main.Log(e);
-                }
-
-            }*/
         }
 
         private void PutOn(Traverse field, string key, object value)
