@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace DresserMod
 {
+    [Obsolete("Use FuturisticAttire")]
     public class Attire
     {
         public const string WEARER_KEY = "Wearer";

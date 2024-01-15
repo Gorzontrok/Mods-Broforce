@@ -156,6 +156,10 @@ namespace DresserMod
             {
                 StorageRoom.CreateJsonFile(_fileName, StorageRoom.WardrobesDirectory);
             }
+            if(GUILayout.Button("Create JSON File", GUILayout.Width(200)))
+            {
+                StorageRoom.CreateJsonFile(_fileName, StorageRoom.WardrobesDirectory);
+            }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }

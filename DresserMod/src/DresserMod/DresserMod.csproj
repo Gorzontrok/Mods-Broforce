@@ -37,6 +37,10 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\lib\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="BitCode.AssetManagement, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\BitCode.AssetManagement.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Mods\RocketLib\Newtonsoft.Json.dll</HintPath>
@@ -67,9 +71,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FuturisticAttire.cs" />
     <Compile Include="ModUI.cs" />
     <Compile Include="Patches\BroforceObjects.cs" />
     <Compile Include="Patches\NetworkObjects.cs" />
+    <Compile Include="ResourcesController.cs" />
+    <Compile Include="VariableSetter.cs" />
     <Compile Include="Wardrobe.cs" />
     <Compile Include="Wearers.cs" />
     <Compile Include="Attire.cs" />
