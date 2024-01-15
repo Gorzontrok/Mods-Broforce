@@ -21,7 +21,7 @@ namespace DresserMod
         {
             AssetDirectory = Path.Combine(Main.mod.Path, "assets");
             WardrobesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "DM_Wardrobes");
-            Main.Log(WardrobesDirectory);
+
             subscribers = new List<string>();
             subscribers.Add(AssetDirectory);
             subscribers.Add(WardrobesDirectory);
@@ -46,6 +46,9 @@ namespace DresserMod
             string[] files = Directory.GetFiles(directory, "*.json", searchOption);
             foreach (string file in files)
             {
+                if (Path.GetFileName(file).ToLower() == "info.json")
+                    continue;
+
                 try
                 {
                     Attire attire = Attire.ReadJson(file);
