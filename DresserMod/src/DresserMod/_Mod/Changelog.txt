@@ -1,5 +1,7 @@
 ﻿v1.2.0:
 Change the Wardrobe directory to 'Broforce\DM_Wardrobes\'. The old one is still use.
+Rework some part of the UI
+Fixed Info.json being read by the mod
 
 v1.1.0:
 Added sick pigs ;  Wearers name: "SickPig"

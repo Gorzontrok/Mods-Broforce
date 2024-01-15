@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -67,13 +68,14 @@ namespace DresserMod
         private static void StorageBrowser()
         {
 
+            // Wardrobes
             try
             {
-                if (_wardrobeError) return;
-                // Wardrobes
-                GUILayout.BeginVertical("Wardrobes", GUI.skin.box, GUILayout.Width(250), GUILayout.Height(200));
+                if (_wardrobeError)
+                    return;
+                GUILayout.BeginVertical("Wardrobes", GUI.skin.box, GUILayout.Width(300), GUILayout.Height(250));
                 GUILayout.Space(15);
-                _scrollViewVectorWardrobes = GUILayout.BeginScrollView(_scrollViewVectorWardrobes, GUILayout.Height(200));
+                _scrollViewVectorWardrobes = GUILayout.BeginScrollView(_scrollViewVectorWardrobes, GUILayout.Height(250));
                 foreach (KeyValuePair<string, Wardrobe> pair in StorageRoom.wardrobes)
                 {
                     if (GUILayout.Button(pair.Key))
@@ -91,14 +93,15 @@ namespace DresserMod
                 _wardrobeError = true;
             }
 
+            // Attires
             try
             {
-                if (_attireError || _selectedWardrobe == null) return;
-                // Attires
-                GUILayout.Space(30);
-                GUILayout.BeginVertical(_selectedWardrobe.wearers, GUI.skin.box, GUILayout.Width(200), GUILayout.Height(200));
+                if (_attireError || _selectedWardrobe == null)
+                    return;
+                GUILayout.Space(20);
+                GUILayout.BeginVertical(_selectedWardrobe.wearers, GUI.skin.box, GUILayout.Width(300), GUILayout.Height(250));
                 GUILayout.Space(15);
-                _scrollViewVectorAttires = GUILayout.BeginScrollView(_scrollViewVectorAttires, GUILayout.Height(200));
+                _scrollViewVectorAttires = GUILayout.BeginScrollView(_scrollViewVectorAttires, GUILayout.Height(250));
                 foreach (Attire attire in _selectedWardrobe.attires)
                 {
                     if (GUILayout.Button(attire.name))
@@ -115,16 +118,17 @@ namespace DresserMod
                 _attireError = true;
             }
 
+            // Clothes
             try
             {
-                if (_clothesError || _selectedAttire == null) return;
-                // Clothes
-                GUILayout.Space(30);
-                GUILayout.BeginVertical(_selectedAttire.name, GUI.skin.box, GUILayout.Width(500), GUILayout.Height(200));
+                if (_clothesError || _selectedAttire == null)
+                    return;
+                GUILayout.Space(20);
+                GUILayout.BeginVertical(_selectedAttire.name, GUI.skin.box, GUILayout.Width(500), GUILayout.Height(250));
                 GUILayout.Space(15);
-                GUILayout.Label("Path: \n" + _selectedAttire.directory);
+                _scrollViewVectorClothes = GUILayout.BeginScrollView(_scrollViewVectorClothes, GUILayout.Height(250));
+                GUILayout.Label("Path: \n" + PathWithBroforceAtFirst(_selectedAttire.directory));
                 GUILayout.Space(10);
-                _scrollViewVectorClothes = GUILayout.BeginScrollView(_scrollViewVectorClothes, GUILayout.Height(200));
                 foreach (KeyValuePair<string, string> pair in _selectedAttire.clothes)
                 {
                     GUILayout.Label($"\"{pair.Key}\": \"{pair.Value}\"");
@@ -154,6 +158,12 @@ namespace DresserMod
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
+        }
+
+        public static string PathWithBroforceAtFirst(string path)
+        {
+            int startIndex = Directory.GetParent(Directory.GetCurrentDirectory()).FullName.Length;
+            return path.Substring(startIndex, path.Length - startIndex);
         }
     }
 }
