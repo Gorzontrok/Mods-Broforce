@@ -19,10 +19,16 @@ namespace DresserMod
         public string name = string.Empty;
         public string wearer = string.Empty;
         public string directory = string.Empty;
+
+        [JsonIgnore]
+        public bool enabled = true;
+
         public Attire(string name, string directory)
         {
             this.name = name;
             this.directory = directory;
+
+            this.enabled = !Main.settings.unactiveFiles.Contains(directory);
         }
 
         public static Attire ReadJson(string file)

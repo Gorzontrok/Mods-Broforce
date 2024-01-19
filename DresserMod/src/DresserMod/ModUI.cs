@@ -127,6 +127,19 @@ namespace DresserMod
                 GUILayout.BeginVertical(_selectedAttire.name, GUI.skin.box, GUILayout.Width(500), GUILayout.Height(250));
                 GUILayout.Space(15);
                 _scrollViewVectorClothes = GUILayout.BeginScrollView(_scrollViewVectorClothes, GUILayout.Height(250));
+                if (GUILayout.Button(_selectedAttire.enabled ? "Enabled" : "Disabled"))
+                {
+                    _selectedAttire.enabled = !_selectedAttire.enabled;
+                    if (!_selectedAttire.enabled)
+                    {
+                        Main.settings.unactiveFiles.Add(_selectedAttire.name);
+                    }
+                    else if (Main.settings.unactiveFiles.Contains(_selectedAttire.name))
+                    {
+                        Main.settings.unactiveFiles.Remove(_selectedAttire.name);
+                    }
+
+                }
                 GUILayout.Label("Path: \n" + PathWithBroforceAtFirst(_selectedAttire.directory));
                 GUILayout.Space(10);
                 foreach (KeyValuePair<string, string> pair in _selectedAttire.clothes)

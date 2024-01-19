@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DresserMod
 {
@@ -36,14 +37,18 @@ namespace DresserMod
 
         public Attire RandomAttire()
         {
+            Attire[] activeAttires = attires.Where(a => a.enabled).ToArray();
+            if (activeAttires.Length <= 0)
+                return null;
+
             if(Main.settings.canUseDefaultSkin)
             {
-                int val = UnityEngine.Random.Range(0, attires.Count + 1);
-                if (val >= attires.Count)
+                int val = UnityEngine.Random.Range(0, activeAttires.Length + 1);
+                if (val >= activeAttires.Length)
                     return null;
-                return attires[val];
+                return activeAttires[val];
             }
-            return attires.RandomElement();
+            return activeAttires.RandomElement();
         }
 
         public void SetRandomAttire(object obj)

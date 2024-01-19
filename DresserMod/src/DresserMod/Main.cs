@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Collections.Generic;
 using HarmonyLib;
 using UnityModManagerNet;
 
@@ -81,6 +82,7 @@ namespace DresserMod
     public class Settings : UnityModManager.ModSettings
     {
         public bool canUseDefaultSkin;
+        public List<string> unactiveFiles = new List<string>();
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
