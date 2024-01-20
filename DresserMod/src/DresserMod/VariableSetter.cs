@@ -16,14 +16,13 @@ namespace DresserMod
             {
                 setter = (t, s, o) => t.SetValue(o);
             }
-
             Traverse traverse = obj.GetTraverse();
             var field = traverse;
             foreach (KeyValuePair<string, object> kvp in map)
             {
                 try
                 {
-                    field = traverse.FindFieldWithPath(kvp.Key);
+                    field = FindFieldWithPath(traverse, kvp.Key);
                     setter(field, kvp.Key, kvp.Value);
                 }
 #pragma warning disable 0168
@@ -32,15 +31,19 @@ namespace DresserMod
                 { }
                 catch (Exception e)
                 {
-                    ScreenLogger.Instance.ExceptionLog($"Key: {kvp.Key} ; Value: {kvp.Value}\nAt type field {field.GetValueType()}", e);
+                    Main.Log($"Key: {kvp.Key} ; Value: {kvp.Value}\nAt type field {field.GetValueType()}\n" + e);
                 }
             }
         }
 
-        public static Traverse FindFieldWithPath(this Traverse traverse, string fieldPath)
+        public static Traverse FindFieldWithPath(Traverse traverse, string fieldPath)
         {
+            if (fieldPath.IsNullOrEmpty())
+                throw new ArgumentNullException(nameof(fieldPath));
+
             var field = traverse;
             string[] path = fieldPath.Split(PATH_SEPARATOR);
+
             foreach (string variable in path)
             {
                 if (variable.StartsWith("__C_"))
