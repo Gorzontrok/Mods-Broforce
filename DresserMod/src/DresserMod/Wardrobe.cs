@@ -7,9 +7,9 @@ namespace DresserMod
     public class Wardrobe : IEquatable<Wardrobe>
     {
         public string wearers = string.Empty;
-        public List<Attire> attires = new List<Attire>();
+        public List<IAttire> attires = new List<IAttire>();
 
-        public Attire this[int index]
+        public IAttire this[int index]
         {
             get
             {
@@ -24,7 +24,7 @@ namespace DresserMod
             this.wearers = wearers;
         }
 
-        public void AddAttire(Attire attire)
+        public void AddAttire(IAttire attire)
         {
             attires.Add(attire);
         }
@@ -35,9 +35,9 @@ namespace DresserMod
             return other.wearers == wearers;
         }
 
-        public Attire RandomAttire()
+        public IAttire RandomAttire()
         {
-            Attire[] activeAttires = attires.Where(a => a.enabled).ToArray();
+            IAttire[] activeAttires = attires.Where(a => a.Enabled).ToArray();
             if (activeAttires.Length <= 0)
                 return null;
 
@@ -53,7 +53,8 @@ namespace DresserMod
 
         public void SetRandomAttire(object obj)
         {
-            if(attires.Count == 0) return;
+            if(attires.Count == 0)
+                return;
             try
             {
                 var attire = RandomAttire();
