@@ -1,4 +1,12 @@
-﻿v1.1.0:
+﻿v1.2.0:
+Change the Wardrobe directory to 'Broforce\DM_Wardrobes\'. The old one is still use.
+Rework some part of the UI
+Fixed Info.json files being read by the mod
+Anything that has a Renderer component can be changed in Clothes. Which means Projectile and Grenade
+New version of Attires. The json has changed and posiiblity to change variables values. Similar to BroMaker.
+Possibility to put multiple attires in a single files with Attires Collection
+
+v1.1.0:
 Added sick pigs ;  Wearers name: "SickPig"
 Added Denizen ; Wearers name: "Denizen"
 Added Snakes ; Wearers name: "Snake"
