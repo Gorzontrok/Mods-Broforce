@@ -10,11 +10,11 @@ namespace DresserMod.Patches.NetworkObjects
             if (!Main.CanPatch) return;
 
             string name = Wearers.GetWearerName(__instance);
-            if (StorageRoom.wardrobes.ContainsKey(name))
+            if (StorageRoom.Wardrobes.ContainsKey(name))
             {
                 try
                 {
-                    StorageRoom.wardrobes[name].SetRandomAttire(__instance);
+                    StorageRoom.Wardrobes[name].SetRandomAttire(__instance);
                 }
                 catch (Exception e)
                 {
@@ -32,11 +32,11 @@ namespace DresserMod.Patches.NetworkObjects
             if (!Main.CanPatch) return;
 
             string name = Wearers.GetWearerName(__instance);
-            if (StorageRoom.wardrobes.ContainsKey(name))
+            if (StorageRoom.Wardrobes.ContainsKey(name))
             {
                 try
                 {
-                    StorageRoom.wardrobes[name].SetRandomAttire(__instance);
+                    StorageRoom.Wardrobes[name].SetRandomAttire(__instance);
                 }
                 catch (Exception e)
                 {

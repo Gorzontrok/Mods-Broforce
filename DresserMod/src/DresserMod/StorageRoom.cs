@@ -7,10 +7,11 @@ namespace DresserMod
 {
     public static class StorageRoom
     {
-        [Obsolete("Use 'dresserModDirectory' instead")]
+        [Obsolete("Use 'WardrobesDirectory' instead")]
         public static readonly string AssetDirectory;
         public static readonly string WardrobesDirectory;
 
+        [Obsolete("Not use since 'FuturisticAttires")]
         public static readonly Dictionary<string, string> defaultJson =  new Dictionary<string, string>()
         {
             { "Wearer", "" },
@@ -27,13 +28,18 @@ namespace DresserMod
             subscribers.Add(WardrobesDirectory);
         }
 
-        public static Dictionary<string, Wardrobe> wardrobes = new Dictionary<string, Wardrobe>();
+        public static Dictionary<string, Wardrobe> Wardrobes
+        {
+            get => _wardrobes;
+        }
+
+        private static Dictionary<string, Wardrobe> _wardrobes = new Dictionary<string, Wardrobe>();
 
         private static List<string> subscribers = new List<string>();
 
-        public static void Init()
+        public static void Initialize()
         {
-            wardrobes.Clear();
+            _wardrobes.Clear();
             CheckDirectory();
             foreach(var subscriber in subscribers)
             {
@@ -49,21 +55,52 @@ namespace DresserMod
                 if (Path.GetFileName(file).ToLower() == "info.json")
                     continue;
 
+                    IAttire attire = null;
                 try
                 {
-                    Attire attire = Attire.ReadJson(file);
-                    if(attire == null) continue;
-                    string key = attire.wearer;
-                    if (!wardrobes.ContainsKey(key))
+                    if (file.EndsWith(".fa.json")) // It's a FuturisticAttire
                     {
-                        wardrobes.Add(key, new Wardrobe(key));
+                        attire = FuturisticAttire.TryLoadFromJson(file);
                     }
-                    wardrobes[key].AddAttire(attire);
+                    else if (file.EndsWith(".ac.json"))
+                    {
+                        AttireCollection collection = AttireCollection.TryLoadFromJson(file);
+                        if (collection != null)
+                        {
+                            LoadAttiresFromCollection(collection);
+                        }
+                    }
+                    else
+                    {
+                        attire = Attire.TryReadJson(file);
+                    }
                 }
                 catch(Exception ex)
                 {
                     Main.Log($"{file}:\n" + ex);
                 }
+
+                if (attire != null)
+                {
+                    RegisterAttire(attire);
+                }
+            }
+        }
+
+        private static void RegisterAttire(IAttire attire)
+        {
+            if (!_wardrobes.ContainsKey(attire.Wearer)) // Creat Wardrobes
+            {
+                _wardrobes.Add(attire.Wearer, new Wardrobe(attire.Wearer));
+            }
+            _wardrobes[attire.Wearer].AddAttire(attire); // Add Attire to wardrobe
+        }
+
+        private static void LoadAttiresFromCollection(AttireCollection attireCollection)
+        {
+            foreach(FuturisticAttire attire in attireCollection.Attires)
+            {
+                RegisterAttire(attire);
             }
         }
 
@@ -74,6 +111,22 @@ namespace DresserMod
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
             File.WriteAllText(Path.Combine(directory, fileName + ".json"), JsonConvert.SerializeObject(defaultJson, settings));
+        }
+        public static void CreateFuturisticAttireJsonFile(string fileName, string directory)
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            File.WriteAllText(Path.Combine(directory, fileName + ".fa.json"), JsonConvert.SerializeObject(new FuturisticAttire(fileName, directory), Formatting.Indented, settings));
+        }
+        public static void CreateAttireCollectionJsonFile(string fileName, string directory)
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            File.WriteAllText(Path.Combine(directory, fileName + ".ac.json"), JsonConvert.SerializeObject(new AttireCollection(), Formatting.Indented, settings));
         }
 
         public static void AddSubscriber(string path)
@@ -89,7 +142,7 @@ namespace DresserMod
             if(subscribers.Contains(path))
             {
                 subscribers.Remove(path);
-                Init();
+                Initialize();
             }
         }
 
@@ -104,6 +157,5 @@ namespace DresserMod
                 Directory.CreateDirectory(WardrobesDirectory);
             }
         }
-
     }
 }

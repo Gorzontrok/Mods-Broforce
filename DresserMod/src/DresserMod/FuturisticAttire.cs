@@ -8,22 +8,27 @@ using UnityEngine;
 
 namespace DresserMod
 {
-    public class FuturisticAttire
+    public class FuturisticAttire : IAttire
     {
-        public string Name { get; set; }
-        public string Wearer { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Wearer { get; set; } = string.Empty;
+        [JsonIgnore]
+        public string Directory { get; set; } = string.Empty;
+        [JsonIgnore]
+        public bool Enabled { get; set; } = true;
+        [JsonIgnore]
+        public string Id { get => Wearer + '-' + Name; }
         // variable name, image path
         public Dictionary<string, string> Clothes { get; set; } = new Dictionary<string, string>();
+
         // variable name, value
         public Dictionary<string, object> Stats { get; set; } = new Dictionary<string, object>();
-
-        [JsonIgnore]
-        public string directory = string.Empty;
 
         public FuturisticAttire(string name, string directory)
         {
             Name = name;
-            this.directory = directory;
+            this.Directory = directory;
+            this.Enabled = !Main.settings.unactiveFiles.Contains(Id);
         }
 
         public static FuturisticAttire TryLoadFromJson(string file)
@@ -37,13 +42,13 @@ namespace DresserMod
 
             FuturisticAttire futuristicAttire = JsonConvert.DeserializeObject<FuturisticAttire>(json);
 
-            if (!futuristicAttire.Wearer.IsNullOrEmpty())
+            if (futuristicAttire.Wearer.IsNullOrEmpty())
                 throw new MissingFieldException("Wearer field is null or empty");
 
             if (futuristicAttire.Name.IsNullOrEmpty())
                 futuristicAttire.Name = Path.GetFileName(file);
 
-            futuristicAttire.directory = Path.GetDirectoryName(file);
+            futuristicAttire.Directory = Path.GetDirectoryName(file);
             return futuristicAttire;
         }
 
@@ -52,11 +57,20 @@ namespace DresserMod
             Traverse traverse = obj.GetTraverse();
             string[] keys = Clothes.Keys.ToArray();
 
-            // Change sprites
-            VariableSetter.Dynamic(this, Clothes.ToDictionary((p) => p.Key, (p) => (object)p.Value), PutOnCloth);
+            try
+            {
+                // Change the variables
+                if (Main.settings.useStats)
+                    VariableSetter.Dynamic(obj, Stats, TweakWearer);
 
-            // Change the variables
-            VariableSetter.Dynamic(this, Stats, TweakWearer);
+                // Change sprites
+                VariableSetter.Dynamic(obj, Clothes.ToDictionary((p) => p.Key, (p) => (object)p.Value), PutOnCloth);
+            }
+            catch (Exception ex)
+            {
+                Main.Log(ex);
+            }
+
         }
 
         private void PutOnCloth(Traverse field, string key, object value)
@@ -66,12 +80,11 @@ namespace DresserMod
             {
                 return;
             }
-
             Type fieldType = field.GetValueType();
             if (fieldType == typeof(SpriteSM))
             {
                 SpriteSM sprite = field.GetValue<SpriteSM>();
-                var tex = ResourcesController.GetTexture(directory, choice);
+                var tex = ResourcesController.GetTexture(Directory, choice);
                 if (tex != null)
                 {
                     sprite.SetTexture(tex);
@@ -81,7 +94,7 @@ namespace DresserMod
             else if (fieldType == typeof(Material))
             {
                 Material material = field.GetValue<Material>();
-                var tex = ResourcesController.GetTexture(directory, choice);
+                var tex = ResourcesController.GetTexture(Directory, choice);
                 if (tex != null)
                 {
                     material.mainTexture = (Texture)tex;
@@ -90,17 +103,17 @@ namespace DresserMod
             }
             else if (fieldType == typeof(Texture))
             {
-                var tex = ResourcesController.GetTexture(directory, choice);
+                var tex = ResourcesController.GetTexture(Directory, choice);
                 if (tex != null)
                     field.SetValue((Texture)tex);
             }
             else if (fieldType == typeof(Texture2D))
             {
-                var tex = ResourcesController.GetTexture(directory, choice);
+                var tex = ResourcesController.GetTexture(Directory, choice);
                 if (tex != null)
                     field.SetValue((Texture2D)tex);
             }
-            else if (fieldType == typeof(Component) || fieldType.IsAssignableFrom(typeof(Component)))
+            else if (typeof(Component).IsAssignableFrom(fieldType))
             {
                 Renderer renderer = field.GetValue<Component>().GetComponent<Renderer>();
                 if (renderer != null)
@@ -108,13 +121,13 @@ namespace DresserMod
                     Material material = renderer.material;
                     if (material != null)
                     {
-                        var tex = ResourcesController.GetTexture(directory, choice);
+                        var tex = ResourcesController.GetTexture(Directory, choice);
                         if (tex != null)
                             material.mainTexture = tex;
                     }
                 }
             }
-            else if (fieldType == typeof(GameObject) || fieldType.IsAssignableFrom(typeof(GameObject)))
+            else if (typeof(GameObject).IsAssignableFrom(fieldType))
             {
                 Renderer renderer = field.GetValue<GameObject>().GetComponent<Renderer>();
                 if (renderer != null)
@@ -122,7 +135,7 @@ namespace DresserMod
                     Material material = renderer.material;
                     if (material != null)
                     {
-                        var tex = ResourcesController.GetTexture(directory, choice);
+                        var tex = ResourcesController.GetTexture(Directory, choice);
                         if (tex != null)
                             material.mainTexture = tex;
                     }

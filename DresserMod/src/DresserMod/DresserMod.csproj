@@ -71,7 +71,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttireCollection.cs" />
     <Compile Include="FuturisticAttire.cs" />
+    <Compile Include="IAttire.cs" />
     <Compile Include="ModUI.cs" />
     <Compile Include="Patches\BroforceObjects.cs" />
     <Compile Include="Patches\NetworkObjects.cs" />

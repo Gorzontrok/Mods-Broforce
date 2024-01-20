@@ -9,29 +9,35 @@ using UnityEngine;
 namespace DresserMod
 {
     [Obsolete("Use FuturisticAttire")]
-    public class Attire
+    public class Attire : IAttire
     {
         public const string WEARER_KEY = "Wearer";
         public const string NAME_KEY = "Name";
 
-        // variable name, image path
-        public Dictionary<string, string> clothes = new Dictionary<string, string>();
-        public string name = string.Empty;
-        public string wearer = string.Empty;
-        public string directory = string.Empty;
-
+        // IAttire variables
+        public string Name { get; set; }
+        public string Wearer { get; set; }
         [JsonIgnore]
-        public bool enabled = true;
+        public string Directory { get; set; }
+        [JsonIgnore]
+        public bool Enabled { get; set; }
+        [JsonIgnore]
+        public string Id { get => Wearer + '-' + Name; }
+
+        /// <summary>
+        /// Key: Variable Name ; Value: image
+        /// </summary>
+        public Dictionary<string, string> Clothes { get; set; } = new Dictionary<string, string>();
 
         public Attire(string name, string directory)
         {
-            this.name = name;
-            this.directory = directory;
+            this.Name = name;
+            this.Directory = directory;
 
-            this.enabled = !Main.settings.unactiveFiles.Contains(directory);
+            this.Enabled = !Main.settings.unactiveFiles.Contains(Id);
         }
 
-        public static Attire ReadJson(string file)
+        public static Attire TryReadJson(string file)
         {
             var json = File.ReadAllText(file);
             var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
@@ -44,8 +50,8 @@ namespace DresserMod
                 name = dict[NAME_KEY];
             var result = new Attire(name, Path.GetDirectoryName(file))
             {
-                clothes = dict,
-                wearer = dict[WEARER_KEY]
+                Clothes = dict,
+                Wearer = dict[WEARER_KEY]
             };
             return result;
         }
@@ -54,9 +60,9 @@ namespace DresserMod
         public void SuitUp(object obj)
         {
             Traverse traverse = obj.GetTraverse();
-            string[] keys = clothes.Keys.ToArray();
+            string[] keys = Clothes.Keys.ToArray();
 
-            obj.DynamicFieldsValueSetter(clothes.ToDictionary((p) =>  p.Key, (p) => (object)p.Value), new string[] { WEARER_KEY, NAME_KEY }, PutOn);
+            obj.DynamicFieldsValueSetter(Clothes.ToDictionary((p) =>  p.Key, (p) => (object)p.Value), new string[] { WEARER_KEY, NAME_KEY }, PutOn);
         }
 
         private void PutOn(Traverse field, string key, object value)
@@ -97,7 +103,7 @@ namespace DresserMod
         private Texture CreateTexture(string path)
         {
             Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-            tex.LoadImage(File.ReadAllBytes(Path.Combine(directory, path)));
+            tex.LoadImage(File.ReadAllBytes(Path.Combine(Directory, path)));
             tex.filterMode = FilterMode.Point;
             tex.anisoLevel = 1;
             tex.mipMapBias = 0;

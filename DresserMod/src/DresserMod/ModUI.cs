@@ -22,7 +22,7 @@ namespace DresserMod
         private static Action[] _tabsAction;
 
         private static Wardrobe _selectedWardrobe = null;
-        private static Attire _selectedAttire = null;
+        private static IAttire _selectedAttire = null;
 
         private static bool _wardrobeError = false;
         private static bool _attireError = false;
@@ -34,9 +34,9 @@ namespace DresserMod
         {
             _tabs = new string[] { "Storage Browser", "Settings" };
             _tabsAction = new Action[] { StorageBrowser, SettingGUI };
-            if(StorageRoom.wardrobes.Count > 0)
+            if(StorageRoom.Wardrobes.Count > 0)
             {
-                _selectedWardrobe = StorageRoom.wardrobes.First().Value;
+                _selectedWardrobe = StorageRoom.Wardrobes.First().Value;
                 _selectedAttire = _selectedWardrobe[0];
             }
             _wardrobeError = false;
@@ -48,7 +48,7 @@ namespace DresserMod
         {
             if (GUILayout.Button(new GUIContent("Reload Mod"), GUILayout.Width(200)))
             {
-                StorageRoom.Init();
+                StorageRoom.Initialize();
                 Initialize();
             }
 
@@ -76,7 +76,7 @@ namespace DresserMod
                 GUILayout.BeginVertical("Wardrobes", GUI.skin.box, GUILayout.Width(300), GUILayout.Height(250));
                 GUILayout.Space(15);
                 _scrollViewVectorWardrobes = GUILayout.BeginScrollView(_scrollViewVectorWardrobes, GUILayout.Height(250));
-                foreach (KeyValuePair<string, Wardrobe> pair in StorageRoom.wardrobes)
+                foreach (KeyValuePair<string, Wardrobe> pair in StorageRoom.Wardrobes)
                 {
                     if (GUILayout.Button(pair.Key))
                     {
@@ -102,9 +102,9 @@ namespace DresserMod
                 GUILayout.BeginVertical(_selectedWardrobe.wearers, GUI.skin.box, GUILayout.Width(300), GUILayout.Height(250));
                 GUILayout.Space(15);
                 _scrollViewVectorAttires = GUILayout.BeginScrollView(_scrollViewVectorAttires, GUILayout.Height(250));
-                foreach (Attire attire in _selectedWardrobe.attires)
+                foreach (IAttire attire in _selectedWardrobe.attires)
                 {
-                    if (GUILayout.Button(attire.name))
+                    if (GUILayout.Button(attire.Name))
                     {
                         _selectedAttire = attire;
                     }
@@ -124,25 +124,25 @@ namespace DresserMod
                 if (_clothesError || _selectedAttire == null)
                     return;
                 GUILayout.Space(20);
-                GUILayout.BeginVertical(_selectedAttire.name, GUI.skin.box, GUILayout.Width(500), GUILayout.Height(250));
+                GUILayout.BeginVertical(_selectedAttire.Name, GUI.skin.box, GUILayout.Width(500), GUILayout.Height(250));
                 GUILayout.Space(15);
                 _scrollViewVectorClothes = GUILayout.BeginScrollView(_scrollViewVectorClothes, GUILayout.Height(250));
-                if (GUILayout.Button(_selectedAttire.enabled ? "Enabled" : "Disabled"))
+                if (GUILayout.Button(_selectedAttire.Enabled ? "Enabled" : "Disabled"))
                 {
-                    _selectedAttire.enabled = !_selectedAttire.enabled;
-                    if (!_selectedAttire.enabled)
+                    _selectedAttire.Enabled = !_selectedAttire.Enabled;
+                    if (!_selectedAttire.Enabled)
                     {
-                        Main.settings.unactiveFiles.Add(_selectedAttire.name);
+                        Main.settings.unactiveFiles.Add(_selectedAttire.Id);
                     }
-                    else if (Main.settings.unactiveFiles.Contains(_selectedAttire.name))
+                    else if (Main.settings.unactiveFiles.Contains(_selectedAttire.Id))
                     {
-                        Main.settings.unactiveFiles.Remove(_selectedAttire.name);
+                        Main.settings.unactiveFiles.Remove(_selectedAttire.Id);
                     }
 
                 }
-                GUILayout.Label("Path: \n" + PathWithBroforceAtFirst(_selectedAttire.directory));
+                GUILayout.Label("Path: \n" + PathWithBroforceAtFirst(_selectedAttire.Directory));
                 GUILayout.Space(10);
-                foreach (KeyValuePair<string, string> pair in _selectedAttire.clothes)
+                foreach (KeyValuePair<string, string> pair in _selectedAttire.Clothes)
                 {
                     GUILayout.Label($"\"{pair.Key}\": \"{pair.Value}\"");
                 }
@@ -162,18 +162,21 @@ namespace DresserMod
             GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(1000), GUILayout.Height(100));
 
             Settings.canUseDefaultSkin = GUILayout.Toggle(Settings.canUseDefaultSkin, "Can have default skin");
+            Settings.useStats = GUILayout.Toggle(Settings.useStats, "Use Attires Stats");
+            GUILayout.Space(20);
 
             GUILayout.BeginHorizontal();
-            _fileName = GUILayout.TextField(_fileName, GUILayout.Width(200), GUILayout.ExpandWidth(false));
-            if(GUILayout.Button("Create JSON File", GUILayout.Width(200)))
+            _fileName = GUILayout.TextField(_fileName, GUILayout.Width(300), GUILayout.ExpandWidth(false));
+            if(GUILayout.Button("Create 'Attire' JSON File", GUILayout.ExpandWidth(false)))
             {
-                StorageRoom.CreateJsonFile(_fileName, StorageRoom.WardrobesDirectory);
+                StorageRoom.CreateFuturisticAttireJsonFile(_fileName, StorageRoom.WardrobesDirectory);
             }
-            if(GUILayout.Button("Create JSON File", GUILayout.Width(200)))
+            if (GUILayout.Button("Create 'Attire Collection' JSON File", GUILayout.ExpandWidth(false)))
             {
-                StorageRoom.CreateJsonFile(_fileName, StorageRoom.WardrobesDirectory);
+                StorageRoom.CreateAttireCollectionJsonFile(_fileName, StorageRoom.WardrobesDirectory);
             }
             GUILayout.EndHorizontal();
+
             GUILayout.EndVertical();
         }
 

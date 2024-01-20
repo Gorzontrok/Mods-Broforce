@@ -45,7 +45,7 @@ namespace DresserMod
 
         static void Start()
         {
-            StorageRoom.Init();
+            StorageRoom.Initialize();
             ModUI.Initialize();
         }
 
@@ -83,6 +83,8 @@ namespace DresserMod
     {
         public bool canUseDefaultSkin;
         public List<string> unactiveFiles = new List<string>();
+        public bool useStats = false;
+
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
