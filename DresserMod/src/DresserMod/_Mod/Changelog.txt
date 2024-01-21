@@ -1,4 +1,8 @@
-﻿v1.2.0:
+﻿v1.3.0:
+If a SpriteSM field is changed, the texture is going to be recaculated to avoid stretch sprites.
+Fixed textures having pixel bar in more
+
+v1.2.0:
 Change the Wardrobe directory to 'Broforce\DM_Wardrobes\'. The old one is still use.
 Rework some part of the UI
 Fixed Info.json files being read by the mod
