@@ -1,4 +1,4 @@
-﻿v1.3.0:
+﻿v1.2.1:
 If a SpriteSM field is changed, the texture is going to be recaculated to avoid stretch sprites.
 Fixed textures having pixel bar in more
 
