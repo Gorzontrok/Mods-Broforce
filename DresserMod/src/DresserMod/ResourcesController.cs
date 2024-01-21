@@ -63,7 +63,7 @@ namespace DresserMod
             tex.filterMode = FilterMode.Point;
             tex.anisoLevel = 1;
             tex.mipMapBias = 0;
-            tex.wrapMode = TextureWrapMode.Repeat;
+            tex.wrapMode = TextureWrapMode.Clamp;
             return tex;
         }
 
