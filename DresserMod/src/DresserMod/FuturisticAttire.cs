@@ -88,6 +88,9 @@ namespace DresserMod
                 if (tex != null)
                 {
                     sprite.SetTexture(tex);
+                    sprite.RecalcTexture();
+                    sprite.CalcUVs();
+                    sprite.UpdateUVs();
                     field.SetValue(sprite);
                 }
             }
