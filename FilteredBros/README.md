@@ -5,6 +5,8 @@ You can now choose which bro can spawn. Like if you want to spawn with only mele
 If you haven't unlock a bro, their name will be hidden and you won't be able to unchecked their.  
 If you uncheck all, it will not work and use the one from the game.  
 
+![ui](./.img/ui.png)
+
 ## Installation
 
 * The all and [latest](./Release/FilteredBrosMod.zip) release are in the [Release](./Release/) folder.
