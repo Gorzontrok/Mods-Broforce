@@ -1,62 +1,71 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace FilteredBros. Patches
+namespace FilteredBros.Patches
 {
-    // freedBros get the max value of heroUnlockIntervals ; Remove this so unlock number stay the same
-    [HarmonyPatch(typeof(PlayerProgress), "PostLoadProcess")]
-    static class PlayerProgress_PostLoadProcess_Patch
+    [HarmonyPatch(typeof(PlayerProgress))]
+    public static class PlayerProgressP
     {
-        static bool Prefix(PlayerProgress __instance)
+        [HarmonyPatch("PostLoadProcess")]
+        [HarmonyPrefix]
+        private static bool PostLoadProcess(PlayerProgress __instance)
         {
-            try
+            // 'PlayerProgress.freedBros' get the max value of heroUnlockIntervals
+            // Which cause some bros to be marked as '???' on Filtered Bros UI even if they are already unlocked.
+            // Skip the original method
+            return !Mod.CanUsePatch;
+        }
+
+        [HarmonyPatch("IsHeroUnlocked")]
+        [HarmonyPrefix]
+        private static void IsHeroUnlocked(PlayerProgress __instance) // Patch Hero unlock intervals for spawn
+        {
+            if (!Mod.CanUsePatch || !Mod.ShouldUpdateUnlockIntervals)
+                return;
+
+            Mod.UpdateCurrentUnlockIntervals();
+            if (Mod.CurrentUnlockIntervals.Count < 0 /*|| !Mod.CurrentUnlockIntervals.ContainsKey(0)*/)
             {
-                return false;
+                Main.Log("You have selected 0 bro, please select at least one. (The one who are name \"???\" don't count)");
+                __instance.unlockedHeroes = HeroUnlockController.heroUnlockIntervals.Values.ToList();
+                Mod.ShouldUpdateUnlockIntervals = false;
+                return;
             }
-            catch (Exception e)
+
+            // test to see if the patch needs it to works
+            Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(Mod.CurrentUnlockIntervals);
+
+            __instance.unlockedHeroes.Clear();
+            foreach (HeroType heroType in Mod.CurrentUnlockIntervals.Values)
             {
-                Main.Log(e);
+                __instance.unlockedHeroes.Add(heroType);
             }
-            return true;
+
+            // Make sure that a bro which needs to show its cutscene and isn't selected don't spawned.
+            HeroType[] yetToBePlayedUnlockedHeroes = __instance.yetToBePlayedUnlockedHeroes.ToArray();
+            foreach (HeroType hero in yetToBePlayedUnlockedHeroes)
+            {
+                if (!Mod.CurrentUnlockIntervals.ContainsValue(hero))
+                    __instance.yetToBePlayedUnlockedHeroes.Remove(hero);
+            }
         }
     }
-    // Patch Hero unlock intervals for spawn
-    [HarmonyPatch(typeof(PlayerProgress), "IsHeroUnlocked")]
-    internal static class PlayerProgress_IsHeroUnlocked_Patch
-    {
-        private static void Prefix(PlayerProgress __instance)
-        {
-            if (!Main.CanUsePatch) return;
 
-            try
+    [HarmonyPatch(typeof(LevelEditorGUI))]
+    public static class LevelEditorP
+    {
+        [HarmonyPatch("Start")]
+        [HarmonyPostfix]
+        private static void Start(LevelEditorGUI __instance)
+        {
+            if (!Main.enabled || !Main.settings.mod.useInLevelEditor)
             {
-                Dictionary<int, HeroType> heroUnlockIntervals = Main.UpdateDictionary();
-                if (heroUnlockIntervals.Count > 0 || heroUnlockIntervals.ContainsKey(0))
-                {
-                    Traverse.Create(typeof(HeroUnlockController)).Field("_heroUnlockIntervals").SetValue(heroUnlockIntervals);
-                    __instance.unlockedHeroes.Clear();
-                    foreach (var heroType in heroUnlockIntervals.Values)
-                    {
-                        __instance.unlockedHeroes.Add(heroType);
-                    }
-                    var yetToBePlayedUnlockedHeroes = __instance.yetToBePlayedUnlockedHeroes.ToArray();
-                    foreach (var hero in yetToBePlayedUnlockedHeroes)
-                    {
-                        if (!heroUnlockIntervals.ContainsValue(hero))
-                            __instance.yetToBePlayedUnlockedHeroes.Remove(hero);
-                    }
-                }
-                else
-                {
-                    Main.Log("You have selected 0 bro, please select at least one. (The one who are name \"???\" don't count)");
-                    heroUnlockIntervals = Main.originalDict;
-                }
+                LevelEditorGUI.broChangeHeroTypes = Mod.OriginalUnlockIntervals.Values.ToList();
+                __instance.SetFieldValue("heroTypes", LevelEditorGUI.broChangeHeroTypes);
             }
-            catch (Exception ex) { Main.Log("Failed to patch the Unlock intervals", ex); }
         }
+
     }
 
     [HarmonyPatch(typeof(Player), "AddLife")]
@@ -64,21 +73,10 @@ namespace FilteredBros. Patches
     {
         static void Postfix(Player __instance)
         {
-            if (!Main.CanUsePatch) return;
-            try
-            {
-                if (Main.enabled && Main.settings.maxLifeNumber != 0)
-                {
-                    while (__instance.Lives > Main.settings.maxLifeNumber)
-                    {
-                        __instance.Lives--;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Main.Log(ex);
-            }
+            if (!Mod.CanUsePatch || Main.settings.mod.maxLifeNumber <= 0)
+                return;
+            if (__instance.Lives > Main.settings.mod.maxLifeNumber)
+                __instance.Lives = Main.settings.mod.maxLifeNumber;
         }
     }
 
@@ -87,7 +85,8 @@ namespace FilteredBros. Patches
     {
         static void Postfix(MapData __instance)
         {
-            if (!Main.CanUsePatch && Main.settings.ignoreForcedBros) return;
+            if (!Mod.CanUsePatch || !Main.settings.mod.ignoreForcedBros)
+                return;
 
             __instance.forcedBro = HeroType.Random;
             __instance.forcedBros = new List<HeroType>();

@@ -1,107 +1,112 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace FilteredBros
 {
-    class BroToggle
+    public enum BroGroup
     {
-        public static List<BroToggle> BroToggles
+        Campaign,
+        Expendabros,
+        Unused,
+        Customs
+    }
+
+    public class BroToggle
+    {
+        public static List<BroToggle> All
         {
             get
             {
-                var l = new List<BroToggle>(broTogglesBroforce);
-                l.AddRange(broTogglesExpendabros);
-                l.AddRange(broTogglesHide);
-                return l;
+                if (_all == null)
+                {
+                    _all = new List<BroToggle>(Broforce);
+                    _all.AddRange(Expendabros);
+                    _all.AddRange(Secret);
+                }
+                return _all;
             }
         }
+        private static List<BroToggle> _all = null;
 
-        public static List<BroToggle> broTogglesBroforce = new List<BroToggle>();
-        public static List<BroToggle> broTogglesExpendabros = new List<BroToggle>();
-        public static List<BroToggle> broTogglesHide = new List<BroToggle>();
-        public static int brosEnable;
+        public static List<BroToggle> Broforce = new List<BroToggle>();
+        public static List<BroToggle> Expendabros = new List<BroToggle>();
+        public static List<BroToggle> Secret = new List<BroToggle>();
+        public static List<BroToggle> Customs = new List<BroToggle>();
+
+        public static int BrosEnabled { get; private set; } = 0;
 
         public readonly HeroType heroType;
         public readonly int unlockNumber;
         public readonly BroGroup group;
 
+        public string Name {  get; private set; }
         public bool enabled;
 
-        private bool lastValue;
+        private bool _lastValue;
 
-        public BroToggle(HeroType _heroType, int _unlockNumber, BroGroup g)
+        static BroToggle()
         {
-            heroType = _heroType;
-            unlockNumber = _unlockNumber;
-            group = g;
+            Broforce = new List<BroToggle>();
+            Expendabros = new List<BroToggle>();
+            Secret = new List<BroToggle>();
+        }
 
-            if(group == BroGroup.Broforce)
+        public BroToggle(HeroType heroType, int unlockNumber, BroGroup group)
+        {
+            this.heroType = heroType;
+            this.unlockNumber = unlockNumber;
+            this.group = group;
+
+            if(this.group == BroGroup.Campaign)
             {
-                broTogglesBroforce.Add(this);
+                Broforce.Add(this);
             }
-            else if (group == BroGroup.Expendabros)
+            else if (this.group == BroGroup.Expendabros)
             {
-                broTogglesExpendabros.Add(this);
+                Expendabros.Add(this);
             }
-            else if (group == BroGroup.Hide)
+            else if (this.group == BroGroup.Unused)
             {
-                broTogglesHide.Add(this);
+                Secret.Add(this);
             }
+
+            Name = HeroController.GetHeroName(this.heroType);
         }
 
         public override string ToString()
         {
-            return heroType.ToString() + " " + unlockNumber.ToString() + " " + enabled.ToString();
+            return Name;
         }
 
-        public void Toggle()
+        public void DrawToggle()
         {
             if(IsBroUnlocked())
             {
-                enabled = GUILayout.Toggle(enabled, HeroController.GetHeroName(heroType), GUILayout.ExpandWidth(false));
+                enabled = GUILayout.Toggle(enabled, ToString(), GUILayout.Width(Main.settings.ui.toggleWidth));
             }
             else
             {
-                enabled = GUILayout.Toggle(true, "<color=\"gray\">???</color>", GUILayout.ExpandWidth(false));
+                enabled = GUILayout.Toggle(true, "<color=\"gray\">???</color>", GUILayout.Width(Main.settings.ui.toggleWidth));
             }
 
-            if(lastValue != enabled)
+            if(_lastValue != enabled)
             {
-                if (lastValue)
+                Mod.ShouldUpdateUnlockIntervals = true;
+                if (_lastValue)
                 {
-                    brosEnable--;
+                    BrosEnabled--;
                 }
                 else
                 {
-                    brosEnable++;
+                    BrosEnabled++;
                 }
             }
-            lastValue = enabled;
+            _lastValue = enabled;
         }
 
         public bool IsBroUnlocked()
         {
             return unlockNumber <= PlayerProgress.Instance.freedBros || Main.cheat;
-        }
-
-        public static BroToggle GetBroToggleFromHeroType(HeroType hero)
-        {
-            foreach(BroToggle b  in BroToggles)
-            {
-                if (b.heroType == hero)
-                {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        public enum BroGroup
-        {
-            Hide,
-            Broforce,
-            Expendabros
         }
     }
 }
