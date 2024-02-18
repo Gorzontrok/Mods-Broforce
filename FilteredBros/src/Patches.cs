@@ -25,10 +25,10 @@ namespace FilteredBros.Patches
                 return;
 
             Mod.UpdateCurrentUnlockIntervals();
-            if (Mod.CurrentUnlockIntervals.Count < 0 /*|| !Mod.CurrentUnlockIntervals.ContainsKey(0)*/)
+            if (Mod.CurrentUnlockIntervals == null || Mod.CurrentUnlockIntervals.Count < 0 /*|| !Mod.CurrentUnlockIntervals.ContainsKey(0)*/)
             {
                 Main.Log("You have selected 0 bro, please select at least one. (The one who are name \"???\" don't count)");
-                __instance.unlockedHeroes = HeroUnlockController.heroUnlockIntervals.Values.ToList();
+                __instance.unlockedHeroes = Mod.OriginalUnlockIntervals.Values.ToList();
                 Mod.ShouldUpdateUnlockIntervals = false;
                 return;
             }
@@ -49,6 +49,7 @@ namespace FilteredBros.Patches
                 if (!Mod.CurrentUnlockIntervals.ContainsValue(hero))
                     __instance.yetToBePlayedUnlockedHeroes.Remove(hero);
             }
+            Mod.ShouldUpdateUnlockIntervals = false;
         }
     }
 

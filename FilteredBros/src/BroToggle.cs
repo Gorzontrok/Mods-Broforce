@@ -106,7 +106,7 @@ namespace FilteredBros
 
         public bool IsBroUnlocked()
         {
-            return unlockNumber <= PlayerProgress.Instance.freedBros || Main.cheat;
+            return group != BroGroup.Campaign || unlockNumber <= PlayerProgress.Instance.freedBros || Main.cheat;
         }
     }
 }

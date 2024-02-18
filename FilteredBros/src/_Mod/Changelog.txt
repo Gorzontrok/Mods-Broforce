@@ -1,3 +1,7 @@
+v2.0.1:
+Secret bros and expendabros will be unlock forever
+Fixed critical bug where bros couldn't load properly
+
 v2.0.0:
 Complete Rewrite of the mod
 Completly rework the ui

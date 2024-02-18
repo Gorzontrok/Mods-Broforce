@@ -93,14 +93,15 @@ namespace FilteredBros
 
         public static void UpdateCurrentUnlockIntervals()
         {
+            if (CurrentUnlockIntervals == null)
+                CurrentUnlockIntervals = new Dictionary<int, HeroType>();
+
             // make sure there is BroToggle
             if (BroToggle.All.IsNullOrEmpty())
             {
                 Main.Log($"[{nameof(UpdateCurrentUnlockIntervals)}] There is no BroToggle. Can't update dictionary.");
                 return;
             }
-            if (CurrentUnlockIntervals == null)
-                CurrentUnlockIntervals = new Dictionary<int, HeroType>();
             CurrentUnlockIntervals.Clear();
             // Build the dictionary
             foreach (BroToggle toggle in BroToggle.All)
