@@ -7,8 +7,6 @@ Most of my mods are using [RocketLib](RocketLib/).
 
 Feel free to use/rewrite my mods.
 
-Discord tag : Gorzontrok
-
 ## Mods
 
 * All ? :
