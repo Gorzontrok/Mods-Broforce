@@ -83,6 +83,12 @@ namespace RocketLibUMM
             GUILayout.Label("Time before log disappear : " + settings.logTimer.ToString(), GUILayout.ExpandWidth(false));
             settings.logTimer = (int)GUILayout.HorizontalScrollbar(settings.logTimer, 1f, 1f, 11f, GUILayout.MaxWidth(200));
             GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Log Font Size : " + settings.fontSize.ToString(), GUILayout.ExpandWidth(false));
+            settings.fontSize = (int)GUILayout.HorizontalScrollbar(settings.fontSize, 1f, 1f, 25f, GUILayout.MaxWidth(200));
+            ScreenLogger.fontSize = settings.fontSize;
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 
