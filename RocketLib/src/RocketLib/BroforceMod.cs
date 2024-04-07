@@ -92,18 +92,18 @@ namespace RocketLib
                     this.logger = new Loggers.Logger(this.__mod);
 
                     this.Loaded = true;
-                    UnityModManager.Logger.Log($" Successful loaded the Broforce Mod", $"[{this.ID}]");
+                    UnityModManager.Logger.Log($" Successfully loaded.", $"[{this.ID}]");
                     BroforceModController.AddBroforceMod(this);
                 }
                 catch (Exception ex)
                 {
                     this.Loaded = false;
-                    ScreenLogger.Instance.ExceptionLog($"Failed Loading : {mod.Info.Id}", ex);
+                    ScreenLogger.Instance.ExceptionLog($" Failed to load : {mod.Info.Id}", ex);
                 }
             }
             else
             {
-                Log("Mod already load.");
+                Log("Mod has already loaded.");
             }
         }
 

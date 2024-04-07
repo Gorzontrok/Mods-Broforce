@@ -41,7 +41,6 @@ public static class ObjectExtensions
     /// <summary>
     /// Not great
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="obj"></param>
     /// <param name="baseType"></param>
     /// <param name="methodName"></param>

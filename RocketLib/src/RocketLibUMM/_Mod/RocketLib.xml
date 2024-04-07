@@ -166,6 +166,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:RocketLib.KeyBindingForPlayers.#ctor(System.String,System.String)">
+            <summary>
+            Create a Keybinding for all 4 players
+            </summary>
+            <param name="name">Name of the key</param>
+            <param name="modId">Name of the mod that is adding the keybinding</param>
+        </member>
         <member name="T:RocketLib.RGUI">
              <summary>
             
@@ -684,7 +691,6 @@
             <summary>
             Not great
             </summary>
-            <typeparam name="T"></typeparam>
             <param name="obj"></param>
             <param name="baseType"></param>
             <param name="methodName"></param>

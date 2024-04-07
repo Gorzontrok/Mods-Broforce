@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JetBrains.Annotations;
+using Newtonsoft.Json;
 using RocketLib.Loggers;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,49 @@ using UnityEngine;
 
 namespace RocketLib
 {
+    public class AllModKeyBindings
+    {
+        // Dictionary< modname, Dictionary< name of key, keybinding > >
+        public static Dictionary<string, Dictionary<string, KeyBindingForPlayers>> AllKeyBindings;
+
+        public static void AddKeyBinding(KeyBindingForPlayers keybinding, string modId)
+        {
+            try
+            {
+                if (AllKeyBindings == null)
+                {
+                    return;
+                }
+                Dictionary<string, KeyBindingForPlayers> currentModKeyBindings;
+                bool alreadyExists = AllKeyBindings.TryGetValue(modId, out currentModKeyBindings);
+                if (!alreadyExists)
+                {
+                    currentModKeyBindings = new Dictionary<string, KeyBindingForPlayers>();
+                    AllKeyBindings.Add(modId, currentModKeyBindings);
+                }
+                currentModKeyBindings.Add(keybinding.name, keybinding);
+            }
+            catch (Exception e)
+            {
+                Main.mod.Logger.Log(e.ToString());
+            }
+        }
+
+        public static bool TryGetKeyBinding(string modName, string keyName, out KeyBindingForPlayers keybinding)
+        {
+            Dictionary<string, KeyBindingForPlayers> currentModKeyBindings;
+            if (AllKeyBindings.TryGetValue(modName, out currentModKeyBindings))
+            {
+                return currentModKeyBindings.TryGetValue(keyName, out keybinding);
+            }
+            keybinding = null;
+            return false;
+        }
+    }
+    
     [Serializable]
     public class KeyBindingForPlayers
     {
-        [XmlIgnore]
-        public static Dictionary<string, List<KeyBindingForPlayers>> keyBindingForPlayers = new Dictionary<string, List<KeyBindingForPlayers>>();
-
         [XmlIgnore]
         public KeyBinding Player0
         {
@@ -41,8 +79,6 @@ namespace RocketLib
         }
 
         public string name;
-        [JsonIgnore, XmlIgnore]
-        public string modId;
 
         protected KeyBinding player0;
         protected KeyBinding player1;
@@ -89,47 +125,35 @@ namespace RocketLib
             }
         }
 
-        public KeyBindingForPlayers(string modId, string name)
+        // Empty constructor used when loading from JSON
+        public KeyBindingForPlayers()
+        {
+        }
+
+        /// <summary>
+        /// Create a Keybinding for all 4 players
+        /// </summary>
+        /// <param name="name">Name of the key</param>
+        /// <param name="modId">Name of the mod that is adding the keybinding</param>
+        public KeyBindingForPlayers(string name, string modId)
         {
             this.name = name;
-            this.modId = modId;
-            player0 = new KeyBinding(modId, string.Empty);
-            player1 = new KeyBinding(modId, string.Empty);
-            player2 = new KeyBinding(modId, string.Empty);
-            player3 = new KeyBinding(modId, string.Empty);
+            player0 = new KeyBinding(name);
+            player1 = new KeyBinding(name);
+            player2 = new KeyBinding(name);
+            player3 = new KeyBinding(name);
+
+            AllModKeyBindings.AddKeyBinding(this, modId);
         }
 
-        public void Init(string modName)
+        public virtual void AssignKey(int player,  KeyCode key)
         {
-            try
-            {
-                if(keyBindingForPlayers == null)
-                    keyBindingForPlayers = new Dictionary<string, List<KeyBindingForPlayers>>();
-
-                List<KeyBindingForPlayers> bindings = new List<KeyBindingForPlayers>();
-                bool flag = keyBindingForPlayers.TryGetValue(modName, out bindings);
-                if (bindings == null)
-                    bindings = new List<KeyBindingForPlayers>();
-                bindings.Add(this);
-                if (flag)
-                {
-                    keyBindingForPlayers[modName] = bindings;
-                }
-                else
-                {
-                    keyBindingForPlayers.Add(modName, bindings);
-                }
-            }
-            catch(Exception e)
-            {
-                Main.mod.Logger.Log(e.ToString());
-            }
+            this[player].AssignKey(key);
         }
 
-        public virtual bool SetKey(int player,  KeyCode key)
+        public virtual void AssignKey(int player, string joystick, int direction)
         {
-            bool keyHasBeenSet = this[player].SetKey(key);
-            return keyHasBeenSet;
+            this[player].AssignKey(joystick, direction);
         }
 
         public bool IsDown(int player)
@@ -137,7 +161,20 @@ namespace RocketLib
             return this[player].IsDown();
         }
 
-        public bool OnGUI(out int player)
+        public void ClearKey(int player)
+        {
+            this[player].ClearKey();
+        }
+
+        public void ClearKey()
+        {
+            for (int i = 0; i < 4; ++i )
+            {
+                this[i].ClearKey();
+            }
+        }
+
+        public bool OnGUI(out int player, bool displayToolTip = true )
         {
             player = 0;
             bool result = false;
@@ -145,11 +182,17 @@ namespace RocketLib
             {
                 GUILayout.BeginHorizontal(RGUI.Unexpanded);
                 GUILayout.Label(name, RGUI.Unexpanded);
+                Rect toolTipPos = Rect.zero;
                 for (int i = 0; i < 4; i++)
                 {
                     GUILayout.BeginVertical(GUILayout.ExpandHeight(false), GUILayout.Width(200));
-                    RGUI.LabelCenteredHorizontally(new GUIContent("Player " + i), GUI.skin.label, RGUI.Unexpanded);
-                    var temp = this[i].OnGUI();
+                    RGUI.LabelCenteredHorizontally(new GUIContent("Player " + (i + 1)), GUI.skin.label, RGUI.Unexpanded);
+                    var temp = this[i].OnGUI(displayToolTip);
+                    if ( i == 0 )
+                    {
+                        toolTipPos = KeyBinding.toolTipRect;
+                        toolTipPos.y += 17;
+                    }
                     GUILayout.EndVertical();
                     if (temp)
                     {
@@ -158,6 +201,11 @@ namespace RocketLib
                         player = i;
                         break;
                     }
+                }
+                if ( displayToolTip && GUI.tooltip != string.Empty )
+                {
+                    GUI.Label(toolTipPos, GUI.tooltip);
+                    GUI.tooltip = string.Empty;
                 }
                 GUILayout.EndHorizontal();
             }

@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLib", "RocketLib\RocketLib.csproj", "{2590E579-ACFD-41BA-8FD2-1448DD2D9E9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketLibUMM", "RocketLibUMM\RocketLibUMM.csproj", "{A6375EB5-1A4C-48E5-B2BF-2CED7175EDF4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2590E579-ACFD-41BA-8FD2-1448DD2D9E9D} = {2590E579-ACFD-41BA-8FD2-1448DD2D9E9D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

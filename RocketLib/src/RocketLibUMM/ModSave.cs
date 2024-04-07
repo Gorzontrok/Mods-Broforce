@@ -13,7 +13,7 @@ namespace RocketLibUMM
         {
             get
             {
-                return Path.Combine(Main.mod.Path, "Save.json");
+                return Path.Combine(Main.mod.Path, "Keybindings.json");
             }
         }
         /// <summary>
@@ -48,14 +48,35 @@ namespace RocketLibUMM
 
         public void Save()
         {
-            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            var json = JsonConvert.SerializeObject( AllModKeyBindings.AllKeyBindings, Formatting.Indented);
             File.WriteAllText(SavePath, json);
         }
 
         public static ModSave Load()
         {
-            if(File.Exists(SavePath))
-                return JsonConvert.DeserializeObject<ModSave>(File.ReadAllText(SavePath));
+            try
+            {
+                if (File.Exists(SavePath))
+                {
+                    AllModKeyBindings.AllKeyBindings = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, KeyBindingForPlayers>>>(File.ReadAllText(SavePath));
+                    ModSave modsave = new ModSave();
+                    Dictionary<string, KeyBindingForPlayers> modKeybindings;
+                    AllModKeyBindings.AllKeyBindings.TryGetValue(Main.mod.Info.Id, out modKeybindings);
+                    if (modKeybindings != null)
+                    {
+                        modKeybindings.TryGetValue("Gesture 0", out modsave.gesture0);
+                        modKeybindings.TryGetValue("Gesture 1", out modsave.gesture1);
+                        modKeybindings.TryGetValue("Gesture 2", out modsave.gesture2);
+                        modKeybindings.TryGetValue("Gesture 3", out modsave.gesture3);
+                        modKeybindings.TryGetValue("Gesture 4", out modsave.gesture4);
+                        modKeybindings.TryGetValue("Gesture 5", out modsave.gesture5);
+                        modKeybindings.TryGetValue("Gesture 6", out modsave.gesture6);
+                    }
+                    return modsave;
+                }
+            }
+            // Likely failed to load due to a version change
+            catch { }
             return new ModSave();
         }
 
@@ -64,28 +85,19 @@ namespace RocketLibUMM
             try
             {
                 if (gesture0 == null)
-                    gesture0 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 0");
+                    gesture0 = new KeyBindingForPlayers("Gesture 0", Main.mod.Info.Id);
                 if (gesture1 == null)
-                    gesture1 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 1");
+                    gesture1 = new KeyBindingForPlayers("Gesture 1", Main.mod.Info.Id);
                 if (gesture2 == null)
-                    gesture2 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 2");
+                    gesture2 = new KeyBindingForPlayers("Gesture 2", Main.mod.Info.Id);
                 if (gesture3 == null)
-                    gesture3 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 3");
+                    gesture3 = new KeyBindingForPlayers("Gesture 3", Main.mod.Info.Id);
                 if (gesture4 == null)
-                    gesture4 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 4");
+                    gesture4 = new KeyBindingForPlayers("Gesture 4", Main.mod.Info.Id);
                 if (gesture5 == null)
-                    gesture5 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 5");
+                    gesture5 = new KeyBindingForPlayers("Gesture 5", Main.mod.Info.Id);
                 if (gesture6 == null)
-                    gesture6 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 6");
-
-
-                gesture0.Init(Main.mod.Info.Id);
-                gesture1.Init(Main.mod.Info.Id);
-                gesture2.Init(Main.mod.Info.Id);
-                gesture3.Init(Main.mod.Info.Id);
-                gesture4.Init(Main.mod.Info.Id);
-                gesture5.Init(Main.mod.Info.Id);
-                gesture6.Init(Main.mod.Info.Id);
+                    gesture6 = new KeyBindingForPlayers("Gesture 6", Main.mod.Info.Id);
             }
             catch(Exception e)
             {
