@@ -1,6 +1,6 @@
 # Search Local Campaigns Faster
 
-[NexusMods page](https://www.nexusmods.com/broforce/mods/4)  
+[NexusMods page](https://www.nexusmods.com/broforce/mods/42)  
 In the Custom Campaign Menu, if you go to the OFFLINE tab, the loading takes some time and can be extremely long if you have a lot of levels.  
 This mod aims to fix this loading time so it is now a lot more faster.  
 
