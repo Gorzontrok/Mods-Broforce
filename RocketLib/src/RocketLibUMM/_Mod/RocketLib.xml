@@ -221,6 +221,26 @@
             <param name="TabWidth"></param>
             <returns></returns>
         </member>
+        <member name="M:RocketLib.Utils.DrawDebug.DrawLine(System.String,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Single)">
+            <summary>
+            Draw a debug line
+            </summary>
+            <param name="ID">Name of line, use the same name to update an existing line</param>
+            <param name="start">Start position</param>
+            <param name="end">End position</param>
+            <param name="color">Color of line</param>
+            <param name="width">Width of line</param>
+        </member>
+        <member name="M:RocketLib.Utils.DrawDebug.DrawRectangle(System.String,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Single)">
+            <summary>
+            Draw a debug rectangle
+            </summary>
+            <param name="ID">Name of rectangle, use the same name to update an existing rectangle</param>
+            <param name="corner1">One of the corners</param>
+            <param name="corner2">The opposite corner of the first one provided</param>
+            <param name="color">Color of rectangle</param>
+            <param name="width">Width of rectangle</param>
+        </member>
         <member name="T:RocketLib.Utils.IsThisMod">
             <summary>This constructor check if a mod is Here or is Enabled.
             <example>
