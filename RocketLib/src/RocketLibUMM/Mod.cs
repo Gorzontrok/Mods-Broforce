@@ -1,9 +1,11 @@
 ﻿using RocketLib;
+using RocketLib.Loggers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityModManagerNet;
+using static GestureElement;
 
 namespace RocketLibUMM
 {

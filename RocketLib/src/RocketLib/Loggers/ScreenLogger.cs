@@ -42,6 +42,7 @@ namespace RocketLib.Loggers
         private int UMM_NumberOfLogs;
         private string LogFilePath = Main.mod.Path + "Logs\\";
         private static ScreenLogger instance;
+        public static int fontSize = 13;
 
         internal static bool Load()
         {
@@ -181,6 +182,7 @@ namespace RocketLib.Loggers
                 foreach (string log in LogsOnScreen)
                 {
                     LogStyle.normal.textColor = WhichColor(log);
+                    LogStyle.fontSize = fontSize;
                     GUILayout.Label(log, LogStyle);
                 }
                 GUILayout.EndVertical();

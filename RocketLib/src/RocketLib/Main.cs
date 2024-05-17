@@ -53,7 +53,6 @@ namespace RocketLib
                     {
                         mod.Logger.Log("Error while loading Newtonsoft.Json" + ex);
                     }
-                    KeyBindingForPlayers.keyBindingForPlayers = new Dictionary<string, List<KeyBindingForPlayers>>();
                     Loaded = true;
                 }
                 else
