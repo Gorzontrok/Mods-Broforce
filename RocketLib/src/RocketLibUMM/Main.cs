@@ -6,6 +6,7 @@ using UnityModManagerNet;
 using HarmonyLib;
 using RocketLib;
 using RMain = RocketLib.Main;
+using RocketLib.Loggers;
 
 namespace RocketLibUMM
 {
@@ -54,7 +55,7 @@ namespace RocketLibUMM
                 modEntry.CustomRequirements = MakeUSAColorOnBroforce();
 
                 settings = Settings.Load<Settings>(modEntry);
-
+                ScreenLogger.fontSize = settings.fontSize;
 
                 harmony = new Harmony(modEntry.Info.Id);
                 try
@@ -160,6 +161,7 @@ namespace RocketLibUMM
         public bool onScreenLog = false;
         public bool showManagerLog = true;
         public float logTimer = 3;
+        public int fontSize = 13;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {

@@ -28,7 +28,7 @@ namespace RocketLibUMM
         private static Vector2 _scrollViewVector = Vector2.zero;
         private static int _tabSelected = 0;
         private static GUIStyle _testBtnStyle = new GUIStyle("button");
-        private static string _changeKeyMessage = "Press Any Key";
+        private const string _changeKeyMessage = "Press Any Key";
         private static GUIStyle keybindModStyle;
 
         public static void Initialize()
@@ -82,6 +82,12 @@ namespace RocketLibUMM
             GUILayout.BeginHorizontal();
             GUILayout.Label("Time before log disappear : " + settings.logTimer.ToString(), GUILayout.ExpandWidth(false));
             settings.logTimer = (int)GUILayout.HorizontalScrollbar(settings.logTimer, 1f, 1f, 11f, GUILayout.MaxWidth(200));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Log Font Size : " + settings.fontSize.ToString(), GUILayout.ExpandWidth(false));
+            settings.fontSize = (int)GUILayout.HorizontalScrollbar(settings.fontSize, 1f, 1f, 25f, GUILayout.MaxWidth(200));
+            ScreenLogger.fontSize = settings.fontSize;
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
@@ -139,45 +145,28 @@ namespace RocketLibUMM
             try
             {
                 int player = 0;
-                foreach (KeyValuePair<string, List<KeyBindingForPlayers>> pair in KeyBindingForPlayers.keyBindingForPlayers)
+                GUILayout.BeginVertical("box", GUILayout.ExpandWidth(false));
+                RGUI.LabelCenteredHorizontally(new GUIContent("RocketLib"), GUI.skin.label, RGUI.Unexpanded);
+                foreach (KeyValuePair<string, KeyBindingForPlayers> pair in AllModKeyBindings.AllKeyBindings["RocketLib"])
                 {
-                    GUILayout.BeginVertical("box", GUILayout.ExpandWidth(false));
-                    RGUI.LabelCenteredHorizontally(new GUIContent(pair.Key), GUI.skin.label, RGUI.Unexpanded);
-                    foreach (KeyBindingForPlayers keyBinding in pair.Value)
-                    {
-                        bool flag = keyBinding.OnGUI(out player);
-                        if (flag && !InputReader.IsBlocked)
-                            UnityModManager.UI.Instance.StartCoroutine(BindKey(keyBinding, player));
-                        GUILayout.Space(30);
-                    }
-                    GUILayout.EndVertical();
+                    pair.Value.OnGUI(out player, true);
                     GUILayout.Space(30);
                 }
+                if ( GUILayout.Button("Clear All", GUILayout.Width(100)) )
+                {
+                    foreach (KeyValuePair<string, KeyBindingForPlayers> pair in AllModKeyBindings.AllKeyBindings["RocketLib"])
+                    {
+                        pair.Value.ClearKey();
+                    }
+                }
+                GUILayout.EndVertical();
+                GUILayout.Space(30);
             }
             catch(Exception ex)
             {
                 Main.Log(ex);
             }
 
-        }
-        private static IEnumerator BindKey(KeyBindingForPlayers keyBinding, int player)
-        {
-            InputReader.IsBlocked = true;
-            yield return new WaitForSeconds(0.2f);
-            KeyCode[] keyCodes = Enum.GetValues(typeof(KeyCode)).Cast<KeyCode>().ToArray();
-            bool exit = false;
-            while(!exit)
-            {
-                foreach (KeyCode keyCode in keyCodes)
-                {
-                    if (Input.GetKeyUp(keyCode))
-                    {
-                        exit = keyBinding.SetKey(player, keyCode);
-                    }
-                }
-                yield return null;
-            }
-            InputReader.IsBlocked = false;
         }
     }
 }
