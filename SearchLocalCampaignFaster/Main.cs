@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Xml.Serialization;
+using UnityEngine.SceneManagement;
 using UnityModManagerNet;
-using static System.Net.Mime.MediaTypeNames;
+using Utility;
 
 namespace SearchLocalCampaignFaster
 {
@@ -186,6 +186,60 @@ namespace SearchLocalCampaignFaster
             }
 
             return header;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(NewCustomCampaignMenu), "LaunchOfflineCampaign")]
+        private static bool LaunchOfflineCustomCampaign(NewCustomCampaignMenu __instance, CampaignHeader header, string fileName)
+        {
+            LevelSelectionController.ResetLevelAndGameModeToDefault();
+
+            PlayerProgress.Instance.lastOnlineLevelProgress = 0;
+            GameState.Instance.sceneToLoad = LevelSelectionController.JoinScene;
+
+            __instance.highlightState = NewCustomCampaignMenu.HighlightState.Downloading;
+            GameModeController.publishRun = false;
+            if (header != null)
+            {
+                GameModeController.GameMode = header.gameMode;
+            }
+            else
+            {
+                GameModeController.GameMode = GameMode.Campaign;
+            }
+            LevelSelectionController.campaignToLoad = fileName;
+            LevelSelectionController.loadCustomCampaign = true;
+            LevelSelectionController.loadPublishedCampaign = header.isPublished;
+            LevelSelectionController.CurrentLevelNum = 0;
+
+            GameState.Instance.loadMode = MapLoadMode.Campaign;
+            Traverse.Create(typeof(StatisticsController)).Method("ResetScore").GetValue();
+            LevelEditorGUI.levelEditorActive = false;
+            try
+            {   // Sometimes the game throw a number overflow exxeption from the CLZF2.Decompress .
+                if (LevelSelectionController.loadPublishedCampaign)
+                {
+                    LevelSelectionController.currentCampaign = FileIO.LoadPublishedCampaignFromDisk(fileName, ".bfg");
+                }
+                else
+                {
+                    LevelSelectionController.currentCampaign = FileIO.LoadCampaignFromDisk(fileName);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                __instance.mapDetails.text = "failed to load campaign : " + ex.Message;
+
+                __instance.highlightState = NewCustomCampaignMenu.HighlightState.Listing;
+                Main.mod.Logger.Log(ex.ToString());
+                return false;
+            }
+
+            Traverse.Create(__instance).Method("ClearEntries").GetValue();
+            SceneLoader.LoadScene(LevelSelectionController.JoinScene, LoadSceneMode.Single);
+
+            return false;
         }
     }
 }

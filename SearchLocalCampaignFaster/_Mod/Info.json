@@ -2,7 +2,7 @@
   "Id": "com.gorzontrok.searchlocalcampaignfaster",
   "DisplayName": "Search Local Campaigns Faster",
   "Author": "Gorzontrok",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "AssemblyName": "SearchLocalCampaignFaster.dll",
   "EntryMethod": "SearchLocalCampaignFaster.Main.Load",
   "Repository": "https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/main/Repository.json"
