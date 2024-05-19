@@ -184,6 +184,7 @@ namespace SearchLocalCampaignFaster
             {
                 header = (CampaignHeader)serializer.Deserialize(reader);
             }
+            header.isPublished = !string.IsNullOrEmpty(header.md5);
 
             return header;
         }
