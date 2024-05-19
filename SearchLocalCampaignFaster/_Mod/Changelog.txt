@@ -1,4 +1,7 @@
-﻿1.1.0:
+﻿1.1.1:
+Fix: Published campaign can now be loaded
+
+1.1.0:
 Fixed the menu failed to load campaigns and stuck in DOWNLOADING loop
 
 1.0.0:
