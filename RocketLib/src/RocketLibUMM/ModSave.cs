@@ -77,6 +77,7 @@ namespace RocketLibUMM
             }
             // Likely failed to load due to a version change
             catch { }
+            AllModKeyBindings.AllKeyBindings = new Dictionary<string, Dictionary<string, KeyBindingForPlayers>>();
             return new ModSave();
         }
 
