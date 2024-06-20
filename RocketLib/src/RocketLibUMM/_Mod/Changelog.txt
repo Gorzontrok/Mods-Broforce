@@ -1,4 +1,7 @@
-Chengelog of 'RocketLibUMM.dll'
+Changelog of 'RocketLibUMM.dll'
+
+v2.1.1:
+-Remove the unwanted character
 
 v2.0.0 :
 Move the changelog of 'RocketLib.dll' to another file
