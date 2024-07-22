@@ -3,11 +3,9 @@ using UnityEngine;
 
 namespace RocketLib
 {
-    /// <summary>
-    ///
-    /// </summary>
     public static class RGUI
     {
+        /// <summary> Do not expand the GUILayout width and height </summary>
         public static GUILayoutOption[] Unexpanded
         {
             get

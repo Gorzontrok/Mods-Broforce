@@ -173,10 +173,8 @@
             <param name="name">Name of the key</param>
             <param name="modId">Name of the mod that is adding the keybinding</param>
         </member>
-        <member name="T:RocketLib.RGUI">
-             <summary>
-            
-             </summary>
+        <member name="P:RocketLib.RGUI.Unexpanded">
+            <summary> Do not expand the GUILayout width and height </summary>
         </member>
         <member name="M:RocketLib.RGUI.ArrowList(System.String[],System.Int32)">
             <summary>
@@ -709,6 +707,138 @@
             <returns></returns>
             <exception cref="T:System.MissingMethodException"></exception>
             <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:HarmonyExtensions.GetFieldValue``1(System.Object,System.String)">
+            <summary>
+            Get the value of a field as <typeparamref name="T"/>
+            </summary>
+            <seealso cref="!:HarmonyLib.Traverse.Field(string).GetValue&lt;T&gt;()"/>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="fieldName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HarmonyExtensions.GetFieldValue(System.Object,System.String)">
+            <summary>
+            Get the value of a field
+            </summary>
+            <seealso cref="!:HarmonyLib.Traverse.Field(string).GetValue()"/>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="fieldName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HarmonyExtensions.SetFieldValue(System.Object,System.String,System.Object)">
+            <summary>
+            Set the value of the field <paramref name="fieldName"/> with <paramref name="value"/>
+            </summary>
+            <param name="obj"></param>
+            <param name="fieldName"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:HarmonyExtensions.CallMethod``1(System.Object,System.String,System.Object[])">
+            <summary>
+            Call a method then return value as <typeparamref name="T"/>
+            </summary>
+            <seealso cref="!:HarmonyLib.Traverse.Method(string, object[]).GetValue&lt;T&gt;()"/>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="methodName"></param>
+            <param name="arguments"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HarmonyExtensions.CallMethod(System.Object,System.String,System.Object[])">
+            <summary>
+            Call a method then return value
+            </summary>
+            <seealso cref="!:HarmonyLib.Traverse.Method(string, object[]).GetValue()"/>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="methodName"></param>
+            <param name="arguments"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HarmonyExtensions.GetBool(System.Object,System.String)">
+            <summary>
+            Get bool field value
+            </summary>
+            <seealso cref="!:GetFieldValue&lt;bool&gt;(object, string)"/>
+            <param name="obj"></param>
+            <param name="fieldName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HarmonyExtensions.GetFloat(System.Object,System.String)">
+            <summary>
+            Get float field value
+            </summary>
+            <seealso cref="!:GetFieldValue&lt;float&gt;(object, string)"/>
+            <param name="obj"></param>
+            <param name="fieldName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HarmonyExtensions.GetInt(System.Object,System.String)">
+            <summary>
+            Get int field value
+            </summary>
+            <seealso cref="!:GetFieldValue&lt;float&gt;(object, string)"/>
+            <param name="obj"></param>
+            <param name="fieldName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HarmonyExtensions.DynamicFieldsValueSetter(System.Object,System.Collections.Generic.Dictionary{System.String,System.Object},System.String[],System.Action{HarmonyLib.Traverse,System.String,System.Object})">
+            <summary>
+            Set multiple fields on an object from a <see cref="!:Dictionary&lt;string, object&gt;"/>
+            Can navigate through instances from fields using the separator <see cref="F:HarmonyExtensions.PATH_SEPARATOR"/> in the <see cref="!:Dictionary&lt;string, object&gt;"/> key.
+            <seealso cref="M:HarmonyExtensions.FindFieldWithPath(System.Object,System.String)"/>
+            </summary>
+            <param name="obj"></param>
+            <param name="map">Key: Field Name | Value: the value to give to the field</param>
+            <param name="skipTheseFields">Fields to ignore</param>
+            <param name="setter">Custom action to set fields</param>
+        </member>
+        <member name="M:HarmonyExtensions.FindFieldWithPath(System.Object,System.String)">
+            <summary>
+            Use <see cref="F:HarmonyExtensions.PATH_SEPARATOR"/> to navigate through the objects.
+            </summary>
+            <example>
+            We have 2 classes
+            <code>
+            class A
+            {
+                B b;
+            }
+            class B
+            {
+                int number = 8;
+            }
+            </code>
+            If we want to get 'B.Number' from A, <paramref name="fieldPath"/> should be 'b.number'
+            </example>
+            <param name="obj"></param>
+            <param name="fieldPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HarmonyExtensions.FindFieldWithPath(HarmonyLib.Traverse,System.String)">
+            <summary>
+            Use <see cref="F:HarmonyExtensions.PATH_SEPARATOR"/> to navigate through the objects.
+            </summary>
+            <example>
+            We have 2 classes
+            <code>
+            class A
+            {
+                B b;
+            }
+            class B
+            {
+                int number = 8;
+            }
+            </code>
+            If we want to get 'B.Number' from A, <paramref name="fieldPath"/> should be 'b.number'
+            </example>
+            <param name="traverse"></param>
+            <param name="fieldPath"></param>
+            <returns></returns>
         </member>
         <member name="T:RLogType">
             <summary>

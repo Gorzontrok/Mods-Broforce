@@ -93,6 +93,7 @@
     <Compile Include="Mod.cs" />
     <Compile Include="ModSave.cs" />
     <Compile Include="ModUI.cs" />
+    <Compile Include="Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

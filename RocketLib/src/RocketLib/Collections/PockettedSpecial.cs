@@ -37,7 +37,12 @@ namespace RocketLib.Collections
             get
             {
 
-                return new PockettedSpecialAmmoType[] { PockettedSpecialAmmoType.Perk, PockettedSpecialAmmoType.Dollars, PockettedSpecialAmmoType.Revive, PockettedSpecialAmmoType.Damage };
+                return new PockettedSpecialAmmoType[] {
+                    PockettedSpecialAmmoType.Perk,
+                    PockettedSpecialAmmoType.Dollars,
+                    PockettedSpecialAmmoType.Revive,
+                    PockettedSpecialAmmoType.Damage
+                };
             }
         }
 
