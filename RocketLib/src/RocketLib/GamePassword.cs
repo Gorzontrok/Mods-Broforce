@@ -9,6 +9,12 @@ namespace RocketLib
     /// </summary>
     public class GamePassword
     {
+        public static GamePassword[] Passwords
+        {
+            get { return _passwords; }
+        }
+        private static GamePassword[] _passwords = new GamePassword[0];
+
         public readonly string password = string.Empty;
         public readonly Action action;
 
@@ -21,7 +27,7 @@ namespace RocketLib
         {
             password = _password.ToLower();
             action = _action;
-            GamePasswordController.AddPassword(this);
+            AddPassword(this);
         }
 
         /// <summary>
@@ -32,45 +38,22 @@ namespace RocketLib
         {
             return password;
         }
+
+        private static void AddPassword(GamePassword password)
+        {
+            _passwords.Append(password);
+        }
     }
 
+    [Obsolete]
     public static class GamePasswordController
     {
-        private static List<GamePassword> gamePasswords = new List<GamePassword>();
-
-        internal static void AddPassword(GamePassword gp)
-        {
-            gamePasswords.Add(gp);
-        }
+        [Obsolete("Use 'GamePassword.Passwords' instead.")]
         public static List<GamePassword> GamePasswords
         {
             get
             {
-                return new List<GamePassword>(gamePasswords);
-            }
-        }
-
-        [HarmonyPatch(typeof(MainMenu), "ProcessCharacter")]
-        static class Password_ProcessCharacter_Patch
-        {
-            static void Postfix(MainMenu __instance)
-            {
-                foreach (GamePassword password in gamePasswords)
-                {
-                    try
-                    {
-                        if(__instance.CallMethod<bool>("CheckCheatString", new object[] {password.password}))
-                        {
-                            Sound sound7 = Sound.GetInstance();
-                            sound7.PlaySoundEffect(__instance.drumSounds.specialSounds[0], 0.75f);
-                            password.action();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ScreenLogger.Instance.ExceptionLog("Failed to apply the password: " + password.password, ex);
-                    }
-                }
+                return GamePassword.Passwords.ToList();
             }
         }
     }
