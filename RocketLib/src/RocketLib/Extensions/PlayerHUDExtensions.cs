@@ -39,7 +39,7 @@ namespace RocketLib
                 case PockettedSpecialAmmoType.Steroids:
                     return hud.steroids;
                 default:
-                    return hud.rambroIcon;
+                    return null;
             }
         }
     }
