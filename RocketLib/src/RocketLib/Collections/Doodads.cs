@@ -24,207 +24,247 @@ namespace RocketLib.Collections
             }
         }
 
+        public static class Enemies
+        {
+            public static GameObject[] WallOfGuns
+            {
+                get
+                {
+                    if (_wallOfGuns.IsNullOrEmpty())
+                        _wallOfGuns = ActiveTheme.wallOfGuns;
+                    return _wallOfGuns;
+                }
+            }
+            private static GameObject[] _wallOfGuns;
+            public static GameObject[] MookDoors
+            {
+                get
+                {
+                    if (_mookDoors.IsNullOrEmpty())
+                        _mookDoors = ActiveTheme.mookDoorPrefabs.ToGameObjects();
+                    return _mookDoors;
+                }
+            }
+            private static GameObject[] _mookDoors;
+        }
 
-        public static GameObject[] MookDoors
+        public static class Environments
         {
-            get
+            public static GameObject[] TreeBushes
             {
-                if (_mookDoors.IsNullOrEmpty())
-                    _mookDoors = ActiveTheme.mookDoorPrefabs.ToGameObjects();
-                return _mookDoors;
+                get
+                {
+                    if (_treeBushes.IsNullOrEmpty())
+                        _treeBushes = ActiveTheme.treeBushes.ToGameObjects();
+                    return _treeBushes;
+                }
             }
+            private static GameObject[] _treeBushes;
+            public static GameObject[] Trees
+            {
+                get
+                {
+                    if (_trees.IsNullOrEmpty())
+                        _trees = ActiveTheme.trees;
+                    return _trees;
+                }
+            }
+            private static GameObject[] _trees;
+            public static GameObject[] Parallaxes1
+            {
+                get
+                {
+                    if (_parallaxes1.IsNullOrEmpty())
+                        _parallaxes1 = ActiveTheme.parallax1.ToGameObjects();
+                    return _parallaxes1;
+                }
+            }
+            private static GameObject[] _parallaxes1;
+            public static GameObject[] Parallaxes2
+            {
+                get
+                {
+                    if (_parallaxes2.IsNullOrEmpty())
+                        _parallaxes2 = ActiveTheme.parallax2.ToGameObjects();
+                    return _parallaxes2;
+                }
+            }
+            private static GameObject[] _parallaxes2;
+            public static GameObject[] Parallaxes3
+            {
+                get
+                {
+                    if (_parallaxes3.IsNullOrEmpty())
+                        _parallaxes3 = ActiveTheme.parallax3.ToGameObjects();
+                    return _parallaxes3;
+                }
+            }
+            private static GameObject[] _parallaxes3;
+            public static GameObject[] ParallaxCloud
+            {
+                get
+                {
+                    if (_parallaxCloud.IsNullOrEmpty())
+                        _parallaxCloud = ActiveTheme.parallaxCloudDoodads.ToGameObjects();
+                    return _parallaxCloud;
+                }
+            }
+            private static GameObject[] _parallaxCloud;
+            public static GameObject[] TreesBackground
+            {
+                get
+                {
+                    if (_treesBackground.IsNullOrEmpty())
+                        _treesBackground = ActiveTheme.treesBackground.ToGameObjects();
+                    return _treesBackground;
+                }
+            }
+            private static GameObject[] _treesBackground;
+            public static GameObject[] FoliageBackground
+            {
+                get
+                {
+                    if (_foliageBackground.IsNullOrEmpty())
+                        _foliageBackground = ActiveTheme.foliageBackground.ToGameObjects();
+                    return _foliageBackground;
+                }
+            }
+            private static GameObject[] _foliageBackground;
+            public static GameObject[] TreeBushesBackground
+            {
+                get
+                {
+                    if (_treeBushesBackground.IsNullOrEmpty())
+                        _treeBushesBackground = ActiveTheme.treeBushesBackground.ToGameObjects();
+                    return _treeBushesBackground;
+                }
+            }
+            private static GameObject[] _treeBushesBackground;
         }
-        private static GameObject[] _mookDoors;
-        public static GameObject[] OutdoorDoodads
+
+
+        public static class Structures
         {
-            get
+            public static GameObject[] ScaffoldingsForeground
             {
-                if (_outdoorDoodads.IsNullOrEmpty())
-                    _outdoorDoodads = ActiveTheme.outdoorDoodads.ToGameObjects();
-                return _outdoorDoodads;
+                get
+                {
+                    if (_scaffoldingsForeground.IsNullOrEmpty())
+                        _scaffoldingsForeground = ActiveTheme.scaffoldingForegroundDoodads.ToGameObjects();
+                    return _scaffoldingsForeground;
+                }
             }
+            private static GameObject[] _scaffoldingsForeground;
+            public static GameObject[] ScaffoldingsBackground
+            {
+                get
+                {
+                    if (_scaffoldingsBackground.IsNullOrEmpty())
+                        _scaffoldingsBackground = ActiveTheme.scaffoldingBackgroundDoodads.ToGameObjects();
+                    return _scaffoldingsBackground;
+                }
+            }
+            private static GameObject[] _scaffoldingsBackground;
         }
-        private static GameObject[] _outdoorDoodads;
-        public static GameObject[] TreeBushes
+
+        public static class Interactables
         {
-            get
+            public static GameObject[] Switches
             {
-                if (_treeBushes.IsNullOrEmpty())
-                    _treeBushes = ActiveTheme.treeBushes.ToGameObjects();
-                return _treeBushes;
+                get
+                {
+                    if (_switches.IsNullOrEmpty())
+                        _switches = ActiveTheme.switchPrefab;
+                    return _switches;
+                }
             }
+            private static GameObject[] _switches;
+            public static GameObject[] Alarms
+            {
+                get
+                {
+                    if (_alarms.IsNullOrEmpty())
+                        _alarms = ActiveTheme.alarmDoodads.ToGameObjects();
+                    return _alarms;
+                }
+            }
+            private static GameObject[] _alarms;
         }
-        private static GameObject[] _treeBushes;
-        public static GameObject[] IndoorDoodad
+
+        public static class Decors
         {
-            get
+            public static GameObject[] Fences
             {
-                if (_indoorDoodad.IsNullOrEmpty())
-                    _indoorDoodad = ActiveTheme.indoorDoodads.ToGameObjects();
-                return _indoorDoodad;
+                get
+                {
+                    if (_fences.IsNullOrEmpty())
+                        _fences = ActiveTheme.fenceDoodads.ToGameObjects();
+                    return _fences;
+                }
             }
-        }
-        private static GameObject[] _indoorDoodad;
-        public static GameObject[] Trees
-        {
-            get
+            private static GameObject[] _fences;
+            public static GameObject[] Poles
             {
-                if (_trees.IsNullOrEmpty())
-                    _trees = ActiveTheme.trees.ToGameObjects();
-                return _trees;
+                get
+                {
+                    if (_poles.IsNullOrEmpty())
+                        _poles = ActiveTheme.poleDoodads.ToGameObjects();
+                    return _poles;
+                }
             }
-        }
-        private static GameObject[] _trees;
-        public static GameObject[] Parallaxes1
-        {
-            get
+            private static GameObject[] _poles;
+            public static GameObject[] Doors
             {
-                if (_parallaxes1.IsNullOrEmpty())
-                    _parallaxes1 = ActiveTheme.parallax1.ToGameObjects();
-                return _parallaxes1;
+                get
+                {
+                    if (_doors.IsNullOrEmpty())
+                        _doors = ActiveTheme.doorDoodads.ToGameObjects();
+                    return _doors;
+                }
             }
-        }
-        private static GameObject[] _parallaxes1;
-        public static GameObject[] Parallaxes2
-        {
-            get
+            private static GameObject[] _doors;
+            public static GameObject[] OutdoorDoodads
             {
-                if (_parallaxes2.IsNullOrEmpty())
-                    _parallaxes2 = ActiveTheme.parallax2.ToGameObjects();
-                return _parallaxes2;
+                get
+                {
+                    if (_outdoorDoodads.IsNullOrEmpty())
+                        _outdoorDoodads = ActiveTheme.outdoorDoodads.ToGameObjects();
+                    return _outdoorDoodads;
+                }
             }
-        }
-        private static GameObject[] _parallaxes2;
-        public static GameObject[] Parallaxes3
-        {
-            get
+            private static GameObject[] _outdoorDoodads;
+            public static GameObject[] IndoorDoodad
             {
-                if (_parallaxes3.IsNullOrEmpty())
-                    _parallaxes3 = ActiveTheme.parallax3.ToGameObjects();
-                return _parallaxes3;
+                get
+                {
+                    if (_indoorDoodad.IsNullOrEmpty())
+                        _indoorDoodad = ActiveTheme.indoorDoodads.ToGameObjects();
+                    return _indoorDoodad;
+                }
             }
-        }
-        private static GameObject[] _parallaxes3;
-        public static GameObject[] ParallaxCloud
-        {
-            get
+            private static GameObject[] _indoorDoodad;
+            public static GameObject[] HangingDoodads
             {
-                if (_parallaxCloud.IsNullOrEmpty())
-                    _parallaxCloud = ActiveTheme.parallaxCloudDoodads.ToGameObjects();
-                return _parallaxCloud;
+                get
+                {
+                    if (_hangingDoodads.IsNullOrEmpty())
+                        _hangingDoodads = ActiveTheme.hangingDoodads.ToGameObjects();
+                    return _hangingDoodads;
+                }
             }
-        }
-        private static GameObject[] _parallaxCloud;
-        public static GameObject[] TreesBackground
-        {
-            get
+            private static GameObject[] _hangingDoodads;
+            public static GameObject[] PureEvil
             {
-                if (_treesBackground.IsNullOrEmpty())
-                    _treesBackground = ActiveTheme.treesBackground.ToGameObjects();
-                return _treesBackground;
+                get
+                {
+                    if (_pureEvil.IsNullOrEmpty())
+                        _pureEvil = ActiveTheme.pureEvilDecor.ToGameObjects();
+                    return _pureEvil;
+                }
             }
+            private static GameObject[] _pureEvil;
         }
-        private static GameObject[] _treesBackground;
-        public static GameObject[] TreeBushesBackground
-        {
-            get
-            {
-                if (_treeBushesBackground.IsNullOrEmpty())
-                    _treeBushesBackground = ActiveTheme.treeBushesBackground.ToGameObjects();
-                return _treeBushesBackground;
-            }
-        }
-        private static GameObject[] _treeBushesBackground;
-        public static GameObject[] Traps
-        {
-            get
-            {
-                if (_traps.IsNullOrEmpty())
-                    _traps = ActiveTheme.trapDoodads.ToGameObjects();
-                return _traps;
-            }
-        }
-        private static GameObject[] _traps;
-        public static GameObject[] Fences
-        {
-            get
-            {
-                if (_fences.IsNullOrEmpty())
-                    _fences = ActiveTheme.fenceDoodads.ToGameObjects();
-                return _fences;
-            }
-        }
-        private static GameObject[] _fences;
-        public static GameObject[] Poles
-        {
-            get
-            {
-                if (_poles.IsNullOrEmpty())
-                    _poles = ActiveTheme.poleDoodads.ToGameObjects();
-                return _poles;
-            }
-        }
-        private static GameObject[] _poles;
-        public static GameObject[] Switches
-        {
-            get
-            {
-                if (_switches.IsNullOrEmpty())
-                    _switches = ActiveTheme.switchPrefab;
-                return _switches;
-            }
-        }
-        private static GameObject[] _switches;
-        public static GameObject[] Alarms
-        {
-            get
-            {
-                if (_alarms.IsNullOrEmpty())
-                    _alarms = ActiveTheme.alarmDoodads.ToGameObjects();
-                return _alarms;
-            }
-        }
-        private static GameObject[] _alarms;
-        public static GameObject[] Doors
-        {
-            get
-            {
-                if (_doors.IsNullOrEmpty())
-                    _doors = ActiveTheme.doorDoodads.ToGameObjects();
-                return _doors;
-            }
-        }
-        private static GameObject[] _doors;
-        public static GameObject[] ScaffoldingsForeground
-        {
-            get
-            {
-                if (_scaffoldingsForeground.IsNullOrEmpty())
-                    _scaffoldingsForeground = ActiveTheme.scaffoldingForegroundDoodads.ToGameObjects();
-                return _scaffoldingsForeground;
-            }
-        }
-        private static GameObject[] _scaffoldingsForeground;
-        public static GameObject[] ScaffoldingsBackground
-        {
-            get
-            {
-                if (_scaffoldingsBackground.IsNullOrEmpty())
-                    _scaffoldingsBackground = ActiveTheme.scaffoldingBackgroundDoodads.ToGameObjects();
-                return _scaffoldingsBackground;
-            }
-        }
-        private static GameObject[] _scaffoldingsBackground;
-        public static GameObject[] HangingDoodads
-        {
-            get
-            {
-                if (_hangingDoodads.IsNullOrEmpty())
-                    _hangingDoodads = ActiveTheme.hangingDoodads.ToGameObjects();
-                return _hangingDoodads;
-            }
-        }
-        private static GameObject[] _hangingDoodads;
+
         public static GameObject[] TerrainRotators
         {
             get
@@ -245,121 +285,122 @@ namespace RocketLib.Collections
             }
         }
         private static GameObject[] _waterSources;
-        public static GameObject[] IndoorDoodad
+        public static GameObject[] Villagers
         {
             get
             {
-                if (_indoorDoodad.IsNullOrEmpty())
-                    _indoorDoodad = ActiveTheme.indoorDoodads.ToGameObjects();
-                return _indoorDoodad;
+                if (_villagers.IsNullOrEmpty())
+                    _villagers = ActiveTheme.villager1.ToGameObjects();
+                return _villagers;
             }
         }
-        private static GameObject[] _indoorDoodad;
-        public static GameObject[] IndoorDoodad
+        private static GameObject[] _villagers;
+        public static GameObject[] Ziplines
         {
             get
             {
-                if (_indoorDoodad.IsNullOrEmpty())
-                    _indoorDoodad = ActiveTheme.indoorDoodads.ToGameObjects();
-                return _indoorDoodad;
+                if (_ziplines.IsNullOrEmpty())
+                    _ziplines = ActiveTheme.ziplineDoodads.ToGameObjects();
+                return _ziplines;
             }
         }
-        private static GameObject[] _indoorDoodad;
-        public static GameObject[] IndoorDoodad
+        private static GameObject[] _ziplines;
+        public static GameObject[] Crates
         {
             get
             {
-                if (_indoorDoodad.IsNullOrEmpty())
-                    _indoorDoodad = ActiveTheme.indoorDoodads.ToGameObjects();
-                return _indoorDoodad;
+                if (_crates.IsNullOrEmpty())
+                    _crates = ActiveTheme.crateDoodads.ToGameObjects();
+                return _crates;
             }
         }
-        private static GameObject[] _indoorDoodad;
-        public static GameObject[] IndoorDoodad
+        private static GameObject[] _crates;
+        public static GameObject[] Traps
         {
             get
             {
-                if (_indoorDoodad.IsNullOrEmpty())
-                    _indoorDoodad = ActiveTheme.indoorDoodads.ToGameObjects();
-                return _indoorDoodad;
+                if (_traps.IsNullOrEmpty())
+                    _traps = ActiveTheme.trapDoodads.ToGameObjects();
+                return _traps;
             }
         }
-        private static GameObject[] _indoorDoodad;
-        public static GameObject[] IndoorDoodad
-        {
-            get
-            {
-                if (_indoorDoodad.IsNullOrEmpty())
-                    _indoorDoodad = ActiveTheme.indoorDoodads.ToGameObjects();
-                return _indoorDoodad;
-            }
-        }
-        private static GameObject[] _indoorDoodad;
+        private static GameObject[] _traps;
 
-
-        public static GameObject[] GetDoodadArray(DoodadType doodadType)
+        public static GameObject[] GetDoodadsFromType(DoodadType doodadType)
         {
             if (ActiveTheme == null || SharedObjectsReference == null)
                 return null;
 
             switch (doodadType)
             {
+                #region Enemies
                 case DoodadType.MookDoor:
-                    return MookDoors;
-                case DoodadType.OutdoorDoodad:
-                    return OutdoorDoodads;
-                case DoodadType.IndoorDoodad:
-                    return IndoorDoodad;
+                    return Enemies.MookDoors;
+                case DoodadType.WallOfGuns:
+                    return Enemies.WallOfGuns;
+                #endregion
+                #region Environments
                 case DoodadType.TreeBushes:
-                    return TreeBushes;
+                    return Environments.TreeBushes;
                 case DoodadType.Tree:
-                    return Trees;
+                    return Environments.Trees;
                 case DoodadType.Parallax3:
-                    return Parallaxes3;
+                    return Environments.Parallaxes3;
                 case DoodadType.Parallax2:
-                    return Parallaxes2;
+                    return Environments.Parallaxes2;
                 case DoodadType.Parallax1:
-                    return Parallaxes1;
+                    return Environments.Parallaxes1;
                 case DoodadType.Cloud:
-                    return ParallaxCloud;
+                    return Environments.ParallaxCloud;
                 case DoodadType.TreeBackground:
-                    return TreesBackground;
+                    return Environments.TreesBackground;
                 case DoodadType.TreeBushBackground:
-                    return TreeBushesBackground;
+                    return Environments.TreeBushesBackground;
+                case DoodadType.TreeFoliageBackground:
+                    return Environments.FoliageBackground;
+                #endregion
+                #region Interactables
+                case DoodadType.Switch:
+                    return Interactables.Switches;
+                case DoodadType.Alarm:
+                    return Interactables.Alarms;
+                #endregion
+                #region Structures
+                case DoodadType.Scaffolding:
+                    return Structures.ScaffoldingsForeground;
+                case DoodadType.ScaffoldingBackground:
+                    return Structures.ScaffoldingsBackground;
+                #endregion
+                #region Decors
+                case DoodadType.Fence:
+                    return Decors.Fences;
+                case DoodadType.Pole:
+                    return Decors.Poles;
+                case DoodadType.Door:
+                    return Decors.Doors;
+                case DoodadType.HangingDoodads:
+                    return Decors.HangingDoodads;
+                case DoodadType.OutdoorDoodad:
+                    return Decors.OutdoorDoodads;
+                case DoodadType.IndoorDoodad:
+                    return Decors.IndoorDoodad;
+                case DoodadType.PureEvilDecor:
+                    return Decors.PureEvil;
+                #endregion
+
                 case DoodadType.Trap:
                     return Traps;
-                case DoodadType.Fence:
-                    return Fences;
-                case DoodadType.Pole:
-                    return Poles;
-                case DoodadType.Switch:
-                    return Switches;
-                case DoodadType.Alarm:
-                    return Alarms;
-                case DoodadType.Door:
-                    return Doors;
-                case DoodadType.Scaffolding:
-                    return ScaffoldingsForeground;
-                case DoodadType.ScaffoldingBackground:
-                    return ScaffoldingsBackground;
-                case DoodadType.HangingDoodads:
-                    return HangingDoodads;
                 case DoodadType.TerrainRotators:
                     return TerrainRotators;
                 case DoodadType.WaterSource:
                     return WaterSources;
-                case DoodadType.PureEvilDecor:
-                    return ActiveTheme.pureEvilDecor.ToGameObjects();
-                case DoodadType.TreeFoliageBackground:
-                    return ActiveTheme.foliageBackground.ToGameObjects();
                 case DoodadType.Villager:
-                    return ActiveTheme.villager1.ToGameObjects();
+                    return Villagers;
                 case DoodadType.Zipline:
-                    return ActiveTheme.ziplineDoodads.ToGameObjects();
+                    return Ziplines;
                 case DoodadType.Crate:
-                    return ActiveTheme.crateDoodads.ToGameObjects();
-                case DoodadType.WallOfGuns:
-                    return ActiveTheme.wallOfGuns;
+                    return Crates;
+
                 case DoodadType.Elevator:
                     return ActiveTheme.elevators.ToGameObjects();
                 case DoodadType.BackgroundWindowFactory:
