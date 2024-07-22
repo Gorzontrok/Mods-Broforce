@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using RocketLib;
 using RocketLib.Loggers;
 using RocketLib.Utils;
@@ -125,7 +122,6 @@ namespace RocketLibUMM
             GUILayout.EndVertical();
         }
 
-
         private static void LogGUI()
         {
             GUILayout.BeginVertical("box");
@@ -166,7 +162,6 @@ namespace RocketLibUMM
             {
                 Main.Log(ex);
             }
-
         }
     }
 }
