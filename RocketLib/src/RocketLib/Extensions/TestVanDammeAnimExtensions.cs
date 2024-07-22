@@ -40,4 +40,14 @@ public static class TestVanDammeAnimExtensions
     {
         anim.GetComponent<Renderer>().sharedMaterial = mat;
     }
+
+    public static bool IsOnAnimal<T>(this T anim) where T : TestVanDammeAnim
+    {
+        LayerMask platformLayer = anim.GetFieldValue<LayerMask>("platformLayer");
+        RaycastHit raycastHit;
+        return (Physics.Raycast(new Vector3(anim.X, anim.Y + 5f, 0f), Vector3.down, out raycastHit, 16f, platformLayer) ||
+            Physics.Raycast(new Vector3(anim.X + 4f, anim.Y + 5f, 0f), Vector3.down, out raycastHit, 16f, platformLayer) ||
+            Physics.Raycast(new Vector3(anim.X - 4f, anim.Y + 5f, 0f), Vector3.down, out raycastHit, 16f, platformLayer)) &&
+            raycastHit.collider.GetComponentInParent<Animal>() != null;
+    }
 }
