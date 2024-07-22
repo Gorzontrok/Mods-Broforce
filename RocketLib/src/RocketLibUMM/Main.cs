@@ -92,7 +92,6 @@ namespace RocketLibUMM
                 {
                     Main.LogUMM(e.ToString());
                 }
-
                 return true;
             }
             catch(Exception ex)
@@ -168,68 +167,5 @@ namespace RocketLibUMM
             Save(this, modEntry);
         }
     }
-
-    // Patch to don't destroy the mod manager. Need to find the one of Cutscene.
-    [HarmonyPatch(typeof(PauseMenu), "ReturnToMenu")]
-    static class PauseMenu_ReturnToMenu_Patch
-    {
-        static bool Prefix(PauseMenu __instance)
-        {
-            if (!Main.enabled)
-            {
-                return true;
-            }
-
-            PauseGameConfirmationPopup m_ConfirmationPopup = __instance.GetFieldValue<PauseGameConfirmationPopup>("m_ConfirmationPopup");
-
-            MethodInfo dynMethod = m_ConfirmationPopup.GetType().GetMethod("ConfirmReturnToMenu", BindingFlags.NonPublic | BindingFlags.Instance);
-            dynMethod.Invoke(m_ConfirmationPopup, null);
-
-            return false;
-        }
-
-    }
-    [HarmonyPatch(typeof(PauseMenu), "ReturnToMap")]
-    static class PauseMenu_ReturnToMap_Patch
-    {
-        static bool Prefix(PauseMenu __instance)
-        {
-            if (!Main.enabled)
-            {
-                return true;
-            }
-
-            __instance.CloseMenu();
-            GameModeController.Instance.ReturnToWorldMap();
-            return false;
-        }
-
-    }
-    [HarmonyPatch(typeof(PauseMenu), "RestartLevel")]
-    static class PauseMenu_RestartLevel_Patch
-    {
-        static bool Prefix(PauseMenu __instance)
-        {
-            if (!Main.enabled)
-            {
-                return true;
-            }
-
-            Map.ClearSuperCheckpointStatus();
-
-            (Traverse.Create(typeof(TriggerManager)).Field("alreadyTriggeredTriggerOnceTriggers").GetValue() as List<string>).Clear();
-
-            if (GameModeController.publishRun)
-            {
-                GameModeController.publishRun = false;
-                LevelEditorGUI.levelEditorActive = true;
-            }
-            PauseController.SetPause(PauseStatus.UnPaused);
-            GameModeController.RestartLevel();
-
-            return false;
-        }
-    }
-
 }
 
