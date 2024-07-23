@@ -80,6 +80,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityModManager, Version=0.25.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\UnityModManager.dll</HintPath>
@@ -89,6 +93,8 @@
     <Compile Include="BroforceMod.cs" />
     <Compile Include="BroforceModController.cs" />
     <Compile Include="Collections\Heroes.cs" />
+    <Compile Include="Utils\DrawDebug.cs" />
+    <Compile Include="Utils\ResourcesController.cs" />
     <None Include="Collections\Doodads.cs" />
     <Compile Include="Collections\Levels.cs" />
     <Compile Include="Collections\Nums.cs" />
@@ -132,6 +138,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(SolutionDir)\RocketLibUMM\_Mod\$(ProjectName).dll*"
-start XCOPY /Y /R "$(TargetPath)" "..\..\..\..\lib\$(ProjectName).dll*"</PostBuildEvent>
+start XCOPY /Y /R "$(TargetPath)" "..\..\..\..\lib\$(ProjectName).dll*"
+del "D:\Steam\steamapps\common\Broforce\Mods\Development - RocketLib\*.cache" 2&gt; nul || set errorlevel=0</PostBuildEvent>
   </PropertyGroup>
 </Project>

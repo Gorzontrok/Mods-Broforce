@@ -119,104 +119,164 @@
             The original array of hero save number interval. (read only)
             </summary>
         </member>
-        <member name="M:RocketLib.ComponentExtensions.RemoveComponent``1(UnityEngine.Component)">
+        <member name="M:RocketLib.Utils.DrawDebug.DrawLine(System.String,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Single)">
             <summary>
-            Remove the component of type T from the current Component.
+            Draw a debug line
             </summary>
-            <typeparam name="T">The component type.</typeparam>
-            <param name="self"></param>
+            <param name="ID">Name of line, use the same name to update an existing line</param>
+            <param name="start">Start position</param>
+            <param name="end">End position</param>
+            <param name="color">Color of line</param>
+            <param name="width">Width of line</param>
         </member>
-        <member name="T:RocketLib.GameObjectExtensions">
+        <member name="M:RocketLib.Utils.DrawDebug.DrawRectangle(System.String,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Single)">
             <summary>
-            Extensions for the GameObject class.
+            Draw a debug rectangle
             </summary>
+            <param name="ID">Name of rectangle, use the same name to update an existing rectangle</param>
+            <param name="corner1">One of the corners</param>
+            <param name="corner2">The opposite corner of the first one provided</param>
+            <param name="color">Color of rectangle</param>
+            <param name="width">Width of rectangle</param>
         </member>
-        <member name="M:RocketLib.GameObjectExtensions.RemoveComponent``1(UnityEngine.GameObject)">
+        <member name="P:RocketLib.Utils.ResourcesController.Particle_AlphaBlend">
             <summary>
-            Remove the component of type T from the current GameObject.
-            </summary>
-            <typeparam name="T">The component type.</typeparam>
-            <param name="self"></param>
-        </member>
-        <member name="M:RocketLib.StringExtensions.Dye(System.String,UnityEngine.Color)">
-            <summary>
-            Surround string with xml "color" tag
-            </summary>
-        </member>
-        <member name="M:RocketLib.StringExtensions.Dye(System.String,System.String)">
-            <summary>
-            Surround string with xml "color" tag
+            Particles/Alpha Blended
             </summary>
         </member>
-        <member name="T:RocketLib.GamePassword">
+        <member name="P:RocketLib.Utils.ResourcesController.Unlit_DepthCutout">
             <summary>
-            Add password to the game
+            Unlit/Depth Cutout With ColouredImage
             </summary>
         </member>
-        <member name="M:RocketLib.GamePassword.#ctor(System.String,System.Action)">
+        <member name="P:RocketLib.Utils.ResourcesController.Particle">
             <summary>
-            Create the game password.
+            Particle/Additive
             </summary>
-            <param name="_password"></param>
-            <param name="_action"></param>
         </member>
-        <member name="M:RocketLib.GamePassword.ToString">
+        <member name="M:RocketLib.Utils.ResourcesController.GetMaterial(System.String,System.String)">
             <summary>
-            Return password
+            Creates a Material using the shader Unlit_DepthCutout.
+            Loads Material from cache if created previously.
             </summary>
+            <param name="path">Path to an image or asset</param>
+            /// <param name="fileName">Name of an image or asset file</param>
             <returns></returns>
         </member>
-        <member name="M:RocketLib.KeyBindingForPlayers.#ctor(System.String,System.String)">
+        <member name="M:RocketLib.Utils.ResourcesController.GetMaterial(System.String)">
             <summary>
-            Create a Keybinding for all 4 players
+            Creates a Material using the shader Unlit_DepthCutout.
+            Loads Material from cache if created previously.
             </summary>
-            <param name="name">Name of the key</param>
-            <param name="modId">Name of the mod that is adding the keybinding</param>
+            <param name="filePath">Path to an image or asset file</param>
+            <returns></returns>
         </member>
-        <member name="P:RocketLib.RGUI.Unexpanded">
-            <summary> Do not expand the GUILayout width and height </summary>
-        </member>
-        <member name="M:RocketLib.RGUI.ArrowList(System.String[],System.Int32)">
+        <member name="M:RocketLib.Utils.ResourcesController.CreateMaterial(System.Byte[])">
             <summary>
-            A custom GUILayout. You make a choice with arrow.
+            Creates a Material from an array of bytes using the shader Unlit_DepthCutout.
+            The Material is not cached, use GetMaterial if caching is desired.
             </summary>
-            <param name="StringsArray">The values that are show.</param>
-            <param name="selected">The current index.</param>
-            <returns>Index of the array</returns>
+            <param name="imageBytes">Byte array to load image from</param>
+            <returns></returns>
         </member>
-        <member name="M:RocketLib.RGUI.ArrowList(System.String[],System.Int32,System.Single)">
+        <member name="M:RocketLib.Utils.ResourcesController.CreateMaterial(System.String,UnityEngine.Shader)">
             <summary>
-            A custom GUILayout. You make a choice with arrow.
+            Creates a Material using the specified image and shader.
+            The Material is not cached, use GetMaterial if caching is desired.
             </summary>
-            <param name="StringsArray">The values that are show.</param>
-            <param name="selected">The current index.</param>
-            <param name="Width"></param>
-            <returns>Index of the array</returns>
+            <param name="filePath">Path to an image file</param>
+            <param name="shader">Shader to use</param>
+            <returns></returns>
         </member>
-        <member name="M:RocketLib.RGUI.ArrowList(System.Object[],System.Int32)">
+        <member name="M:RocketLib.Utils.ResourcesController.CreateMaterial(System.String,UnityEngine.Material)">
             <summary>
-            A custom GUILayout. You make a choice with arrow.
+            Creates a Material using the specified image and Material as a source.
+            The Material is not cached, use GetMaterial if caching is desired.
             </summary>
-            <param name="ObjectsArray">The values that are show.</param>
-            <param name="selected">The current index.</param>
-            <returns>Index of the array</returns>
+            <param name="filePath">Path to an image file</param>
+            <param name="source">Source Material to copy</param>
+            <returns></returns>
         </member>
-        <member name="M:RocketLib.RGUI.ArrowList(System.Object[],System.Int32,System.Single)">
+        <member name="M:RocketLib.Utils.ResourcesController.GetTexture(System.String,System.String)">
             <summary>
-            A custom GUILayout. You make a choice with arrow.
+            Creates a Texture2D from an image or asset file.
+            Loads Texture2D from cache if created previously.
             </summary>
-            <param name="ObjectsArray">The values that are show.</param>
-            <param name="selected">The current index.</param>
-            <param name="Width"></param>
-            <returns>Index of the array</returns>
+            <param name="path">Path to an image or asset</param>
+            /// <param name="fileName">Name of an image or asset file</param>
+            <returns></returns>
         </member>
-        <member name="M:RocketLib.RGUI.Tab(System.String[],System.Int32,System.Int32,System.Int32)">
+        <member name="M:RocketLib.Utils.ResourcesController.GetTexture(System.String)">
             <summary>
+            Creates a Texture2D from an image or asset file.
+            Loads Texture2D from cache if created previously.
             </summary>
-            <param name="Strings"></param>
-            <param name="Number"></param>
-            <param name="Space"></param>
-            <param name="TabWidth"></param>
+            <param name="filePath">Path to an image or asset file</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.Utils.ResourcesController.CreateTexture(System.String)">
+            <summary>
+            Creates a Texture2D from an image or asset file.
+            The Texture2D is not cached, use GetTexture if caching is desired.
+            </summary>
+            <param name="filePath">Path to an image file</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.Utils.ResourcesController.CreateTexture(System.Byte[])">
+            <summary>
+            Creates a Texture2D from a byte array.
+            The Texture2D is not cached, use GetTexture if caching is desired.
+            </summary>
+            <param name="imageBytes">Byte array to load image from</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.Utils.ResourcesController.GetAudioClip(System.String,System.String)">
+            <summary>
+            Creates an AudioClip from an audio file.
+            Loads AudioClip from cache if created previously. Note that the same cached AudioClip can't be played several times simultaneously.
+            </summary>
+            <param name="path">Path to an audio file</param>
+            <param name="fileName">Name of an audio file</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.Utils.ResourcesController.GetAudioClip(System.String)">
+            <summary>
+            Creates an AudioClip from an audio file.
+            Loads AudioClip from cache if created previously. Note that the same cached AudioClip can't be played several times simultaneously.
+            </summary>
+            <param name="filePath">Path to an audio file</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.Utils.ResourcesController.CreateAudioClip(System.String,System.String)">
+            <summary>
+            Creates an AudioClip from an audio file.
+            The AudioClip is not cached, use GetAudioClip is caching is desired.
+            </summary>
+            <param name="path">Path to an audio file</param>
+            <param name="fileName">Name of an audio file</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.Utils.ResourcesController.CreateAudioClip(System.String)">
+            <summary>
+            Creates an AudioClip from an audio file.
+            The AudioClip is not cached, use GetAudioClip is caching is desired.
+            </summary>
+            <param name="filePath">Path to an audio file</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.Utils.ResourcesController.ExtractResource(System.String)">
+            <summary>
+            Creates a byte array from a file.
+            </summary>
+            <param name="filename">Name of a file</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.Utils.ResourcesController.LoadAssetSync``1(System.String)">
+            <summary>
+            Loads an object from an asset file.
+            </summary>
+            <typeparam name="T">Type of the object</typeparam>
+            <param name="name">Name of the asset file</param>
             <returns></returns>
         </member>
         <member name="T:RocketLib.Utils.IsThisMod">
@@ -366,6 +426,120 @@
             </summary>
             <param name="ImagePath"></param>
             <param name="texture--"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.ComponentExtensions.RemoveComponent``1(UnityEngine.Component)">
+            <summary>
+            Remove the component of type T from the current Component.
+            </summary>
+            <typeparam name="T">The component type.</typeparam>
+            <param name="self"></param>
+        </member>
+        <member name="T:RocketLib.GameObjectExtensions">
+            <summary>
+            Extensions for the GameObject class.
+            </summary>
+        </member>
+        <member name="M:RocketLib.GameObjectExtensions.RemoveComponent``1(UnityEngine.GameObject)">
+            <summary>
+            Remove the component of type T from the current GameObject.
+            </summary>
+            <typeparam name="T">The component type.</typeparam>
+            <param name="self"></param>
+        </member>
+        <member name="M:RocketLib.StringExtensions.Dye(System.String,UnityEngine.Color)">
+            <summary>
+            Surround string with xml "color" tag
+            </summary>
+        </member>
+        <member name="M:RocketLib.StringExtensions.Dye(System.String,System.String)">
+            <summary>
+            Surround string with xml "color" tag
+            </summary>
+        </member>
+        <member name="T:RocketLib.GamePassword">
+            <summary>
+            Add password to the game
+            </summary>
+        </member>
+        <member name="M:RocketLib.GamePassword.#ctor(System.String,System.Action)">
+            <summary>
+            Create the game password.
+            </summary>
+            <param name="_password"></param>
+            <param name="_action"></param>
+        </member>
+        <member name="M:RocketLib.GamePassword.ToString">
+            <summary>
+            Return password
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.KeyBindingForPlayers.#ctor(System.String,System.String)">
+            <summary>
+            Create a Keybinding for all 4 players
+            </summary>
+            <param name="name">Name of the key</param>
+            <param name="modId">Name of the mod that is adding the keybinding</param>
+        </member>
+        <member name="M:RocketLib.KeyBindingForPlayers.OnGUI(System.Int32@,System.Boolean,System.Boolean,System.String@,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Displays keybinding options for one or more players
+            </summary>
+            <param name="player">Player that had their keybinding clicked</param>
+            <param name="displayToolTip">Display tooltip below keybinding</param>
+            <param name="includeToolTip">Include tooltip with the keybinding. Doesn't display the tooltip unless displayToolTip is also set to true</param>
+            <param name="previousToolTip">Previous tooltip that was displayed, used to ignore previous tooltips</param>
+            <param name="playerToDisplay">Player to display if onlyOnePlayer is set to true</param>
+            <param name="onlyOnePlayer">Only display one player's keybinding options</param>
+            <param name="separateKeyName">Separate the keyname from the button, if set to false it will be included within the button</param>
+            <param name="fixedWidth">Controls whether the button should be a fixed width or not</param>
+            <returns></returns>
+        </member>
+        <member name="P:RocketLib.RGUI.Unexpanded">
+            <summary> Do not expand the GUILayout width and height </summary>
+        </member>
+        <member name="M:RocketLib.RGUI.ArrowList(System.String[],System.Int32)">
+            <summary>
+            A custom GUILayout. You make a choice with arrow.
+            </summary>
+            <param name="StringsArray">The values that are show.</param>
+            <param name="selected">The current index.</param>
+            <returns>Index of the array</returns>
+        </member>
+        <member name="M:RocketLib.RGUI.ArrowList(System.String[],System.Int32,System.Single)">
+            <summary>
+            A custom GUILayout. You make a choice with arrow.
+            </summary>
+            <param name="StringsArray">The values that are show.</param>
+            <param name="selected">The current index.</param>
+            <param name="Width"></param>
+            <returns>Index of the array</returns>
+        </member>
+        <member name="M:RocketLib.RGUI.ArrowList(System.Object[],System.Int32)">
+            <summary>
+            A custom GUILayout. You make a choice with arrow.
+            </summary>
+            <param name="ObjectsArray">The values that are show.</param>
+            <param name="selected">The current index.</param>
+            <returns>Index of the array</returns>
+        </member>
+        <member name="M:RocketLib.RGUI.ArrowList(System.Object[],System.Int32,System.Single)">
+            <summary>
+            A custom GUILayout. You make a choice with arrow.
+            </summary>
+            <param name="ObjectsArray">The values that are show.</param>
+            <param name="selected">The current index.</param>
+            <param name="Width"></param>
+            <returns>Index of the array</returns>
+        </member>
+        <member name="M:RocketLib.RGUI.Tab(System.String[],System.Int32,System.Int32,System.Int32)">
+            <summary>
+            </summary>
+            <param name="Strings"></param>
+            <param name="Number"></param>
+            <param name="Space"></param>
+            <param name="TabWidth"></param>
             <returns></returns>
         </member>
         <member name="F:RocketLib.Loggers.Logger.ID">

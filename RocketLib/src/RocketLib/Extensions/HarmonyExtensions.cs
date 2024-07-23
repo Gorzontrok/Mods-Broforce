@@ -2,6 +2,9 @@
 using RocketLib.Loggers;
 using System;
 using System.Collections.Generic;
+#pragma warning disable CS1584
+#pragma warning disable CS1658
+#pragma warning disable CS1711
 
 public static class HarmonyExtensions
 {

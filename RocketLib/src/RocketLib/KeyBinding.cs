@@ -131,6 +131,42 @@ namespace RocketLib
             return result;
         }
 
+        public virtual bool OnGUI(bool displayToolTip, bool displayName, bool includeNameInside )
+        {
+            GUILayout.BeginHorizontal(RGUI.Unexpanded);
+            if (displayName)
+            {
+                GUILayout.Label(name, RGUI.Unexpanded);
+                GUILayout.Space(10);
+            }
+            bool result;
+            string toolTip = displayToolTip ? "Press Delete to clear" : "";
+            string prefix = includeNameInside ? (name + ": ") : "";
+            if (this.isSettingKey)
+            {
+                result = GUILayout.Button(new GUIContent(prefix + "Press Any Key/Button", toolTip));
+            }
+            else if (this.axis)
+            {
+                result = GUILayout.Button(new GUIContent(prefix + this.joystickDisplayName, toolTip));
+            }
+            else
+            {
+                result = GUILayout.Button(new GUIContent(prefix + key.ToString(), toolTip));
+            }
+            toolTipRect = GUILayoutUtility.GetLastRect();
+            GUILayout.EndHorizontal();
+            if (result && !this.isSettingKey && !InputReader.IsBlocked)
+            {
+                UnityModManager.UI.Instance.StartCoroutine(BindKey(this));
+            }
+            else
+            {
+                result = false;
+            }
+            return result;
+        }
+
         public virtual bool IsDown()
         {
             if ( this.axis )

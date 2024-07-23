@@ -215,5 +215,93 @@ namespace RocketLib
             }
             return result;
         }
+
+        /// <summary>
+        /// Displays keybinding options for one or more players
+        /// </summary>
+        /// <param name="player">Player that had their keybinding clicked</param>
+        /// <param name="displayToolTip">Display tooltip below keybinding</param>
+        /// <param name="includeToolTip">Include tooltip with the keybinding. Doesn't display the tooltip unless displayToolTip is also set to true</param>
+        /// <param name="previousToolTip">Previous tooltip that was displayed, used to ignore previous tooltips</param>
+        /// <param name="playerToDisplay">Player to display if onlyOnePlayer is set to true</param>
+        /// <param name="onlyOnePlayer">Only display one player's keybinding options</param>
+        /// <param name="separateKeyName">Separate the keyname from the button, if set to false it will be included within the button</param>
+        /// <param name="fixedWidth">Controls whether the button should be a fixed width or not</param>
+        /// <returns></returns>
+        public bool OnGUI(out int player, bool displayToolTip, bool includeToolTip, ref string previousToolTip, int playerToDisplay = -1, bool onlyOnePlayer = false, bool separateKeyName = true, bool fixedWidth = true )
+        {
+            player = 0;
+            bool result = false;
+            try
+            {
+                GUILayout.BeginHorizontal(RGUI.Unexpanded);
+                if ( separateKeyName )
+                {
+                    GUILayout.Label(name, RGUI.Unexpanded);
+                }
+                Rect toolTipPos = Rect.zero;
+                if ( !onlyOnePlayer )
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (fixedWidth)
+                        {
+                            GUILayout.BeginVertical(GUILayout.ExpandHeight(false), GUILayout.Width(200));
+                        }
+                        else
+                        {
+                            GUILayout.BeginVertical(GUILayout.ExpandHeight(false));
+                        }
+                        RGUI.LabelCenteredHorizontally(new GUIContent("Player " + (i + 1)), GUI.skin.label, RGUI.Unexpanded);
+                        var temp = this[i].OnGUI(includeToolTip, false, !separateKeyName);
+                        if (i == 0)
+                        {
+                            toolTipPos = KeyBinding.toolTipRect;
+                            toolTipPos.y += 17;
+                        }
+                        GUILayout.EndVertical();
+                        if (temp)
+                        {
+                            this[i].isSettingKey = true;
+                            result = temp;
+                            player = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    if ( fixedWidth )
+                    {
+                        GUILayout.BeginVertical(GUILayout.ExpandHeight(false), GUILayout.Width(200));
+                    }
+                    else
+                    {
+                        GUILayout.BeginVertical(GUILayout.ExpandHeight(false));
+                    }
+                    var temp = this[playerToDisplay].OnGUI(includeToolTip, false, !separateKeyName);
+                    toolTipPos = KeyBinding.toolTipRect;
+                    toolTipPos.y += 17;
+                    GUILayout.EndVertical();
+                    if (temp)
+                    {
+                        this[playerToDisplay].isSettingKey = true;
+                        result = temp;
+                        player = playerToDisplay;
+                    }
+                }
+                if (displayToolTip && GUI.tooltip != string.Empty && GUI.tooltip != previousToolTip)
+                {
+                    GUI.Label(toolTipPos, GUI.tooltip);
+                    GUI.tooltip = string.Empty;
+                }
+                GUILayout.EndHorizontal();
+            }
+            catch (Exception e)
+            {
+                ScreenLogger.Instance.ExceptionLog(e);
+            }
+            return result;
+        }
     }
 }
