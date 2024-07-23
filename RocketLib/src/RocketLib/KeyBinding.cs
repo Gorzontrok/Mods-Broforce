@@ -22,6 +22,8 @@ namespace RocketLib
         public bool isSettingKey;
         [JsonIgnore, XmlIgnore]
         public static Rect toolTipRect;
+        [JsonIgnore, XmlIgnore]
+        public bool wasDown = false;
 
         public KeyBinding()
         {
@@ -167,6 +169,11 @@ namespace RocketLib
             return result;
         }
 
+
+        /// <summary>
+        /// Gets state of key
+        /// </summary>
+        /// <returns>True if key is pressed down</returns>
         public virtual bool IsDown()
         {
             if ( this.axis )
@@ -178,14 +185,45 @@ namespace RocketLib
                 return Input.GetKey(key);
             }
         }
-        public virtual bool WasPressedThisFrame()
+
+        /// <summary>
+        /// Checks if key was just pressed
+        /// </summary>
+        /// <returns>True if key was pressed this frame</returns>
+        public virtual bool PressedDown()
         {
-            return Input.GetKeyDown(key);
+            bool down = IsDown();
+            if (!wasDown && down)
+            {
+                wasDown = down;
+                return true;
+            }
+            else
+            {
+                wasDown = down;
+                return false;
+            }
         }
-        public virtual bool WasReleasedThisFrame()
+
+        /// <summary>
+        /// Checks if key was just released
+        /// </summary>
+        /// <returns>True if key was released this frame</returns>
+        public virtual bool Released()
         {
-            return Input.GetKeyUp(key);
+            bool down = IsDown();
+            if (wasDown && !down)
+            {
+                wasDown = down;
+                return false;
+            }
+            else
+            {
+                wasDown = down;
+                return true;
+            }
         }
+
         public virtual float GetAxis()
         {
             if ( this.axis )

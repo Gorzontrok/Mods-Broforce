@@ -156,9 +156,34 @@ namespace RocketLib
             this[player].AssignKey(joystick, direction);
         }
 
+        /// <summary>
+        /// Gets state of key
+        /// </summary>
+        /// <param name="player">Player to check keybinding for</param>
+        /// <returns>True if key is currently down</returns>
         public bool IsDown(int player)
         {
             return this[player].IsDown();
+        }
+
+        /// <summary>
+        /// Checks if key was just pressed
+        /// </summary>
+        /// <param name="player">Player to check keybinding for</param>
+        /// <returns>True if key was pressed this frame</returns>
+        public bool PressedDown(int player)
+        {
+            return this[player].PressedDown();
+        }
+
+        /// <summary>
+        /// Checks if key was just released
+        /// </summary>
+        /// <param name="player">Player to check keybinding for</param>
+        /// <returns>True if key was released this frame</returns>
+        public bool Released(int player)
+        {
+            return this[player].Released();
         }
 
         public void ClearKey(int player)

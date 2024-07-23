@@ -475,12 +475,51 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:RocketLib.KeyBinding.IsDown">
+            <summary>
+            Gets state of key
+            </summary>
+            <returns>True if key is pressed down</returns>
+        </member>
+        <member name="M:RocketLib.KeyBinding.PressedDown">
+            <summary>
+            Checks if key was just pressed
+            </summary>
+            <returns>True if key was pressed this frame</returns>
+        </member>
+        <member name="M:RocketLib.KeyBinding.Released">
+            <summary>
+            Checks if key was just released
+            </summary>
+            <returns>True if key was released this frame</returns>
+        </member>
         <member name="M:RocketLib.KeyBindingForPlayers.#ctor(System.String,System.String)">
             <summary>
             Create a Keybinding for all 4 players
             </summary>
             <param name="name">Name of the key</param>
             <param name="modId">Name of the mod that is adding the keybinding</param>
+        </member>
+        <member name="M:RocketLib.KeyBindingForPlayers.IsDown(System.Int32)">
+            <summary>
+            Gets state of key
+            </summary>
+            <param name="player">Player to check keybinding for</param>
+            <returns>True if key is currently down</returns>
+        </member>
+        <member name="M:RocketLib.KeyBindingForPlayers.PressedDown(System.Int32)">
+            <summary>
+            Checks if key was just pressed
+            </summary>
+            <param name="player">Player to check keybinding for</param>
+            <returns>True if key was pressed this frame</returns>
+        </member>
+        <member name="M:RocketLib.KeyBindingForPlayers.Released(System.Int32)">
+            <summary>
+            Checks if key was just released
+            </summary>
+            <param name="player">Player to check keybinding for</param>
+            <returns>True if key was released this frame</returns>
         </member>
         <member name="M:RocketLib.KeyBindingForPlayers.OnGUI(System.Int32@,System.Boolean,System.Boolean,System.String@,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
