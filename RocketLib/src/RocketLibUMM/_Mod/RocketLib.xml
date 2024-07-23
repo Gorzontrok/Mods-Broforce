@@ -949,6 +949,14 @@
             <param name="fieldName"></param>
             <param name="value"></param>
         </member>
+        <member name="M:HarmonyExtensions.SetFieldValue``1(System.Object,System.String,``0)">
+            <summary>
+            Set the value of the field <paramref name="fieldName"/> with <paramref name="value"/>
+            </summary>
+            <param name="obj"></param>
+            <param name="fieldName"></param>
+            <param name="value"></param>
+        </member>
         <member name="M:HarmonyExtensions.CallMethod``1(System.Object,System.String,System.Object[])">
             <summary>
             Call a method then return value as <typeparamref name="T"/>

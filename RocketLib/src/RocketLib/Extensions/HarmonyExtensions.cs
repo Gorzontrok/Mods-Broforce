@@ -49,9 +49,20 @@ public static class HarmonyExtensions
     /// <param name="obj"></param>
     /// <param name="fieldName"></param>
     /// <param name="value"></param>
-    public static void SetFieldValue(this object obj, string fieldName, object value)
+    public static Traverse SetFieldValue(this object obj, string fieldName, object value)
     {
-        obj.GetTraverse().Field(fieldName).SetValue(value);
+        return obj.GetTraverse().Field(fieldName).SetValue(value);
+    }
+
+    /// <summary>
+    /// Set the value of the field <paramref name="fieldName"/> with <paramref name="value"/>
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="fieldName"></param>
+    /// <param name="value"></param>
+    public static Traverse SetFieldValue<T>(this object obj, string fieldName, T value)
+    {
+        return obj.GetTraverse().Field(fieldName).SetValue(value);
     }
     #endregion
 
