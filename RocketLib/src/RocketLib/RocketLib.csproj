@@ -93,6 +93,7 @@
     <Compile Include="BroforceMod.cs" />
     <Compile Include="BroforceModController.cs" />
     <Compile Include="Collections\Heroes.cs" />
+    <Compile Include="Extensions\UnitExtensions.cs" />
     <Compile Include="Utils\DrawDebug.cs" />
     <Compile Include="Utils\ResourcesController.cs" />
     <None Include="Collections\Doodads.cs" />
