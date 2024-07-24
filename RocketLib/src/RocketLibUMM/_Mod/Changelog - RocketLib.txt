@@ -1,5 +1,10 @@
 The Changelog of 'Rocketlib.dll'
 
+v2.3.0:
+Added TestVanDammeAnimExtensions.SetReviveSource(this TestVanDammeAnim, bool)
+Create UnitExtensions
+Added JsonConverter Type: ColorJsonConverter
+
 v2.1.0:
 Added .ToGameObjects() extensions to Component[]
 Added PlayerHUDExtensions
