@@ -50,4 +50,9 @@ public static class TestVanDammeAnimExtensions
             Physics.Raycast(new Vector3(anim.X - 4f, anim.Y + 5f, 0f), Vector3.down, out raycastHit, 16f, platformLayer)) &&
             raycastHit.collider.GetComponentInParent<Animal>() != null;
     }
+
+    public static void SetReviveSource(this TestVanDammeAnim testVanDammeAnim, TestVanDammeAnim reviveSource)
+    {
+        testVanDammeAnim.SetFieldValue("reviveSource", reviveSource);
+    }
 }
