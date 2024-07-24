@@ -37,138 +37,46 @@ namespace RocketLib
             AssignKey(KeyCode.None);
         }
 
-        public virtual void AssignKey(KeyCode key)
+        public virtual bool Equals(KeyBinding other)
         {
-            // Unassign key
-            if ( key == KeyCode.Delete )
-            {
-                key = KeyCode.None;
-            }
-            this.key = key;
-            this.axis = false;
-            this.joystickAxis = string.Empty;
-            this.isSettingKey = false;
+            if (other == null)
+                return false;
+
+            return (this.axis == false && this.axis == other.axis && this.key == other.key) || (this.axis == true && this.axis == other.axis && this.joystickAxis == other.joystickAxis);
         }
 
-        public virtual void AssignKey(string joystick, int joystickDirection)
+        public override bool Equals(object obj)
         {
-            this.key = KeyCode.None;
-            this.axis = true;
-            this.joystickAxis = joystick;
-            float axisValue = Input.GetAxis(joystick);
-            this.joystickDirection = joystickDirection;
-            bool direction = (this.joystickDirection == 1);
-            // Set axis display name
-            switch (joystickAxis[joystickAxis.Length - 1] - '0')
-            {
-                case 1:
-                    this.joystickDisplayName = "Left Stick " + (direction ? "Right" : "Left" );
-                    break;
-                case 2:
-                    this.joystickDisplayName = "Left Stick " + (direction ? "Down" : "Up" );
-                    break;
-                case 3:
-                    this.joystickDisplayName = (direction ? "Left" : "Right") + " Trigger";
-                    break;
-                case 4:
-                    this.joystickDisplayName = "Right Stick " + (direction ? "Right" : "Left");
-                    break;
-                case 5:
-                    this.joystickDisplayName = "Right Stick " + (direction ? "Down" : "Up");
-                    break;
-                case 6:
-                    this.joystickDisplayName = "D-Pad " + (direction ? "Right" : "Left");
-                    break;
-                case 7:
-                    this.joystickDisplayName = "D-Pad " + (direction ? "Up" : "Down" );
-                    break;
-                default:
-                    this.joystickDisplayName = joystickAxis;
-                    break;
-            }
+            if (obj == null)
+                return false;
 
-            this.isSettingKey = false;
-        }
-
-        public virtual void ClearKey()
-        {
-            this.key = KeyCode.None;
-            this.axis = false;
-            this.joystickAxis = String.Empty;
-            this.isSettingKey = false;
-        }
-
-        public virtual bool OnGUI(bool displayToolTip, bool displayName = false)
-        {
-            GUILayout.BeginHorizontal(RGUI.Unexpanded);
-            if ( displayName )
-            {
-                GUILayout.Label(name, RGUI.Unexpanded);
-            }
-            GUILayout.Space(10);
-            bool result;
-            string toolTip = displayToolTip ? "Press Delete to clear" : "";
-            if ( this.isSettingKey )
-            {
-               result = GUILayout.Button( new GUIContent("Press Any Key/Button", toolTip) );
-            }
-            else if ( this.axis )
-            {
-                result = GUILayout.Button( new GUIContent(this.joystickDisplayName, toolTip) );
-            }
+            KeyBinding keyBindingObj = obj as KeyBinding;
+            if (keyBindingObj == null)
+                return false;
             else
-            {
-                result = GUILayout.Button( new GUIContent(key.ToString(), toolTip) );
-            }
-            toolTipRect = GUILayoutUtility.GetLastRect();
-            GUILayout.EndHorizontal();
-            if (result && !this.isSettingKey && !InputReader.IsBlocked)
-            {
-                UnityModManager.UI.Instance.StartCoroutine(BindKey(this));
-            }
-            else
-            {
-                result = false;
-            }
-            return result;
+                return Equals(keyBindingObj);
         }
 
-        public virtual bool OnGUI(bool displayToolTip, bool displayName, bool includeNameInside )
+        public static bool operator ==(KeyBinding keyBinding1, KeyBinding keyBinding2)
         {
-            GUILayout.BeginHorizontal(RGUI.Unexpanded);
-            if (displayName)
-            {
-                GUILayout.Label(name, RGUI.Unexpanded);
-                GUILayout.Space(10);
-            }
-            bool result;
-            string toolTip = displayToolTip ? "Press Delete to clear" : "";
-            string prefix = includeNameInside ? (name + ": ") : "";
-            if (this.isSettingKey)
-            {
-                result = GUILayout.Button(new GUIContent(prefix + "Press Any Key/Button", toolTip));
-            }
-            else if (this.axis)
-            {
-                result = GUILayout.Button(new GUIContent(prefix + this.joystickDisplayName, toolTip));
-            }
-            else
-            {
-                result = GUILayout.Button(new GUIContent(prefix + key.ToString(), toolTip));
-            }
-            toolTipRect = GUILayoutUtility.GetLastRect();
-            GUILayout.EndHorizontal();
-            if (result && !this.isSettingKey && !InputReader.IsBlocked)
-            {
-                UnityModManager.UI.Instance.StartCoroutine(BindKey(this));
-            }
-            else
-            {
-                result = false;
-            }
-            return result;
+            if (((object)keyBinding1) == null || ((object)keyBinding2) == null)
+                return object.Equals(keyBinding1, keyBinding2);
+
+            return keyBinding1.Equals(keyBinding2);
         }
 
+        public static bool operator !=(KeyBinding keyBinding1, KeyBinding keyBinding2)
+        {
+            if (((object)keyBinding1) == null || ((object)keyBinding2) == null)
+                return !object.Equals(keyBinding1, keyBinding2);
+
+            return !(keyBinding1.Equals(keyBinding2));
+        }
+
+        public override int GetHashCode()
+        {
+            return this.key.GetHashCode();
+        }
 
         /// <summary>
         /// Gets state of key
@@ -235,47 +143,66 @@ namespace RocketLib
                 return -2f;
             }
         }
-        public virtual bool Equals(KeyBinding other)
-        {
-            if (other == null)
-                return false;
 
-            if (key == other.key)
-                return true;
-            else
-                return false;
-        }
-        public override bool Equals(object obj)
+        public virtual void AssignKey(KeyCode key)
         {
-            if (obj == null)
-                return false;
-
-            KeyBinding keyBindingObj = obj as KeyBinding;
-            if (keyBindingObj == null)
-                return false;
-            else
-                return Equals(keyBindingObj);
+            // Unassign key
+            if (key == KeyCode.Delete)
+            {
+                key = KeyCode.None;
+            }
+            this.key = key;
+            this.axis = false;
+            this.joystickAxis = string.Empty;
+            this.isSettingKey = false;
         }
 
-        public static bool operator ==(KeyBinding keyBinding1, KeyBinding keyBinding2)
+        public virtual void AssignKey(string joystick, int joystickDirection)
         {
-            if (((object)keyBinding1) == null || ((object)keyBinding2) == null)
-                return object.Equals(keyBinding1, keyBinding2);
+            this.key = KeyCode.None;
+            this.axis = true;
+            this.joystickAxis = joystick;
+            float axisValue = Input.GetAxis(joystick);
+            this.joystickDirection = joystickDirection;
+            bool direction = (this.joystickDirection == 1);
+            // Set axis display name
+            switch (joystickAxis[joystickAxis.Length - 1] - '0')
+            {
+                case 1:
+                    this.joystickDisplayName = "Left Stick " + (direction ? "Right" : "Left");
+                    break;
+                case 2:
+                    this.joystickDisplayName = "Left Stick " + (direction ? "Down" : "Up");
+                    break;
+                case 3:
+                    this.joystickDisplayName = (direction ? "Left" : "Right") + " Trigger";
+                    break;
+                case 4:
+                    this.joystickDisplayName = "Right Stick " + (direction ? "Right" : "Left");
+                    break;
+                case 5:
+                    this.joystickDisplayName = "Right Stick " + (direction ? "Down" : "Up");
+                    break;
+                case 6:
+                    this.joystickDisplayName = "D-Pad " + (direction ? "Right" : "Left");
+                    break;
+                case 7:
+                    this.joystickDisplayName = "D-Pad " + (direction ? "Up" : "Down");
+                    break;
+                default:
+                    this.joystickDisplayName = joystickAxis;
+                    break;
+            }
 
-            return keyBinding1.Equals(keyBinding2);
+            this.isSettingKey = false;
         }
 
-        public static bool operator !=(KeyBinding keyBinding1, KeyBinding keyBinding2)
+        public virtual void ClearKey()
         {
-            if (((object)keyBinding1) == null || ((object)keyBinding2) == null)
-                return !object.Equals(keyBinding1, keyBinding2);
-
-            return !(keyBinding1.Equals(keyBinding2));
-        }
-
-        public override int GetHashCode()
-        {
-            return this.key.GetHashCode();
+            this.key = KeyCode.None;
+            this.axis = false;
+            this.joystickAxis = String.Empty;
+            this.isSettingKey = false;
         }
 
         public static IEnumerator BindKey(KeyBinding keyBinding)
@@ -296,9 +223,9 @@ namespace RocketLib
                     }
                 }
                 // Check controller axes
-                for (int i = 0; i < 5; i++)
+                for (int i = 1; i < 5; i++)
                 {
-                    for ( int j = 0; j < 10; ++j )
+                    for ( int j = 1; j < 8; ++j )
                     {
                         string currentAxis = "Joy" + i + " Axis " + j;
                         if (Mathf.Abs(Input.GetAxis(currentAxis)) >= keyBinding.axisThreshold)
@@ -312,6 +239,77 @@ namespace RocketLib
                 yield return null;
             }
             InputReader.IsBlocked = false;
+        }
+
+        public virtual bool OnGUI(bool displayToolTip, bool displayName = false)
+        {
+            GUILayout.BeginHorizontal(RGUI.Unexpanded);
+            if (displayName)
+            {
+                GUILayout.Label(name, RGUI.Unexpanded);
+            }
+            GUILayout.Space(10);
+            bool result;
+            string toolTip = displayToolTip ? "Press Delete to clear" : "";
+            if (this.isSettingKey)
+            {
+                result = GUILayout.Button(new GUIContent("Press Any Key/Button", toolTip));
+            }
+            else if (this.axis)
+            {
+                result = GUILayout.Button(new GUIContent(this.joystickDisplayName, toolTip));
+            }
+            else
+            {
+                result = GUILayout.Button(new GUIContent(key.ToString(), toolTip));
+            }
+            toolTipRect = GUILayoutUtility.GetLastRect();
+            GUILayout.EndHorizontal();
+            if (result && !this.isSettingKey && !InputReader.IsBlocked)
+            {
+                UnityModManager.UI.Instance.StartCoroutine(BindKey(this));
+            }
+            else
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        public virtual bool OnGUI(bool displayToolTip, bool displayName, bool includeNameInside)
+        {
+            GUILayout.BeginHorizontal(RGUI.Unexpanded);
+            if (displayName)
+            {
+                GUILayout.Label(name, RGUI.Unexpanded);
+                GUILayout.Space(10);
+            }
+            bool result;
+            string toolTip = displayToolTip ? "Press Delete to clear" : "";
+            string prefix = includeNameInside ? (name + ": ") : "";
+            if (this.isSettingKey)
+            {
+                result = GUILayout.Button(new GUIContent(prefix + "Press Any Key/Button", toolTip));
+            }
+            else if (this.axis)
+            {
+                result = GUILayout.Button(new GUIContent(prefix + this.joystickDisplayName, toolTip));
+            }
+            else
+            {
+                result = GUILayout.Button(new GUIContent(prefix + key.ToString(), toolTip));
+            }
+            toolTipRect = GUILayoutUtility.GetLastRect();
+            GUILayout.EndHorizontal();
+            if (result && !this.isSettingKey && !InputReader.IsBlocked)
+            {
+                UnityModManager.UI.Instance.StartCoroutine(BindKey(this));
+            }
+            else
+            {
+                result = false;
+            }
+            return result;
         }
     }
 }

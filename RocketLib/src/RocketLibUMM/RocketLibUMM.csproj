@@ -106,7 +106,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(ProjectDir)\_Mod\$(ProjectName).dll*"
-start XCOPY /Y /I "$(ProjectDir)\_Mod\*.*" "E:\SteamLibrary\steamapps\common\Broforce\Mods\RocketLib\"</PostBuildEvent>
+start XCOPY /Y /I "$(ProjectDir)\_Mod\*.*" "E:\SteamLibrary\steamapps\common\Broforce\Mods\RocketLib\"
+del "D:\Steam\steamapps\common\Broforce\Mods\Development - RocketLib\*.cache" 2&gt; nul || set errorlevel=0</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>start XCOPY /Y /I "$(ProjectDir)\_Mod\*.*" "E:\SteamLibrary\steamapps\common\Broforce\Mods\RocketLib\"</PreBuildEvent>

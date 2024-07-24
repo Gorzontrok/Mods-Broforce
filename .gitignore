@@ -6,3 +6,4 @@
 *.beta/
 *.DS_Store
 **/_Mod/*.dll
+RocketLib/lib/*.dll
