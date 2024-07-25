@@ -85,19 +85,19 @@ namespace RocketLibUMM
             try
             {
                 if (gesture0 == null)
-                    gesture0 = new KeyBindingForPlayers("Gesture 0", Main.mod.Info.Id);
+                    gesture0 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 0");
                 if (gesture1 == null)
-                    gesture1 = new KeyBindingForPlayers("Gesture 1", Main.mod.Info.Id);
+                    gesture1 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 1");
                 if (gesture2 == null)
-                    gesture2 = new KeyBindingForPlayers("Gesture 2", Main.mod.Info.Id);
+                    gesture2 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 2");
                 if (gesture3 == null)
-                    gesture3 = new KeyBindingForPlayers("Gesture 3", Main.mod.Info.Id);
+                    gesture3 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 3");
                 if (gesture4 == null)
-                    gesture4 = new KeyBindingForPlayers("Gesture 4", Main.mod.Info.Id);
+                    gesture4 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 4");
                 if (gesture5 == null)
-                    gesture5 = new KeyBindingForPlayers("Gesture 5", Main.mod.Info.Id);
+                    gesture5 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 5");
                 if (gesture6 == null)
-                    gesture6 = new KeyBindingForPlayers("Gesture 6", Main.mod.Info.Id);
+                    gesture6 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 6");
             }
             catch(Exception e)
             {
