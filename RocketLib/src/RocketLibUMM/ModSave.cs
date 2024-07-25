@@ -47,7 +47,7 @@ namespace RocketLibUMM
 
         public void Save()
         {
-            var json = JsonConvert.SerializeObject( AllModKeyBindings.AllKeyBindings, Formatting.Indented);
+            var json = AllModKeyBindings.ConvertToJson();
             File.WriteAllText(SavePath, json);
         }
 
@@ -57,10 +57,10 @@ namespace RocketLibUMM
             {
                 if (File.Exists(SavePath))
                 {
-                    AllModKeyBindings.AllKeyBindings = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, KeyBindingForPlayers>>>(File.ReadAllText(SavePath));
+                    AllModKeyBindings.ReadFromJson(File.ReadAllText(SavePath));
                     ModSave modsave = new ModSave();
                     Dictionary<string, KeyBindingForPlayers> modKeybindings;
-                    AllModKeyBindings.AllKeyBindings.TryGetValue(Main.mod.Info.Id, out modKeybindings);
+                    AllModKeyBindings.TryGetAllKeyBindingsForMod(Main.mod.Info.Id, out modKeybindings);
                     if (modKeybindings != null)
                     {
                         modKeybindings.TryGetValue("Gesture 0", out modsave.gesture0);
@@ -76,7 +76,7 @@ namespace RocketLibUMM
             }
             // Likely failed to load due to a version change
             catch { }
-            AllModKeyBindings.AllKeyBindings = new Dictionary<string, Dictionary<string, KeyBindingForPlayers>>();
+            AllModKeyBindings.RecreateDictionary();
             return new ModSave();
         }
 

@@ -493,12 +493,68 @@
             </summary>
             <returns>True if key was released this frame</returns>
         </member>
+        <member name="M:RocketLib.AllModKeyBindings.LoadKeyBinding(System.String,System.String)">
+            <summary>
+            Finds a keybind for the mod for the specified key if it exists, otherwise it creates a new one.
+            </summary>
+            <param name="modName">Name of mod</param>
+            <param name="keyName">Name of key</param>
+            <returns>Previously created or newly created keybinding</returns>
+        </member>
+        <member name="M:RocketLib.AllModKeyBindings.AddKeyBinding(RocketLib.KeyBindingForPlayers,System.String)">
+            <summary>
+            Adds a keybind to the dictionary of all keybinds for a specific mod.
+            </summary>
+            <param name="keybinding">Keybind to add</param>
+            <param name="modId">Name of the mod</param>
+        </member>
+        <member name="M:RocketLib.AllModKeyBindings.TryGetKeyBinding(System.String,System.String,RocketLib.KeyBindingForPlayers@)">
+            <summary>
+            Tries to get a specific keybind for a specific mod.
+            </summary>
+            <param name="modName"></param>
+            <param name="keyName"></param>
+            <param name="keybinding"></param>
+            <returns>True if it was found, false otherise</returns>
+        </member>
+        <member name="M:RocketLib.AllModKeyBindings.TryGetAllKeyBindingsForMod(System.String,System.Collections.Generic.Dictionary{System.String,RocketLib.KeyBindingForPlayers}@)">
+            <summary>
+            Returns a dictionary containing all the keybinds for the specified mod, if there are any.
+            </summary>
+            <param name="modName">Mod to find keybinds for</param>
+            <param name="modKeyBindings">Dictionary containing all the keybinds for this mod</param>
+            <returns>True if it was found, false otherise</returns>
+        </member>
+        <member name="M:RocketLib.AllModKeyBindings.ClearKeyBindingsForMod(System.String)">
+            <summary>
+            Clears all keybinds for the specified mod
+            </summary>
+            <param name="modName">Name of mod</param>
+        </member>
+        <member name="M:RocketLib.AllModKeyBindings.ConvertToJson">
+            <summary>
+            Converts the dictionary containing the keybinds for all mods into JSON
+            </summary>
+            <returns>JSON string of all keybinds</returns>
+        </member>
+        <member name="M:RocketLib.AllModKeyBindings.ReadFromJson(System.String)">
+            <summary>
+            Reads from a JSON string and creates a dictionary storing all keybindings for all mods.
+            </summary>
+            <param name="json">JSON string to read from</param>
+            <returns></returns>
+        </member>
+        <member name="M:RocketLib.AllModKeyBindings.RecreateDictionary">
+            <summary>
+            Creates a new Dictionary for keybindings for all mods. This will delete any currently stored keybindings for all mods.
+            </summary>
+        </member>
         <member name="M:RocketLib.KeyBindingForPlayers.#ctor(System.String,System.String)">
             <summary>
             Create a Keybinding for all 4 players
             </summary>
+            /// <param name="modId">Name of the mod that is adding the keybinding</param>
             <param name="name">Name of the key</param>
-            <param name="modId">Name of the mod that is adding the keybinding</param>
         </member>
         <member name="M:RocketLib.KeyBindingForPlayers.IsDown(System.Int32)">
             <summary>

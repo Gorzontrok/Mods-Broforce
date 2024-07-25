@@ -27,6 +27,7 @@ namespace RocketLibUMM
         private static GUIStyle _testBtnStyle = new GUIStyle("button");
         private const string _changeKeyMessage = "Press Any Key";
         private static GUIStyle keybindModStyle;
+        public static Dictionary<string, KeyBindingForPlayers> modKeyBindings;
 
         public static void Initialize()
         {
@@ -143,17 +144,21 @@ namespace RocketLibUMM
                 int player = 0;
                 GUILayout.BeginVertical("box", GUILayout.ExpandWidth(false));
                 RGUI.LabelCenteredHorizontally(new GUIContent("RocketLib"), GUI.skin.label, RGUI.Unexpanded);
-                foreach (KeyValuePair<string, KeyBindingForPlayers> pair in AllModKeyBindings.AllKeyBindings["RocketLib"])
+                if ( modKeyBindings == null )
                 {
-                    pair.Value.OnGUI(out player, true);
-                    GUILayout.Space(30);
+                    AllModKeyBindings.TryGetAllKeyBindingsForMod("RocketLib", out modKeyBindings);
+                }
+                if ( modKeyBindings != null )
+                {
+                    foreach (KeyValuePair<string, KeyBindingForPlayers> pair in modKeyBindings)
+                    {
+                        pair.Value.OnGUI(out player, true);
+                        GUILayout.Space(30);
+                    }
                 }
                 if ( GUILayout.Button("Clear All", GUILayout.Width(100)) )
                 {
-                    foreach (KeyValuePair<string, KeyBindingForPlayers> pair in AllModKeyBindings.AllKeyBindings["RocketLib"])
-                    {
-                        pair.Value.ClearKey();
-                    }
+                    AllModKeyBindings.ClearKeyBindingsForMod("RocketLib");
                 }
                 GUILayout.EndVertical();
                 GUILayout.Space(30);

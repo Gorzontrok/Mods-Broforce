@@ -13,8 +13,34 @@ namespace RocketLib
     public class AllModKeyBindings
     {
         // Dictionary< modname, Dictionary< name of key, keybinding > >
-        public static Dictionary<string, Dictionary<string, KeyBindingForPlayers>> AllKeyBindings;
+        private static Dictionary<string, Dictionary<string, KeyBindingForPlayers>> AllKeyBindings;
 
+        /// <summary>
+        /// Finds a keybind for the mod for the specified key if it exists, otherwise it creates a new one.
+        /// </summary>
+        /// <param name="modName">Name of mod</param>
+        /// <param name="keyName">Name of key</param>
+        /// <returns>Previously created or newly created keybinding</returns>
+        public static KeyBindingForPlayers LoadKeyBinding(string modName, string keyName)
+        {
+            KeyBindingForPlayers keybinding;
+            if (TryGetKeyBinding(modName, keyName, out keybinding))
+            {
+                return keybinding;
+            }
+            else
+            {
+                keybinding = new KeyBindingForPlayers(modName, keyName);
+                AddKeyBinding(keybinding, modName);
+                return keybinding;
+            }
+        }
+
+        /// <summary>
+        /// Adds a keybind to the dictionary of all keybinds for a specific mod.
+        /// </summary>
+        /// <param name="keybinding">Keybind to add</param>
+        /// <param name="modId">Name of the mod</param>
         public static void AddKeyBinding(KeyBindingForPlayers keybinding, string modId)
         {
             try
@@ -38,6 +64,13 @@ namespace RocketLib
             }
         }
 
+        /// <summary>
+        /// Tries to get a specific keybind for a specific mod.
+        /// </summary>
+        /// <param name="modName"></param>
+        /// <param name="keyName"></param>
+        /// <param name="keybinding"></param>
+        /// <returns>True if it was found, false otherise</returns>
         public static bool TryGetKeyBinding(string modName, string keyName, out KeyBindingForPlayers keybinding)
         {
             Dictionary<string, KeyBindingForPlayers> currentModKeyBindings;
@@ -47,6 +80,69 @@ namespace RocketLib
             }
             keybinding = null;
             return false;
+        }
+
+        /// <summary>
+        /// Returns a dictionary containing all the keybinds for the specified mod, if there are any.
+        /// </summary>
+        /// <param name="modName">Mod to find keybinds for</param>
+        /// <param name="modKeyBindings">Dictionary containing all the keybinds for this mod</param>
+        /// <returns>True if it was found, false otherise</returns>
+        public static bool TryGetAllKeyBindingsForMod(string modName, out Dictionary<string, KeyBindingForPlayers> modKeyBindings)
+        {
+            return AllKeyBindings.TryGetValue(modName, out modKeyBindings);
+        }
+
+        /// <summary>
+        /// Clears all keybinds for the specified mod
+        /// </summary>
+        /// <param name="modName">Name of mod</param>
+        public static void ClearKeyBindingsForMod(string modName)
+        {
+            Dictionary<string, KeyBindingForPlayers> modKeyBindings;
+            if ( TryGetAllKeyBindingsForMod(modName, out modKeyBindings) )
+            {
+                foreach (KeyValuePair<string, KeyBindingForPlayers> pair in modKeyBindings)
+                {
+                    pair.Value.ClearKey();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Converts the dictionary containing the keybinds for all mods into JSON
+        /// </summary>
+        /// <returns>JSON string of all keybinds</returns>
+        public static string ConvertToJson()
+        {
+            return JsonConvert.SerializeObject(AllKeyBindings, Formatting.Indented);
+        }
+
+        /// <summary>
+        /// Reads from a JSON string and creates a dictionary storing all keybindings for all mods.
+        /// </summary>
+        /// <param name="json">JSON string to read from</param>
+        /// <returns></returns>
+        public static bool ReadFromJson(string json)
+        {
+            try
+            {
+                AllKeyBindings = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, KeyBindingForPlayers>>>(json);
+                return true;
+            }
+            catch ( Exception e )
+            {
+                Main.mod.Logger.Log("Exception converting from JSON: " + e.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new Dictionary for keybindings for all mods. This will delete any currently stored keybindings for all mods.
+        /// </summary>
+        public static void RecreateDictionary()
+        {
+            AllKeyBindings = new Dictionary<string, Dictionary<string, KeyBindingForPlayers>>();
         }
     }
     
@@ -133,9 +229,9 @@ namespace RocketLib
         /// <summary>
         /// Create a Keybinding for all 4 players
         /// </summary>
+        /// /// <param name="modId">Name of the mod that is adding the keybinding</param>
         /// <param name="name">Name of the key</param>
-        /// <param name="modId">Name of the mod that is adding the keybinding</param>
-        public KeyBindingForPlayers(string name, string modId)
+        public KeyBindingForPlayers(string modId, string name)
         {
             this.name = name;
             player0 = new KeyBinding(name);

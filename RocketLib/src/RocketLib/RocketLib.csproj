@@ -141,6 +141,7 @@
   <PropertyGroup>
     <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(SolutionDir)\RocketLibUMM\_Mod\$(ProjectName).dll*"
 start XCOPY /Y /R "$(TargetPath)" "..\..\..\..\lib\$(ProjectName).dll*"
+start XCOPY /Y /R "$(TargetPath)" "..\..\..\..\..\..\Bro-Maker\lib\$(ProjectName).dll*"
 del "D:\Steam\steamapps\common\Broforce\Mods\Development - RocketLib\*.cache" 2&gt; nul || set errorlevel=0</PostBuildEvent>
   </PropertyGroup>
 </Project>
