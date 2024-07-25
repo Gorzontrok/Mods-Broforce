@@ -18,12 +18,16 @@ namespace RocketLib
         public int joystickDirection = 1;
         public float axisThreshold = 0.8f;
         public string joystickDisplayName;
+        public bool playStation = false;
+        public int axisNum = -1;
         [JsonIgnore, XmlIgnore]
         public bool isSettingKey;
         [JsonIgnore, XmlIgnore]
         public static Rect toolTipRect;
         [JsonIgnore, XmlIgnore]
         public bool wasDown = false;
+        [JsonIgnore, XmlIgnore]
+        public static bool[] playstationControllers = { false, false, false, false };
 
         public KeyBinding()
         {
@@ -86,7 +90,16 @@ namespace RocketLib
         {
             if ( this.axis )
             {
-                return Mathf.Abs(Input.GetAxis(this.joystickAxis)) >= this.axisThreshold && Mathf.Sign(Input.GetAxis(this.joystickAxis)) == joystickDirection;
+                // Check if keybinding is set for a playstation controller's left trigger or right trigger
+                if ( playStation && axisNum == 4 || axisNum == 5 )
+                {
+                    return (Input.GetAxis(this.joystickAxis) + 1) / 2.0f >= this.axisThreshold;
+                }
+                else
+                {
+                    return Mathf.Abs(Input.GetAxis(this.joystickAxis)) >= this.axisThreshold && Mathf.Sign(Input.GetAxis(this.joystickAxis)) == joystickDirection;
+                }
+                
             }
             else
             {
@@ -155,6 +168,7 @@ namespace RocketLib
             this.axis = false;
             this.joystickAxis = string.Empty;
             this.isSettingKey = false;
+            this.playStation = false;
         }
 
         public virtual void AssignKey(string joystick, int joystickDirection)
@@ -162,36 +176,73 @@ namespace RocketLib
             this.key = KeyCode.None;
             this.axis = true;
             this.joystickAxis = joystick;
+            axisNum = joystickAxis[joystickAxis.Length - 1] - '0';
             float axisValue = Input.GetAxis(joystick);
             this.joystickDirection = joystickDirection;
             bool direction = (this.joystickDirection == 1);
             // Set axis display name
-            switch (joystickAxis[joystickAxis.Length - 1] - '0')
+            if ( !playStation )
             {
-                case 1:
-                    this.joystickDisplayName = "Left Stick " + (direction ? "Right" : "Left");
-                    break;
-                case 2:
-                    this.joystickDisplayName = "Left Stick " + (direction ? "Down" : "Up");
-                    break;
-                case 3:
-                    this.joystickDisplayName = (direction ? "Left" : "Right") + " Trigger";
-                    break;
-                case 4:
-                    this.joystickDisplayName = "Right Stick " + (direction ? "Right" : "Left");
-                    break;
-                case 5:
-                    this.joystickDisplayName = "Right Stick " + (direction ? "Down" : "Up");
-                    break;
-                case 6:
-                    this.joystickDisplayName = "D-Pad " + (direction ? "Right" : "Left");
-                    break;
-                case 7:
-                    this.joystickDisplayName = "D-Pad " + (direction ? "Up" : "Down");
-                    break;
-                default:
-                    this.joystickDisplayName = joystickAxis;
-                    break;
+                switch (axisNum)
+                {
+                    case 1:
+                        this.joystickDisplayName = "Left Stick " + (direction ? "Right" : "Left");
+                        break;
+                    case 2:
+                        this.joystickDisplayName = "Left Stick " + (direction ? "Down" : "Up");
+                        break;
+                    case 3:
+                        this.joystickDisplayName = (direction ? "Left" : "Right") + " Trigger";
+                        break;
+                    case 4:
+                        this.joystickDisplayName = "Right Stick " + (direction ? "Right" : "Left");
+                        break;
+                    case 5:
+                        this.joystickDisplayName = "Right Stick " + (direction ? "Down" : "Up");
+                        break;
+                    case 6:
+                        this.joystickDisplayName = "D-Pad " + (direction ? "Right" : "Left");
+                        break;
+                    case 7:
+                        this.joystickDisplayName = "D-Pad " + (direction ? "Up" : "Down");
+                        break;
+                    default:
+                        this.joystickDisplayName = joystickAxis;
+                        break;
+                }
+            }
+            else
+            {
+                switch (axisNum)
+                {
+                    case 1:
+                        this.joystickDisplayName = "Left Stick " + (direction ? "Right" : "Left");
+                        break;
+                    case 2:
+                        this.joystickDisplayName = "Left Stick " + (direction ? "Down" : "Up");
+                        break;
+                    case 3:
+                        this.joystickDisplayName = "Right Stick " + (direction ? "Right" : "Left");
+                        break;
+                    case 4:
+                        this.joystickDisplayName = "Left Trigger";
+                        break;
+                    case 5:
+                        this.joystickDisplayName = "Right Trigger";
+                        break;
+                    case 6:
+                        this.joystickDisplayName = "Right Stick " + (direction ? "Down" : "Up");
+                        break;
+                    case 7:
+                        this.joystickDisplayName = "D-Pad " + (direction ? "Right" : "Left");
+                        break;
+                    case 8:
+                        this.joystickDisplayName = "D-Pad " + (direction ? "Up" : "Down");
+                        break;
+                    default:
+                        this.joystickDisplayName = joystickAxis;
+                        break;
+                }
             }
 
             this.isSettingKey = false;
@@ -211,6 +262,7 @@ namespace RocketLib
             yield return new WaitForSeconds(0.1f);
             KeyCode[] keyCodes = Enum.GetValues(typeof(KeyCode)).Cast<KeyCode>().ToArray();
             bool exit = false;
+            playstationControllers = new bool[] { false, false, false, false };
             while (!exit)
             {
                 foreach (KeyCode keyCode in keyCodes)
@@ -225,16 +277,59 @@ namespace RocketLib
                 // Check controller axes
                 for (int i = 1; i < 5; i++)
                 {
-                    for ( int j = 1; j < 8; ++j )
+                    if (playstationControllers[i - 1])
                     {
-                        string currentAxis = "Joy" + i + " Axis " + j;
-                        if (Mathf.Abs(Input.GetAxis(currentAxis)) >= keyBinding.axisThreshold)
+                        for (int j = 1; j < 9; ++j)
                         {
-                            keyBinding.AssignKey(currentAxis, (int)Mathf.Sign(Input.GetAxis(currentAxis)) );
-                            exit = true;
-                            break;
+                            string currentAxis = "Joy" + i + " Axis " + j;
+
+                            // Handle triggers differently since they default to -1
+                            if (j == 4 || j == 5)
+                            {
+                                if ( (Input.GetAxis(currentAxis) + 1) / 2.0f >= keyBinding.axisThreshold )
+                                {
+                                    keyBinding.playStation = true;
+                                    keyBinding.AssignKey(currentAxis, (int)Mathf.Sign(Input.GetAxis(currentAxis)));
+                                    exit = true;
+                                    break;
+                                }
+                            }
+                            else if (Mathf.Abs(Input.GetAxis(currentAxis)) >= keyBinding.axisThreshold)
+                            {
+                                keyBinding.playStation = true;
+                                keyBinding.AssignKey(currentAxis, (int)Mathf.Sign(Input.GetAxis(currentAxis)));
+                                exit = true;
+                                break;
+                            }
                         }
                     }
+                    else
+                    {
+                        for (int j = 1; j < 9; ++j)
+                        {
+                            string currentAxis = "Joy" + i + " Axis " + j;
+                            if (Mathf.Abs(Input.GetAxis(currentAxis)) >= keyBinding.axisThreshold)
+                            {
+                                // Check first if this is a playstation controller
+                                string[] joysticknames = Input.GetJoystickNames();
+                                if ( joysticknames.Length > i - 1 && joysticknames[i - 1].ToLower().Contains("wireless controller"))
+                                {
+                                    // Recheck this controller now knowing it's playstation
+                                    playstationControllers[i - 1] = true;
+                                    --i;
+                                    continue;
+                                }
+                                else
+                                {
+                                    keyBinding.playStation = false;
+                                    keyBinding.AssignKey(currentAxis, (int)Mathf.Sign(Input.GetAxis(currentAxis)));
+                                    exit = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
                 }
                 yield return null;
             }
