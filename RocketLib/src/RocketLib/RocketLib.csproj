@@ -96,6 +96,7 @@
     <Compile Include="Extensions\UnitExtensions.cs" />
     <Compile Include="JsonConverters\ColorJsonConverter.cs" />
     <Compile Include="Utils\DrawDebug.cs" />
+    <Compile Include="Utils\TestVanDammeAnimTypes.cs" />
     <Compile Include="Utils\ResourcesController.cs" />
     <None Include="Collections\Doodads.cs" />
     <Compile Include="Collections\Levels.cs" />
