@@ -83,6 +83,10 @@ namespace RocketLib.Utils
                     }
                     break;
                 case MookType.Trooper:
+                    if (character is MookJetpack)
+                        return UnitType.JetpackMook;
+                    if (character is MookNinja)
+                        return UnitType.NinjaMook;
                     // 3 different enemies use the MookTrooper class
                     if (character is MookTrooper)
                     {
@@ -97,10 +101,6 @@ namespace RocketLib.Utils
                         else
                             return UnitType.ScientistMook;
                     }
-                    if (character is MookJetpack)
-                        return UnitType.JetpackMook;
-                    if (character is MookNinja)
-                        return UnitType.NinjaMook;
                     if (character is SkinnedMook)
                         return UnitType.SkinnedMook;
                     if (character is MookGeneral)
@@ -187,7 +187,7 @@ namespace RocketLib.Utils
                 case MookType.UndeadTrooper:
                     return UnitType.UndeadMook;
                 case MookType.UndeadSuicide:
-                    return UnitType.UndeadMook;
+                    return UnitType.UndeadSuicideMook;
                 case MookType.Warlock:
                     return UnitType.Warlock;
                 case MookType.Boomer:
@@ -508,6 +508,51 @@ namespace RocketLib.Utils
                     return UnitType.Villager;
             }
             return UnitType.None;
+        }
+
+        public static bool HasSpecial(this UnitType type)
+        {
+            switch (type)
+            {
+                case UnitType.Mech:
+                case UnitType.BrownMech:
+                case UnitType.AttackDog:
+                case UnitType.MookGeneral:
+                case UnitType.Alarmist:
+                case UnitType.Snake:
+                case UnitType.Satan:
+                case UnitType.Facehugger:
+                case UnitType.Hellhound:
+                case UnitType.UndeadSuicideMook:
+                case UnitType.SatanMiniboss:
+                case UnitType.CR666:
+                case UnitType.Villager:
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool HasSpecial2(this UnitType type)
+        {
+            switch (type)
+            {
+                case UnitType.SuicideMook:
+                case UnitType.SuicideBruiser:
+                case UnitType.SatanMiniboss:
+                case UnitType.CR666:
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool HasSpecial3(this UnitType type)
+        {
+            switch (type)
+            {
+                case UnitType.CR666:
+                    return true;
+            }
+            return false;
         }
     }
 }
