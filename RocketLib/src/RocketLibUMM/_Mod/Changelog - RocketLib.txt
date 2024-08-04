@@ -4,6 +4,9 @@ v2.3.0:
 Added TestVanDammeAnimExtensions.SetReviveSource(this TestVanDammeAnim, bool)
 Create UnitExtensions
 Added JsonConverter Type: ColorJsonConverter
+Added more options for keybindings
+Added functions for loading materials and audioclips
+Added functions for checking TestVanDammeAnim type
 
 v2.1.0:
 Added .ToGameObjects() extensions to Component[]

@@ -554,5 +554,68 @@ namespace RocketLib.Utils
             }
             return false;
         }
+
+        public static bool IsSuicideUnit(this UnitType type)
+        {
+            switch (type)
+            {
+                case UnitType.Baneling:
+                case UnitType.LostSoul:
+                case UnitType.Screecher:
+                case UnitType.SuicideBruiser:
+                case UnitType.SuicideMook:
+                case UnitType.UndeadSuicideMook:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static float GetSpriteWidth(this UnitType type)
+        {
+            switch (type)
+            {
+                case UnitType.Bruiser:
+                case UnitType.EliteBruiser:
+                case UnitType.Executioner:
+                case UnitType.StrongBruiser:
+                case UnitType.SuicideBruiser:
+                case UnitType.Boomer:
+                case UnitType.SoulCatcher:
+                    return 36f;
+                case UnitType.Mech:
+                case UnitType.BrownMech:
+                case UnitType.CR666:
+                case UnitType.Xenomorph:
+                case UnitType.XenomorphBrainbox:
+                    return 48f;
+                case UnitType.Brute:
+                case UnitType.SatanMiniboss:
+                    return 64;
+                default:
+                    return 32f;
+            }
+        }
+
+        public static float GetSpriteHeight(this UnitType type)
+        {
+            switch (type)
+            {
+                case UnitType.Boomer:
+                case UnitType.SoulCatcher:
+                    return 36f;
+                case UnitType.Mech:
+                case UnitType.BrownMech:
+                case UnitType.CR666:
+                case UnitType.Xenomorph:
+                case UnitType.XenomorphBrainbox:
+                    return 48f;
+                case UnitType.Brute:
+                case UnitType.SatanMiniboss:
+                    return 64;
+                default:
+                    return 32f;
+            }
+        }
     }
 }
