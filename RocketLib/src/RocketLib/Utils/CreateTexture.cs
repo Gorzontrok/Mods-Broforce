@@ -97,5 +97,20 @@ namespace RocketLib.Utils
             catch (Exception ex) { ScreenLogger.Instance.ExceptionLog(ex); }
             return texture;
         }
+
+        public static Texture FromPath(string path)
+        {
+            if (path.IsNullOrEmpty())
+                throw new ArgumentNullException("path");
+
+            Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            tex.LoadImage(File.ReadAllBytes(path));
+            tex.filterMode = FilterMode.Point;
+            tex.anisoLevel = 1;
+            tex.mipMapBias = 0;
+            tex.wrapMode = TextureWrapMode.Clamp;
+
+            return tex;
+        }
     }
 }
