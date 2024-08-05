@@ -60,7 +60,7 @@ namespace RocketLib
             }
             catch (Exception e)
             {
-                Main.mod.Logger.Log(e.ToString());
+                Main.logger.Exception(e);
             }
         }
 
@@ -132,7 +132,7 @@ namespace RocketLib
             }
             catch ( Exception e )
             {
-                Main.mod.Logger.Log("Exception converting from JSON: " + e.ToString());
+                Main.logger.Exception("Exception converting from JSON: ", e.ToString());
                 return false;
             }
         }
@@ -145,7 +145,7 @@ namespace RocketLib
             AllKeyBindings = new Dictionary<string, Dictionary<string, KeyBindingForPlayers>>();
         }
     }
-    
+
     [Serializable]
     public class KeyBindingForPlayers
     {
@@ -332,7 +332,7 @@ namespace RocketLib
             }
             catch(Exception e)
             {
-                ScreenLogger.Instance.ExceptionLog(e);
+                Main.logger.Exception(e);
             }
             return result;
         }
@@ -420,7 +420,7 @@ namespace RocketLib
             }
             catch (Exception e)
             {
-                ScreenLogger.Instance.ExceptionLog(e);
+                Main.logger.Exception(e);
             }
             return result;
         }

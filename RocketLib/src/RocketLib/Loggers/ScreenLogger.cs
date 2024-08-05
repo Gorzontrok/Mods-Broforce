@@ -267,7 +267,7 @@ namespace RocketLib.Loggers
             }
             catch (Exception ex)
             {
-                ExceptionLog(ex);
+                Main.logger.Exception(ex);
             }
         }
     }

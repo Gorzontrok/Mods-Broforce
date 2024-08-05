@@ -53,7 +53,10 @@ namespace RocketLib
                         if (bmod.OnLevelFinished != null)
                             bmod.OnLevelFinished();
                     }
-                    catch (Exception ex) { ScreenLogger.Instance.ExceptionLog("Failed to load OnLevelFinished from: " + bmod.ID, ex); }
+                    catch (Exception ex)
+                    {
+                        Main.logger.Exception("Failed to load OnLevelFinished from: " + bmod.ID, ex);
+                    }
                 }
             }
         }
@@ -71,7 +74,10 @@ namespace RocketLib
                     if (bmod.OnExitGame != null)
                         bmod.OnExitGame.Invoke();
                 }
-                catch (Exception ex) { ScreenLogger.Instance.ExceptionLog("Failed to load OnExitGame from: " + bmod.ID, ex); }
+                catch (Exception ex)
+                {
+                    Main.logger.Exception("Failed to load OnExitGame from: " + bmod.ID, ex);
+                }
             }
         }
     }
@@ -103,21 +109,24 @@ namespace RocketLib
         private static bool LoadMods;
         static void Prefix()
         {
-            if (!LoadMods)
+            if (LoadMods)
+                return;
+
+            foreach (var bmod in BroforceModController.Get_BroforceModList())
             {
-                foreach (var bmod in BroforceModController.Get_BroforceModList())
+                try
                 {
-                    try
+                    if (bmod.OnAfterLoadMods != null)
                     {
-                        if (bmod.OnAfterLoadMods != null)
-                        {
-                            bmod.OnAfterLoadMods.Invoke();
-                        }
+                        bmod.OnAfterLoadMods.Invoke();
                     }
-                    catch (Exception ex) { ScreenLogger.Instance.ExceptionLog("Failed to load OnAfterLoadMod from: " + bmod.ID, ex); }
                 }
-                LoadMods = true;
+                catch (Exception ex)
+                {
+                    Main.logger.Exception("Failed to load OnAfterLoadMod from: " + bmod.ID, ex);
+                }
             }
+            LoadMods = true;
         }
     }
 }

@@ -101,7 +101,7 @@ namespace RocketLibUMM
             }
             catch(Exception e)
             {
-                Main.Log(e);
+                Main.logger.Exception(e);
             }
         }
     }

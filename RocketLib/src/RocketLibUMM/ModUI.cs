@@ -46,7 +46,7 @@ namespace RocketLibUMM
                 }
                 catch (Exception ex)
                 {
-                    Main.Log(ex, RLogType.Exception);
+                    Main.logger.Exception(ex);
                 }
             }
             _tabSelected = RGUI.Tab(_tabsName, _tabSelected, 10, 110);
@@ -104,7 +104,7 @@ namespace RocketLibUMM
                 }
                 catch (Exception ex)
                 {
-                    Main.bmod.logger.Log(ex, RLogType.Exception);
+                    Main.logger.Exception(ex);
                 }
             }
             GUILayout.EndHorizontal();
@@ -117,7 +117,7 @@ namespace RocketLibUMM
                 }
                 catch (Exception ex)
                 {
-                    Main.bmod.logger.Log(ex, RLogType.Exception);
+                    Main.logger.Exception(ex);
                 }
             }
             GUILayout.EndVertical();
@@ -165,7 +165,7 @@ namespace RocketLibUMM
             }
             catch(Exception ex)
             {
-                Main.Log(ex);
+                Main.logger.Exception(ex);
             }
         }
     }

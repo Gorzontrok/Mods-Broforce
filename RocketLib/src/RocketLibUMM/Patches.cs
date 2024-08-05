@@ -89,7 +89,7 @@ namespace RocketLibUMM
                 }
                 catch (Exception ex)
                 {
-                    ScreenLogger.Instance.ExceptionLog($"Failed to check the password: {password.password}", ex);
+                    Main.logger.Exception($"Failed to check the password: {password.password}", ex);
                 }
             }
         }

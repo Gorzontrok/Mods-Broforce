@@ -195,7 +195,7 @@ namespace RocketLib.Utils
                 }
                 catch (Exception ex)
                 {
-                    ScreenLogger.Instance.ExceptionLog(ex);
+                    Main.logger.Exception(ex);
                 }
             }
             else

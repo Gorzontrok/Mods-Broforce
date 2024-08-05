@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using System.IO;
-using System.Collections.Generic;
 using UnityModManagerNet;
 using HarmonyLib;
-using RocketLib.Loggers;
 
 namespace RocketLib
 {
@@ -24,51 +22,47 @@ namespace RocketLib
         public static bool showLogOnScreen = true;
         public static bool showManagerLog = true;
 
+        internal static ILogger logger;
+
         public static void Load(UnityModManager.ModEntry _mod)
         {
             try
             {
-                if (!Loaded)
+                if (Loaded)
                 {
-                    mod = _mod;
-
-                    harmony = new Harmony("RocketLib-NotUMM");
-                    try
-                    {
-                        var assembly = Assembly.GetExecutingAssembly();
-                        harmony.PatchAll(assembly);
-                    }
-                    catch (Exception ex)
-                    {
-                        mod.Logger.Log("Failed to Patch Harmony :\n" + ex);
-                    }
-
-
-                    // Load Newtonsoft
-                    try
-                    {
-                        Assembly.LoadFile(Path.Combine(mod.Path, NEWTONSOFT_ASSEMBLY_NAME));
-                    }
-                    catch (Exception ex)
-                    {
-                        mod.Logger.Log("Error while loading Newtonsoft.Json" + ex);
-                    }
-                    Loaded = true;
+                    logger.Log("Cancel Load, already Started ");
+                    return;
                 }
-                else
+
+                mod = _mod;
+
+                harmony = new Harmony("RocketLib-NotUMM");
+                try
                 {
-                    mod.Logger.Log("Cancel Load, already Started ");
+                    var assembly = Assembly.GetExecutingAssembly();
+                    harmony.PatchAll(assembly);
                 }
+                catch (Exception ex)
+                {
+                    logger.Exception("Failed to Patch Harmony :\n", ex);
+                }
+
+
+                // Load Newtonsoft
+                try
+                {
+                    Assembly.LoadFile(Path.Combine(mod.Path, NEWTONSOFT_ASSEMBLY_NAME));
+                }
+                catch (Exception ex)
+                {
+                    logger.Exception("Error while loading Newtonsoft.Json", ex);
+                }
+                Loaded = true;
             }
             catch(Exception ex)
             {
-                mod.Logger.Log(ex.ToString());
+               logger.Error(ex);
             }
-        }
-
-        internal static void Log(object msg)
-        {
-            mod.Logger.Log(msg.ToString());
         }
 
         public static bool TestBuild

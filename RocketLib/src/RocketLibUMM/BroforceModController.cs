@@ -45,7 +45,8 @@ namespace RocketLibUMM
     {
         static void Prefix(GameModeController __instance)
         {
-            if (!Main.enabled) return;
+            if (!Main.enabled)
+                return;
 
             if (GameModeController.LevelFinished)
             {
@@ -56,7 +57,10 @@ namespace RocketLibUMM
                         if (bmod.OnLevelFinished != null)
                             bmod.OnLevelFinished();
                     }
-                    catch (Exception ex) { Main.ExceptionLog("Failed to load OnLevelFinished from: " + bmod.ID, ex); }
+                    catch (Exception ex)
+                    {
+                        Main.logger.Exception("Failed to load OnLevelFinished from: " + bmod.ID, ex);
+                    }
                 }
             }
         }
@@ -67,7 +71,9 @@ namespace RocketLibUMM
     {
         static void Prefix()
         {
-            if (!Main.enabled) return;
+            if (!Main.enabled)
+                return;
+
             foreach (var bmod in BroforceModController.Get_BroforceModList())
             {
                 try
@@ -75,7 +81,10 @@ namespace RocketLibUMM
                     if (bmod.OnExitGame != null)
                         bmod.OnExitGame.Invoke();
                 }
-                catch (Exception ex) { Main.ExceptionLog("Failed to load OnExitGame from: " + bmod.ID, ex); }
+                catch (Exception ex)
+                {
+                    Main.logger.Exception("Failed to load OnExitGame from: " + bmod.ID, ex);
+                }
             }
         }
     }
@@ -118,7 +127,10 @@ namespace RocketLibUMM
                             bmod.OnAfterLoadMods.Invoke();
                         }
                     }
-                    catch (Exception ex) { Main.ExceptionLog("Failed to load OnAfterLoadMod from: " + bmod.ID, ex); }
+                    catch (Exception ex)
+                    {
+                        Main.logger.Exception("Failed to load OnAfterLoadMod from: " + bmod.ID, ex);
+                    }
                 }
                 LoadMods = true;
             }

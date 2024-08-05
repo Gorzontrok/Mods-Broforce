@@ -94,6 +94,7 @@
     <Compile Include="BroforceModController.cs" />
     <Compile Include="Collections\Heroes.cs" />
     <Compile Include="Extensions\UnitExtensions.cs" />
+    <Compile Include="ILogger.cs" />
     <Compile Include="JsonConverters\ColorJsonConverter.cs" />
     <Compile Include="Utils\DrawDebug.cs" />
     <Compile Include="Utils\TestVanDammeAnimTypes.cs" />

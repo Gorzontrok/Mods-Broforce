@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using RocketLib;
 using RocketLib.Loggers;
 using System;
 using System.Collections.Generic;
@@ -168,7 +169,7 @@ public static class HarmonyExtensions
             { }
             catch (Exception e)
             {
-                ScreenLogger.Instance.ExceptionLog($"Key: {kvp.Key} ; Value: {kvp.Value}\nAt type field {field.GetValueType()}", e);
+                Main.logger.Exception($"Key: {kvp.Key} ; Value: {kvp.Value}\nAt type field {field.GetValueType()}", e);
             }
         }
     }

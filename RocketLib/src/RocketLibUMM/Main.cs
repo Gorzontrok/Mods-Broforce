@@ -17,88 +17,53 @@ namespace RocketLibUMM
         public static Settings settings;
 
         internal static BroforceMod bmod;
-
-        public static void ExceptionLog(object str)
-        {
-            bmod.logger.ExceptionLog(str);
-        }
-        public static void ExceptionLog(Exception exception)
-        {
-            bmod.logger.ExceptionLog(exception);
-        }
-        public static void ExceptionLog(object str, Exception exception)
-        {
-            bmod.logger.ExceptionLog(str.ToString(), exception);
-        }
-
-        public static void Log(object str, RLogType type = RLogType.Log)
-        {
-            bmod.logger.Log(str, type);
-        }
-
-        public static void LogUMM(object str)
-        {
-            mod.Logger.Log(str.ToString());
-        }
+        internal static RLogger logger;
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
+            mod = modEntry;
+
+            modEntry.OnToggle = OnToggle;
+            modEntry.OnGUI = ModUI.OnGui;
+            modEntry.OnSaveGUI = OnSaveGUI;
+            modEntry.OnUpdate = OnUpdate;
+            modEntry.CustomRequirements = MakeUSAColorOnBroforce();
+
+            settings = Settings.Load<Settings>(modEntry);
+            ScreenLogger.fontSize = settings.fontSize;
+
+            harmony = new Harmony(modEntry.Info.Id);
+            var assembly = Assembly.GetExecutingAssembly();
+            harmony.PatchAll(assembly);
+
+            logger = new RLogger();
+
             try
             {
-                mod = modEntry;
+                RocketLib.Main.logger = logger;
 
-                modEntry.OnToggle = OnToggle;
-                modEntry.OnGUI = ModUI.OnGui;
-                modEntry.OnSaveGUI = OnSaveGUI;
-                modEntry.OnUpdate = OnUpdate;
-                modEntry.CustomRequirements = MakeUSAColorOnBroforce();
+                RMain.Load(mod);
+                RMain.showManagerLog = settings.showManagerLog;
+                RMain.showLogOnScreen = settings.onScreenLog;
+                RMain.logTimer = settings.logTimer;
 
-                settings = Settings.Load<Settings>(modEntry);
-                ScreenLogger.fontSize = settings.fontSize;
-
-                harmony = new Harmony(modEntry.Info.Id);
-                try
-                {
-                    var assembly = Assembly.GetExecutingAssembly();
-                    harmony.PatchAll(assembly);
-                }
-                catch (Exception ex)
-                {
-                    Main.LogUMM("Failed to Patch Harmony :\n" + ex);
-                }
-
-                try
-                {
-                    RMain.Load(mod);
-                    RMain.showManagerLog = settings.showManagerLog;
-                    RMain.showLogOnScreen = settings.onScreenLog;
-                    RMain.logTimer = settings.logTimer;
-
-                    bmod = new BroforceMod();
-                    bmod.Load(mod);
-
-                }
-                catch (Exception ex)
-                {
-                    Main.LogUMM("Error while Loading RocketLib  :\n" + ex.ToString());
-                }
-
-
-                try
-                {
-                    Mod.Load();
-                }
-                catch (Exception e)
-                {
-                    Main.LogUMM(e.ToString());
-                }
-                return true;
+                bmod = new BroforceMod();
+                bmod.Load(mod);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Main.LogUMM(ex);
+                logger.Exception("Error while Loading RocketLib:", ex);
             }
-            return false;
+
+            try
+            {
+                Mod.Load();
+            }
+            catch (Exception e)
+            {
+                logger.Exception(e);
+            }
+            return true;
         }
 
         static string MakeUSAColorOnBroforce()
@@ -141,7 +106,8 @@ namespace RocketLibUMM
 
         static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
         {
-            if (!LevelEditorGUI.IsActive) ShowMouseController.ShowMouse = false;
+            if (!LevelEditorGUI.IsActive)
+                ShowMouseController.ShowMouse = false;
             Cursor.lockState = CursorLockMode.None;
 
             Mod.Update();
@@ -165,6 +131,43 @@ namespace RocketLibUMM
         {
             Mod.save.Save();
             Save(this, modEntry);
+        }
+    }
+
+    internal class RLogger : RocketLib.ILogger
+    {
+        public void Log(object message)
+        {
+            Log(message.ToString());
+        }
+
+        public void Log(string message)
+        {
+            UnityModManager.Logger.Log(message, "[RocketLib] ");
+        }
+
+        public void Warning(string message)
+        {
+            UnityModManager.Logger.Log(message, "[RocketLib] [Warning] ");
+        }
+
+        public void Error(string message)
+        {
+            UnityModManager.Logger.Error(message, "[RocketLib] [Error] ");
+        }
+
+        public void Exception(Exception exception)
+        {
+            Exception(null, exception);
+        }
+        public void Exception(string message, Exception exception)
+        {
+            UnityModManager.Logger.LogException(message, exception, "[RocketLib] [Exception] ");
+        }
+
+        public void Debug(string message)
+        {
+            UnityModManager.Logger.Log(message, "[RocketLib] [Debug]");
         }
     }
 }

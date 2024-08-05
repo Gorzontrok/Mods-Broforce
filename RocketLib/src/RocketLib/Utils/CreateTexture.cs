@@ -94,7 +94,10 @@ namespace RocketLib.Utils
                     return tex;
                 }
             }
-            catch (Exception ex) { ScreenLogger.Instance.ExceptionLog(ex); }
+            catch (Exception ex)
+            {
+                Main.logger.Exception(ex);
+            }
             return texture;
         }
 

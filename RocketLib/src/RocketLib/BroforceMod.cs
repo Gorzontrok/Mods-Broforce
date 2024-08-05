@@ -83,7 +83,7 @@ namespace RocketLib
                     new Exception("The given mod is null.");
                 }
 
-                ScreenLogger.Instance.Log("Start loading Broforce mod : " + mod.Info.Id);
+                Main.logger.Log("Start loading Broforce mod : " + mod.Info.Id);
                 try
                 {
                     this.__mod = mod;
@@ -98,7 +98,7 @@ namespace RocketLib
                 catch (Exception ex)
                 {
                     this.Loaded = false;
-                    ScreenLogger.Instance.ExceptionLog($" Failed to load : {mod.Info.Id}", ex);
+                    Main.logger.Exception($" Failed to load : {mod.Info.Id}", ex);
                 }
             }
             else
