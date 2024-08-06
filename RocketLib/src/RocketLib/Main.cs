@@ -61,7 +61,7 @@ namespace RocketLib
             }
             catch(Exception ex)
             {
-               logger.Error(ex);
+               logger.Error(ex.ToString());
             }
         }
 

@@ -132,7 +132,7 @@ namespace RocketLib
             }
             catch ( Exception e )
             {
-                Main.logger.Exception("Exception converting from JSON: ", e.ToString());
+                Main.logger.Exception("Exception converting from JSON: ", e);
                 return false;
             }
         }

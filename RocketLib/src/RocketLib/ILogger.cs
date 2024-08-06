@@ -2,7 +2,7 @@
 
 namespace RocketLib
 {
-    internal interface ILogger
+    public interface ILogger
     {
         void Log(object message);
         void Log(string message);
