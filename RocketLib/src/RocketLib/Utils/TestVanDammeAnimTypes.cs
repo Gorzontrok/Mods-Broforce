@@ -51,14 +51,15 @@ namespace RocketLib.Utils
             CR666 = 41,
             Pig = 42,
             RottenPig = 43,
-            Villager = 44
+            Villager = 44,
+            RCCar = 45
         }
 
         public static readonly string[] allUnitNames = new string[]
         {
             "Mook", "Suicide Mook", "Bruiser", "Suicide Bruiser", "Strong Bruiser", "Elite Bruiser", "Scout Mook", "Riot Shield Mook", "Mech", "Brown Mech", "Jetpack Mook", "Grenadier Mook", "Bazooka Mook", "Jetpack Bazooka Mook",
             "Ninja Mook", "Treasure Mook", "Attack Dog", "Skinned Mook", "Mook General", "Alarmist", "Strong Mook", "Scientist Mook", "Snake", "Satan", "Facehugger", "Xenomorph", "Brute", "Screecher", "Baneling", "Xenomorph Brainbox",
-            "Hellhound", "Undead Mook", "Warlock", "Boomer", "Undead Suicide Mook", "Executioner", "Lost Soul", "Soul Catcher", "Satan Miniboss", "CR666", "Pig", "Rotten Pig", "Villager"
+            "Hellhound", "Undead Mook", "Warlock", "Boomer", "Undead Suicide Mook", "Executioner", "Lost Soul", "Soul Catcher", "Satan Miniboss", "CR666", "Pig", "Rotten Pig", "Villager", "Remote Control Car"
         };
 
         public static UnitType GetUnitType(this TestVanDammeAnim character)
@@ -80,6 +81,11 @@ namespace RocketLib.Utils
                             return UnitType.RottenPig;
                         else
                             return UnitType.Pig;
+                    }
+                    RemoteControlExplosiveCar car = character as RemoteControlExplosiveCar;
+                    if (car != null)
+                    {
+                        return UnitType.RCCar;
                     }
                     break;
                 case MookType.Trooper:
@@ -310,6 +316,8 @@ namespace RocketLib.Utils
                         return Map.Instance.activeTheme.villager1[UnityEngine.Random.Range(0, 1)];
                     else
                         return Map.Instance.activeTheme.villager1[villagerNum];
+                case UnitType.RCCar:
+                    return Map.Instance.remoteCarPrefabReference.Asset;
             }
             return null;
         }
@@ -408,6 +416,8 @@ namespace RocketLib.Utils
                     return "Rotten Pig";
                 case UnitType.Villager:
                     return "Villager";
+                case UnitType.RCCar:
+                    return "Remote Control Car";
             }
             return "None";
         }
@@ -506,6 +516,8 @@ namespace RocketLib.Utils
                     return UnitType.RottenPig;
                 case "Villager":
                     return UnitType.Villager;
+                case "Remote Control Car":
+                    return UnitType.RCCar;
             }
             return UnitType.None;
         }
@@ -555,6 +567,22 @@ namespace RocketLib.Utils
             return false;
         }
 
+        public static bool CanDance(this UnitType type)
+        {
+            switch (type)
+            {
+                case UnitType.EliteBruiser:
+                case UnitType.BrownMech:
+                case UnitType.JetpackBazookaMook:
+                case UnitType.Pig:
+                case UnitType.RottenPig:
+                case UnitType.Villager:
+                case UnitType.RCCar:
+                    return false;
+            }
+            return true;
+        }
+
         public static bool IsSuicideUnit(this UnitType type)
         {
             switch (type)
@@ -565,6 +593,7 @@ namespace RocketLib.Utils
                 case UnitType.SuicideBruiser:
                 case UnitType.SuicideMook:
                 case UnitType.UndeadSuicideMook:
+                case UnitType.RCCar:
                     return true;
                 default:
                     return false;
