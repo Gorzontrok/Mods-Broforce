@@ -175,6 +175,16 @@ namespace RocketLib
             GUILayout.EndHorizontal();
             return value;
         }
+        public static float HorizontalSlider(string text, string tooltip, float value, float minValue, float maxValue, float sliderWidth = 500f)
+        {
+            GUILayout.BeginHorizontal(new GUIContent(string.Empty, tooltip), GUIStyle.none, new GUILayoutOption[] { });
+            GUILayout.Label(text, GUILayout.ExpandWidth(false));
+            GUILayout.Label(value.ToString(), GUILayout.Width(70));
+            value = (float)GUILayout.HorizontalSlider(value, minValue, maxValue, GUILayout.MaxWidth(sliderWidth));
+            GUILayout.EndHorizontal();
+            return value;
+        }
+
         public static int HorizontalSliderInt(string text, int value, int minValue, int maxValue, float sliderWidth = 500f)
         {
             GUILayout.BeginHorizontal();
@@ -184,6 +194,14 @@ namespace RocketLib
             GUILayout.EndHorizontal();
             return value;
         }
-
+        public static int HorizontalSliderInt(string text, string tooltip, int value, int minValue, int maxValue, float sliderWidth = 500f)
+        {
+            GUILayout.BeginHorizontal(new GUIContent(string.Empty, tooltip), GUIStyle.none, new GUILayoutOption[] { });
+            GUILayout.Label(text, GUILayout.ExpandWidth(false));
+            GUILayout.Label(value.ToString(), GUILayout.Width(70));
+            value = (int)GUILayout.HorizontalSlider(value, minValue, maxValue, GUILayout.MaxWidth(sliderWidth));
+            GUILayout.EndHorizontal();
+            return value;
+        }
     }
 }
