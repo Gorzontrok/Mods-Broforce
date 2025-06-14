@@ -139,6 +139,16 @@
             <param name="color">Color of rectangle</param>
             <param name="width">Width of rectangle</param>
         </member>
+        <member name="M:RocketLib.Utils.DrawDebug.DrawCrosshair(System.String,UnityEngine.Vector3,System.Single,UnityEngine.Color,System.Single)">
+            <summary>
+            Draw a debug crosshair
+            </summary>
+            <param name="ID">Name of crosshair, use the same name to update an existing crosshair</param>
+            <param name="center">Center of the crosshair</param>
+            <param name="length">Length of each line</param>
+            <param name="color">Color of crosshair</param>
+            <param name="width">Width of crosshair</param>
+        </member>
         <member name="P:RocketLib.Utils.ResourcesController.Particle_AlphaBlend">
             <summary>
             Particles/Alpha Blended
