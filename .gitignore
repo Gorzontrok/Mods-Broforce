@@ -7,3 +7,4 @@
 *.DS_Store
 **/_Mod/*.dll
 RocketLib/lib/*.dll
+LocalBroforcePath.props
