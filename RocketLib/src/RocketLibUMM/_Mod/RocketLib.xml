@@ -119,6 +119,18 @@
             The original array of hero save number interval. (read only)
             </summary>
         </member>
+        <member name="M:RocketLib.Extensions.GrenadeExtensions.CompareToDefaultGrenade(Grenade)">
+            <summary>
+            Prints the values that have been changed in this object from the default values for the Grenade class.
+            </summary>
+            <param name="grenade">Object to compare to the default grenade.</param>
+        </member>
+        <member name="M:RocketLib.Extensions.ProjectileExtensions.CompareToDefaultProjectile(Projectile)">
+            <summary>
+            Prints the values that have been changed in this object from the default values for the Projectile class.
+            </summary>
+            <param name="projectile">Object to compare to the default projectile.</param>
+        </member>
         <member name="M:RocketLib.Utils.DrawDebug.DrawLine(System.String,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Color,System.Single)">
             <summary>
             Draw a debug line
@@ -148,6 +160,124 @@
             <param name="length">Length of each line</param>
             <param name="color">Color of crosshair</param>
             <param name="width">Width of crosshair</param>
+        </member>
+        <member name="T:RocketLib.Utils.ObjectComparer">
+            <summary>
+            Provides functionality to compare two objects and find all differences between them
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.ObjectComparer.MAX_DEPTH">
+            <summary>
+            Maximum recursion depth to prevent stack overflow from circular references
+            </summary>
+        </member>
+        <member name="T:RocketLib.Utils.ObjectComparer.ObjectPair">
+            <summary>
+            Internal class used to track pairs of objects that have already been compared
+            to prevent infinite recursion on circular references
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.ObjectComparer.SkipProperties">
+            <summary>
+            Properties that should be skipped during comparison to avoid reflection metadata
+            and circular references common in Unity objects
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.ObjectComparer.SimpleTypeNames">
+            <summary>
+            Type names that should be treated as simple types and compared directly
+            without recursing into their properties
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.Compare``1(``0,``0)">
+            <summary>
+            Compares two objects of the same type and returns a list of all differences found
+            </summary>
+            <typeparam name="T">The type of objects being compared</typeparam>
+            <param name="obj1">The first object to compare</param>
+            <param name="obj2">The second object to compare</param>
+            <returns>A list of all differences found between the two objects</returns>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.CompareInternal``1(``0,``0,System.String,System.Int32,System.Collections.Generic.HashSet{RocketLib.Utils.ObjectComparer.ObjectPair})">
+            <summary>
+            Internal recursive comparison method that tracks depth and visited pairs
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.CompareObjectsNonGeneric(System.Object,System.Object,System.String,System.Int32,System.Collections.Generic.HashSet{RocketLib.Utils.ObjectComparer.ObjectPair})">
+            <summary>
+            Compares two objects when their type is not known at compile time
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.IsSimpleType(System.Type)">
+            <summary>
+            Determines if a type should be treated as simple (compared directly without recursion)
+            </summary>
+            <param name="type">The type to check</param>
+            <returns>True if the type is simple, false otherwise</returns>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.GenerateMatchingStatement(System.String,System.String)">
+            <summary>
+            Generates a single assignment statement for a property path and value.
+            Uses 'this.' prefix as the code is meant to be placed inside the class.
+            </summary>
+            <param name="propertyPath">The property path (e.g. "sprite.width")</param>
+            <param name="value">The value to assign</param>
+            <returns>A C# assignment statement, or empty string if unable to generate</returns>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.IsVectorValue(System.String)">
+            <summary>
+            Determines if a value represents a vector type
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.GenerateVectorAssignment(System.String,System.String)">
+            <summary>
+            Generates an assignment statement for vector types using 'this.' prefix
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.IsNumericOrBool(System.String)">
+            <summary>
+            Determines if a value is numeric or boolean
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.IsBool(System.String)">
+            <summary>
+            Determines if a value is boolean
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.IsNumeric(System.String)">
+            <summary>
+            Determines if a value is numeric
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.ObjectComparer.IsObjectType(System.String)">
+            <summary>
+            Determines if a value represents an object type that should be skipped
+            </summary>
+        </member>
+        <member name="T:RocketLib.Utils.Difference">
+            <summary>
+            Represents a single difference between two objects
+            </summary>
+        </member>
+        <member name="P:RocketLib.Utils.Difference.PropertyPath">
+            <summary>
+            The path to the property or field that differs (e.g. "Person.Address.Street")
+            </summary>
+        </member>
+        <member name="P:RocketLib.Utils.Difference.Value1">
+            <summary>
+            The string representation of the value from the first object
+            </summary>
+        </member>
+        <member name="P:RocketLib.Utils.Difference.Value2">
+            <summary>
+            The string representation of the value from the second object
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.Difference.ToString">
+            <summary>
+            Returns a formatted string representation of the difference
+            </summary>
         </member>
         <member name="P:RocketLib.Utils.ResourcesController.Particle_AlphaBlend">
             <summary>
@@ -986,6 +1116,23 @@
             <returns></returns>
             <exception cref="T:System.MissingMethodException"></exception>
             <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:ObjectExtensions.PrintDifferences``1(``0,``0)">
+            <summary>
+            Compares two objects and prints all differences to the log.
+            </summary>
+            <typeparam name="T">The type of objects being compared</typeparam>
+            <param name="obj1">The first object to compare</param>
+            <param name="obj2">The second object to compare</param>
+        </member>
+        <member name="M:ObjectExtensions.GenerateMatchingCode``1(``0,``0)">
+            <summary>
+            Compares two objects and generates code to make obj1 match obj2.
+            The generated code uses 'this.' and is meant to be placed inside the class.
+            </summary>
+            <typeparam name="T">The type of objects being compared</typeparam>
+            <param name="obj1">The target objec</param>
+            <param name="obj2">The source object (values to copy from)t</param>
         </member>
         <member name="M:HarmonyExtensions.GetFieldValue``1(System.Object,System.String)">
             <summary>

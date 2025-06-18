@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RocketLib.Utils;
+using RocketLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,5 +80,95 @@ public static class ObjectExtensions
         var ptr = method.MethodHandle.GetFunctionPointer();
         var baseMethod = (Func<T>)Activator.CreateInstance(typeof(Func<T>), obj, ptr);
         return baseMethod.Invoke() as T;
+    }
+
+    /// <summary>
+    /// Compares two objects and prints all differences to the log.
+    /// </summary>
+    /// <typeparam name="T">The type of objects being compared</typeparam>
+    /// <param name="obj1">The first object to compare</param>
+    /// <param name="obj2">The second object to compare</param>
+    public static void PrintDifferences<T>( this T obj1, T obj2 )
+    {
+        try
+        {
+            Main.logger.Log( $"Starting comparison of type {typeof( T ).Name}" );
+            var differences = ObjectComparer.Compare( obj1, obj2 );
+
+            if ( !differences.Any() )
+            {
+                Main.logger.Log( "Objects are identical" );
+                return;
+            }
+
+            Main.logger.Log( $"Found {differences.Count} differences:" );
+
+            // Find the longest property path for alignment
+            int maxPathLength = differences.Max( d => d.PropertyPath.Length );
+
+            // Print each difference with aligned values
+            foreach ( var diff in differences )
+            {
+                var paddedPath = diff.PropertyPath.PadRight( maxPathLength );
+                Main.logger.Log( $"  {paddedPath} : '{diff.Value1}' → '{diff.Value2}'" );
+            }
+        }
+        catch ( Exception ex )
+        {
+            Main.logger.Log( $"Error during comparison: {ex.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// Compares two objects and generates code to make obj1 match obj2.
+    /// The generated code uses 'this.' and is meant to be placed inside the class.
+    /// </summary>
+    /// <typeparam name="T">The type of objects being compared</typeparam>
+    /// <param name="obj1">The target objec</param>
+    /// <param name="obj2">The source object (values to copy from)t</param>
+    public static void GenerateMatchingCode<T>( this T obj1, T obj2 )
+    {
+        try
+        {
+            Main.logger.Log( $"Generating matching code for type {typeof( T ).Name}" );
+            var differences = ObjectComparer.Compare( obj2, obj1 );
+
+            if ( !differences.Any() )
+            {
+                Main.logger.Log( "Objects are identical - no matching needed" );
+                return;
+            }
+
+            Main.logger.Log( $"// Code to match {differences.Count} differences:" );
+            Main.logger.Log( "// Copy and paste the following code inside the target class:" );
+            Main.logger.Log( "" );
+
+            var generatedCode = new List<string>();
+
+            foreach ( var diff in differences )
+            {
+                var matchingCode = ObjectComparer.GenerateMatchingStatement( diff.PropertyPath, diff.Value1 );
+                if ( !string.IsNullOrEmpty( matchingCode ) )
+                {
+                    generatedCode.Add( matchingCode );
+                }
+            }
+
+            if ( generatedCode.Any() )
+            {
+                foreach ( var code in generatedCode )
+                {
+                    Main.logger.Log( code );
+                }
+            }
+            else
+            {
+                Main.logger.Log( "// Unable to generate matching code for complex types" );
+            }
+        }
+        catch ( Exception ex )
+        {
+            Main.logger.Log( $"Error generating matching code: {ex.Message}" );
+        }
     }
 }

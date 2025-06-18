@@ -93,10 +93,13 @@
     <Compile Include="BroforceMod.cs" />
     <Compile Include="BroforceModController.cs" />
     <Compile Include="Collections\Heroes.cs" />
+    <Compile Include="Extensions\GrenadeExtensions.cs" />
+    <Compile Include="Extensions\ProjectileExtensions.cs" />
     <Compile Include="Extensions\UnitExtensions.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="JsonConverters\ColorJsonConverter.cs" />
     <Compile Include="Utils\DrawDebug.cs" />
+    <Compile Include="Utils\ObjectComparer.cs" />
     <Compile Include="Utils\TestVanDammeAnimTypes.cs" />
     <Compile Include="Utils\ResourcesController.cs" />
     <None Include="Collections\Doodads.cs" />
