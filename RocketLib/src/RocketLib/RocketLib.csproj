@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\RocketLibUMM\LocalBroforcePath.props" Condition="Exists('..\RocketLibUMM\LocalBroforcePath.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -146,7 +147,11 @@
   <PropertyGroup>
     <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(SolutionDir)\RocketLibUMM\_Mod\$(ProjectName).dll*"
 start XCOPY /Y /R "$(TargetPath)" "..\..\..\..\lib\$(ProjectName).dll*"
-start XCOPY /Y /R "$(TargetPath)" "..\..\..\..\..\..\Bro-Maker\lib\$(ProjectName).dll*"
-del "D:\Steam\steamapps\common\Broforce\Mods\Development - RocketLib\*.cache" 2&gt; nul || set errorlevel=0</PostBuildEvent>
+start XCOPY /Y /R "$(TargetPath)" "..\..\..\..\..\..\Bro-Maker\lib\$(ProjectName).dll*"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>if "$(CloseBroforceOnBuild)" == "true" (
+    taskkill /f /t /im Broforce_beta.exe 2&gt;nul || exit /b 0
+)</PreBuildEvent>
   </PropertyGroup>
 </Project>
