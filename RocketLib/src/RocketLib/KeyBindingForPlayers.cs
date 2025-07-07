@@ -253,6 +253,32 @@ namespace RocketLib
         }
 
         /// <summary>
+        /// Checks whether a keybinding has been assigned to any player
+        /// </summary>
+        /// <returns>True if a keybinding has been assigned to any player</returns>
+        public bool HasAnyKeysAssigned()
+        {
+            for ( int i = 0; i < 4; i++ )
+            {
+                if ( this[i].HasKeyAssigned() )
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether a keybinding has been assigned for the specified player
+        /// </summary>
+        /// <param name="player">Player to check keybinding for</param>
+        /// <returns>True if the player has a keybinding set</returns>
+        public bool HasKeysAssigned(int player)
+        {
+            return this[player].HasKeyAssigned();
+        }
+
+        /// <summary>
         /// Gets state of key
         /// </summary>
         /// <param name="player">Player to check keybinding for</param>
@@ -348,7 +374,7 @@ namespace RocketLib
         /// <param name="onlyOnePlayer">Only display one player's keybinding options</param>
         /// <param name="separateKeyName">Separate the keyname from the button, if set to false it will be included within the button</param>
         /// <param name="fixedWidth">Controls whether the button should be a fixed width or not</param>
-        /// <returns></returns>
+        /// <returns>True if one of the buttons was pressed and a key is being assigned</returns>
         public bool OnGUI(out int player, bool displayToolTip, bool includeToolTip, ref string previousToolTip, int playerToDisplay = -1, bool onlyOnePlayer = false, bool separateKeyName = true, bool fixedWidth = true )
         {
             player = 0;

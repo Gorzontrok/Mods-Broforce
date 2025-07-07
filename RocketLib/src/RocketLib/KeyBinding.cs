@@ -8,6 +8,15 @@ using UnityModManagerNet;
 
 namespace RocketLib
 {
+    [Flags]
+    public enum ModifierKeys
+    {
+        None = 0,
+        Ctrl = 1 << 0,
+        Shift = 1 << 1,
+        Alt = 1 << 2
+    }
+
     [Serializable]
     public class KeyBinding : IEquatable<KeyBinding>
     {
@@ -20,6 +29,7 @@ namespace RocketLib
         public string joystickDisplayName;
         public bool playStation = false;
         public int axisNum = -1;
+        public ModifierKeys modifiers = ModifierKeys.None;
         [JsonIgnore, XmlIgnore]
         public bool isSettingKey;
         [JsonIgnore, XmlIgnore]
@@ -46,7 +56,7 @@ namespace RocketLib
             if (other == null)
                 return false;
 
-            return (this.axis == false && this.axis == other.axis && this.key == other.key) || (this.axis == true && this.axis == other.axis && this.joystickAxis == other.joystickAxis);
+            return (this.axis == false && this.axis == other.axis && this.key == other.key && this.modifiers == other.modifiers) || (this.axis == true && this.axis == other.axis && this.joystickAxis == other.joystickAxis);
         }
 
         public override bool Equals(object obj)
@@ -79,7 +89,15 @@ namespace RocketLib
 
         public override int GetHashCode()
         {
-            return this.key.GetHashCode();
+            return this.key.GetHashCode() ^ this.modifiers.GetHashCode();
+        }
+
+        /// <summary>
+        /// Checks whether a keybinding has been assigned.
+        /// <returns>True if a keybinding is assigned, otherwise false.</returns>
+        public bool HasKeyAssigned()
+        {
+            return this.key != KeyCode.None || this.axis;
         }
 
         /// <summary>
@@ -88,6 +106,21 @@ namespace RocketLib
         /// <returns>True if key is pressed down</returns>
         public virtual bool IsDown()
         {
+            // Check if required modifiers are pressed
+            if (modifiers != ModifierKeys.None)
+            {
+                ModifierKeys currentModifiers = ModifierKeys.None;
+                if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+                    currentModifiers |= ModifierKeys.Ctrl;
+                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                    currentModifiers |= ModifierKeys.Shift;
+                if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+                    currentModifiers |= ModifierKeys.Alt;
+                
+                if ((currentModifiers & modifiers) != modifiers)
+                    return false;
+            }
+                
             if ( this.axis )
             {
                 // Check if keybinding is set for a playstation controller's left trigger or right trigger
@@ -169,6 +202,8 @@ namespace RocketLib
             this.joystickAxis = string.Empty;
             this.isSettingKey = false;
             this.playStation = false;
+            // Clear modifiers when assigning new key (they'll be set in BindKey if needed)
+            this.modifiers = ModifierKeys.None;
         }
 
         public virtual void AssignKey(string joystick, int joystickDirection)
@@ -254,6 +289,27 @@ namespace RocketLib
             this.axis = false;
             this.joystickAxis = String.Empty;
             this.isSettingKey = false;
+            this.modifiers = ModifierKeys.None;
+        }
+
+        private string GetKeyDisplayString()
+        {
+            if (this.axis)
+                return this.joystickDisplayName;
+                
+            if (key == KeyCode.None)
+                return "None";
+                
+            string displayString = "";
+            if ((modifiers & ModifierKeys.Ctrl) != 0)
+                displayString += "Ctrl+";
+            if ((modifiers & ModifierKeys.Shift) != 0)
+                displayString += "Shift+";
+            if ((modifiers & ModifierKeys.Alt) != 0)
+                displayString += "Alt+";
+            displayString += key.ToString();
+            
+            return displayString;
         }
 
         public static IEnumerator BindKey(KeyBinding keyBinding)
@@ -269,7 +325,25 @@ namespace RocketLib
                 {
                     if (Input.GetKeyUp(keyCode))
                     {
+                        // Don't bind modifier keys alone
+                        if (keyCode == KeyCode.LeftControl || keyCode == KeyCode.RightControl ||
+                            keyCode == KeyCode.LeftShift || keyCode == KeyCode.RightShift ||
+                            keyCode == KeyCode.LeftAlt || keyCode == KeyCode.RightAlt)
+                        {
+                            continue;
+                        }
+                        
                         keyBinding.AssignKey(keyCode);
+                        
+                        // Check and set modifier keys
+                        keyBinding.modifiers = ModifierKeys.None;
+                        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+                            keyBinding.modifiers |= ModifierKeys.Ctrl;
+                        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                            keyBinding.modifiers |= ModifierKeys.Shift;
+                        if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+                            keyBinding.modifiers |= ModifierKeys.Alt;
+                        
                         exit = true;
                         break;
                     }
@@ -350,13 +424,9 @@ namespace RocketLib
             {
                 result = GUILayout.Button(new GUIContent("Press Any Key/Button", toolTip));
             }
-            else if (this.axis)
-            {
-                result = GUILayout.Button(new GUIContent(this.joystickDisplayName, toolTip));
-            }
             else
             {
-                result = GUILayout.Button(new GUIContent(key.ToString(), toolTip));
+                result = GUILayout.Button(new GUIContent(GetKeyDisplayString(), toolTip));
             }
             toolTipRect = GUILayoutUtility.GetLastRect();
             GUILayout.EndHorizontal();
@@ -386,13 +456,9 @@ namespace RocketLib
             {
                 result = GUILayout.Button(new GUIContent(prefix + "Press Any Key/Button", toolTip));
             }
-            else if (this.axis)
-            {
-                result = GUILayout.Button(new GUIContent(prefix + this.joystickDisplayName, toolTip));
-            }
             else
             {
-                result = GUILayout.Button(new GUIContent(prefix + key.ToString(), toolTip));
+                result = GUILayout.Button(new GUIContent(prefix + GetKeyDisplayString(), toolTip));
             }
             toolTipRect = GUILayoutUtility.GetLastRect();
             GUILayout.EndHorizontal();
