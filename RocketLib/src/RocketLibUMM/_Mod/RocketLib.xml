@@ -279,6 +279,180 @@
             Returns a formatted string representation of the difference
             </summary>
         </member>
+        <member name="T:RocketLib.Utils.UnitType">
+            <summary>
+            Enumeration of all unit types in Broforce
+            </summary>
+        </member>
+        <member name="T:RocketLib.Utils.UnitTypes">
+            <summary>
+            Utility class for working with Broforce unit types, providing methods for identification, spawning, and querying unit properties.
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.AllTestVanDammeAnimNames">
+            <summary>
+            Array containing the display names of all TestVanDammeAnim-derived units.
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.AllUnitNames">
+            <summary>
+            Array containing the display names of all units in the game, including non-TestVanDammeAnim types.
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.NormalUnits">
+            <summary>
+            Normal enemy units (regular mooks, bruisers, etc.)
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.AlienUnits">
+            <summary>
+            Alien enemy units
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.HellUnits">
+            <summary>
+            Hell enemy units
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.BossUnits">
+            <summary>
+            Boss units
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.WormUnits">
+            <summary>
+            Worm enemy units
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.VehicleEnemies">
+            <summary>
+            Vehicle enemy units (tanks, trucks, etc.)
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.FriendlyUnits">
+            <summary>
+            Civilian and animal units
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.OtherUnits">
+            <summary>
+            Other units
+            </summary>
+        </member>
+        <member name="F:RocketLib.Utils.UnitTypes.AllUnits">
+            <summary>
+            All unit types in the game (excluding None)
+            </summary>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.GetUnitType(TestVanDammeAnim)">
+            <summary>
+            Gets the UnitType of a TestVanDammeAnim character based on its MookType and specific class type.
+            </summary>
+            <param name="character">The TestVanDammeAnim character to identify.</param>
+            <returns>The UnitType of the character.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.GetUnitType(Unit)">
+            <summary>
+            Gets the UnitType of any Unit, including both TestVanDammeAnim and non-TestVanDammeAnim types.
+            </summary>
+            <param name="unit">The Unit to identify.</param>
+            <returns>The UnitType of the unit.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.GetTestVanDammeAnimPrefab(RocketLib.Utils.UnitType,System.Int32,System.Boolean)">
+            <summary>
+            Gets the TestVanDammeAnim prefab for the specified unit type.
+            </summary>
+            <param name="type">The unit type to get the prefab for.</param>
+            <param name="villagerNum">For villagers, specifies which villager variant to return. -1 for random.</param>
+            <param name="startDead">For undead mooks, whether to get the lying-down variant.</param>
+            <returns>The TestVanDammeAnim prefab, or null if the type doesn't have one.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.GetUnitPrefab(RocketLib.Utils.UnitType,System.Int32,System.Boolean)">
+            <summary>
+            Gets the Unit prefab for any unit type, including both TestVanDammeAnim and non-TestVanDammeAnim types.
+            </summary>
+            <param name="type">The unit type to get the prefab for.</param>
+            <param name="villagerNum">For villagers, specifies which villager variant to return. -1 for random.</param>
+            <param name="startDead">For undead mooks, whether to get the lying-down variant.</param>
+            <returns>The Unit prefab for spawning.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.ToDisplayString(RocketLib.Utils.UnitType)">
+            <summary>
+            Converts a UnitType to its human-readable string representation.
+            </summary>
+            <param name="type">The UnitType to convert.</param>
+            <returns>The display name of the unit type.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.GetDisplayName(RocketLib.Utils.UnitType)">
+            <summary>
+            Gets the display name for a UnitType. This is a static method alternative to the extension method.
+            </summary>
+            <param name="type">The UnitType to get the display name for.</param>
+            <returns>The display name of the unit type.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.ToUnitType(System.String)">
+            <summary>
+            Converts a string representation to its corresponding UnitType.
+            </summary>
+            <param name="type">The string name of the unit type.</param>
+            <returns>The corresponding UnitType, or UnitType.None if not found.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.HasSpecial(RocketLib.Utils.UnitType)">
+            <summary>
+            Determines if the unit type has a special ability (first special slot).
+            </summary>
+            <param name="type">The unit type to check.</param>
+            <returns>True if the unit has a special ability.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.HasSpecial2(RocketLib.Utils.UnitType)">
+            <summary>
+            Determines if the unit type has a second special ability.
+            </summary>
+            <param name="type">The unit type to check.</param>
+            <returns>True if the unit has a second special ability.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.HasSpecial3(RocketLib.Utils.UnitType)">
+            <summary>
+            Determines if the unit type has a third special ability.
+            </summary>
+            <param name="type">The unit type to check.</param>
+            <returns>True if the unit has a third special ability.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.CanDance(RocketLib.Utils.UnitType)">
+            <summary>
+            Determines if the unit type can perform a dance/taunt animation.
+            </summary>
+            <param name="type">The unit type to check.</param>
+            <returns>True if the unit can dance.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.IsSuicideUnit(RocketLib.Utils.UnitType)">
+            <summary>
+            Determines if the unit type is a suicide unit.
+            </summary>
+            <param name="type">The unit type to check.</param>
+            <returns>True if the unit is a suicide type.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.IsTestVanDammeAnimType(RocketLib.Utils.UnitType)">
+            <summary>
+            Determines if the unit type derives from the TestVanDammeAnim base class.
+            </summary>
+            <param name="type">The unit type to check.</param>
+            <returns>True if the unit type derives from TestVanDammeAnim, false for vehicles, bosses, and worms.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.GetSpriteWidth(RocketLib.Utils.UnitType)">
+            <summary>
+            Gets the sprite width for the specified unit type.
+            </summary>
+            <param name="type">The unit type to get sprite width for.</param>
+            <returns>The width of the unit's sprite in pixels.</returns>
+        </member>
+        <member name="M:RocketLib.Utils.UnitTypes.GetSpriteHeight(RocketLib.Utils.UnitType)">
+            <summary>
+            Gets the sprite height for the specified unit type.
+            </summary>
+            <param name="type">The unit type to get sprite height for.</param>
+            <returns>The height of the unit's sprite in pixels.</returns>
+        </member>
         <member name="P:RocketLib.Utils.ResourcesController.Particle_AlphaBlend">
             <summary>
             Particles/Alpha Blended
