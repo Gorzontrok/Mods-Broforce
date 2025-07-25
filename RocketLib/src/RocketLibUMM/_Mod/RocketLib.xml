@@ -742,6 +742,51 @@
             <param name="texture--"></param>
             <returns></returns>
         </member>
+        <member name="T:RocketLib.Utils.SettingsRecovery">
+            <summary>
+            Provides recovery functionality for corrupted or incompatible XML settings files.
+            When UnityModManager fails to deserialize a settings file due to XML errors or schema changes,
+            this class attempts to recover as much data as possible from the invalid XML.
+            </summary>
+            <example>
+            <code>
+            // Settings.cs
+            public int SettingsVersion = 0;
+            
+            public override void Save(UnityModManager.ModEntry modEntry)
+            {
+                if (SettingsVersion == 0) SettingsVersion = 1;
+                Save(this, modEntry);
+            }
+            
+            // Main.cs Load method
+            settings = Settings.Load&lt;Settings&gt;(modEntry);
+            if (settings.SettingsVersion == 0)
+            {
+                var settingsPath = Path.Combine(modEntry.Path, "Settings.xml");
+                settings = SettingsRecovery.TryRecoverSettings&lt;Settings&gt;(settingsPath, settings);
+            }
+            if (settings.SettingsVersion == 0) settings.SettingsVersion = 1;
+            </code>
+            </example>
+        </member>
+        <member name="M:RocketLib.Utils.SettingsRecovery.TryRecoverSettings``1(System.String,``0)">
+            <summary>
+            Attempts to recover settings from a potentially corrupted XML file.
+            </summary>
+            <typeparam name="T">The settings class type, must inherit from UnityModManager.ModSettings</typeparam>
+            <param name="xmlPath">Path to the XML settings file to recover from</param>
+            <param name="defaultSettings">Optional default settings object to use as base, or null to create new</param>
+            <returns>A settings object with recovered values where possible, defaults for unrecoverable fields</returns>
+            <remarks>
+            Recovery process:
+            - Simple types (bool, int, float, string, enum) are recovered individually
+            - Arrays and Lists are recovered element by element, skipping invalid items
+            - Complex objects are recovered if their XML structure is valid
+            - Fields with XML attribute mappings ([XmlArray], [XmlElement]) are properly handled
+            - Invalid or missing fields are left at their default values
+            </remarks>
+        </member>
         <member name="M:RocketLib.ComponentExtensions.RemoveComponent``1(UnityEngine.Component)">
             <summary>
             Remove the component of type T from the current Component.
