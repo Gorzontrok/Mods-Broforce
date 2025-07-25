@@ -111,6 +111,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\BroforceObjectExtensions.cs" />
     <Compile Include="Extensions\ComponentExtensions.cs" />
+    <Compile Include="Extensions\DictionarySerializationExtensions.cs" />
     <Compile Include="Extensions\EnumeratorExtensions.cs" />
     <Compile Include="Extensions\GameObjectExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
