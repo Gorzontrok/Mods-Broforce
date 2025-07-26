@@ -841,7 +841,12 @@
             </summary>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:RocketLib.KeyBinding.HasKeyAssigned" -->
+        <member name="M:RocketLib.KeyBinding.HasKeyAssigned">
+            <summary>
+            Checks whether a keybinding has been assigned.
+            </summary>
+            <returns>True if a keybinding is assigned, otherwise false.</returns>
+        </member>
         <member name="M:RocketLib.KeyBinding.IsDown">
             <summary>
             Gets state of key

@@ -94,6 +94,7 @@ namespace RocketLib
 
         /// <summary>
         /// Checks whether a keybinding has been assigned.
+        /// </summary>
         /// <returns>True if a keybinding is assigned, otherwise false.</returns>
         public bool HasKeyAssigned()
         {
