@@ -11,17 +11,15 @@ namespace RocketLibUMM
     [HarmonyPatch(typeof(PauseMenu), "ReturnToMenu")]
     static class PauseMenu_ReturnToMenu_Patch
     {
-        static bool Prefix(PauseMenu __instance)
+        static bool Prefix(PauseMenu __instance, PauseGameConfirmationPopup ___m_ConfirmationPopup)
         {
             if (!Main.enabled)
             {
                 return true;
             }
 
-            PauseGameConfirmationPopup m_ConfirmationPopup = __instance.GetFieldValue<PauseGameConfirmationPopup>("m_ConfirmationPopup");
-
-            MethodInfo dynMethod = m_ConfirmationPopup.GetType().GetMethod("ConfirmReturnToMenu", BindingFlags.NonPublic | BindingFlags.Instance);
-            dynMethod.Invoke(m_ConfirmationPopup, null);
+            MethodInfo dynMethod = ___m_ConfirmationPopup.GetType().GetMethod("ConfirmReturnToMenu", BindingFlags.NonPublic | BindingFlags.Instance);
+            dynMethod.Invoke(___m_ConfirmationPopup, null);
 
             return false;
         }
