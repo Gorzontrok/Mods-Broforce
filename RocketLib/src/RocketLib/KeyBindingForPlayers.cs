@@ -196,7 +196,7 @@ namespace RocketLib
                     case 3:
                         return player3;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        return player0;
                 }
             }
             set
@@ -216,7 +216,7 @@ namespace RocketLib
                         player3 = value;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        break;
                 }
             }
         }
@@ -275,6 +275,10 @@ namespace RocketLib
         /// <returns>True if the player has a keybinding set</returns>
         public bool HasKeysAssigned(int player)
         {
+            if (player < 0 || player > 3)
+            {
+                return false;
+            }
             return this[player].HasKeyAssigned();
         }
 
@@ -285,6 +289,10 @@ namespace RocketLib
         /// <returns>True if key is currently down</returns>
         public bool IsDown(int player)
         {
+            if (player < 0 || player > 3)
+            {
+                return false;
+            }
             return this[player].IsDown();
         }
 
@@ -295,6 +303,10 @@ namespace RocketLib
         /// <returns>True if key was pressed this frame</returns>
         public bool PressedDown(int player)
         {
+            if (player < 0 || player > 3)
+            {
+                return false;
+            }
             return this[player].PressedDown();
         }
 
@@ -305,11 +317,19 @@ namespace RocketLib
         /// <returns>True if key was released this frame</returns>
         public bool Released(int player)
         {
+            if (player < 0 || player > 3)
+            {
+                return false;
+            }
             return this[player].Released();
         }
 
         public void ClearKey(int player)
         {
+            if (player < 0 || player > 3)
+            {
+                return;
+            }
             this[player].ClearKey();
         }
 
