@@ -47,6 +47,12 @@ namespace RocketLibUMM
                 RMain.showLogOnScreen = settings.onScreenLog;
                 RMain.logTimer = settings.logTimer;
 
+                // Load ScreenLogger
+                if ( settings.onScreenLog )
+                {
+                    ScreenLogger.Load();
+                }
+
                 bmod = new BroforceMod();
                 bmod.Load(mod);
             }
