@@ -106,15 +106,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(ProjectDir)\_Mod\$(ProjectName).dll*"
-start XCOPY /Y /I "$(ProjectDir)\_Mod\*.*" "$(BroforcePath)\Mods\RocketLib\"
+    <PostBuildEvent>XCOPY /Y /R "$(TargetPath)" "$(ProjectDir)\_Mod\$(ProjectName).dll*"
+XCOPY /Y /I "$(ProjectDir)\_Mod\*.*" "$(BroforcePath)\Mods\RocketLib\"
 del "$(BroforcePath)\Mods\RocketLib\*.cache" 2&gt; nul || set errorlevel=0</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>if "$(CloseBroforceOnBuild)" == "true" (
     taskkill /f /t /im Broforce_beta.exe 2&gt;nul || exit /b 0
 )
-start XCOPY /Y /I "$(ProjectDir)\_Mod\*.*" "$(BroforcePath)\Mods\RocketLib\"</PreBuildEvent>
+XCOPY /Y /I "$(ProjectDir)\_Mod\*.*" "$(BroforcePath)\Mods\RocketLib\"</PreBuildEvent>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
 </Project>

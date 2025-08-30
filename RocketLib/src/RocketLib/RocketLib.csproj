@@ -147,9 +147,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(SolutionDir)\RocketLibUMM\_Mod\$(ProjectName).dll*"
-start XCOPY /Y /R "$(TargetPath)" "..\..\..\..\lib\$(ProjectName).dll*"
-start XCOPY /Y /R "$(TargetPath)" "..\..\..\..\..\..\Bro-Maker\lib\$(ProjectName).dll*"</PostBuildEvent>
+    <PostBuildEvent>XCOPY /Y /R "$(TargetPath)" "$(SolutionDir)\RocketLibUMM\_Mod\$(ProjectName).dll*"
+XCOPY /Y /R "$(TargetPath)" "..\..\..\..\lib\$(ProjectName).dll*"
+XCOPY /Y /R "$(TargetPath)" "..\..\..\..\..\..\Bro-Maker\lib\$(ProjectName).dll*"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>if "$(CloseBroforceOnBuild)" == "true" (
