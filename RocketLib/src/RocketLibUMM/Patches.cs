@@ -31,6 +31,17 @@ namespace RocketLibUMM
         }
     }
 
+    // Fix UMM window disappearing
+    [HarmonyPatch(typeof(UnityModManagerNet.UnityModManager.UI), "Start")]
+    static class UnityModManager_UI_Start_Patch
+    {
+        public static void Postfix(UnityModManagerNet.UnityModManager.UI __instance)
+        {
+            RocketLibUtils.MakeObjectUnpausable(__instance.gameObject);
+        }
+    }
+
+    // Fix RuntimeUnityEditor window disappearing
     [HarmonyPatch(typeof(Startup), "Update")]
     static class Startup_Update_Patch
     {
@@ -41,7 +52,6 @@ namespace RocketLibUMM
                 return;
             }
 
-            RocketLibUtils.MakeObjectUnpausable("UnityModManagerNet.UnityModManager+UI");
             RocketLibUtils.MakeObjectUnpausable("RuntimeUnityEditor");
         }
     }

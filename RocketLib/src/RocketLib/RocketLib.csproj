@@ -180,7 +180,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CreateTexture.cs" />
     <Compile Include="Utils\SettingsRecovery.cs" />
-    <Compile Include="Utils\SpriteRenderingHelper.cs" />
     <Compile Include="CustomTriggers\CustomTrigger.cs" />
     <Compile Include="CustomTriggers\CustomTriggerAction.cs" />
     <Compile Include="CustomTriggers\CustomTriggerActionInfo.cs" />

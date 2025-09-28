@@ -787,41 +787,6 @@
             - Invalid or missing fields are left at their default values
             </remarks>
         </member>
-        <member name="T:RocketLib.Utils.SpriteRenderingHelper">
-            <summary>
-            Static utility class for sprite rendering operations
-            </summary>
-        </member>
-        <member name="M:RocketLib.Utils.SpriteRenderingHelper.CreateSpriteObject(UnityEngine.Transform,UnityEngine.Sprite,UnityEngine.Vector2,UnityEngine.Vector3,System.String)">
-            <summary>
-            Creates a GameObject with a SpriteRenderer as a child of the parent
-            </summary>
-        </member>
-        <member name="M:RocketLib.Utils.SpriteRenderingHelper.UpdateSprite(UnityEngine.GameObject,UnityEngine.Sprite)">
-            <summary>
-            Updates the sprite on an existing GameObject
-            </summary>
-        </member>
-        <member name="M:RocketLib.Utils.SpriteRenderingHelper.SetTint(UnityEngine.GameObject,UnityEngine.Color)">
-            <summary>
-            Sets the tint color of a sprite
-            </summary>
-        </member>
-        <member name="M:RocketLib.Utils.SpriteRenderingHelper.CreateCircleSprite(System.Int32,UnityEngine.Color)">
-            <summary>
-            Creates a simple colored circle sprite procedurally
-            </summary>
-        </member>
-        <member name="M:RocketLib.Utils.SpriteRenderingHelper.CreateSquareSprite(System.Int32,UnityEngine.Color)">
-            <summary>
-            Creates a simple colored square sprite procedurally
-            </summary>
-        </member>
-        <member name="M:RocketLib.Utils.SpriteRenderingHelper.CleanupSprite(UnityEngine.GameObject)">
-            <summary>
-            Cleans up a sprite GameObject
-            </summary>
-        </member>
         <member name="M:RocketLib.ComponentExtensions.RemoveComponent``1(UnityEngine.Component)">
             <summary>
             Remove the component of type T from the current Component.
