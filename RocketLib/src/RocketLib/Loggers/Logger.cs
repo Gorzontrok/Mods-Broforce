@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityModManagerNet;
-using System.Text;
 #pragma warning disable 642
 
 namespace RocketLib.Loggers

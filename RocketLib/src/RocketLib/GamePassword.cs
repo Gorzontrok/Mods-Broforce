@@ -13,7 +13,7 @@ namespace RocketLib
         {
             get { return _passwords; }
         }
-        private static GamePassword[] _passwords = new GamePassword[0];
+        private static readonly GamePassword[] _passwords = new GamePassword[0];
 
         public readonly string password = string.Empty;
         public readonly Action action;

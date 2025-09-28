@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityModManagerNet;
 using HarmonyLib;
 using RocketLib;
 
@@ -13,7 +11,7 @@ namespace RocketLibUMM
     public static class BroforceModController
     {
 
-        private static List<BroforceMod> BroforceMod_List = new List<BroforceMod>();
+        private static readonly List<BroforceMod> BroforceMod_List = new List<BroforceMod>();
 
         public static bool AddBroforceMod(BroforceMod bmod)
         {

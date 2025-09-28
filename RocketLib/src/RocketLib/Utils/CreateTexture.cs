@@ -1,10 +1,6 @@
-﻿using RocketLib.Loggers;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using UnityEngine;
-using UnityModManagerNet;
 
 namespace RocketLib.Utils
 {
@@ -17,7 +13,7 @@ namespace RocketLib.Utils
         {
             var tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
             Color[] colors = new Color[tex.width * tex.height];
-            for(int i = 0; i < colors.Length; i++)
+            for (int i = 0; i < colors.Length; i++)
             {
                 colors[i] = color;
             }

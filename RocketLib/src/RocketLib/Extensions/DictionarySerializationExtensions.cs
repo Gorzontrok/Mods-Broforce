@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using UnityEngine;
 
 namespace RocketLib
 {
@@ -16,12 +15,12 @@ namespace RocketLib
     {
         [XmlElement("Key")]
         public TKey Key { get; set; }
-        
+
         [XmlElement("Value")]
         public TValue Value { get; set; }
-        
+
         public SerializableKeyValuePair() { }
-        
+
         public SerializableKeyValuePair(TKey key, TValue value)
         {
             Key = key;
@@ -43,10 +42,10 @@ public static class DictionarySerializationExtensions
     {
         if (dictionary == null)
             return new RocketLib.SerializableKeyValuePair<TKey, TValue>[0];
-            
+
         return dictionary.Select(kvp => new RocketLib.SerializableKeyValuePair<TKey, TValue>(kvp.Key, kvp.Value)).ToArray();
     }
-    
+
     /// <summary>
     /// Converts an array of SerializableKeyValuePair back to a dictionary
     /// </summary>
@@ -55,10 +54,10 @@ public static class DictionarySerializationExtensions
     {
         if (array == null)
             return new Dictionary<TKey, TValue>();
-            
+
         return System.Linq.Enumerable.ToDictionary(array, kvp => kvp.Key, kvp => kvp.Value);
     }
-    
+
     /// <summary>
     /// Converts a dictionary to an array using a custom converter function
     /// </summary>
@@ -68,10 +67,10 @@ public static class DictionarySerializationExtensions
     {
         if (dictionary == null)
             return new TWrapper[0];
-            
+
         return dictionary.Select(converter).ToArray();
     }
-    
+
     /// <summary>
     /// Converts an array back to a dictionary using custom converter functions
     /// </summary>
@@ -82,7 +81,7 @@ public static class DictionarySerializationExtensions
     {
         if (array == null)
             return new Dictionary<TKey, TValue>();
-            
+
         return System.Linq.Enumerable.ToDictionary(array, keySelector, valueSelector);
     }
 }

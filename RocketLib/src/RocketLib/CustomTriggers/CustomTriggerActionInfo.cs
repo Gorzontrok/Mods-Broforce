@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace RocketLib.CustomTriggers
+﻿namespace RocketLib.CustomTriggers
 {
     public abstract class CustomTriggerActionInfo : TriggerActionInfo
     {

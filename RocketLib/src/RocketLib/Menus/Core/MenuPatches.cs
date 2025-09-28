@@ -1,7 +1,6 @@
 using System;
 using HarmonyLib;
 using Localisation;
-using RocketLib.Menus.Core;
 
 namespace RocketLib.Menus.Core
 {

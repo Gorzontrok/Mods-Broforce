@@ -1,8 +1,7 @@
-﻿using HarmonyLib;
-using RocketLib;
-using RocketLib.Loggers;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using HarmonyLib;
+using RocketLib;
 #pragma warning disable CS1584
 #pragma warning disable CS1658
 #pragma warning disable CS1711

@@ -8,7 +8,7 @@ namespace RocketLib.CustomTriggers
         public Type CustomTriggerActionInfoType;
         public string ActionName;
 
-        public CustomTrigger( Type customTriggerActionType, Type customTriggerActionInfoType, string actionName )
+        public CustomTrigger(Type customTriggerActionType, Type customTriggerActionInfoType, string actionName)
         {
             CustomTriggerActionType = customTriggerActionType;
             CustomTriggerActionInfoType = customTriggerActionInfoType;

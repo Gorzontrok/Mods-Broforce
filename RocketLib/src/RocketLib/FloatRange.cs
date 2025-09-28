@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 using UnityEngine;
 
 [Serializable]

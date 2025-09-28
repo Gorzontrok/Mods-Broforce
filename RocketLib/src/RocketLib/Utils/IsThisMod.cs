@@ -17,7 +17,7 @@ namespace RocketLib.Utils
     [Obsolete("Use UnityModManager.FindMod() instead", true)]
     public class IsThisMod
     {
-        private static string xmlFilePath = Application.dataPath + "/Managed/UnityModManager/Params.xml";
+        private static readonly string xmlFilePath = Application.dataPath + "/Managed/UnityModManager/Params.xml";
 
         /// <summary>
         /// Return if the mod is Here.

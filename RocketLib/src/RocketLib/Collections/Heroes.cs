@@ -26,7 +26,7 @@ namespace RocketLib.Collections
         {
             get
             {
-                if(_playables == null || _playables.Length <= 0)
+                if (_playables == null || _playables.Length <= 0)
                 {
                     var temp = All.ToList();
                     temp.Remove(HeroType.None);

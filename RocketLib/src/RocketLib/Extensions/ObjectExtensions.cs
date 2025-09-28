@@ -1,9 +1,8 @@
-﻿using RocketLib.Utils;
-using RocketLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using RocketLib;
+using RocketLib.Utils;
 
 public static class ObjectExtensions
 {
@@ -35,7 +34,7 @@ public static class ObjectExtensions
         return source as T == null;
     }
 
-    public static bool IsTypeOf(this  object obj, Type type)
+    public static bool IsTypeOf(this object obj, Type type)
     {
         return obj.GetType() == type;
     }
@@ -88,34 +87,34 @@ public static class ObjectExtensions
     /// <typeparam name="T">The type of objects being compared</typeparam>
     /// <param name="obj1">The first object to compare</param>
     /// <param name="obj2">The second object to compare</param>
-    public static void PrintDifferences<T>( this T obj1, T obj2 )
+    public static void PrintDifferences<T>(this T obj1, T obj2)
     {
         try
         {
-            Main.logger.Log( $"Starting comparison of type {typeof( T ).Name}" );
-            var differences = ObjectComparer.Compare( obj1, obj2 );
+            Main.logger.Log($"Starting comparison of type {typeof(T).Name}");
+            var differences = ObjectComparer.Compare(obj1, obj2);
 
-            if ( !differences.Any() )
+            if (!differences.Any())
             {
-                Main.logger.Log( "Objects are identical" );
+                Main.logger.Log("Objects are identical");
                 return;
             }
 
-            Main.logger.Log( $"Found {differences.Count} differences:" );
+            Main.logger.Log($"Found {differences.Count} differences:");
 
             // Find the longest property path for alignment
-            int maxPathLength = differences.Max( d => d.PropertyPath.Length );
+            int maxPathLength = differences.Max(d => d.PropertyPath.Length);
 
             // Print each difference with aligned values
-            foreach ( var diff in differences )
+            foreach (var diff in differences)
             {
-                var paddedPath = diff.PropertyPath.PadRight( maxPathLength );
-                Main.logger.Log( $"  {paddedPath} : '{diff.Value1}' → '{diff.Value2}'" );
+                var paddedPath = diff.PropertyPath.PadRight(maxPathLength);
+                Main.logger.Log($"  {paddedPath} : '{diff.Value1}' → '{diff.Value2}'");
             }
         }
-        catch ( Exception ex )
+        catch (Exception ex)
         {
-            Main.logger.Log( $"Error during comparison: {ex.Message}" );
+            Main.logger.Log($"Error during comparison: {ex.Message}");
         }
     }
 
@@ -126,49 +125,49 @@ public static class ObjectExtensions
     /// <typeparam name="T">The type of objects being compared</typeparam>
     /// <param name="obj1">The target objec</param>
     /// <param name="obj2">The source object (values to copy from)t</param>
-    public static void GenerateMatchingCode<T>( this T obj1, T obj2 )
+    public static void GenerateMatchingCode<T>(this T obj1, T obj2)
     {
         try
         {
-            Main.logger.Log( $"Generating matching code for type {typeof( T ).Name}" );
-            var differences = ObjectComparer.Compare( obj2, obj1 );
+            Main.logger.Log($"Generating matching code for type {typeof(T).Name}");
+            var differences = ObjectComparer.Compare(obj2, obj1);
 
-            if ( !differences.Any() )
+            if (!differences.Any())
             {
-                Main.logger.Log( "Objects are identical - no matching needed" );
+                Main.logger.Log("Objects are identical - no matching needed");
                 return;
             }
 
-            Main.logger.Log( $"// Code to match {differences.Count} differences:" );
-            Main.logger.Log( "// Copy and paste the following code inside the target class:" );
-            Main.logger.Log( "" );
+            Main.logger.Log($"// Code to match {differences.Count} differences:");
+            Main.logger.Log("// Copy and paste the following code inside the target class:");
+            Main.logger.Log("");
 
             var generatedCode = new List<string>();
 
-            foreach ( var diff in differences )
+            foreach (var diff in differences)
             {
-                var matchingCode = ObjectComparer.GenerateMatchingStatement( diff.PropertyPath, diff.Value1 );
-                if ( !string.IsNullOrEmpty( matchingCode ) )
+                var matchingCode = ObjectComparer.GenerateMatchingStatement(diff.PropertyPath, diff.Value1);
+                if (!string.IsNullOrEmpty(matchingCode))
                 {
-                    generatedCode.Add( matchingCode );
+                    generatedCode.Add(matchingCode);
                 }
             }
 
-            if ( generatedCode.Any() )
+            if (generatedCode.Any())
             {
-                foreach ( var code in generatedCode )
+                foreach (var code in generatedCode)
                 {
-                    Main.logger.Log( code );
+                    Main.logger.Log(code);
                 }
             }
             else
             {
-                Main.logger.Log( "// Unable to generate matching code for complex types" );
+                Main.logger.Log("// Unable to generate matching code for complex types");
             }
         }
-        catch ( Exception ex )
+        catch (Exception ex)
         {
-            Main.logger.Log( $"Error generating matching code: {ex.Message}" );
+            Main.logger.Log($"Error generating matching code: {ex.Message}");
         }
     }
 }

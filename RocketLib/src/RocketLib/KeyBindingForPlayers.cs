@@ -1,11 +1,7 @@
-﻿using JetBrains.Annotations;
-using Newtonsoft.Json;
-using RocketLib.Loggers;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace RocketLib
@@ -100,7 +96,7 @@ namespace RocketLib
         public static void ClearKeyBindingsForMod(string modName)
         {
             Dictionary<string, KeyBindingForPlayers> modKeyBindings;
-            if ( TryGetAllKeyBindingsForMod(modName, out modKeyBindings) )
+            if (TryGetAllKeyBindingsForMod(modName, out modKeyBindings))
             {
                 foreach (KeyValuePair<string, KeyBindingForPlayers> pair in modKeyBindings)
                 {
@@ -130,7 +126,7 @@ namespace RocketLib
                 AllKeyBindings = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, KeyBindingForPlayers>>>(json);
                 return true;
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
                 Main.logger.Exception("Exception converting from JSON: ", e);
                 return false;
@@ -185,7 +181,7 @@ namespace RocketLib
         {
             get
             {
-                switch(index)
+                switch (index)
                 {
                     case 0:
                         return player0;
@@ -242,7 +238,7 @@ namespace RocketLib
             AllModKeyBindings.AddKeyBinding(this, modId);
         }
 
-        public virtual void AssignKey(int player,  KeyCode key)
+        public virtual void AssignKey(int player, KeyCode key)
         {
             this[player].AssignKey(key);
         }
@@ -258,9 +254,9 @@ namespace RocketLib
         /// <returns>True if a keybinding has been assigned to any player</returns>
         public bool HasAnyKeysAssigned()
         {
-            for ( int i = 0; i < 4; i++ )
+            for (int i = 0; i < 4; i++)
             {
-                if ( this[i].HasKeyAssigned() )
+                if (this[i].HasKeyAssigned())
                 {
                     return true;
                 }
@@ -335,13 +331,13 @@ namespace RocketLib
 
         public void ClearKey()
         {
-            for (int i = 0; i < 4; ++i )
+            for (int i = 0; i < 4; ++i)
             {
                 this[i].ClearKey();
             }
         }
 
-        public bool OnGUI(out int player, bool displayToolTip = true )
+        public bool OnGUI(out int player, bool displayToolTip = true)
         {
             player = 0;
             bool result = false;
@@ -355,7 +351,7 @@ namespace RocketLib
                     GUILayout.BeginVertical(GUILayout.ExpandHeight(false), GUILayout.Width(200));
                     RGUI.LabelCenteredHorizontally(new GUIContent("Player " + (i + 1)), GUI.skin.label, RGUI.Unexpanded);
                     var temp = this[i].OnGUI(displayToolTip);
-                    if ( i == 0 )
+                    if (i == 0)
                     {
                         toolTipPos = KeyBinding.toolTipRect;
                         toolTipPos.y += 17;
@@ -369,14 +365,14 @@ namespace RocketLib
                         break;
                     }
                 }
-                if ( displayToolTip && GUI.tooltip != string.Empty )
+                if (displayToolTip && GUI.tooltip != string.Empty)
                 {
                     GUI.Label(toolTipPos, GUI.tooltip);
                     GUI.tooltip = string.Empty;
                 }
                 GUILayout.EndHorizontal();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Main.logger.Exception(e);
             }
@@ -395,19 +391,19 @@ namespace RocketLib
         /// <param name="separateKeyName">Separate the keyname from the button, if set to false it will be included within the button</param>
         /// <param name="fixedWidth">Controls whether the button should be a fixed width or not</param>
         /// <returns>True if one of the buttons was pressed and a key is being assigned</returns>
-        public bool OnGUI(out int player, bool displayToolTip, bool includeToolTip, ref string previousToolTip, int playerToDisplay = -1, bool onlyOnePlayer = false, bool separateKeyName = true, bool fixedWidth = true )
+        public bool OnGUI(out int player, bool displayToolTip, bool includeToolTip, ref string previousToolTip, int playerToDisplay = -1, bool onlyOnePlayer = false, bool separateKeyName = true, bool fixedWidth = true)
         {
             player = 0;
             bool result = false;
             try
             {
                 GUILayout.BeginHorizontal(RGUI.Unexpanded);
-                if ( separateKeyName )
+                if (separateKeyName)
                 {
                     GUILayout.Label(name, RGUI.Unexpanded);
                 }
                 Rect toolTipPos = Rect.zero;
-                if ( !onlyOnePlayer )
+                if (!onlyOnePlayer)
                 {
                     for (int i = 0; i < 4; i++)
                     {
@@ -438,7 +434,7 @@ namespace RocketLib
                 }
                 else
                 {
-                    if ( fixedWidth )
+                    if (fixedWidth)
                     {
                         GUILayout.BeginVertical(GUILayout.ExpandHeight(false), GUILayout.Width(200));
                     }

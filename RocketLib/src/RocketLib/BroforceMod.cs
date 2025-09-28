@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using UnityEngine;
 using UnityModManagerNet;
-using HarmonyLib;
-using RocketLib.Loggers;
 
 namespace RocketLib
 {
@@ -76,7 +70,7 @@ namespace RocketLib
         /// <param name="mod">UnityModManager mod</param>
         public void Load(UnityModManager.ModEntry mod)
         {
-            if(!Loaded)
+            if (!Loaded)
             {
                 if (mod == null)
                 {

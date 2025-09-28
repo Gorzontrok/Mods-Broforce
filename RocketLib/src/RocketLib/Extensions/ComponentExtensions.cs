@@ -13,7 +13,7 @@ namespace RocketLib
         /// <param name="self"></param>
         public static void RemoveComponent<T>(this Component self) where T : Component
         {
-           self.gameObject.RemoveComponent<T>();
+            self.gameObject.RemoveComponent<T>();
         }
 
         public static bool HasComponent<T>(this Component self) where T : Component
@@ -39,7 +39,7 @@ namespace RocketLib
             for (int i = 0; i < childCount; i++)
             {
                 var child = transform.GetChild(i);
-                if(child.gameObject.name == name)
+                if (child.gameObject.name == name)
                 {
                     return child.gameObject;
                 }
