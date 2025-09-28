@@ -41,14 +41,6 @@ namespace RocketLib
                 {
                     var assembly = Assembly.GetExecutingAssembly();
                     harmony.PatchAll(assembly);
-
-                    // Initialize test menu (temporary for testing) - DISABLED
-                    // Menus.TestMenuInitializer.Initialize();
-
-                    // Initialize ModOptionsMenu test (Phase 3 testing) - DISABLED
-                    // Menus.Tests.ModOptionsMenuTest.Initialize();
-                    
-
                 }
                 catch (Exception ex)
                 {

@@ -109,6 +109,7 @@
     <Compile Include="JsonConverters\ColorJsonConverter.cs" />
     <Compile Include="Utils\DrawDebug.cs" />
     <Compile Include="Utils\ObjectComparer.cs" />
+    <Compile Include="Utils\RocketLibUtils.cs" />
     <Compile Include="Utils\UnitTypes.cs" />
     <Compile Include="Utils\ResourcesController.cs" />
     <None Include="Collections\Doodads.cs" />

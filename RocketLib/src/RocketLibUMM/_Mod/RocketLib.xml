@@ -1696,13 +1696,13 @@
             Opens the menu or executes the action
             </summary>
         </member>
-        <member name="T:RocketLib.Menus.GridMenuHighlight">
+        <member name="T:RocketLib.Menus.Utilities.GridMenuHighlight">
             <summary>
             Custom highlight for grid menus that supports dynamic width and height
             Uses 9-slice approach with 8 sprites (4 corners + 4 sides)
             </summary>
         </member>
-        <member name="T:RocketLib.Menus.HighlightFactory">
+        <member name="T:RocketLib.Menus.Utilities.HighlightFactory">
             <summary>
             Factory class for creating menu highlight objects without dependencies
             </summary>
@@ -1710,12 +1710,12 @@
             Factory class for creating menu highlight objects without dependencies
             </summary>
         </member>
-        <member name="M:RocketLib.Menus.HighlightFactory.CreateHighlight(UnityEngine.Transform,System.Int32)">
+        <member name="M:RocketLib.Menus.Utilities.HighlightFactory.CreateHighlight(UnityEngine.Transform,System.Int32)">
             <summary>
             Creates a complete highlight object with lens flare and box components
             </summary>
         </member>
-        <member name="M:RocketLib.Menus.HighlightFactory.CreateGridHighlight(UnityEngine.Transform,System.Int32,System.Single)">
+        <member name="M:RocketLib.Menus.Utilities.HighlightFactory.CreateGridHighlight(UnityEngine.Transform,System.Int32,System.Single)">
             <summary>
             Creates a grid highlight with dynamic width and height support
             </summary>
