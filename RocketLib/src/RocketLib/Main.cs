@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Reflection;
 using System.IO;
-using UnityModManagerNet;
+using System.Reflection;
 using HarmonyLib;
+using UnityModManagerNet;
 
 namespace RocketLib
 {
@@ -41,10 +41,18 @@ namespace RocketLib
                 {
                     var assembly = Assembly.GetExecutingAssembly();
                     harmony.PatchAll(assembly);
+
+                    // Initialize test menu (temporary for testing) - DISABLED
+                    // Menus.TestMenuInitializer.Initialize();
+
+                    // Initialize ModOptionsMenu test (Phase 3 testing) - DISABLED
+                    // Menus.Tests.ModOptionsMenuTest.Initialize();
+                    
+
                 }
                 catch (Exception ex)
                 {
-                    logger.Exception("Failed to Patch Harmony :\n", ex);
+                    logger.Log("Failed to Patch Harmony : " + ex.ToString());
                 }
 
 
@@ -59,9 +67,9 @@ namespace RocketLib
                 }
                 Loaded = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-               logger.Error(ex.ToString());
+                logger.Error(ex.ToString());
             }
         }
 

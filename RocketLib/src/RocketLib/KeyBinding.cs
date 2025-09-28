@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityModManagerNet;
 
@@ -117,15 +117,15 @@ namespace RocketLib
                     currentModifiers |= ModifierKeys.Shift;
                 if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
                     currentModifiers |= ModifierKeys.Alt;
-                
+
                 if ((currentModifiers & modifiers) != modifiers)
                     return false;
             }
-                
-            if ( this.axis )
+
+            if (this.axis)
             {
                 // Check if keybinding is set for a playstation controller's left trigger or right trigger
-                if ( playStation && axisNum == 4 || axisNum == 5 )
+                if (playStation && axisNum == 4 || axisNum == 5)
                 {
                     return (Input.GetAxis(this.joystickAxis) + 1) / 2.0f >= this.axisThreshold;
                 }
@@ -133,7 +133,7 @@ namespace RocketLib
                 {
                     return Mathf.Abs(Input.GetAxis(this.joystickAxis)) >= this.axisThreshold && Mathf.Sign(Input.GetAxis(this.joystickAxis)) == joystickDirection;
                 }
-                
+
             }
             else
             {
@@ -181,7 +181,7 @@ namespace RocketLib
 
         public virtual float GetAxis()
         {
-            if ( this.axis )
+            if (this.axis)
             {
                 return Input.GetAxis(this.joystickAxis);
             }
@@ -217,7 +217,7 @@ namespace RocketLib
             this.joystickDirection = joystickDirection;
             bool direction = (this.joystickDirection == 1);
             // Set axis display name
-            if ( !playStation )
+            if (!playStation)
             {
                 switch (axisNum)
                 {
@@ -297,10 +297,10 @@ namespace RocketLib
         {
             if (this.axis)
                 return this.joystickDisplayName;
-                
+
             if (key == KeyCode.None)
                 return "None";
-                
+
             string displayString = "";
             if ((modifiers & ModifierKeys.Ctrl) != 0)
                 displayString += "Ctrl+";
@@ -309,7 +309,7 @@ namespace RocketLib
             if ((modifiers & ModifierKeys.Alt) != 0)
                 displayString += "Alt+";
             displayString += key.ToString();
-            
+
             return displayString;
         }
 
@@ -333,9 +333,9 @@ namespace RocketLib
                         {
                             continue;
                         }
-                        
+
                         keyBinding.AssignKey(keyCode);
-                        
+
                         // Check and set modifier keys
                         keyBinding.modifiers = ModifierKeys.None;
                         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
@@ -344,7 +344,7 @@ namespace RocketLib
                             keyBinding.modifiers |= ModifierKeys.Shift;
                         if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
                             keyBinding.modifiers |= ModifierKeys.Alt;
-                        
+
                         exit = true;
                         break;
                     }
@@ -361,7 +361,7 @@ namespace RocketLib
                             // Handle triggers differently since they default to -1
                             if (j == 4 || j == 5)
                             {
-                                if ( (Input.GetAxis(currentAxis) + 1) / 2.0f >= keyBinding.axisThreshold )
+                                if ((Input.GetAxis(currentAxis) + 1) / 2.0f >= keyBinding.axisThreshold)
                                 {
                                     keyBinding.playStation = true;
                                     keyBinding.AssignKey(currentAxis, (int)Mathf.Sign(Input.GetAxis(currentAxis)));
@@ -387,7 +387,7 @@ namespace RocketLib
                             {
                                 // Check first if this is a playstation controller
                                 string[] joysticknames = Input.GetJoystickNames();
-                                if ( joysticknames.Length > i - 1 && joysticknames[i - 1].ToLower().Contains("wireless controller"))
+                                if (joysticknames.Length > i - 1 && joysticknames[i - 1].ToLower().Contains("wireless controller"))
                                 {
                                     // Recheck this controller now knowing it's playstation
                                     playstationControllers[i - 1] = true;
@@ -404,7 +404,7 @@ namespace RocketLib
                             }
                         }
                     }
-                    
+
                 }
                 yield return null;
             }

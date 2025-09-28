@@ -108,7 +108,9 @@
   <PropertyGroup>
     <PostBuildEvent>XCOPY /Y /R "$(TargetPath)" "$(ProjectDir)\_Mod\$(ProjectName).dll*"
 XCOPY /Y /I "$(ProjectDir)\_Mod\*.*" "$(BroforcePath)\Mods\RocketLib\"
-del "$(BroforcePath)\Mods\RocketLib\*.cache" 2&gt; nul || set errorlevel=0</PostBuildEvent>
+XCOPY /Y /I "$(ProjectDir)\_Mod\Resources\*.*" "$(BroforcePath)\Mods\RocketLib\Resources\"
+del "$(BroforcePath)\Mods\RocketLib\*.cache" 2&gt; nul || set errorlevel=0
+start steam://rungameid/274190</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>if "$(CloseBroforceOnBuild)" == "true" (

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reflection;
-using UnityEngine;
-using UnityModManagerNet;
 using HarmonyLib;
 using RocketLib;
-using RMain = RocketLib.Main;
 using RocketLib.Loggers;
+using UnityEngine;
+using UnityModManagerNet;
+using RMain = RocketLib.Main;
 
 namespace RocketLibUMM
 {
@@ -32,9 +32,16 @@ namespace RocketLibUMM
             settings = Settings.Load<Settings>(modEntry);
             ScreenLogger.fontSize = settings.fontSize;
 
-            harmony = new Harmony(modEntry.Info.Id);
-            var assembly = Assembly.GetExecutingAssembly();
-            harmony.PatchAll(assembly);
+            try
+            {
+                harmony = new Harmony(modEntry.Info.Id);
+                var assembly = Assembly.GetExecutingAssembly();
+                harmony.PatchAll(assembly);
+            }
+            catch (Exception ex)
+            {
+                logger.Exception("Error while applying RocketLib patches: ", ex);
+            }
 
             logger = new RLogger();
 
@@ -48,7 +55,7 @@ namespace RocketLibUMM
                 RMain.logTimer = settings.logTimer;
 
                 // Load ScreenLogger
-                if ( settings.onScreenLog )
+                if (settings.onScreenLog)
                 {
                     ScreenLogger.Load();
                 }
@@ -69,6 +76,10 @@ namespace RocketLibUMM
             {
                 logger.Exception(e);
             }
+
+            // Initialize ModOptionsMenu to show in menus
+            RocketLib.Menus.Vanilla.ModOptionsMenu.Initialize();
+
             return true;
         }
 

@@ -61,6 +61,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\UnityEngine.AudioModule.dll</HintPath>
@@ -84,6 +88,10 @@
     <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityModManager, Version=0.25.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -136,13 +144,47 @@
     <Compile Include="TwoFloat.cs" />
     <Compile Include="Utils\IsThisMod.cs" />
     <Compile Include="Loggers\Logger.cs" />
-    <None Include="packages.config" />
     <Compile Include="Utils\HeroUnlockCollection.cs" />
     <Compile Include="Loggers\ScreenLogger.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Menus\Vanilla\BaseCustomMenu.cs" />
+    <Compile Include="Menus\Core\MenuRegistry.cs" />
+    <Compile Include="Menus\Core\MenuRegistration.cs" />
+    <Compile Include="Menus\Core\MenuPatches.cs" />
+    <Compile Include="Menus\Vanilla\SimpleSubmenu.cs" />
+    <Compile Include="Menus\Vanilla\MenuItemBuilder.cs" />
+    <Compile Include="Menus\Vanilla\ModOptionsMenu.cs" />
+    <Compile Include="Menus\Utilities\GridMenuHighlight.cs" />
+    <Compile Include="Menus\Utilities\HighlightFactory.cs" />
+    <Compile Include="Menus\Utilities\FontManager.cs" />
+    <Compile Include="Menus\Core\FlexMenu.cs" />
+    <Compile Include="Menus\Core\NavigationManager.cs" />
+    <Compile Include="Menus\Layout\LayoutContainer.cs" />
+    <Compile Include="Menus\Layout\SizeMode.cs" />
+    <Compile Include="Menus\Layout\HorizontalAlignment.cs" />
+    <Compile Include="Menus\Layout\VerticalAlignment.cs" />
+    <Compile Include="Menus\Layout\VerticalLayoutContainer.cs" />
+    <Compile Include="Menus\Layout\GridLayoutContainer.cs" />
+    <Compile Include="Menus\Layout\AbsoluteLayoutContainer.cs" />
+    <Compile Include="Menus\Layout\HorizontalLayoutContainer.cs" />
+    <Compile Include="Menus\Layout\ScrollContainer.cs" />
+    <Compile Include="Menus\Layout\PaginatedGridContainer.cs" />
+    <Compile Include="Menus\Elements\LayoutElement.cs" />
+    <Compile Include="Menus\Elements\ImageElement.cs" />
+    <Compile Include="Menus\Elements\TextElement.cs" />
+    <Compile Include="Menus\Elements\ActionButton.cs" />
+    <Compile Include="Menus\Elements\ShapeElement.cs" />
+    <Compile Include="Menus\Elements\SpacerElement.cs" />
+    <Compile Include="Menus\Elements\BroCard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CreateTexture.cs" />
     <Compile Include="Utils\SettingsRecovery.cs" />
+    <Compile Include="Utils\SpriteRenderingHelper.cs" />
+    <Compile Include="CustomTriggers\CustomTrigger.cs" />
+    <Compile Include="CustomTriggers\CustomTriggerAction.cs" />
+    <Compile Include="CustomTriggers\CustomTriggerActionInfo.cs" />
+    <Compile Include="CustomTriggers\CustomTriggerManager.cs" />
+    <Compile Include="CustomTriggers\CustomTriggerPatches.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
