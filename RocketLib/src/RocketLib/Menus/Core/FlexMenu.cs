@@ -24,7 +24,7 @@ namespace RocketLib.Menus.Core
         protected Menu parentGameMenu;
 
         private static readonly Dictionary<string, FlexMenu> instances = new Dictionary<string, FlexMenu>();
-        private static FlexMenu activeMenu;
+        public static FlexMenu activeMenu;
 
         public string InstanceId { get; protected set; } = "default";
 
@@ -62,6 +62,8 @@ namespace RocketLib.Menus.Core
         public virtual string MenuTitle { get; set; }
 
         public bool IsActive { get; protected set; }
+
+        public bool EnableDebugOutput { get; set; } = false;
 
         protected virtual void Awake()
         {

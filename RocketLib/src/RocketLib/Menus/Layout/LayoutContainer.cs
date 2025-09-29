@@ -128,6 +128,150 @@ namespace RocketLib.Menus.Layout
             right = cameraWidth / 2f;
         }
 
+        protected virtual void DetectOverflow(
+            string containerType,
+            string dimension,
+            List<LayoutElement> children,
+            float availableSpace,
+            float totalRequired,
+            float totalSpacing,
+            bool isVertical)
+        {
+            // Only run debug output if the active menu has debug enabled
+            var activeMenu = Core.FlexMenu.activeMenu;
+            if (activeMenu == null || !activeMenu.EnableDebugOutput) return;
+            if (children.Count == 0) return;
+
+            // Get actual camera bounds dynamically
+            float screenTop, screenBottom, screenLeft, screenRight;
+            GetCameraBounds(out screenTop, out screenBottom, out screenLeft, out screenRight);
+
+            // Calculate overflow
+            float overflow = totalRequired - availableSpace;
+
+            // Build detailed space analysis
+            RocketLib.Main.logger.Log($"[FlexMenu Debug] Space Analysis for '{Name}':");
+            RocketLib.Main.logger.Log($"  Container: {containerType}");
+            RocketLib.Main.logger.Log($"  Available {dimension}: {availableSpace:F1}px");
+            RocketLib.Main.logger.Log($"  Padding: {Padding * 2:F1}px ({Padding:F1}px each side)");
+            RocketLib.Main.logger.Log($"  Total Spacing: {totalSpacing:F1}px");
+            RocketLib.Main.logger.Log("");
+            RocketLib.Main.logger.Log($"  Child Distribution:");
+
+            int fillCount = 0;
+            
+            for (int i = 0; i < children.Count; i++)
+            {
+                var child = children[i];
+                string childName = string.IsNullOrEmpty(child.Name) ? child.GetType().Name : child.Name;
+                SizeMode sizeMode = isVertical ? child.HeightMode : child.WidthMode;
+                float childSize = isVertical ? child.ActualSize.y : child.ActualSize.x;
+                
+                if (sizeMode == SizeMode.Fill)
+                {
+                    fillCount++;
+                    RocketLib.Main.logger.Log($"    {i + 1}. {child.GetType().Name} '{childName}' (Fill): {childSize:F1}px allocated");
+                }
+                else
+                {
+                    RocketLib.Main.logger.Log($"    {i + 1}. {child.GetType().Name} '{childName}' ({sizeMode}): {childSize:F1}px");
+                }
+                
+                if (i < children.Count - 1)
+                {
+                    RocketLib.Main.logger.Log($"       + Spacing: {Spacing:F1}px");
+                }
+            }
+            
+            RocketLib.Main.logger.Log("");
+            RocketLib.Main.logger.Log($"  Total Required: {totalRequired:F1}px");
+            
+            if (overflow > 1f)
+            {
+                RocketLib.Main.logger.Log($"  [!] OVERFLOW: {overflow:F1}px (needs {totalRequired:F1}px, has {availableSpace:F1}px)");
+                
+                if (fillCount > 0)
+                {
+                    float spaceAfterFixed = availableSpace - totalRequired;
+                    if (spaceAfterFixed < 0)
+                    {
+                        RocketLib.Main.logger.Log($"  [!] Fixed content too large: {fillCount} Fill element(s) squeezed to 0px");
+                        RocketLib.Main.logger.Log($"  [!] Need to reduce fixed content by {-spaceAfterFixed:F1}px or increase container size");
+                    }
+                    else if (fillCount > 1)
+                    {
+                        float spacePerFill = spaceAfterFixed / fillCount;
+                        RocketLib.Main.logger.Log($"  [!] Note: {fillCount} Fill elements share remaining space ({spacePerFill:F1}px each)");
+                    }
+                }
+                
+                
+            }
+            else if (overflow > -1f)
+            {
+                RocketLib.Main.logger.Log($"  [OK] Fits perfectly ({totalRequired:F1}px used of {availableSpace:F1}px available)");
+            }
+            else
+            {
+                float remaining = availableSpace - totalRequired;
+                RocketLib.Main.logger.Log($"  [OK] Fits with {remaining:F1}px remaining");
+            }
+
+            // Check for off-screen elements
+            List<string> offScreenElements = new List<string>();
+            foreach (var child in children)
+            {
+                if (isVertical)
+                {
+                    float childTop = child.ActualPosition.y + (child.ActualSize.y / 2);
+                    float childBottom = child.ActualPosition.y - (child.ActualSize.y / 2);
+
+                    if (childTop > screenTop || childBottom < screenBottom)
+                    {
+                        string childName = string.IsNullOrEmpty(child.Name) ? child.GetType().Name : child.Name;
+                        string issue = "";
+                        if (childTop > screenTop) issue = $"top {childTop:F0} > screen {screenTop:F0}";
+                        if (childBottom < screenBottom)
+                        {
+                            if (!string.IsNullOrEmpty(issue)) issue += ", ";
+                            issue += $"bottom {childBottom:F0} < screen {screenBottom:F0}";
+                        }
+                        offScreenElements.Add($"{child.GetType().Name} '{childName}' ({issue})");
+                    }
+                }
+                else
+                {
+                    float childLeft = child.ActualPosition.x - (child.ActualSize.x / 2);
+                    float childRight = child.ActualPosition.x + (child.ActualSize.x / 2);
+
+                    if (childLeft < screenLeft || childRight > screenRight)
+                    {
+                        string childName = string.IsNullOrEmpty(child.Name) ? child.GetType().Name : child.Name;
+                        string issue = "";
+                        if (childLeft < screenLeft) issue = $"left {childLeft:F0} < screen {screenLeft:F0}";
+                        if (childRight > screenRight)
+                        {
+                            if (!string.IsNullOrEmpty(issue)) issue += ", ";
+                            issue += $"right {childRight:F0} > screen {screenRight:F0}";
+                        }
+                        offScreenElements.Add($"{child.GetType().Name} '{childName}' ({issue})");
+                    }
+                }
+            }
+            
+            if (offScreenElements.Count > 0)
+            {
+                RocketLib.Main.logger.Log("");
+                RocketLib.Main.logger.Log($"  [!!!] OFF-SCREEN ELEMENTS:");
+                foreach (string element in offScreenElements)
+                {
+                    RocketLib.Main.logger.Log($"    - {element}");
+                }
+            }
+            
+            RocketLib.Main.logger.Log("");
+        }
+
         public override void Render()
         {
             foreach (var child in Children)

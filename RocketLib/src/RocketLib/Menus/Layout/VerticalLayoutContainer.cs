@@ -135,63 +135,15 @@ namespace RocketLib.Menus.Layout
 
         private void DetectOverflow(List<LayoutElement> childrenToPosition, float totalFixedHeight, float totalSpacing, float availableHeight)
         {
-            if (childrenToPosition.Count == 0) return;
-
-            // Get actual camera bounds dynamically
-            float screenTop, screenBottom, screenLeft, screenRight;
-            GetCameraBounds(out screenTop, out screenBottom, out screenLeft, out screenRight);
-
-            // Thresholds for different warning levels
-            const float WARNING_THRESHOLD = 50f;  // Significant overflow
-            const float DEBUG_THRESHOLD = 20f;    // Minor overflow
-
-            // Calculate container overflow
-            float totalRequired = totalFixedHeight + totalSpacing;
-            float containerOverflow = totalRequired - availableHeight;
-
-            // Check for off-screen elements (CRITICAL)
-            List<string> offScreenElements = new List<string>();
-            foreach (var child in childrenToPosition)
-            {
-                float childTop = child.ActualPosition.y + (child.ActualSize.y / 2);
-                float childBottom = child.ActualPosition.y - (child.ActualSize.y / 2);
-
-                if (childTop > screenTop || childBottom < screenBottom)
-                {
-                    string childName = string.IsNullOrEmpty(child.Name) ? child.GetType().Name : child.Name;
-                    string issue = "";
-                    if (childTop > screenTop) issue = $"top {childTop:F0} > screen {screenTop:F0}";
-                    if (childBottom < screenBottom)
-                    {
-                        if (!string.IsNullOrEmpty(issue)) issue += ", ";
-                        issue += $"bottom {childBottom:F0} < screen {screenBottom:F0}";
-                    }
-                    offScreenElements.Add($"{child.GetType().Name} '{childName}' ({issue})");
-                }
-            }
-
-            // Log based on severity
-            if (offScreenElements.Count > 0)
-            {
-                // CRITICAL: Elements are off-screen
-                RocketLib.Main.logger.Error($"VerticalLayoutContainer '{Name}' has OFF-SCREEN elements!");
-                foreach (string element in offScreenElements)
-                {
-                    RocketLib.Main.logger.Error($"  - {element}");
-                }
-            }
-            else if (containerOverflow > WARNING_THRESHOLD)
-            {
-                // SIGNIFICANT: Large overflow that may indicate a design problem
-                RocketLib.Main.logger.Warning($"VerticalLayoutContainer '{Name}' overflow: {containerOverflow:F0}px");
-                RocketLib.Main.logger.Warning($"  - Required: {totalRequired:F0}px, Available: {availableHeight:F0}px");
-            }
-            else if (containerOverflow > DEBUG_THRESHOLD)
-            {
-                // MINOR: Small overflow, only log if debug is enabled
-                RocketLib.Main.logger.Debug($"VerticalLayoutContainer '{Name}' minor overflow: {containerOverflow:F0}px");
-            }
-            // SILENT: Overflow < 20px is normal and ignored
+            base.DetectOverflow(
+                containerType: "VerticalLayoutContainer",
+                dimension: "Height",
+                children: childrenToPosition,
+                availableSpace: availableHeight,
+                totalRequired: totalFixedHeight + totalSpacing,
+                totalSpacing: totalSpacing,
+                isVertical: true
+            );
         }
 
         private float CalculateChildWidth(LayoutElement child, float availableWidth)

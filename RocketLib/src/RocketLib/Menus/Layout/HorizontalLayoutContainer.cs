@@ -157,76 +157,15 @@ namespace RocketLib.Menus.Layout
 
         private void DetectOverflow(List<LayoutElement> childrenToPosition, float totalFixedWidth, float totalSpacing, float availableWidth)
         {
-            if (childrenToPosition.Count == 0) return;
-
-            // Get actual camera bounds dynamically
-            float screenTop, screenBottom, screenLeft, screenRight;
-            GetCameraBounds(out screenTop, out screenBottom, out screenLeft, out screenRight);
-
-            // Thresholds for different warning levels
-            const float WARNING_THRESHOLD = 50f;  // Significant overflow
-            const float DEBUG_THRESHOLD = 20f;    // Minor overflow
-
-            // Calculate container overflow
-            float totalRequired = totalFixedWidth + totalSpacing;
-            float containerOverflow = totalRequired - availableWidth;
-
-            // Check for off-screen elements (CRITICAL)
-            List<string> offScreenElements = new List<string>();
-            foreach (var child in childrenToPosition)
-            {
-                float childLeft = child.ActualPosition.x - (child.ActualSize.x / 2);
-                float childRight = child.ActualPosition.x + (child.ActualSize.x / 2);
-                float childTop = child.ActualPosition.y + (child.ActualSize.y / 2);
-                float childBottom = child.ActualPosition.y - (child.ActualSize.y / 2);
-
-                if (childLeft < screenLeft || childRight > screenRight ||
-                    childTop > screenTop || childBottom < screenBottom)
-                {
-                    string childName = string.IsNullOrEmpty(child.Name) ? child.GetType().Name : child.Name;
-                    string issue = "";
-                    if (childLeft < screenLeft) issue = $"left {childLeft:F0} < screen {screenLeft:F0}";
-                    if (childRight > screenRight)
-                    {
-                        if (!string.IsNullOrEmpty(issue)) issue += ", ";
-                        issue += $"right {childRight:F0} > screen {screenRight:F0}";
-                    }
-                    if (childTop > screenTop)
-                    {
-                        if (!string.IsNullOrEmpty(issue)) issue += ", ";
-                        issue += $"top {childTop:F0} > screen {screenTop:F0}";
-                    }
-                    if (childBottom < screenBottom)
-                    {
-                        if (!string.IsNullOrEmpty(issue)) issue += ", ";
-                        issue += $"bottom {childBottom:F0} < screen {screenBottom:F0}";
-                    }
-                    offScreenElements.Add($"{child.GetType().Name} '{childName}' ({issue})");
-                }
-            }
-
-            // Log based on severity
-            if (offScreenElements.Count > 0)
-            {
-                // CRITICAL: Elements are off-screen
-                RocketLib.Main.logger.Error($"HorizontalLayoutContainer '{Name}' has OFF-SCREEN elements!");
-                foreach (string element in offScreenElements)
-                {
-                    RocketLib.Main.logger.Error($"  - {element}");
-                }
-            }
-            else if (containerOverflow > WARNING_THRESHOLD)
-            {
-                // SIGNIFICANT: Large overflow that may indicate a design problem
-                RocketLib.Main.logger.Warning($"HorizontalLayoutContainer '{Name}' overflow: {containerOverflow:F0}px");
-                RocketLib.Main.logger.Warning($"  - Required: {totalRequired:F0}px, Available: {availableWidth:F0}px");
-            }
-            else if (containerOverflow > DEBUG_THRESHOLD)
-            {
-                // MINOR: Small overflow, only log if debug is enabled
-                RocketLib.Main.logger.Debug($"HorizontalLayoutContainer '{Name}' minor overflow: {containerOverflow:F0}px");
-            }
-            // SILENT: Overflow < 20px is normal and ignored
+            base.DetectOverflow(
+                containerType: "HorizontalLayoutContainer",
+                dimension: "Width",
+                children: childrenToPosition,
+                availableSpace: availableWidth,
+                totalRequired: totalFixedWidth + totalSpacing,
+                totalSpacing: totalSpacing,
+                isVertical: false
+            );
         }
     }
 }
