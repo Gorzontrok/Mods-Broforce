@@ -1806,6 +1806,16 @@
             Focus the first focusable element on the current page
             </summary>
         </member>
+        <member name="P:RocketLib.Menus.Elements.LayoutElement.IsVisible">
+            <summary>
+            This determines whether the element and its children are visible on screen.
+            </summary>
+        </member>
+        <member name="P:RocketLib.Menus.Elements.LayoutElement.IsPositioned">
+            <summary>
+            This determines whether the element and its children should take up space and be positioned by Layout Containers
+            </summary>
+        </member>
         <member name="T:RocketLib.Menus.Elements.ImageElement">
             <summary>
             A LayoutElement that displays game textures using Broforce's SpriteSM system

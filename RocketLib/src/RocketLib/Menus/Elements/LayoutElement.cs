@@ -16,10 +16,10 @@ namespace RocketLib.Menus.Elements
         // Size specification using new SizeMode API
         public Layout.SizeMode WidthMode { get; set; }
         public Layout.SizeMode HeightMode { get; set; }
-        public float Width { get; set; }      // Value depends on mode: pixels for Fixed, 0-1 for Percentage
-        public float Height { get; set; }     // Value depends on mode: pixels for Fixed, 0-1 for Percentage
+        public float Width { get; set; }
+        public float Height { get; set; }
 
-        // Constraints (always in world units)
+        // Constraints
         public Vector2 MinSize { get; set; }
         public Vector2 MaxSize { get; set; }
 
@@ -27,12 +27,42 @@ namespace RocketLib.Menus.Elements
         public HorizontalAlignment? HorizontalAlignmentOverride { get; set; }
         public VerticalAlignment? VerticalAlignmentOverride { get; set; }
 
-        // Actual values (set by parent container)
         public Vector2 ActualPosition { get; set; }
         public Vector2 ActualSize { get; set; }
 
         // Visibility and interaction
-        public bool IsVisible { get; set; }
+        /// <summary>
+        /// This determines whether the element and its children are visible on screen.
+        /// </summary>
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                _isVisible = value;
+                this.OnVisibilityChanged();
+            }
+        }
+        private bool _isVisible;
+        /// <summary>
+        /// This determines whether the element and its children should take up space and be positioned by Layout Containers
+        /// </summary>
+        public bool IsPositioned
+        {
+            get => _isPositioned;
+            set
+            {
+                _isPositioned = value;
+                this.OnIsPositionedChanged();
+            }
+        }
+        private bool _isPositioned;
+        public bool IsVisibleAndPositioned
+        {
+            get => IsVisible && IsPositioned;
+            set => IsVisible = IsPositioned = value;
+        }
+
         public bool IsEnabled { get; set; }
         public bool IsFocusable { get; set; }
         public bool IsFocused { get; set; }
@@ -40,9 +70,10 @@ namespace RocketLib.Menus.Elements
         // User data
         public object Tag { get; set; }
 
-        // GameObject management
-        protected GameObject gameObject;     // Set by child if it creates one
-        protected Transform menuTransform;   // Reference to parent menu
+        // Set by child if it creates one
+        protected GameObject gameObject;
+        // Reference to parent menu
+        protected Transform menuTransform;
 
         protected LayoutElement(string name)
         {
@@ -58,7 +89,8 @@ namespace RocketLib.Menus.Elements
             MinSize = Vector2.zero;
             MaxSize = Vector2.zero;
 
-            IsVisible = true;
+            _isVisible = true;
+            _isPositioned = true;
             IsEnabled = true;
             IsFocusable = false;
             IsFocused = false;
@@ -150,8 +182,6 @@ namespace RocketLib.Menus.Elements
         {
             var elements = new List<LayoutElement>();
 
-            // Note: We check IsEnabled but NOT IsVisible
-            // This allows invisible elements (e.g., off-screen in ScrollContainer) to be navigated to
             if (!IsEnabled) return elements;
 
             if (IsFocusable)
@@ -162,7 +192,6 @@ namespace RocketLib.Menus.Elements
             return elements;
         }
 
-        // Keep this for highlight system compatibility
         public virtual Rect GetBounds()
         {
             return new Rect(
@@ -185,10 +214,17 @@ namespace RocketLib.Menus.Elements
 
         public virtual void OnActivated()
         {
-            // Override in derived classes
         }
 
-        // Helper methods for finding elements
+        public virtual void OnVisibilityChanged()
+        {
+        }
+
+        public virtual void OnIsPositionedChanged()
+        {
+
+        }
+
         public LayoutElement FindById(string id)
         {
             if (Id == id) return this;

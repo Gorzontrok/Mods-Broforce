@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -45,9 +45,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="RocketLib">
-      <HintPath>_Mod\RocketLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -103,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="_Mod\Info.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RocketLib\RocketLib.csproj">
+      <Project>{2590e579-acfd-41ba-8fd2-1448dd2d9e9d}</Project>
+      <Name>RocketLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

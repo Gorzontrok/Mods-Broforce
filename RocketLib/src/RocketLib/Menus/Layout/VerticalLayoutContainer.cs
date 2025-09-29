@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using RocketLib.Menus.Elements;
 using UnityEngine;
 
@@ -19,9 +18,9 @@ namespace RocketLib.Menus.Layout
 
         protected override void ArrangeChildren()
         {
+            if (Children.Count == 0) return;
 
-            // Position ALL children regardless of visibility (per design Rule 1)
-            var childrenToPosition = Children.ToList();
+            var childrenToPosition = this.GetChildrenToPosition();
             if (childrenToPosition.Count == 0) return;
 
             float availableHeight = ActualSize.y - (Padding * 2);
@@ -88,7 +87,6 @@ namespace RocketLib.Menus.Layout
 
             // Phase 3: Position all children with calculated heights
             float currentY = ActualPosition.y + (ActualSize.y / 2) - Padding;
-
 
             for (int i = 0; i < childrenToPosition.Count; i++)
             {

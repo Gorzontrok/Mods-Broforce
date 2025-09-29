@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RocketLib.Menus.Elements;
 using UnityEngine;
 
@@ -135,6 +136,30 @@ namespace RocketLib.Menus.Layout
             }
         }
 
+        public override void OnVisibilityChanged()
+        {
+            if (Children == null)
+            {
+                return;
+            }
+            foreach (var child in Children)
+            {
+                child.IsVisible = this.IsVisible;
+            }
+        }
+
+        public override void OnIsPositionedChanged()
+        {
+            if (Children == null)
+            {
+                return;
+            }
+            foreach (var child in Children)
+            {
+                child.IsVisible = this.IsVisible;
+            }
+        }
+
         public override void Cleanup()
         {
             ClearChildren();
@@ -170,6 +195,11 @@ namespace RocketLib.Menus.Layout
             }
 
             return elements;
+        }
+
+        public List<LayoutElement> GetChildrenToPosition()
+        {
+            return Children.Where(x => x.IsPositioned).ToList();
         }
 
         /// <summary>

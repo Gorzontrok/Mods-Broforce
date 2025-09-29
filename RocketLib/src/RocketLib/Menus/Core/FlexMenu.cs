@@ -469,22 +469,6 @@ namespace RocketLib.Menus.Core
             return null;
         }
 
-        public virtual T AddElement<T>(LayoutElement parent = null) where T : LayoutElement, new()
-        {
-            var element = new T();
-            var container = (parent as LayoutContainer) ?? rootContainer;
-            container?.AddChild(element);
-            return element;
-        }
-
-        public virtual LayoutContainer AddContainer(LayoutElement parent = null, LayoutMode mode = LayoutMode.Vertical)
-        {
-            var container = LayoutContainer.Create(mode);
-            var parentContainer = (parent as LayoutContainer) ?? rootContainer;
-            parentContainer?.AddChild(container);
-            return container;
-        }
-
         public static T Show<T>(FlexMenu parentFlex = null, Menu parentGame = null, string instanceId = "default") where T : FlexMenu
         {
             var type = typeof(T);

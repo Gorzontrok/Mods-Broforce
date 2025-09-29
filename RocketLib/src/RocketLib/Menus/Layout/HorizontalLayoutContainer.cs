@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using RocketLib.Menus.Elements;
 using UnityEngine;
 
@@ -21,12 +20,11 @@ namespace RocketLib.Menus.Layout
         {
             if (Children.Count == 0) return;
 
+            var childrenToPosition = this.GetChildrenToPosition();
+            if (childrenToPosition.Count == 0) return;
+
             float availableWidth = ActualSize.x - (Padding * 2);
             float availableHeight = ActualSize.y - (Padding * 2);
-
-            // Position ALL children regardless of visibility
-            var childrenToPosition = Children.ToList();
-            if (childrenToPosition.Count == 0) return;
 
             float totalSpacing = Spacing * Mathf.Max(0, childrenToPosition.Count - 1);
 
