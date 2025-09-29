@@ -168,7 +168,6 @@
     <Compile Include="Menus\Layout\GridLayoutContainer.cs" />
     <Compile Include="Menus\Layout\AbsoluteLayoutContainer.cs" />
     <Compile Include="Menus\Layout\HorizontalLayoutContainer.cs" />
-    <Compile Include="Menus\Layout\ScrollContainer.cs" />
     <Compile Include="Menus\Layout\PaginatedGridContainer.cs" />
     <Compile Include="Menus\Elements\LayoutElement.cs" />
     <Compile Include="Menus\Elements\ImageElement.cs" />

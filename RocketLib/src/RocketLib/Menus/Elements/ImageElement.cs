@@ -8,6 +8,14 @@ namespace RocketLib.Menus.Elements
     /// </summary>
     public class ImageElement : LayoutElement
     {
+        public enum ImageScaleMode
+        {
+            None,
+            Stretch,
+            Fit,
+            Fill
+        }
+
         private GameObject spriteGO;
         private SpriteSM spriteSM;
         private MeshRenderer meshRenderer;
@@ -62,6 +70,8 @@ namespace RocketLib.Menus.Elements
         public Vector2? LowerLeftPixel { get; set; }
 
         public Vector2? PixelDimensions { get; set; }
+
+        public Vector2? SpriteOffset { get; set; }
 
         public ImageElement(string name) : base(name)
         {
@@ -207,6 +217,8 @@ namespace RocketLib.Menus.Elements
             spriteSM.width = worldWidth;
             spriteSM.height = worldHeight;
 
+            spriteSM.offset = SpriteOffset ?? new Vector2(0, 0);
+
             // Set texture reference using reflection like HighlightFactory does
             spriteSM.SetFieldValue("texture", texture);
 
@@ -305,13 +317,5 @@ namespace RocketLib.Menus.Elements
 
             base.Cleanup();
         }
-    }
-
-    public enum ImageScaleMode
-    {
-        None,
-        Stretch,
-        Fit,
-        Fill
     }
 }

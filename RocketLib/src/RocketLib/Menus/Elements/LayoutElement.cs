@@ -23,9 +23,6 @@ namespace RocketLib.Menus.Elements
         public Vector2 MinSize { get; set; }
         public Vector2 MaxSize { get; set; }
 
-        // Absolute positioning (for Absolute layout only)
-        public Vector2 Position { get; set; }
-
         // Alignment overrides (optional)
         public HorizontalAlignment? HorizontalAlignmentOverride { get; set; }
         public VerticalAlignment? VerticalAlignmentOverride { get; set; }
@@ -58,7 +55,6 @@ namespace RocketLib.Menus.Elements
             Width = 1f;
             Height = 1f;
 
-            Position = Vector2.zero;
             MinSize = Vector2.zero;
             MaxSize = Vector2.zero;
 
@@ -81,7 +77,7 @@ namespace RocketLib.Menus.Elements
                 case Layout.SizeMode.Fixed:
                     return Width;
                 case Layout.SizeMode.Percentage:
-                    return Parent != null ? Width * Parent.ActualSize.x : Width;
+                    return Parent != null ? (Width / 100f) * Parent.ActualSize.x : Width;
                 case Layout.SizeMode.Auto:
                     return Width; // Default for elements that don't implement Auto
                 case Layout.SizeMode.Fill:
@@ -97,7 +93,7 @@ namespace RocketLib.Menus.Elements
                 case Layout.SizeMode.Fixed:
                     return Height;
                 case Layout.SizeMode.Percentage:
-                    return Parent != null ? Height * Parent.ActualSize.y : Height;
+                    return Parent != null ? (Height / 100f) * Parent.ActualSize.y : Height;
                 case Layout.SizeMode.Auto:
                     return Height; // Default for elements that don't implement Auto
                 case Layout.SizeMode.Fill:

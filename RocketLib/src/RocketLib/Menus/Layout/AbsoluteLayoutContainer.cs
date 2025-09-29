@@ -66,7 +66,7 @@ namespace RocketLib.Menus.Layout
                         childWidth = child.Width;
                         break;
                     case SizeMode.Percentage:
-                        childWidth = child.Width * availableWidth;
+                        childWidth = (child.Width / 100f) * availableWidth;
                         break;
 
                     case SizeMode.Fill:
@@ -80,7 +80,7 @@ namespace RocketLib.Menus.Layout
                         childHeight = child.Height;
                         break;
                     case SizeMode.Percentage:
-                        childHeight = child.Height * availableHeight;
+                        childHeight = (child.Height / 100f) * availableHeight;
                         break;
 
                     case SizeMode.Fill:

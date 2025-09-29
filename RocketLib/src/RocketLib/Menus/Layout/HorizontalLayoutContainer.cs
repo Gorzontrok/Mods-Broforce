@@ -24,13 +24,11 @@ namespace RocketLib.Menus.Layout
             float availableWidth = ActualSize.x - (Padding * 2);
             float availableHeight = ActualSize.y - (Padding * 2);
 
-            // Position ALL children regardless of visibility (per design Rule 1)
+            // Position ALL children regardless of visibility
             var childrenToPosition = Children.ToList();
             if (childrenToPosition.Count == 0) return;
 
             float totalSpacing = Spacing * Mathf.Max(0, childrenToPosition.Count - 1);
-
-
 
             // Phase 1: Calculate widths for all non-Fill children
             List<float> childWidths = new List<float>();
@@ -50,7 +48,7 @@ namespace RocketLib.Menus.Layout
                         break;
 
                     case SizeMode.Percentage:
-                        width = child.Width * availableWidth;
+                        width = (child.Width / 100f) * availableWidth;
                         totalFixedWidth += width;
                         break;
 
@@ -111,7 +109,7 @@ namespace RocketLib.Menus.Layout
                         break;
 
                     case SizeMode.Percentage:
-                        height = child.Height * availableHeight;
+                        height = (child.Height / 100f) * availableHeight;
                         break;
 
                     case SizeMode.Auto:

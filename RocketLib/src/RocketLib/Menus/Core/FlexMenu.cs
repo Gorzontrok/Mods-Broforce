@@ -80,7 +80,6 @@ namespace RocketLib.Menus.Core
                 Name = "RootContainer",
                 WidthMode = Layout.SizeMode.Fill,
                 HeightMode = Layout.SizeMode.Fill,
-                Position = Vector2.zero
             };
         }
 
@@ -185,7 +184,6 @@ namespace RocketLib.Menus.Core
 
             HandleInput();
             UpdateHighlight();
-            UpdateScrollContainers();
         }
 
         protected virtual void OnGUI()
@@ -322,32 +320,6 @@ namespace RocketLib.Menus.Core
             else if (highlight.gameObject.activeSelf)
             {
                 highlight.gameObject.SetActive(false);
-            }
-        }
-
-        private void UpdateScrollContainers()
-        {
-            // Find and update any ScrollContainers in the hierarchy
-            UpdateScrollContainersRecursive(rootContainer);
-        }
-
-        private void UpdateScrollContainersRecursive(LayoutElement element)
-        {
-            if (element == null) return;
-
-            // If this is a ScrollContainer, call its Update method
-            if (element is ScrollContainer scrollContainer)
-            {
-                scrollContainer.Update();
-            }
-
-            // Recursively check children if this is a container
-            if (element is LayoutContainer container)
-            {
-                foreach (var child in container.Children)
-                {
-                    UpdateScrollContainersRecursive(child);
-                }
             }
         }
 

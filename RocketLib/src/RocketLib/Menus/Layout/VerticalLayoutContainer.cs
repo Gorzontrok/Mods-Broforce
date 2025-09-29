@@ -46,7 +46,7 @@ namespace RocketLib.Menus.Layout
                         break;
 
                     case SizeMode.Percentage:
-                        height = child.Height * availableHeight;
+                        height = (child.Height / 100f) * availableHeight;
                         totalFixedHeight += height;
                         break;
 
@@ -204,7 +204,7 @@ namespace RocketLib.Menus.Layout
                     return child.Width;
 
                 case SizeMode.Percentage:
-                    return child.Width * availableWidth;
+                    return (child.Width / 100f) * availableWidth;
 
                 case SizeMode.Fill:
                     return availableWidth;

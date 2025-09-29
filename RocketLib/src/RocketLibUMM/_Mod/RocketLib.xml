@@ -1761,42 +1761,6 @@
             Container that arranges children horizontally from left to right
             </summary>
         </member>
-        <member name="T:RocketLib.Menus.Layout.ScrollContainer">
-            <summary>
-            Container that enables scrolling for content exceeding viewport bounds.
-            Automatically scrolls based on focus changes from NavigationManager.
-            </summary>
-        </member>
-        <member name="M:RocketLib.Menus.Layout.ScrollContainer.SetContent(RocketLib.Menus.Layout.LayoutContainer)">
-            <summary>
-            Set the content container that will be scrolled
-            </summary>
-        </member>
-        <member name="M:RocketLib.Menus.Layout.ScrollContainer.OnFocusChanged(RocketLib.Menus.Elements.LayoutElement)">
-            <summary>
-            Called by NavigationManager when focus changes
-            </summary>
-        </member>
-        <member name="M:RocketLib.Menus.Layout.ScrollContainer.EnsureVisible(RocketLib.Menus.Elements.LayoutElement)">
-            <summary>
-            Ensure an element is visible within the viewport
-            </summary>
-        </member>
-        <member name="M:RocketLib.Menus.Layout.ScrollContainer.ScrollTo(System.Single)">
-            <summary>
-            Scroll to a specific position
-            </summary>
-        </member>
-        <member name="M:RocketLib.Menus.Layout.ScrollContainer.ScrollToElement(RocketLib.Menus.Elements.LayoutElement)">
-            <summary>
-            Scroll to a specific element
-            </summary>
-        </member>
-        <member name="M:RocketLib.Menus.Layout.ScrollContainer.ScrollBy(System.Single)">
-            <summary>
-            Scroll by a delta amount
-            </summary>
-        </member>
         <member name="T:RocketLib.Menus.Layout.PaginatedGridContainer">
             <summary>
             Container that manages multiple grid pages with navigation and smooth transitions

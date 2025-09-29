@@ -129,9 +129,6 @@ namespace RocketLib.Menus.Layout
 
         public override void Render()
         {
-            // CRITICAL: Call Render on ALL children regardless of visibility
-            // Each child is responsible for managing its own GameObject visibility
-            // Never filter by IsVisible here - it causes orphaned GameObjects!
             foreach (var child in Children)
             {
                 child.Render();

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using RocketLib.Menus.Elements;
-using RocketLib.Menus.Layout;
 using UnityEngine;
 
 namespace RocketLib.Menus.Core
@@ -12,8 +11,6 @@ namespace RocketLib.Menus.Core
         private LayoutElement focusedElement;
         private List<LayoutElement> focusableElements;
         private bool wrapNavigation;
-        private readonly float lastNavigationTime;
-        private const float NavigationCooldown = 0.15f;
 
         public LayoutElement FocusedElement
         {
@@ -107,29 +104,7 @@ namespace RocketLib.Menus.Core
             if (focusedElement != null)
             {
                 focusedElement.OnFocusGained();
-
-                // Notify parent ScrollContainers about focus change
-                NotifyScrollContainers(focusedElement);
             }
-        }
-
-        private void NotifyScrollContainers(LayoutElement element)
-        {
-
-            // Walk up the parent chain to find any ScrollContainers
-            var parent = element.Parent;
-            int depth = 0;
-            while (parent != null)
-            {
-
-                if (parent is ScrollContainer scrollContainer)
-                {
-                    scrollContainer.OnFocusChanged(element);
-                }
-                parent = parent.Parent;
-                depth++;
-            }
-
         }
 
         public bool ProcessInput(float horizontal, float vertical, bool activate, bool back)

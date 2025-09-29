@@ -70,7 +70,7 @@ namespace RocketLib.Menus.Layout
                         childWidth = Mathf.Min(child.Width, cellWidth);
                         break;
                     case SizeMode.Percentage:
-                        childWidth = child.Width * cellWidth;
+                        childWidth = (child.Width / 100f) * cellWidth;
                         break;
 
                     case SizeMode.Fill:
@@ -83,7 +83,7 @@ namespace RocketLib.Menus.Layout
                         childHeight = Mathf.Min(child.Height, cellHeight);
                         break;
                     case SizeMode.Percentage:
-                        childHeight = child.Height * cellHeight;
+                        childHeight = (child.Height / 100f) * cellHeight;
                         break;
 
                     case SizeMode.Fill:
