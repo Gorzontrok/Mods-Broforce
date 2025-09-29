@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 using World.LevelEdit.Triggers;
@@ -125,15 +126,18 @@ namespace RocketLib.CustomTriggers
                 if (info is CustomTriggerActionInfo)
                 {
                     string triggerType = CustomTriggerManager.GetCustomActionType(info);
-                    if (!string.IsNullOrEmpty(triggerType) && CustomTriggerManager.CustomTriggers.ContainsKey(triggerType))
+                    if (!string.IsNullOrEmpty(triggerType))
                     {
-                        var customTrigger = CustomTriggerManager.CustomTriggers[triggerType];
-                        TriggerAction action = Activator.CreateInstance(customTrigger.CustomTriggerActionType) as TriggerAction;
-                        action.Info = info;
-                        action.timeOffsetLeft = info.timeOffset;
-                        action.AssignDeterministicIDs();
-                        __result = action;
-                        return false;
+                        var customTrigger = CustomTriggerManager.CustomTriggers.FirstOrDefault(t => t.ActionName == triggerType);
+                        if (customTrigger != null)
+                        {
+                            TriggerAction action = Activator.CreateInstance(customTrigger.CustomTriggerActionType) as TriggerAction;
+                            action.Info = info;
+                            action.timeOffsetLeft = info.timeOffset;
+                            action.AssignDeterministicIDs();
+                            __result = action;
+                            return false;
+                        }
                     }
                 }
                 else if (info is WeatherActionInfo weatherInfo && info.type == TriggerActionType.Weather && weatherInfo.name != null && weatherInfo.name.StartsWith("CUSTOMTRIGGER|"))

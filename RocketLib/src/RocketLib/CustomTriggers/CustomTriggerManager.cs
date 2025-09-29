@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -9,26 +10,43 @@ namespace RocketLib.CustomTriggers
 {
     public class CustomTriggerManager
     {
-        public static Dictionary<string, CustomTrigger> CustomTriggers = new Dictionary<string, CustomTrigger>();
+        public static List<CustomTrigger> CustomTriggers = new List<CustomTrigger>();
         static TriggerActionInfo currentAction;
         static string currentActionName;
 
-        public static void RegisterCustomTrigger(Type customTriggerActionType, Type customTriggerActionInfoType, string actionName)
+        public static void RegisterCustomTrigger(Type customTriggerActionType, Type customTriggerActionInfoType, string actionName, string tag, int priority = 0)
         {
-            if (CustomTriggers.ContainsKey(actionName))
+            if (CustomTriggers.Any(t => t.ActionName == actionName))
             {
                 throw new Exception($"Custom trigger with name '{actionName}' is already registered");
             }
+            CustomTrigger customTrigger = new CustomTrigger(customTriggerActionType, customTriggerActionInfoType, actionName, tag, priority);
+            CustomTriggers.Add(customTrigger);
 
-            CustomTrigger customTrigger = new CustomTrigger(customTriggerActionType, customTriggerActionInfoType, actionName);
-            CustomTriggers.Add(actionName, customTrigger);
+            CustomTriggers = CustomTriggers
+                .OrderBy(t => t.Tag)
+                .ThenByDescending(t => t.Priority)
+                .ThenBy(t => t.ActionName)
+                .ToList();
         }
 
         public static void DisplayAddCustomTriggers(LevelEditorGUI __instance, ref TriggerInfo ___selectedTrigger, ref TriggerActionInfo ___selectedAction)
         {
-            foreach (var kvp in CustomTriggers)
+            GUILayout.Space(10);
+            GUILayout.Label("Modded Actions:");
+            GUILayout.Space(7);
+
+            string currentTag = null;
+            foreach (var customTrigger in CustomTriggers)
             {
-                CustomTrigger customTrigger = kvp.Value;
+                if (currentTag != customTrigger.Tag)
+                {
+                    currentTag = customTrigger.Tag;
+                    GUILayout.Space(5);
+                    GUILayout.Label($"[{currentTag}]");
+                    GUILayout.Space(2);
+                }
+
                 if (GUILayout.Button("Add New " + customTrigger.ActionName + " Action", new GUILayoutOption[0]))
                 {
                     LevelEditorGUI_ShowTriggerMenu_Patch.PlayClickSound(__instance);
@@ -47,9 +65,8 @@ namespace RocketLib.CustomTriggers
                 return currentActionName;
             }
 
-            foreach (var kvp in CustomTriggers)
+            foreach (var customTrigger in CustomTriggers)
             {
-                CustomTrigger customTrigger = kvp.Value;
                 if (actionInfo.GetType() == customTrigger.CustomTriggerActionInfoType)
                 {
                     currentActionName = customTrigger.ActionName;
@@ -84,21 +101,19 @@ namespace RocketLib.CustomTriggers
                     throw new Exception("TriggerType not found in JSON");
                 }
 
-                if (!CustomTriggers.ContainsKey(triggerType))
+                var customTrigger = CustomTriggers.FirstOrDefault(t => t.ActionName == triggerType);
+                if (customTrigger == null)
                 {
                     throw new Exception($"Unknown custom trigger type: {triggerType}");
                 }
 
-                CustomTrigger customTrigger = CustomTriggers[triggerType];
                 CustomTriggerActionInfo customInfo = Activator.CreateInstance(customTrigger.CustomTriggerActionInfoType) as CustomTriggerActionInfo;
 
-                // Copy base fields
                 customInfo.type = weatherInfo.type;
                 customInfo.timeOffset = weatherInfo.timeOffset;
                 customInfo.onlyOnHardMode = weatherInfo.onlyOnHardMode;
                 customInfo.name = actualName;
 
-                // Populate custom fields from the Data property
                 JToken dataToken = wrapper["Data"];
                 if (dataToken != null)
                 {
@@ -178,12 +193,12 @@ namespace RocketLib.CustomTriggers
                     throw new Exception("TriggerType not found in JSON");
                 }
 
-                if (!CustomTriggers.ContainsKey(triggerType))
+                var customTrigger = CustomTriggers.FirstOrDefault(t => t.ActionName == triggerType);
+                if (customTrigger == null)
                 {
                     throw new Exception($"Unknown custom trigger type: {triggerType}");
                 }
 
-                CustomTrigger customTrigger = CustomTriggers[triggerType];
                 CustomTriggerActionInfo customInfo = ConvertToCustomInfo(info as WeatherActionInfo);
 
                 TriggerAction action = Activator.CreateInstance(customTrigger.CustomTriggerActionType) as TriggerAction;
@@ -223,6 +238,5 @@ namespace RocketLib.CustomTriggers
                 }
             }
         }
-
     }
 }
