@@ -36,19 +36,19 @@ namespace RocketLib.Menus.Utilities
 
             MenuHighlightTween highlightTween = highlightObject.GetComponent<MenuHighlightTween>();
 
-            GameObject boxHorizontalsObject = CreateBoxComponent(highlightObject, "BoxHorizontals", new Vector3(0f, 2f, 0f), 144f, 28f, layer, SpriteBase.ANCHOR_METHOD.MIDDLE_CENTER);
+            GameObject boxHorizontalsObject = CreateBoxComponent(highlightObject, "BoxHorizontals", new Vector3(0f, 2f, 0f), 144f, 28f, new Vector3(0, -3f, 0f), layer, SpriteBase.ANCHOR_METHOD.MIDDLE_CENTER);
             if (boxHorizontalsObject != null)
             {
                 highlightTween.boxHorizontals = boxHorizontalsObject.GetComponent<SpriteSM>();
             }
 
-            GameObject boxLeftObject = CreateBoxComponent(highlightObject, "BoxLeft", new Vector3(-72f, 2f, 0f), 7f, 28f, layer, SpriteBase.ANCHOR_METHOD.MIDDLE_RIGHT);
+            GameObject boxLeftObject = CreateBoxComponent(highlightObject, "BoxLeft", new Vector3(-72f, 2f, 0f), 7f, 28f, new Vector3(0, -3f, 0f), layer, SpriteBase.ANCHOR_METHOD.MIDDLE_RIGHT);
             if (boxLeftObject != null)
             {
                 highlightTween.boxLeft = boxLeftObject.GetComponent<SpriteSM>();
             }
 
-            GameObject boxRightObject = CreateBoxComponent(highlightObject, "BoxRight", new Vector3(72f, 2f, 0f), 7f, 28f, layer, SpriteBase.ANCHOR_METHOD.MIDDLE_LEFT);
+            GameObject boxRightObject = CreateBoxComponent(highlightObject, "BoxRight", new Vector3(72f, 2f, 0f), 7f, 28f, new Vector3(0, -3f, 0f), layer, SpriteBase.ANCHOR_METHOD.MIDDLE_LEFT);
             if (boxRightObject != null)
             {
                 highlightTween.boxRight = boxRightObject.GetComponent<SpriteSM>();
@@ -138,7 +138,7 @@ namespace RocketLib.Menus.Utilities
             return boxSprite;
         }
 
-        private static GameObject CreateBoxComponent(GameObject parent, string name, Vector3 localPos, float width, float height, int layer, SpriteBase.ANCHOR_METHOD anchor)
+        private static GameObject CreateBoxComponent(GameObject parent, string name, Vector3 localPos, float width, float height, Vector3 spriteOffset, int layer, SpriteBase.ANCHOR_METHOD anchor)
         {
             string directoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string resourcesPath = Path.Combine(directoryPath, "Resources");
@@ -172,7 +172,7 @@ namespace RocketLib.Menus.Utilities
                 pixelDimensions = new Vector2(21f, 89f);
             }
 
-            SetupSprite(boxSprite, selectorTexture, lowerLeftPixel, pixelDimensions, width, height, Vector3.zero, anchor);
+            SetupSprite(boxSprite, selectorTexture, lowerLeftPixel, pixelDimensions, width, height, spriteOffset, anchor);
 
             return boxObject;
         }
