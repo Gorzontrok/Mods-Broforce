@@ -57,39 +57,13 @@ namespace RocketLib
                 {
                     logger.Exception("Error while loading Newtonsoft.Json", ex);
                 }
-                
-                // Register test menus
-                RegisterTestMenus();
-                
+
                 Loaded = true;
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
             }
-        }
-
-        private static void RegisterTestMenus()
-        {
-            #if DEBUG
-            try
-            {
-                // Register the basic FlexMenu example
-                Menus.Core.MenuRegistry.RegisterMenu<Menus.Tests.BasicFlexMenuExample>(
-                    displayText: "FLEX MENU TEST",
-                    targetMenu: Menus.Core.TargetMenu.MainMenu,
-                    position: Menus.Core.PositionMode.After,
-                    positionReference: "OPTIONS",
-                    priority: 100
-                );
-                
-                logger.Log("Test menus registered successfully");
-            }
-            catch (Exception ex)
-            {
-                logger.Error($"Failed to register test menus: {ex}");
-            }
-            #endif
         }
 
         public static bool TestBuild
