@@ -12,7 +12,6 @@ namespace RocketLib.Menus.Vanilla
     /// </summary>
     public class ModOptionsMenu : BaseCustomMenu
     {
-        public override string MenuId => "RocketLib_ModOptionsMenu";
         public override string MenuTitle => "MOD OPTIONS";
 
         private static bool isRegistered = false;

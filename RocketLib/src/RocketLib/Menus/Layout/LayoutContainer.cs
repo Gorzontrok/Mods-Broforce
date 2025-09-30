@@ -159,14 +159,14 @@ namespace RocketLib.Menus.Layout
             RocketLib.Main.logger.Log($"  Child Distribution:");
 
             int fillCount = 0;
-            
+
             for (int i = 0; i < children.Count; i++)
             {
                 var child = children[i];
                 string childName = string.IsNullOrEmpty(child.Name) ? child.GetType().Name : child.Name;
                 SizeMode sizeMode = isVertical ? child.HeightMode : child.WidthMode;
                 float childSize = isVertical ? child.ActualSize.y : child.ActualSize.x;
-                
+
                 if (sizeMode == SizeMode.Fill)
                 {
                     fillCount++;
@@ -176,20 +176,20 @@ namespace RocketLib.Menus.Layout
                 {
                     RocketLib.Main.logger.Log($"    {i + 1}. {child.GetType().Name} '{childName}' ({sizeMode}): {childSize:F1}px");
                 }
-                
+
                 if (i < children.Count - 1)
                 {
                     RocketLib.Main.logger.Log($"       + Spacing: {Spacing:F1}px");
                 }
             }
-            
+
             RocketLib.Main.logger.Log("");
             RocketLib.Main.logger.Log($"  Total Required: {totalRequired:F1}px");
-            
+
             if (overflow > 1f)
             {
                 RocketLib.Main.logger.Log($"  [!] OVERFLOW: {overflow:F1}px (needs {totalRequired:F1}px, has {availableSpace:F1}px)");
-                
+
                 if (fillCount > 0)
                 {
                     float spaceAfterFixed = availableSpace - totalRequired;
@@ -204,8 +204,8 @@ namespace RocketLib.Menus.Layout
                         RocketLib.Main.logger.Log($"  [!] Note: {fillCount} Fill elements share remaining space ({spacePerFill:F1}px each)");
                     }
                 }
-                
-                
+
+
             }
             else if (overflow > -1f)
             {
@@ -258,7 +258,7 @@ namespace RocketLib.Menus.Layout
                     }
                 }
             }
-            
+
             if (offScreenElements.Count > 0)
             {
                 RocketLib.Main.logger.Log("");
@@ -268,7 +268,7 @@ namespace RocketLib.Menus.Layout
                     RocketLib.Main.logger.Log($"    - {element}");
                 }
             }
-            
+
             RocketLib.Main.logger.Log("");
         }
 

@@ -20,8 +20,6 @@ namespace RocketLib.Menus.Vanilla
         /// <summary>
         /// Gets the unique identifier for this menu
         /// </summary>
-        public override string MenuId => $"SimpleSubmenu_{menuName.Replace(" ", "_")}";
-
         /// <summary>
         /// Gets the display title for this menu
         /// </summary>

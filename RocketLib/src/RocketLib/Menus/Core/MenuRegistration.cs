@@ -3,6 +3,41 @@ using UnityEngine;
 
 namespace RocketLib.Menus.Core
 {
+    using System.Collections.Generic;
+
+    internal static class MenuInstanceCache
+    {
+        private static readonly Dictionary<string, Vanilla.BaseCustomMenu> instances = new Dictionary<string, Vanilla.BaseCustomMenu>();
+
+        public static Vanilla.BaseCustomMenu GetOrCreate(string menuId, Type menuType, Menu parentMenu)
+        {
+            if (instances.TryGetValue(menuId, out Vanilla.BaseCustomMenu existing) && existing != null)
+            {
+                existing.Initialize(parentMenu);
+                existing.gameObject.SetActive(true);
+                return existing;
+            }
+
+            var menuGO = new GameObject($"RocketLib_Menu_{menuId}");
+            menuGO.transform.SetParent(parentMenu.transform.parent);
+            menuGO.transform.position = parentMenu.transform.position;
+            menuGO.SetActive(false);
+
+            var menu = menuGO.AddComponent(menuType) as Vanilla.BaseCustomMenu;
+            if (menu != null)
+            {
+                menu.InstanceId = menuId;
+                instances[menuId] = menu;
+            }
+
+            return menu;
+        }
+
+        public static void Remove(string menuId)
+        {
+            instances.Remove(menuId);
+        }
+    }
     /// <summary>
     /// Target menus where menu items can be injected
     /// </summary>
@@ -69,7 +104,6 @@ namespace RocketLib.Menus.Core
 
         // Instance storage (only for BaseCustomMenu)
         public Vanilla.BaseCustomMenu CustomInstance { get; set; }
-        // Note: FlexMenu doesn't support instances - always created via type
 
         // Action support (only for Action kind)
         public Action<Menu> OnSelect { get; set; }
@@ -112,10 +146,8 @@ namespace RocketLib.Menus.Core
 
             if (CustomInstance != null)
             {
-                // Use the pre-configured instance
                 menuToOpen = CustomInstance;
 
-                // Ensure it has a GameObject
                 if (menuToOpen.gameObject == null)
                 {
                     var menuGO = new GameObject($"RocketLib_Menu_{MenuId}");
@@ -123,25 +155,16 @@ namespace RocketLib.Menus.Core
                     menuGO.transform.position = parentMenu.transform.position;
                     menuGO.SetActive(false);
 
-                    // Move the component to the new GameObject
-                    // This is complex, so for new instances we'll create fresh
                     menuToOpen = menuGO.AddComponent(MenuType) as Vanilla.BaseCustomMenu;
                 }
             }
             else if (MenuType != null)
             {
-                // Create a new instance from type
-                var menuGO = new GameObject($"RocketLib_Menu_{MenuId}");
-                menuGO.transform.SetParent(parentMenu.transform.parent);
-                menuGO.transform.position = parentMenu.transform.position;
-                menuGO.SetActive(false);
-
-                menuToOpen = menuGO.AddComponent(MenuType) as Vanilla.BaseCustomMenu;
+                menuToOpen = MenuInstanceCache.GetOrCreate(MenuId, MenuType, parentMenu);
             }
 
             if (menuToOpen != null)
             {
-                // Initialize and show the menu
                 menuToOpen.Initialize(parentMenu);
                 parentMenu.MenuActive = false;
                 menuToOpen.gameObject.SetActive(true);

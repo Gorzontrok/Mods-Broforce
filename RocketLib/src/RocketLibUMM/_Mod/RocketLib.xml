@@ -1357,11 +1357,6 @@
             Unity Awake - set up the menu when GameObject becomes active
             </summary>
         </member>
-        <member name="M:RocketLib.Menus.Vanilla.BaseCustomMenu.CreateCustomHighlight">
-            <summary>
-            Create a fresh highlight GameObject from scratch using our own resources
-            </summary>
-        </member>
         <member name="M:RocketLib.Menus.Vanilla.BaseCustomMenu.OnMenuOpened">
             <summary>
             Called when the menu is opened

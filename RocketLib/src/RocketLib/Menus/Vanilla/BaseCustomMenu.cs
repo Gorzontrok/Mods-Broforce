@@ -13,14 +13,13 @@ namespace RocketLib.Menus.Vanilla
     public abstract class BaseCustomMenu : Menu
     {
         /// <summary>
-        /// Unique identifier for this menu
-        /// </summary>
-        public abstract string MenuId { get; }
-
-        /// <summary>
         /// Display title for this menu
         /// </summary>
         public abstract string MenuTitle { get; }
+        /// <summary>
+        /// Instance identifier (set by MenuRegistry for caching)
+        /// </summary>
+        internal string InstanceId { get; set; }
 
         /// <summary>
         /// Vertical spacing between menu items
@@ -117,13 +116,12 @@ namespace RocketLib.Menus.Vanilla
             this.deselectedTextScale = parentTraverse.Field<float>("deselectedTextScale").Value;
         }
 
-        /// <summary>
-        /// Create a fresh highlight GameObject from scratch using our own resources
-        /// </summary>
         private void CreateCustomHighlight()
         {
-            // Use the new HighlightFactory to create highlight
-            this.menuHighlight = HighlightFactory.CreateHighlight(this.transform, this.gameObject.layer);
+            if (this.menuHighlight == null)
+            {
+                this.menuHighlight = HighlightFactory.CreateHighlight(this.transform, 17);
+            }
         }
 
         /// <summary>
@@ -250,6 +248,11 @@ namespace RocketLib.Menus.Vanilla
         protected override void OnDestroy()
         {
             PrevMenu = null;
+
+            if (!string.IsNullOrEmpty(InstanceId))
+            {
+                Core.MenuInstanceCache.Remove(InstanceId);
+            }
         }
     }
 }

@@ -1,4 +1,3 @@
-using RocketLib.Menus.Core;
 using RocketLib.Menus.Vanilla;
 using UnityEngine;
 
@@ -6,7 +5,6 @@ namespace RocketLib.Menus.Tests
 {
     public class VanillaSubmenuExample : BaseCustomMenu
     {
-        public override string MenuId => "RocketLib_VanillaSubmenuExample";
         public override string MenuTitle => "VANILLA SUBMENU";
 
         protected override void SetupMenuItems()
