@@ -170,11 +170,6 @@ namespace RocketLib.Menus.Core
             }
 
             menuTraverse.Field<MenuBarItem[]>("masterItems").Value = newItems.ToArray();
-
-            if (menu.menuActive)
-            {
-                UpdateMenuVisuals(menu);
-            }
         }
 
         /// <summary>
@@ -237,6 +232,7 @@ namespace RocketLib.Menus.Core
             if (menu is MainMenu) return TargetMenu.MainMenu;
             if (menu is PauseMenu) return TargetMenu.PauseMenu;
             if (menu is OptionsMenu) return TargetMenu.OptionsMenu;
+            if (menu is InGameOptionsMenu) return TargetMenu.InGameOptionsMenu;
             // ModOptions is handled separately
             return null;
         }
@@ -262,37 +258,6 @@ namespace RocketLib.Menus.Core
                 return true;
             }
             return false;
-        }
-
-        /// <summary>
-        /// Update the visual representation of a menu
-        /// </summary>
-        private static void UpdateMenuVisuals(Menu menu)
-        {
-            var traverse = Traverse.Create(menu);
-
-            var items = traverse.Field("items").GetValue() as Array;
-            var masterItems = traverse.Field<MenuBarItem[]>("masterItems").Value;
-
-            if (items != null && masterItems != null)
-            {
-                for (int i = 0; i < System.Math.Min(items.Length, masterItems.Length); i++)
-                {
-                    var itemObj = items.GetValue(i);
-                    if (itemObj != null && masterItems[i] != null)
-                    {
-                        var itemUI = itemObj as Localisation.MenuBarItemUI;
-                        if (itemUI != null)
-                        {
-                            var textProperty = typeof(Localisation.MenuBarItemUI).GetProperty("text");
-                            if (textProperty != null)
-                            {
-                                textProperty.SetValue(itemUI, masterItems[i].name, null);
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         /// <summary>

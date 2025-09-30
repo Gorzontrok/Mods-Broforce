@@ -1626,11 +1626,6 @@
             Invoke a registered menu action
             </summary>
         </member>
-        <member name="M:RocketLib.Menus.Core.MenuRegistry.UpdateMenuVisuals(Menu)">
-            <summary>
-            Update the visual representation of a menu
-            </summary>
-        </member>
         <member name="M:RocketLib.Menus.Core.MenuRegistry.ClearAll">
             <summary>
             Clear all registrations (useful for mod unload)

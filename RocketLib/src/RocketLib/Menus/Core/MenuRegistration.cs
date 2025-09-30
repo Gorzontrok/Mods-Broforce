@@ -8,10 +8,11 @@ namespace RocketLib.Menus.Core
     /// </summary>
     public enum TargetMenu
     {
-        MainMenu,      // Game's main menu
-        PauseMenu,     // In-game pause menu
-        OptionsMenu,   // Options submenu
-        ModOptions     // Mod options submenu
+        MainMenu,           // Game's main menu
+        PauseMenu,          // In-game pause menu
+        OptionsMenu,        // Options submenu (from MainMenu)
+        InGameOptionsMenu,  // Options submenu (from PauseMenu)
+        ModOptions          // Mod options submenu
     }
 
     /// <summary>

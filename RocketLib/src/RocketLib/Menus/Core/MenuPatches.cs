@@ -57,7 +57,7 @@ namespace RocketLib.Menus.Core
     [HarmonyPatch(typeof(OptionsMenu), "InstantiateItems")]
     static class OptionsMenu_SetupItems_Patch
     {
-        static void Postfix(OptionsMenu __instance)
+        static void Prefix(OptionsMenu __instance)
         {
             try
             {
@@ -65,7 +65,23 @@ namespace RocketLib.Menus.Core
             }
             catch (Exception ex)
             {
-                Main.logger.Error($"Error in OptionsMenu_InstantiateItems_Postfix: {ex}");
+                Main.logger.Error($"Error in OptionsMenu_InstantiateItems_Prefix: {ex}");
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(InGameOptionsMenu), "InstantiateItems")]
+    static class InGameOptionsMenu_InstantiateItems_Patch
+    {
+        static void Prefix(InGameOptionsMenu __instance)
+        {
+            try
+            {
+                MenuRegistry.InjectMenuItems(__instance);
+            }
+            catch (Exception ex)
+            {
+                Main.logger.Error($"Error in InGameOptionsMenu_InstantiateItems_Prefix: {ex}");
             }
         }
     }
