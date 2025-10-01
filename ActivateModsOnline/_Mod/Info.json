@@ -1,0 +1,9 @@
+﻿{
+  "Id": "Gorzontrok.ActivateModsOnline",
+  "DisplayName": "Activate Mods Online",
+  "Author": "Gorzontrok",
+  "Version": "1.0.0",
+  "AssemblyName": "ActivateModsOnline.dll",
+  "EntryMethod": "ActivateModsOnline.Main.Load",
+  "Repository": "https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/main/Repository.json"
+}
