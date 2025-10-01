@@ -223,71 +223,71 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="character">The TestVanDammeAnim character to identify.</param>
         /// <returns>The UnitType of the character.</returns>
-        public static UnitType GetUnitType( this TestVanDammeAnim character )
+        public static UnitType GetUnitType(this TestVanDammeAnim character)
         {
-            switch ( character.GetMookType() )
+            switch (character.GetMookType())
             {
                 case MookType.None:
-                    if ( character is BroBase )
+                    if (character is BroBase)
                         return UnitType.Bro;
-                    if ( character is HellLostSoul )
+                    if (character is HellLostSoul)
                         return UnitType.LostSoul;
-                    if ( character is Villager )
+                    if (character is Villager)
                         return UnitType.Villager;
                     Animal animal = character as Animal;
                     // 2 different units use the Animal class
-                    if ( animal != null )
+                    if (animal != null)
                     {
-                        if ( animal.isRotten )
+                        if (animal.isRotten)
                             return UnitType.RottenPig;
                         else
                             return UnitType.Pig;
                     }
                     RemoteControlExplosiveCar car = character as RemoteControlExplosiveCar;
-                    if ( car != null )
+                    if (car != null)
                     {
                         return UnitType.RCCar;
                     }
                     break;
                 case MookType.Trooper:
-                    if ( character is MookJetpack )
+                    if (character is MookJetpack)
                         return UnitType.JetpackMook;
-                    if ( character is MookNinja )
+                    if (character is MookNinja)
                         return UnitType.NinjaMook;
                     // 3 different enemies use the MookTrooper class
-                    if ( character is MookTrooper )
+                    if (character is MookTrooper)
                     {
-                        Traverse trav = Traverse.Create( character );
-                        if ( (bool)trav.GetFieldValue( "randomizeDancingFramesRow" ) )
+                        Traverse trav = Traverse.Create(character);
+                        if ((bool)trav.GetFieldValue("randomizeDancingFramesRow"))
                         {
                             return UnitType.Mook;
                         }
-                        int dancingFrames = (int)trav.GetFieldValue( "dancingFrames" );
-                        if ( dancingFrames == 11 )
+                        int dancingFrames = (int)trav.GetFieldValue("dancingFrames");
+                        if (dancingFrames == 11)
                             return UnitType.StrongMook;
                         else
                             return UnitType.ScientistMook;
                     }
-                    if ( character is SkinnedMook )
+                    if (character is SkinnedMook)
                         return UnitType.SkinnedMook;
-                    if ( character is MookGeneral )
+                    if (character is MookGeneral)
                         return UnitType.Alarmist;
                     break;
                 case MookType.Suicide:
                     return UnitType.SuicideMook;
                 case MookType.BigGuy:
-                    if ( character is MookSuicide )
+                    if (character is MookSuicide)
                         return UnitType.SuicideBruiser;
-                    if ( character is MookBigGuyElite )
+                    if (character is MookBigGuyElite)
                         return UnitType.EliteBruiser;
-                    if ( character is SatanMiniboss )
+                    if (character is SatanMiniboss)
                         return UnitType.SatanMiniboss;
-                    if ( character is DolphLundrenSoldier )
+                    if (character is DolphLundrenSoldier)
                         return UnitType.CR666;
                     // 2 different enemies use the MookBigGuy class
-                    if ( character is MookBigGuy )
+                    if (character is MookBigGuy)
                     {
-                        if ( character.maxHealth == 25 || ( character.maxHealth == -1 && character.health == 25 ) )
+                        if (character.maxHealth == 25 || (character.maxHealth == -1 && character.health == 25))
                             return UnitType.Bruiser;
                         else
                             return UnitType.StrongBruiser;
@@ -295,9 +295,9 @@ namespace RocketLib.Utils
                     break;
                 case MookType.Scout:
                     Mook mook = character as Mook;
-                    if ( mook != null )
+                    if (mook != null)
                     {
-                        if ( !mook.canLandOnFace )
+                        if (!mook.canLandOnFace)
                             return UnitType.ScoutMook;
                         else
                             return UnitType.TreasureMook;
@@ -310,13 +310,13 @@ namespace RocketLib.Utils
                 case MookType.RiotShield:
                     return UnitType.RiotShieldMook;
                 case MookType.Alien:
-                    if ( character is AlienBrute )
+                    if (character is AlienBrute)
                         return UnitType.Brute;
                     // 2 different enemies use the AlienXenomorph class
                     AlienXenomorph xenomorph = character as AlienXenomorph;
-                    if ( xenomorph != null )
+                    if (xenomorph != null)
                     {
-                        if ( !xenomorph.hasBrainBox )
+                        if (!xenomorph.hasBrainBox)
                             return UnitType.Xenomorph;
                         else
                             return UnitType.XenomorphBrainbox;
@@ -330,25 +330,25 @@ namespace RocketLib.Utils
                 case MookType.General:
                     return UnitType.MookGeneral;
                 case MookType.Bazooka:
-                    if ( character is MookJetpackBazooka )
+                    if (character is MookJetpackBazooka)
                         return UnitType.JetpackBazookaMook;
-                    if ( character is MookBazooka )
+                    if (character is MookBazooka)
                         return UnitType.BazookaMook;
                     break;
                 case MookType.FaceHugger:
                     AlienFaceHugger facehugger = character as AlienFaceHugger;
-                    if ( facehugger != null )
+                    if (facehugger != null)
                     {
-                        if ( facehugger.layEggsInsideBros )
+                        if (facehugger.layEggsInsideBros)
                             return UnitType.Facehugger;
                         else
                             return UnitType.Snake;
                     }
                     break;
                 case MookType.Melter:
-                    if ( character is AlienMelter )
+                    if (character is AlienMelter)
                         return UnitType.Screecher;
-                    if ( character is AlienMosquito )
+                    if (character is AlienMosquito)
                         return UnitType.Baneling;
                     break;
                 case MookType.UndeadTrooper:
@@ -358,9 +358,9 @@ namespace RocketLib.Utils
                 case MookType.Warlock:
                     return UnitType.Warlock;
                 case MookType.Boomer:
-                    if ( character is MookHellSoulCatcher )
+                    if (character is MookHellSoulCatcher)
                         return UnitType.SoulCatcher;
-                    if ( character is MookHellBoomer )
+                    if (character is MookHellBoomer)
                         return UnitType.Boomer;
                     break;
                 case MookType.HellDog:
@@ -368,7 +368,7 @@ namespace RocketLib.Utils
                 case MookType.HellBigGuy:
                     return UnitType.Executioner;
                 case MookType.ArmouredGuy:
-                    if ( character.maxHealth == 65 || ( character.maxHealth == -1 && character.health == 65 ) )
+                    if (character.maxHealth == 65 || (character.maxHealth == -1 && character.health == 65))
                         return UnitType.BrownMech;
                     else
                         return UnitType.Mech;
@@ -386,14 +386,14 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="unit">The Unit to identify.</param>
         /// <returns>The UnitType of the unit.</returns>
-        public static UnitType GetUnitType( this Unit unit )
+        public static UnitType GetUnitType(this Unit unit)
         {
             TestVanDammeAnim character = unit as TestVanDammeAnim;
-            if ( character != null )
+            if (character != null)
                 return character.GetUnitType();
 
             // Handle non-TestVanDammeAnim enemies using type matching
-            switch ( unit )
+            switch (unit)
             {
                 case TankBig _:
                     return UnitType.StealthTank;
@@ -406,7 +406,7 @@ namespace RocketLib.Utils
                 case AlienGiantSandWorm _:
                     return UnitType.SandWorm;
                 case HellBoneWormMiniboss boneworm:
-                    if ( boneworm.name.Contains( "Behind" ) || boneworm.activationOffset.x == 250 )
+                    if (boneworm.name.Contains("Behind") || boneworm.activationOffset.x == 250)
                     {
                         return UnitType.BonewormBehind;
                     }
@@ -415,7 +415,7 @@ namespace RocketLib.Utils
                         return UnitType.Boneworm;
                     }
                 case AlienWormFacehuggerLauncher facehuggerLauncher:
-                    if ( facehuggerLauncher.name.Contains( "Behind" ) || facehuggerLauncher.activationOffset.x == 250 )
+                    if (facehuggerLauncher.name.Contains("Behind") || facehuggerLauncher.activationOffset.x == 250)
                     {
                         return UnitType.AlienFacehuggerWormBehind;
                     }
@@ -438,7 +438,7 @@ namespace RocketLib.Utils
                 case MookTruck _:
                     return UnitType.MookTruck;
                 case MookMotorBike motorbike:
-                    if ( motorbike.nuclearBombSprite != null )
+                    if (motorbike.nuclearBombSprite != null)
                     {
                         return UnitType.MotorbikeNuclear;
                     }
@@ -449,7 +449,7 @@ namespace RocketLib.Utils
                 case MookGunplacement _:
                     return UnitType.Turret;
                 case Tank tank:
-                    switch ( tank.weapon )
+                    switch (tank.weapon)
                     {
                         case TankrocketBattery _:
                             return UnitType.RocketTank;
@@ -471,9 +471,9 @@ namespace RocketLib.Utils
         /// <param name="villagerNum">For villagers, specifies which villager variant to return. -1 for random.</param>
         /// <param name="startDead">For undead mooks, whether to get the lying-down variant.</param>
         /// <returns>The TestVanDammeAnim prefab, or null if the type doesn't have one.</returns>
-        public static TestVanDammeAnim GetTestVanDammeAnimPrefab( this UnitType type, int villagerNum = -1, bool startDead = false )
+        public static TestVanDammeAnim GetTestVanDammeAnimPrefab(this UnitType type, int villagerNum = -1, bool startDead = false)
         {
-            switch ( type )
+            switch (type)
             {
                 case UnitType.Mook:
                     return Map.Instance.activeTheme.mook;
@@ -538,7 +538,7 @@ namespace RocketLib.Utils
                 case UnitType.Hellhound:
                     return Map.Instance.sharedObjectsReference.Asset.hellEnemies[0].GetComponent<TestVanDammeAnim>();
                 case UnitType.UndeadMook:
-                    if ( !startDead )
+                    if (!startDead)
                         return Map.Instance.sharedObjectsReference.Asset.hellEnemies[1].GetComponent<TestVanDammeAnim>();
                     else
                         return Map.Instance.sharedObjectsReference.Asset.hellEnemies[2].GetComponent<TestVanDammeAnim>();
@@ -563,8 +563,8 @@ namespace RocketLib.Utils
                 case UnitType.RottenPig:
                     return Map.Instance.activeTheme.animals[2].GetComponent<TestVanDammeAnim>();
                 case UnitType.Villager:
-                    if ( villagerNum == -1 )
-                        return Map.Instance.activeTheme.villager1[UnityEngine.Random.Range( 0, 1 )];
+                    if (villagerNum == -1)
+                        return Map.Instance.activeTheme.villager1[UnityEngine.Random.Range(0, 1)];
                     else
                         return Map.Instance.activeTheme.villager1[villagerNum];
                 case UnitType.RCCar:
@@ -582,14 +582,14 @@ namespace RocketLib.Utils
         /// <param name="villagerNum">For villagers, specifies which villager variant to return. -1 for random.</param>
         /// <param name="startDead">For undead mooks, whether to get the lying-down variant.</param>
         /// <returns>The Unit prefab for spawning.</returns>
-        public static Unit GetUnitPrefab( this UnitType type, int villagerNum = -1, bool startDead = false )
+        public static Unit GetUnitPrefab(this UnitType type, int villagerNum = -1, bool startDead = false)
         {
-            TestVanDammeAnim testVanDammeAnimPrefab = type.GetTestVanDammeAnimPrefab( villagerNum, startDead );
-            if ( testVanDammeAnimPrefab != null )
+            TestVanDammeAnim testVanDammeAnimPrefab = type.GetTestVanDammeAnimPrefab(villagerNum, startDead);
+            if (testVanDammeAnimPrefab != null)
                 return testVanDammeAnimPrefab;
 
             // Handle non-TestVanDammeAnim enemies
-            switch ( type )
+            switch (type)
             {
                 case UnitType.StealthTank:
                     return Map.Instance.activeTheme.mookMammothTank;
@@ -646,9 +646,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The UnitType to convert.</param>
         /// <returns>The display name of the unit type.</returns>
-        public static string ToDisplayString( this UnitType type )
+        public static string ToDisplayString(this UnitType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case UnitType.None:
                     return "None";
@@ -805,9 +805,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The string name of the unit type.</param>
         /// <returns>The corresponding UnitType, or UnitType.None if not found.</returns>
-        public static UnitType ToUnitType( string type )
+        public static UnitType ToUnitType(string type)
         {
-            switch ( type )
+            switch (type)
             {
                 case "None":
                     return UnitType.None;
@@ -954,9 +954,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The unit type to check.</param>
         /// <returns>True if the unit has a special ability.</returns>
-        public static bool HasSpecial( this UnitType type )
+        public static bool HasSpecial(this UnitType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case UnitType.Mech:
                 case UnitType.BrownMech:
@@ -981,9 +981,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The unit type to check.</param>
         /// <returns>True if the unit has a second special ability.</returns>
-        public static bool HasSpecial2( this UnitType type )
+        public static bool HasSpecial2(this UnitType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case UnitType.SuicideMook:
                 case UnitType.SuicideBruiser:
@@ -999,9 +999,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The unit type to check.</param>
         /// <returns>True if the unit has a third special ability.</returns>
-        public static bool HasSpecial3( this UnitType type )
+        public static bool HasSpecial3(this UnitType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case UnitType.CR666:
                     return true;
@@ -1014,9 +1014,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The unit type to check.</param>
         /// <returns>True if the unit can dance.</returns>
-        public static bool CanDance( this UnitType type )
+        public static bool CanDance(this UnitType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case UnitType.EliteBruiser:
                 case UnitType.BrownMech:
@@ -1057,9 +1057,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The unit type to check.</param>
         /// <returns>True if the unit is a suicide type.</returns>
-        public static bool IsSuicideUnit( this UnitType type )
+        public static bool IsSuicideUnit(this UnitType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case UnitType.Baneling:
                 case UnitType.LostSoul:
@@ -1079,9 +1079,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The unit type to check.</param>
         /// <returns>True if the unit type derives from TestVanDammeAnim, false for vehicles, bosses, and worms.</returns>
-        public static bool IsTestVanDammeAnimType( this UnitType type )
+        public static bool IsTestVanDammeAnimType(this UnitType type)
         {
-            switch ( type )
+            switch (type)
             {
                 // Non-TestVanDammeAnim types
                 case UnitType.StealthTank:
@@ -1120,9 +1120,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The unit type to get sprite width for.</param>
         /// <returns>The width of the unit's sprite in pixels.</returns>
-        public static float GetSpriteWidth( this UnitType type )
+        public static float GetSpriteWidth(this UnitType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case UnitType.Bruiser:
                 case UnitType.EliteBruiser:
@@ -1151,9 +1151,9 @@ namespace RocketLib.Utils
         /// </summary>
         /// <param name="type">The unit type to get sprite height for.</param>
         /// <returns>The height of the unit's sprite in pixels.</returns>
-        public static float GetSpriteHeight( this UnitType type )
+        public static float GetSpriteHeight(this UnitType type)
         {
-            switch ( type )
+            switch (type)
             {
                 case UnitType.Boomer:
                 case UnitType.SoulCatcher:

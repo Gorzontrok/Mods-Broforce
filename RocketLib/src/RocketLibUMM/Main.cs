@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Reflection;
-using UnityEngine;
-using UnityModManagerNet;
 using HarmonyLib;
 using RocketLib;
-using RMain = RocketLib.Main;
 using RocketLib.Loggers;
+using UnityEngine;
+using UnityModManagerNet;
+using RMain = RocketLib.Main;
 
 namespace RocketLibUMM
 {
@@ -32,9 +32,16 @@ namespace RocketLibUMM
             settings = Settings.Load<Settings>(modEntry);
             ScreenLogger.fontSize = settings.fontSize;
 
-            harmony = new Harmony(modEntry.Info.Id);
-            var assembly = Assembly.GetExecutingAssembly();
-            harmony.PatchAll(assembly);
+            try
+            {
+                harmony = new Harmony(modEntry.Info.Id);
+                var assembly = Assembly.GetExecutingAssembly();
+                harmony.PatchAll(assembly);
+            }
+            catch (Exception ex)
+            {
+                logger.Exception("Error while applying RocketLib patches: ", ex);
+            }
 
             logger = new RLogger();
 
@@ -48,7 +55,7 @@ namespace RocketLibUMM
                 RMain.logTimer = settings.logTimer;
 
                 // Load ScreenLogger
-                if ( settings.onScreenLog )
+                if (settings.onScreenLog)
                 {
                     ScreenLogger.Load();
                 }
@@ -69,7 +76,57 @@ namespace RocketLibUMM
             {
                 logger.Exception(e);
             }
+
+            // Initialize ModOptionsMenu to show in menus
+            RocketLib.Menus.Vanilla.ModOptionsMenu.Initialize();
+
+            RegisterTestMenus();
+
             return true;
+        }
+
+        static void RegisterTestMenus()
+        {
+            try
+            {
+                RocketLib.Menus.Core.MenuRegistry.RegisterMenu<RocketLib.Menus.Tests.VanillaSubmenuExample>(
+                    displayText: "TEST MAINMENU",
+                    targetMenu: RocketLib.Menus.Core.TargetMenu.MainMenu,
+                    position: RocketLib.Menus.Core.PositionMode.After,
+                    positionReference: "START",
+                    priority: 100
+                );
+
+                RocketLib.Menus.Core.MenuRegistry.RegisterMenu<RocketLib.Menus.Tests.VanillaSubmenuExample>(
+                    displayText: "TEST OPTIONS MAINMENU",
+                    targetMenu: RocketLib.Menus.Core.TargetMenu.OptionsMenu,
+                    position: RocketLib.Menus.Core.PositionMode.After,
+                    positionReference: "CONFIGURE CONTROLS",
+                    priority: 100
+                );
+
+                RocketLib.Menus.Core.MenuRegistry.RegisterMenu<RocketLib.Menus.Tests.VanillaSubmenuExample>(
+                    displayText: "TEST PAUSEMENU",
+                    targetMenu: RocketLib.Menus.Core.TargetMenu.PauseMenu,
+                    position: RocketLib.Menus.Core.PositionMode.After,
+                    positionReference: "RESUME GAME",
+                    priority: 100
+                );
+
+                RocketLib.Menus.Core.MenuRegistry.RegisterMenu<RocketLib.Menus.Tests.VanillaSubmenuExample>(
+                    displayText: "TEST OPTIONS PAUSEMENU",
+                    targetMenu: RocketLib.Menus.Core.TargetMenu.InGameOptionsMenu,
+                    position: RocketLib.Menus.Core.PositionMode.After,
+                    positionReference: "BACK",
+                    priority: 100
+                );
+
+                logger.Log("Test menus registered successfully");
+            }
+            catch (Exception ex)
+            {
+                logger.Error("Failed to register test menus: " + ex.ToString());
+            }
         }
 
         static string MakeUSAColorOnBroforce()

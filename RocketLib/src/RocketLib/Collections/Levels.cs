@@ -177,7 +177,7 @@ namespace RocketLib.Collections
                 get
                 {
                     if (_all.IsNullOrEmpty())
-                        _all = new string[] { ELEVATOR_ACTION, MOUNT_BROLYMPUS, SEVEN, HEIGHT};
+                        _all = new string[] { ELEVATOR_ACTION, MOUNT_BROLYMPUS, SEVEN, HEIGHT };
                     return _all;
                 }
             }
@@ -233,7 +233,7 @@ namespace RocketLib.Collections
             GameState.Instance.sceneToLoad = LevelSelectionController.CampaignScene;
             GameState.Instance.sessionID = Connect.GetIncrementedSessionID().AsByte;
             //GameState.Instance.arcadeHardMode
-            LevelSelectionController.CurrentLevelNum = levelNumber ;
+            LevelSelectionController.CurrentLevelNum = levelNumber;
             HeroUnlockController.Initialize();
 
             Networking.Networking.AdminRPC<GameState>(PID.TargetOthers, true, new RpcSignature<GameState>(GameModeController.LoadNextSceneFade), GameState.Instance);

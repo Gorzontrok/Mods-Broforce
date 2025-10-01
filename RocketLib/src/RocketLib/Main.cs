@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Reflection;
 using System.IO;
-using UnityModManagerNet;
+using System.Reflection;
 using HarmonyLib;
+using UnityModManagerNet;
 
 namespace RocketLib
 {
@@ -44,7 +44,7 @@ namespace RocketLib
                 }
                 catch (Exception ex)
                 {
-                    logger.Exception("Failed to Patch Harmony :\n", ex);
+                    logger.Log("Failed to Patch Harmony : " + ex.ToString());
                 }
 
 
@@ -57,11 +57,12 @@ namespace RocketLib
                 {
                     logger.Exception("Error while loading Newtonsoft.Json", ex);
                 }
+
                 Loaded = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-               logger.Error(ex.ToString());
+                logger.Error(ex.ToString());
             }
         }
 

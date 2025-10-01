@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using RocketLib;
 
 namespace RocketLibUMM
@@ -99,7 +98,7 @@ namespace RocketLibUMM
                 if (gesture6 == null)
                     gesture6 = new KeyBindingForPlayers(Main.mod.Info.Id, "Gesture 6");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Main.logger.Exception(e);
             }

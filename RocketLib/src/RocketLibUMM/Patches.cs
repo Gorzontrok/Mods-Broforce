@@ -1,72 +1,10 @@
-﻿using HarmonyLib;
-using RocketLib.Loggers;
+﻿using System;
+using HarmonyLib;
 using RocketLib;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
+using RocketLib.Utils;
 
 namespace RocketLibUMM
 {
-    // Patches to avoid destroying the mod manager.
-    [HarmonyPatch(typeof(PauseMenu), "ReturnToMenu")]
-    static class PauseMenu_ReturnToMenu_Patch
-    {
-        static bool Prefix(PauseMenu __instance, PauseGameConfirmationPopup ___m_ConfirmationPopup)
-        {
-            if (!Main.enabled)
-            {
-                return true;
-            }
-
-            MethodInfo dynMethod = ___m_ConfirmationPopup.GetType().GetMethod("ConfirmReturnToMenu", BindingFlags.NonPublic | BindingFlags.Instance);
-            dynMethod.Invoke(___m_ConfirmationPopup, null);
-
-            return false;
-        }
-
-    }
-    [HarmonyPatch(typeof(PauseMenu), "ReturnToMap")]
-    static class PauseMenu_ReturnToMap_Patch
-    {
-        static bool Prefix(PauseMenu __instance)
-        {
-            if (!Main.enabled)
-            {
-                return true;
-            }
-
-            __instance.CloseMenu();
-            GameModeController.Instance.ReturnToWorldMap();
-            return false;
-        }
-
-    }
-    [HarmonyPatch(typeof(PauseMenu), "RestartLevel")]
-    static class PauseMenu_RestartLevel_Patch
-    {
-        static bool Prefix(PauseMenu __instance)
-        {
-            if (!Main.enabled)
-            {
-                return true;
-            }
-
-            Map.ClearSuperCheckpointStatus();
-
-            (Traverse.Create(typeof(TriggerManager)).Field("alreadyTriggeredTriggerOnceTriggers").GetValue() as List<string>).Clear();
-
-            if (GameModeController.publishRun)
-            {
-                GameModeController.publishRun = false;
-                LevelEditorGUI.levelEditorActive = true;
-            }
-            PauseController.SetPause(PauseStatus.UnPaused);
-            GameModeController.RestartLevel();
-
-            return false;
-        }
-    }
-
     [HarmonyPatch(typeof(MainMenu))]
     public class MainMenuPatch
     {
@@ -90,6 +28,31 @@ namespace RocketLibUMM
                     Main.logger.Exception($"Failed to check the password: {password.password}", ex);
                 }
             }
+        }
+    }
+
+    // Fix UMM window disappearing
+    [HarmonyPatch(typeof(UnityModManagerNet.UnityModManager.UI), "Start")]
+    static class UnityModManager_UI_Start_Patch
+    {
+        public static void Postfix(UnityModManagerNet.UnityModManager.UI __instance)
+        {
+            RocketLibUtils.MakeObjectUnpausable(__instance.gameObject);
+        }
+    }
+
+    // Fix RuntimeUnityEditor window disappearing
+    [HarmonyPatch(typeof(Startup), "Update")]
+    static class Startup_Update_Patch
+    {
+        public static void Prefix(Startup __instance)
+        {
+            if (!Main.enabled)
+            {
+                return;
+            }
+
+            RocketLibUtils.MakeObjectUnpausable("RuntimeUnityEditor");
         }
     }
 }

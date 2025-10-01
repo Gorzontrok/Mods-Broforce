@@ -1,8 +1,9 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using HarmonyLib;
+using RocketLib.Utils;
 using UnityEngine;
 using UnityModManagerNet;
 
@@ -21,7 +22,7 @@ namespace RocketLib.Loggers
         {
             get
             {
-                if(!Main.Loaded) return null;
+                if (!Main.Loaded) return null;
                 if (!IsLoaded && Main.Loaded)
                     Load();
                 return instance;
@@ -50,6 +51,7 @@ namespace RocketLib.Loggers
             try
             {
                 var d = new GameObject(typeof(ScreenLogger).FullName, typeof(ScreenLogger));
+                RocketLibUtils.MakeObjectUnpausable(d);
                 IsLoaded = true;
                 return true;
             }
@@ -105,7 +107,7 @@ namespace RocketLib.Loggers
         }
         public void ExceptionLog(object message, Exception exception)
         {
-            Log(message + "\n" +  exception.ToString(), RLogType.Exception);
+            Log(message + "\n" + exception.ToString(), RLogType.Exception);
         }
 
         /// <summary>

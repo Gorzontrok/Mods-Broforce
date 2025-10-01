@@ -8,7 +8,7 @@ namespace RocketLib.Collections
         {
             get
             {
-                if(_all == null || _all.Length <= 0)
+                if (_all == null || _all.Length <= 0)
                 {
                     _all = (PickupType[])Enum.GetValues(typeof(PickupType));
                 }

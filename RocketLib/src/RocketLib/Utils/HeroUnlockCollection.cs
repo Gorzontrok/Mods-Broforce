@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
 
 namespace RocketLib.Utils
 {
@@ -121,7 +119,7 @@ namespace RocketLib.Utils
         /// </summary>
         public static void ShowHeroUnlockIntervals()
         {
-            UnityModManagerNet.UnityModManager.Logger.Log( "\n\n int, bro\n", "");
+            UnityModManagerNet.UnityModManager.Logger.Log("\n\n int, bro\n", "");
             foreach (KeyValuePair<int, HeroType> Hero in HeroUnlockController.heroUnlockIntervals)
             {
                 UnityModManagerNet.UnityModManager.Logger.Log(" " + Hero.Key + ",  " + HeroController.GetHeroName(Hero.Value) + "\n", "");

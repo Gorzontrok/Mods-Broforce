@@ -1,5 +1,4 @@
-﻿using RocketLib.Loggers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -43,9 +42,9 @@ namespace RocketLib.Utils
             }
         }
 
-        private static Dictionary<string, Material> materials = new Dictionary<string, Material>();
-        private static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
-        private static Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
+        private static readonly Dictionary<string, Material> materials = new Dictionary<string, Material>();
+        private static readonly Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+        private static readonly Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
         /// <summary>
         /// Creates a Material using the shader Unlit_DepthCutout.
@@ -323,7 +322,8 @@ namespace RocketLib.Utils
 
             while (!getClip.isDone)
             {
-            };
+            }
+            ;
 
 
             AudioClip result = getClip.GetAudioClip(false, true);

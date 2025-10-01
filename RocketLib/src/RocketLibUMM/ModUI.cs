@@ -20,11 +20,11 @@ namespace RocketLibUMM
         private static readonly string[] _tabsName = new string[] { "<color=\"yellow\">Main</color>", "Screen Logger", "Scene Loader", "Log", "Key Bindings" };
         private static readonly Action[] _tabsAction = new Action[] { MainGUI, ScreenLoggerGUI, LoadSceneGUI, LogGUI, KeyBindings };
 
-        private static GUIStyle _logStyle = new GUIStyle();
+        private static readonly GUIStyle _logStyle = new GUIStyle();
         private static string _sceneStr = string.Empty;
         private static Vector2 _scrollViewVector = Vector2.zero;
         private static int _tabSelected = 0;
-        private static GUIStyle _testBtnStyle = new GUIStyle("button");
+        private static readonly GUIStyle _testBtnStyle = new GUIStyle("button");
         private const string _changeKeyMessage = "Press Any Key";
         private static GUIStyle keybindModStyle;
         public static Dictionary<string, KeyBindingForPlayers> modKeyBindings;
@@ -144,11 +144,11 @@ namespace RocketLibUMM
                 int player = 0;
                 GUILayout.BeginVertical("box", GUILayout.ExpandWidth(false));
                 RGUI.LabelCenteredHorizontally(new GUIContent("RocketLib"), GUI.skin.label, RGUI.Unexpanded);
-                if ( modKeyBindings == null )
+                if (modKeyBindings == null)
                 {
                     AllModKeyBindings.TryGetAllKeyBindingsForMod("RocketLib", out modKeyBindings);
                 }
-                if ( modKeyBindings != null )
+                if (modKeyBindings != null)
                 {
                     foreach (KeyValuePair<string, KeyBindingForPlayers> pair in modKeyBindings)
                     {
@@ -156,14 +156,14 @@ namespace RocketLibUMM
                         GUILayout.Space(30);
                     }
                 }
-                if ( GUILayout.Button("Clear All", GUILayout.Width(100)) )
+                if (GUILayout.Button("Clear All", GUILayout.Width(100)))
                 {
                     AllModKeyBindings.ClearKeyBindingsForMod("RocketLib");
                 }
                 GUILayout.EndVertical();
                 GUILayout.Space(30);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Main.logger.Exception(ex);
             }
