@@ -1315,14 +1315,14 @@
             Provides core functionality for menu creation, item management, and scene persistence.
             </summary>
         </member>
-        <member name="P:RocketLib.Menus.Vanilla.BaseCustomMenu.MenuId">
-            <summary>
-            Unique identifier for this menu
-            </summary>
-        </member>
         <member name="P:RocketLib.Menus.Vanilla.BaseCustomMenu.MenuTitle">
             <summary>
             Display title for this menu
+            </summary>
+        </member>
+        <member name="P:RocketLib.Menus.Vanilla.BaseCustomMenu.InstanceId">
+            <summary>
+            Instance identifier (set by MenuRegistry for caching)
             </summary>
         </member>
         <member name="P:RocketLib.Menus.Vanilla.BaseCustomMenu.ItemSpacing">
@@ -1402,12 +1402,10 @@
             Provides an easy way to create submenus without needing to create a custom class.
             </summary>
         </member>
-        <member name="P:RocketLib.Menus.Vanilla.SimpleSubmenu.MenuId">
+        <member name="P:RocketLib.Menus.Vanilla.SimpleSubmenu.MenuTitle">
             <summary>
             Gets the unique identifier for this menu
             </summary>
-        </member>
-        <member name="P:RocketLib.Menus.Vanilla.SimpleSubmenu.MenuTitle">
             <summary>
             Gets the display title for this menu
             </summary>
