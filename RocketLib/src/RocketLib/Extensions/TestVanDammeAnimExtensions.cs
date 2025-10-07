@@ -18,9 +18,9 @@ public static class TestVanDammeAnimExtensions
     }
     #endregion
 
-    public static TwoInt GetSpriteSize(this TestVanDammeAnim self)
+    public static Vector2 GetSpriteSize(this TestVanDammeAnim self)
     {
-        return new TwoInt(self.GetFieldValue<int>("spritePixelWidth"), self.GetFieldValue<int>("spritePixelHeight"));
+        return new Vector2(self.GetFieldValue<int>("spritePixelWidth"), self.GetFieldValue<int>("spritePixelHeight"));
     }
 
     public static void SetSpriteLowerLeftPixel(this TestVanDammeAnim self, int x, int y)
