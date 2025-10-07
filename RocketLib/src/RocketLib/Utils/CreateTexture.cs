@@ -4,9 +4,6 @@ using UnityEngine;
 
 namespace RocketLib.Utils
 {
-    /// <summary>
-    /// Library of useful function made for Broforce. And an  Logger on screen.
-    /// </summary>
     public static class CreateTexture
     {
         public static Texture WithColor(Color color)
