@@ -7,5 +7,5 @@
   "LoadAfter": [ "RocketLib" ],
   "AssemblyName": "DresserMod.dll",
   "EntryMethod": "DresserMod.Main.Load",
-  "Repository": "https://raw.githubusercontent.com/Gorzon38/Mods-Broforce/main/Repository.json"
+  "Repository": "https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/main/Repository.json"
 }
