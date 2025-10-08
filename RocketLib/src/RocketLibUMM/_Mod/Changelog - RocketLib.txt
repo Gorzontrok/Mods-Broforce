@@ -1,5 +1,13 @@
 The Changelog of 'Rocketlib.dll'
 
+v2.4.0:
+Keybindings can now have modifiers
+Fixed OnScreenLog not loading immediatly after game startup*
+Added Custom Triggers
+Added Custom Menu
+Fixed UMM window destruction issue
+Removed TowInt, TwoFloat, FloatRange, Coutdown, HeroUnlockCollection and IsThisMod classes
+
 v2.3.1:
 Added RC Car to TestVanDammeAnimTypes.
 
