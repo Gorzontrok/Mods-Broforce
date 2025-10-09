@@ -593,46 +593,6 @@
             <param name="name">Name of the asset file</param>
             <returns></returns>
         </member>
-        <member name="P:RocketLib.Utils.HeroUnlockCollection.HeroTypes_Intervals">
-            <summary>
-            It's the HeroType  list of the Broforce bros. (read only)
-            </summary>
-        </member>
-        <member name="P:RocketLib.Utils.HeroUnlockCollection.Expendabros_HeroTypes_Intervals">
-            <summary>
-            It's the HeroType List of the Expendabros bros. (read only)
-            </summary>
-        </member>
-        <member name="P:RocketLib.Utils.HeroUnlockCollection.Other_Bros_HeroTypes">
-            <summary>
-            It's the HeroType List of the Expendabros bros. (read only)
-            </summary>
-        </member>
-        <member name="P:RocketLib.Utils.HeroUnlockCollection.Full_HeroType">
-            <summary>
-            It's the full HeroType list of the Broforce bros. Include Expendabros and Brondle Fly. (read only)
-            </summary>
-        </member>
-        <member name="P:RocketLib.Utils.HeroUnlockCollection.Hero_Unlock_Intervals">
-            <summary>
-            The list of unlock intervals of the bros. (read only)
-            </summary>
-        </member>
-        <member name="P:RocketLib.Utils.HeroUnlockCollection.Original_Unlock_Intervals">
-            <summary>
-            The original dictionary of the unlock intervals. (read only)
-            </summary>
-        </member>
-        <member name="M:RocketLib.Utils.HeroUnlockCollection.ShowHeroUnlockIntervals">
-            <summary>
-            Show Current Unlock order
-            </summary>
-        </member>
-        <member name="P:RocketLib.Utils.HeroUnlockCollection.Pocketed_Special_AmmoTypes">
-            <summary>
-            List of all PockettedSpecialAmmoType. (read only)
-            </summary>
-        </member>
         <member name="M:RocketLib.Utils.CreateTexture.FromMat(System.String,UnityEngine.Material)">
             <summary>
             Create a Texture from a material. If the given path does not exist, it will return the given Texture.

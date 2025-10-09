@@ -33,7 +33,6 @@ namespace RocketLib.Menus.Utilities
     {
         private const float SCALE_FACTOR = 0.1f;
         private const int DYNAMIC_BASE_SIZE = 256;
-        private const float HEIGHT_RATIO = 0.9f; // Empirically determined height to fontSize ratio
 
         private static readonly Dictionary<string, Font> fontCache = new Dictionary<string, Font>();
         private static readonly Dictionary<BroforceFont, string> fontNameMap = new Dictionary<BroforceFont, string>
@@ -122,63 +121,57 @@ namespace RocketLib.Menus.Utilities
                 return 0;
             }
 
+            string[] lines = text.Split('\n');
+            float maxWidth = 0;
 
-
-            // Request characters in texture first
-            // For non-dynamic fonts, we need to use size 0 or the font's actual size
             int requestSize = unityFont.dynamic ? DYNAMIC_BASE_SIZE : 0;
 
-            unityFont.RequestCharactersInTexture(text, requestSize);
-
-            float totalWidth = 0;
-            CharacterInfo charInfo;
-            int successCount = 0;
-            int fallbackCount = 0;
-
-            foreach (char c in text)
+            foreach (string line in lines)
             {
-                if (unityFont.GetCharacterInfo(c, out charInfo, requestSize))
+                if (string.IsNullOrEmpty(line))
                 {
-                    totalWidth += charInfo.advance;
-                    successCount++;
+                    continue;
                 }
-                else if (unityFont.GetCharacterInfo(' ', out charInfo, requestSize))
+
+                unityFont.RequestCharactersInTexture(line, requestSize);
+
+                float lineWidth = 0;
+                CharacterInfo charInfo;
+
+                foreach (char c in line)
                 {
-                    totalWidth += charInfo.advance;
-                    fallbackCount++;
+                    if (unityFont.GetCharacterInfo(c, out charInfo, requestSize))
+                    {
+                        lineWidth += charInfo.advance;
+                    }
+                    else if (unityFont.GetCharacterInfo(' ', out charInfo, requestSize))
+                    {
+                        lineWidth += charInfo.advance;
+                    }
+                }
+
+                if (lineWidth > maxWidth)
+                {
+                    maxWidth = lineWidth;
                 }
             }
 
-            if (successCount == 0 && fallbackCount == 0)
-            {
-                RocketLib.Main.logger?.Warning($"[FontManager] Font '{font}' failed to get ANY character info for text '{text}'");
-            }
-            else if (fallbackCount > 0)
-            {
-                RocketLib.Main.logger?.Debug($"[FontManager] Font '{font}' had {fallbackCount} fallback chars out of {text.Length}");
-            }
-
-            // characterSize = size * 0.1, so final scaling is size * 0.01
             float characterSize = size * SCALE_FACTOR;
-            float calculatedWidth = totalWidth * characterSize * SCALE_FACTOR;
+            float calculatedWidth = maxWidth * characterSize * SCALE_FACTOR;
 
-            // Apply correction factor for non-dynamic fonts that have scaling issues
             float correctionFactor = GetFontWidthCorrectionFactor(font);
             calculatedWidth *= correctionFactor;
 
             return calculatedWidth;
         }
 
-        public static float CalculateTextHeight(BroforceFont font, string text, float size)
+        public static float CalculateTextHeight(BroforceFont font, string text, float size, float lineSpacing = 1.0f)
         {
-            // Use a consistent height calculation (size * 2.3)
             float baseHeight = size * 2.3f;
 
-            // Apply correction factor for fonts with height scaling issues
             float correctionFactor = GetFontHeightCorrectionFactor(font);
             baseHeight *= correctionFactor;
 
-            // Count lines for multi-line text
             int lineCount = 1;
             if (!string.IsNullOrEmpty(text))
             {
@@ -188,7 +181,17 @@ namespace RocketLib.Menus.Utilities
                 }
             }
 
-            return baseHeight * lineCount;
+            if (lineCount == 1)
+            {
+                return baseHeight;
+            }
+
+            float multiLineHeight = baseHeight + ((lineCount - 1) * baseHeight * lineSpacing);
+
+            float multiLineCorrectionFactor = GetMultiLineHeightCorrectionFactor(font);
+            multiLineHeight *= multiLineCorrectionFactor;
+
+            return multiLineHeight;
         }
 
         private static float GetFontWidthCorrectionFactor(BroforceFont font)
@@ -244,6 +247,38 @@ namespace RocketLib.Menus.Utilities
             }
         }
 
+        private static float GetMultiLineHeightCorrectionFactor(BroforceFont font)
+        {
+            switch (font)
+            {
+                case BroforceFont.Hudson:
+                    return 1.07407f;
+                case BroforceFont.HudsonIcons:
+                case BroforceFont.HudsonOutline:
+                case BroforceFont.Pixel04B:
+                case BroforceFont.Pixel8BitWonder:
+                case BroforceFont.KTypeNYC:
+                case BroforceFont.SourceHanSans:
+                    return 1.00000f;
+                case BroforceFont.AkzidenzBoldCondensed:
+                case BroforceFont.AkzidenzBoldCondensedHiRes:
+                    return 1.04983f;
+                case BroforceFont.AkzidenzExtraBold:
+                    return 1.05002f;
+                case BroforceFont.AkzidenzMedium:
+                    return 1.05008f;
+                case BroforceFont.AkzidenzRegular:
+                    return 1.05013f;
+                case BroforceFont.AkzidenzBold:
+                    return 1.05034f;
+                case BroforceFont.AndrewFootit:
+                    return 1.06936f;
+                case BroforceFont.Arial:
+                    return 1.18015f;
+                default:
+                    return 1.00000f;
+            }
+        }
 
         private static Font GetFont(BroforceFont font)
         {
