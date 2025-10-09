@@ -593,70 +593,6 @@
             <param name="name">Name of the asset file</param>
             <returns></returns>
         </member>
-        <member name="T:RocketLib.Utils.IsThisMod">
-            <summary>This constructor check if a mod is Here or is Enabled.
-            <example>
-            Example of call :
-            <code>
-                var RocketLib_info = new IsThisModIs("RocketLib");
-            </code>
-            </example>
-            </summary>
-        </member>
-        <member name="P:RocketLib.Utils.IsThisMod.IsHere">
-            <summary>
-            Return if the mod is Here.
-            </summary>
-        </member>
-        <member name="P:RocketLib.Utils.IsThisMod.IsEnabled">
-            <summary>
-            Return is the mod is Enabled, if the mod does not exist it will return false.
-            </summary>
-        </member>
-        <member name="F:RocketLib.Utils.IsThisMod.ID">
-            <summary>
-            The ID of the given mod.
-            </summary>
-        </member>
-        <member name="M:RocketLib.Utils.IsThisMod.#ctor(System.String)">
-            <summary>This constructor check if a mod is Here or is Enabled. Actually it don't work.
-            <example>
-            Example of call :
-            <code>
-                RocketLib.IsThisModIs RocketLib_info = new RocketLib.IsThisModIs("RocketLib");
-            </code>
-            </example>
-            </summary>
-            <param name="ID">Id of the mod.</param>
-        </member>
-        <member name="M:RocketLib.Utils.IsThisMod.HasHarmonyPrefixPatch(System.Reflection.MethodInfo)">
-            <summary>
-            Check if the mod has prefix patch of a given method.
-            </summary>
-            <param name="MethodInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:RocketLib.Utils.IsThisMod.HasHarmonyPostfixPatch(System.Reflection.MethodInfo)">
-            <summary>
-            Check if the mod has Postfix patch of a given method.
-            </summary>
-            <param name="MethodInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:RocketLib.Utils.IsThisMod.HasHarmonyTranspilerPatch(System.Reflection.MethodInfo)">
-            <summary>
-            Check if the mod has Transpiler patch of a given method.
-            </summary>
-            <param name="MethodInfo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:RocketLib.Utils.IsThisMod.HasHarmonyFinalizerPatch(System.Reflection.MethodInfo)">
-            <summary>
-            Check if the mod has Finalizer patch of a given method.
-            </summary>
-            <param name="MethodInfo"></param>
-            <returns></returns>
-        </member>
         <member name="P:RocketLib.Utils.HeroUnlockCollection.HeroTypes_Intervals">
             <summary>
             It's the HeroType  list of the Broforce bros. (read only)
@@ -695,11 +631,6 @@
         <member name="P:RocketLib.Utils.HeroUnlockCollection.Pocketed_Special_AmmoTypes">
             <summary>
             List of all PockettedSpecialAmmoType. (read only)
-            </summary>
-        </member>
-        <member name="T:RocketLib.Utils.CreateTexture">
-            <summary>
-            Library of useful function made for Broforce. And an  Logger on screen.
             </summary>
         </member>
         <member name="M:RocketLib.Utils.CreateTexture.FromMat(System.String,UnityEngine.Material)">
