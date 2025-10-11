@@ -669,5 +669,26 @@ namespace RocketLib.CustomTriggers
                 return false;
             }
         }
+
+        [HarmonyPatch(typeof(GameModeController), "Start")]
+        static class GameModeController_Start_Patch
+        {
+            static void Prefix()
+            {
+                CustomTriggerStateManager.OnLevelStart();
+            }
+        }
+
+        [HarmonyPatch(typeof(LevelEditorGUI), "TogglePlayMode")]
+        static class LevelEditorGUI_TogglePlayMode_Patch
+        {
+            public static void Postfix(LevelEditorGUI __instance)
+            {
+                if (!Map.isEditing)
+                {
+                    CustomTriggerStateManager.OnLevelStart();
+                }
+            }
+        }
     }
 }
