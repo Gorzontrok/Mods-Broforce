@@ -27,7 +27,6 @@ namespace RocketLib
             else
             {
                 keybinding = new KeyBindingForPlayers(modName, keyName);
-                AddKeyBinding(keybinding, modName);
                 return keybinding;
             }
         }
