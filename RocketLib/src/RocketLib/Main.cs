@@ -63,7 +63,7 @@ namespace RocketLib
                 Loaded = true;
 
                 // Uncomment to enable test menus:
-                // RegisterTestMenus();
+                RegisterTestMenus();
             }
             catch (Exception ex)
             {
@@ -99,6 +99,12 @@ namespace RocketLib
 
             MenuRegistry.RegisterMenu<PaginatedGridExample>(
                 displayText: "Paginated Grid Test",
+                targetMenu: TargetMenu.MainMenu,
+                positionReference: "OPTIONS"
+            );
+
+            MenuRegistry.RegisterMenu<TransitionTestMenu>(
+                displayText: "Transition Test",
                 targetMenu: TargetMenu.MainMenu,
                 positionReference: "OPTIONS"
             );

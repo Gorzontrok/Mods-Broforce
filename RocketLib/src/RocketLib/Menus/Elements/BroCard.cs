@@ -81,7 +81,7 @@ namespace RocketLib.Menus.Elements
                 }
 
                 // Update position
-                gameObject.transform.position = new Vector3(ActualPosition.x, ActualPosition.y, -1f);
+                gameObject.transform.localPosition = new Vector3(ActualPosition.x, ActualPosition.y, -1f);
                 UpdateVisualState();
 
                 // Update spawn indicator animation

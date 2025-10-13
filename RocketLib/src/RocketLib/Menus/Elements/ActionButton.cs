@@ -61,7 +61,7 @@ namespace RocketLib.Menus.Elements
                 }
 
                 // Update position and size based on ActualPosition/ActualSize set by parent
-                gameObject.transform.position = new Vector3(ActualPosition.x, ActualPosition.y, -1f);
+                gameObject.transform.localPosition = new Vector3(ActualPosition.x, ActualPosition.y, -1f);
                 gameObject.transform.localScale = Vector3.one;  // No scaling - use direct character size
 
                 // Update text and color

@@ -23,6 +23,7 @@ namespace RocketLib.Menus.Utilities
 
             highlightObject.layer = layer;
             highlightObject.transform.SetParent(parent);
+            highlightObject.transform.localScale = Vector3.one;
             highlightObject.transform.localPosition = new Vector3(0f, -27f, 15.5f);
 
             SpriteSM highlightSprite = highlightObject.GetComponent<SpriteSM>();
@@ -74,6 +75,7 @@ namespace RocketLib.Menus.Utilities
 
             highlightObject.layer = layer;
             highlightObject.transform.SetParent(parent);
+            highlightObject.transform.localScale = Vector3.one;
             highlightObject.transform.localPosition = Vector3.zero;
 
             GridMenuHighlight gridHighlight = highlightObject.GetComponent<GridMenuHighlight>();
@@ -87,6 +89,7 @@ namespace RocketLib.Menus.Utilities
             GameObject lensFlareObject = new GameObject("LensFlare", new Type[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(SpriteSM) });
             lensFlareObject.layer = layer;
             lensFlareObject.transform.SetParent(highlightObject.transform);
+            lensFlareObject.transform.localScale = Vector3.one;
             lensFlareObject.transform.localPosition = new Vector3(0f, 0f, 40f);
 
             SpriteSM lensFlareSprite = lensFlareObject.GetComponent<SpriteSM>();
@@ -125,6 +128,7 @@ namespace RocketLib.Menus.Utilities
             GameObject boxObject = new GameObject(name, new Type[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(SpriteSM) });
 
             boxObject.transform.SetParent(parent.transform);
+            boxObject.transform.localScale = Vector3.one;
             boxObject.layer = layer;
             boxObject.transform.localPosition = Vector3.zero;
 
@@ -148,6 +152,7 @@ namespace RocketLib.Menus.Utilities
             GameObject boxObject = new GameObject(name, new Type[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(SpriteSM) });
 
             boxObject.transform.SetParent(parent.transform);
+            boxObject.transform.localScale = Vector3.one;
             boxObject.layer = layer;
             boxObject.transform.localPosition = localPos;
 

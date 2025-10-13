@@ -46,12 +46,12 @@ namespace RocketLib.Menus.Utilities
 
         public bool HasReachedTarget
         {
-            get { return transform.position == targetPos; }
+            get { return transform.localPosition == targetPos; }
         }
 
         protected void Start()
         {
-            targetPos = transform.position;
+            targetPos = transform.localPosition;
             UpdateBoxLayout();
         }
 
@@ -97,7 +97,7 @@ namespace RocketLib.Menus.Utilities
         public void SetPositionImmediate(Vector3 pos)
         {
             targetPos = pos;
-            transform.position = new Vector3(pos.x, pos.y, zOffset);
+            transform.localPosition = new Vector3(pos.x, pos.y, zOffset);
         }
 
         public void SetBoundsImmediate(Rect bounds)
@@ -105,7 +105,7 @@ namespace RocketLib.Menus.Utilities
             Vector3 center = new Vector3(bounds.center.x, bounds.center.y, 0f);
             Vector3 size = new Vector3(bounds.width + BorderPadding * 2, bounds.height + BorderPadding * 2, 1f);
             targetPos = center;
-            transform.position = new Vector3(center.x, center.y, zOffset);
+            transform.localPosition = new Vector3(center.x, center.y, zOffset);
             SetTargetSize(size, false);
         }
 
@@ -135,8 +135,8 @@ namespace RocketLib.Menus.Utilities
                 transform.localScale = new Vector3((1f + num3 * 0.04f) * num + num2, (1f + num3 * 0.07f) * num + num2, 1f);
             }
 
-            Vector3 newPos = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
-            transform.position = new Vector3(newPos.x, newPos.y, zOffset);
+            Vector3 newPos = Vector3.Lerp(transform.localPosition, targetPos, Time.deltaTime * speed);
+            transform.localPosition = new Vector3(newPos.x, newPos.y, zOffset);
         }
 
         public void Bounce()

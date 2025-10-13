@@ -107,7 +107,7 @@ namespace RocketLib.Menus.Elements
 
                 // Update position based on ActualPosition/ActualSize set by parent
                 // ActualPosition is already the center of the element
-                gameObject.transform.position = new Vector3(ActualPosition.x, ActualPosition.y, -1f);
+                gameObject.transform.localPosition = new Vector3(ActualPosition.x, ActualPosition.y, -1f);
                 gameObject.transform.localScale = Vector3.one;
 
                 // Update visual properties only when changed

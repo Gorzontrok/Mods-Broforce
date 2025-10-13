@@ -155,6 +155,7 @@
     <Compile Include="Menus\Tests\ModOptionsExample.cs" />
     <Compile Include="Menus\Tests\GridLayoutExample.cs" />
     <Compile Include="Menus\Tests\PaginatedGridExample.cs" />
+    <Compile Include="Menus\Tests\TransitionTestMenu.cs" />
     <Compile Include="Menus\Utilities\GridMenuHighlight.cs" />
     <Compile Include="Menus\Utilities\HighlightFactory.cs" />
     <Compile Include="Menus\Utilities\FontManager.cs" />

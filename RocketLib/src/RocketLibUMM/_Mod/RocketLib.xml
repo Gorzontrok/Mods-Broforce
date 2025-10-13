@@ -1540,6 +1540,11 @@
             Opens the menu or executes the action
             </summary>
         </member>
+        <member name="T:RocketLib.Menus.Tests.TransitionTestMenu">
+            <summary>
+            Test menu for demonstrating transition animations
+            </summary>
+        </member>
         <member name="T:RocketLib.Menus.Utilities.GridMenuHighlight">
             <summary>
             Custom highlight for grid menus that supports dynamic width and height

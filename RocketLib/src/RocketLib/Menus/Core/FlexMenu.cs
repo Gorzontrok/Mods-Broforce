@@ -28,6 +28,89 @@ namespace RocketLib.Menus.Core
 
         public string InstanceId { get; protected set; } = "default";
 
+        // Transition settings (defaults match Lobby Canvas)
+        public bool EnableTransition { get; set; } = false;
+        public bool EnableDebugOutput { get; set; } = false;
+        public bool EnableStarfield { get; set; } = false;
+        public AnimationCurve TransitionCurve { get; set; }
+        public float TransitionSpeed { get; set; } = 3f;
+        public float TransitionDelay { get; set; } = 0.5f;
+
+        // Shake settings (defaults match Lobby Canvas)
+        public float ShakeDamping { get; set; } = 15f;
+        public float ShakeFreqDamping { get; set; } = 15f;
+        public float ShakeAmplitude { get; set; } = 8f;
+        public float ShakeFreqX { get; set; } = 200f;
+        public float ShakeFreqY { get; set; } = 135f;
+
+        private Coroutine transitionCoroutine;
+        private Shake shakeComponent;
+        
+        private System.Collections.IEnumerator TransitionInRoutine()
+        {
+            // Set initial scale to zero (matches ZoomIn behavior)
+            transform.localScale = Vector3.zero;
+
+            // Get or add Shake component
+            if (shakeComponent == null)
+            {
+                shakeComponent = GetComponent<Shake>();
+                if (shakeComponent == null)
+                {
+                    shakeComponent = gameObject.AddComponent<Shake>();
+                    shakeComponent.setToZeroOnAwake = true;
+                    shakeComponent.applyDampimg = true;
+                }
+            }
+
+            // Apply configurable shake settings
+            shakeComponent.damping = ShakeDamping;
+            shakeComponent.freqDamping = ShakeFreqDamping;
+
+            // Refresh layout and restore focus BEFORE transition starts
+            RefreshLayout();
+            RestoreFocus();
+
+            // Set highlight position immediately so it's on the correct item from the start
+            if (highlight != null && navigationManager?.FocusedElement != null)
+            {
+                var bounds = navigationManager.FocusedElement.GetBounds();
+                highlight.SetBoundsImmediate(bounds);
+            }
+
+            // Wait 0.5 seconds before starting the zoom (matches ZoomIn delay)
+            yield return new WaitForSeconds(TransitionDelay);
+
+            // Find and trigger MainMenu hide if we're transitioning from it
+            if (parentGameMenu != null && parentGameMenu.name == "MainMenu")
+            {
+                var mainMenu = parentGameMenu as MainMenu;
+                if (mainMenu != null)
+                {
+                    // Trigger the main menu's hide routine (scales up and fades)
+                    mainMenu.StartCoroutine("HideRoutine");
+                }
+            }
+
+            // Scale from 0 to 1 with animation curve
+            float lerp = 0f;
+            while (lerp < 1f)
+            {
+                lerp += Time.deltaTime * TransitionSpeed;
+                lerp = Mathf.Clamp01(lerp);
+
+                // Use the animation curve if provided, otherwise linear
+                float curveValue = TransitionCurve != null ? TransitionCurve.Evaluate(lerp) : lerp;
+                transform.localScale = Vector3.one * curveValue;
+
+                yield return null;
+            }
+
+            // Play impact sound and add shake
+            MainMenu.PlayImpactSound();
+            shakeComponent.AddShake(ShakeAmplitude, ShakeFreqX, ShakeFreqY);
+        }
+
         protected bool wasMainMenuLogoVisible;
         protected bool wasVersionTextVisible;
         protected bool hasStoredMainMenuState;
@@ -62,8 +145,6 @@ namespace RocketLib.Menus.Core
         public virtual string MenuTitle { get; set; }
 
         public bool IsActive { get; protected set; }
-
-        public bool EnableDebugOutput { get; set; } = false;
 
         protected virtual void Awake()
         {
@@ -101,7 +182,6 @@ namespace RocketLib.Menus.Core
                     if (navigationManager != null && navigationManager.FocusedElement != null)
                     {
                         var bounds = navigationManager.FocusedElement.GetBounds();
-                        // Set position immediately to avoid animation
                         highlight.SetBoundsImmediate(bounds);
                     }
                 }
@@ -125,16 +205,28 @@ namespace RocketLib.Menus.Core
             wasAcceptPressed = false;  // Reset input state
             wasDeclinePressed = false;
             HideMainMenuElements();
-            RefreshLayout();
 
-            // Restore focus based on mode
-            RestoreFocus();
-
-            // Set highlight position immediately to avoid animation
-            if (highlight != null && navigationManager?.FocusedElement != null)
+            // If transitions are enabled, start the zoom-in animation
+            if (EnableTransition)
             {
-                var bounds = navigationManager.FocusedElement.GetBounds();
-                highlight.SetBoundsImmediate(bounds);
+                if (transitionCoroutine != null)
+                {
+                    StopCoroutine(transitionCoroutine);
+                }
+                transitionCoroutine = StartCoroutine(TransitionInRoutine());
+            }
+            else
+            {
+                // Normal immediate activation
+                RefreshLayout();
+                RestoreFocus();
+
+                // Set highlight position immediately to avoid animation
+                if (highlight != null && navigationManager?.FocusedElement != null)
+                {
+                    var bounds = navigationManager.FocusedElement.GetBounds();
+                    highlight.SetBoundsImmediate(bounds);
+                }
             }
         }
 
