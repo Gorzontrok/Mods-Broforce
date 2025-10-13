@@ -3,6 +3,8 @@ using System.IO;
 using System.Reflection;
 using HarmonyLib;
 using UnityModManagerNet;
+using RocketLib.Menus.Core;
+using RocketLib.Menus.Tests;
 
 namespace RocketLib
 {
@@ -59,11 +61,43 @@ namespace RocketLib
                 }
 
                 Loaded = true;
+
+                // Uncomment to enable test menus:
+                // RegisterTestMenus();
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
             }
+        }
+
+
+        private static void RegisterTestMenus()
+        {
+            MenuRegistry.RegisterMenu<BasicFlexMenuExample>(
+                displayText: "Basic Flex Menu Test",
+                targetMenu: TargetMenu.MainMenu,
+                positionReference: "OPTIONS"
+            );
+
+            MenuRegistry.RegisterMenu<VanillaSubmenuExample>(
+                displayText: "Vanilla Submenu Test",
+                targetMenu: TargetMenu.MainMenu,
+                positionReference: "OPTIONS"
+            );
+
+            MenuRegistry.RegisterMenu<ModOptionsExample>(
+                displayText: "Test Mod Options",
+                targetMenu: TargetMenu.ModOptions
+            );
+
+            MenuRegistry.RegisterMenu<GridLayoutExample>(
+                displayText: "Grid Layout Test",
+                targetMenu: TargetMenu.MainMenu,
+                positionReference: "OPTIONS"
+            );
+
+            Main.logger.Log("Test menus registered successfully");
         }
 
         public static bool TestBuild
