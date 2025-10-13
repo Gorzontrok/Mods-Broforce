@@ -139,7 +139,23 @@ namespace RocketLib.Menus.Vanilla
         private static readonly Dictionary<BaseCustomMenu, Dictionary<string, Action>> menuActions =
             new Dictionary<BaseCustomMenu, Dictionary<string, Action>>();
 
+        protected override void RunInput()
+        {
+            if (!activatedThisFrame && accept && !Menu.acceptPrev
+                && highlightIndex < masterItems.Length
+                && masterItems[highlightIndex].invokeMethod.StartsWith("OpenMod_"))
+            {
+                string methodName = masterItems[highlightIndex].invokeMethod;
+                if (menuActions.TryGetValue(this, out var actions) && actions.TryGetValue(methodName, out var action))
+                {
+                    action?.Invoke();
+                    PlayDrumSound(1);
+                    return;
+                }
+            }
 
+            base.RunInput();
+        }
 
         /// <summary>
         /// Clean up when menu is destroyed

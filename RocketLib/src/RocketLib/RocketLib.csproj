@@ -152,6 +152,7 @@
     <Compile Include="Menus\Vanilla\ModOptionsMenu.cs" />
     <Compile Include="Menus\Tests\BasicFlexMenuExample.cs" />
     <Compile Include="Menus\Tests\VanillaSubmenuExample.cs" />
+    <Compile Include="Menus\Tests\ModOptionsExample.cs" />
     <Compile Include="Menus\Utilities\GridMenuHighlight.cs" />
     <Compile Include="Menus\Utilities\HighlightFactory.cs" />
     <Compile Include="Menus\Utilities\FontManager.cs" />
