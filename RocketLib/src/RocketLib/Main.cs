@@ -97,6 +97,12 @@ namespace RocketLib
                 positionReference: "OPTIONS"
             );
 
+            MenuRegistry.RegisterMenu<PaginatedGridExample>(
+                displayText: "Paginated Grid Test",
+                targetMenu: TargetMenu.MainMenu,
+                positionReference: "OPTIONS"
+            );
+
             Main.logger.Log("Test menus registered successfully");
         }
 

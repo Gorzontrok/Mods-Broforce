@@ -310,8 +310,7 @@ namespace RocketLib.Menus.Layout
                 // Set focusability for all children
                 foreach (var child in grid.Children)
                 {
-                    // Only BroCards should be focusable when visible
-                    child.IsFocusable = isCurrentPage && child is BroCard;
+                    child.IsFocusable = isCurrentPage && (child is BroCard || child is ActionButton);
                 }
             }
         }
