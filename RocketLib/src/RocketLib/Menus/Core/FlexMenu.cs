@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HarmonyLib;
 using RocketLib.Menus.Elements;
 using RocketLib.Menus.Layout;
 using RocketLib.Menus.Utilities;
@@ -47,6 +48,27 @@ namespace RocketLib.Menus.Core
         
         private System.Collections.IEnumerator TransitionInRoutine()
         {
+            if (parentGameMenu != null && parentGameMenu.name == "MainMenu" && !hasStoredMainMenuState)
+            {
+                var mainMenu = GetMainMenu() as MainMenu;
+                if (mainMenu != null)
+                {
+                    if (mainMenu.logo != null)
+                    {
+                        wasMainMenuLogoVisible = mainMenu.logo.gameObject.activeSelf;
+                    }
+
+                    var versionDisplay = GameObject.FindObjectOfType<DisplayVersionNumber>();
+                    if (versionDisplay != null)
+                    {
+                        versionDisplayObject = versionDisplay.gameObject;
+                        wasVersionTextVisible = versionDisplayObject.activeSelf;
+                    }
+
+                    hasStoredMainMenuState = true;
+                }
+            }
+
             // Set initial scale to zero (matches ZoomIn behavior)
             transform.localScale = Vector3.zero;
 
@@ -82,18 +104,20 @@ namespace RocketLib.Menus.Core
                 MainMenu.instance.starFieldAnimation.Play("starfieldLobbyTransition");
             }
 
-            yield return new WaitForSeconds(TransitionDelay);
-
-            // Find and trigger MainMenu hide if we're transitioning from it
             if (parentGameMenu != null && parentGameMenu.name == "MainMenu")
             {
                 var mainMenu = parentGameMenu as MainMenu;
                 if (mainMenu != null)
                 {
-                    // Trigger the main menu's hide routine (scales up and fades)
-                    mainMenu.StartCoroutine("HideRoutine");
+                    var enumerator = Traverse.Create(mainMenu).Method("HideRoutine", true).GetValue<System.Collections.IEnumerator>();
+                    if (enumerator != null)
+                    {
+                        Traverse.Create(mainMenu).Method("ShowHideMenu", enumerator).GetValue();
+                    }
                 }
             }
+
+            yield return new WaitForSeconds(TransitionDelay);
 
             // Scale from 0 to 1 with animation curve
             float lerp = 0f;
@@ -193,7 +217,11 @@ namespace RocketLib.Menus.Core
 
         protected virtual void Start()
         {
-            HideMainMenuElements();
+            if (!(EnableTransition && parentGameMenu != null && parentGameMenu.name == "MainMenu"))
+            {
+                HideMainMenuElements();
+            }
+
             RefreshLayout();
             navigationManager?.FocusFirst();
 
@@ -207,7 +235,11 @@ namespace RocketLib.Menus.Core
             lastInputTime = Time.time + 0.2f;  // Add 200ms input delay to prevent click-through
             wasAcceptPressed = false;  // Reset input state
             wasDeclinePressed = false;
-            HideMainMenuElements();
+
+            if (!(EnableTransition && parentGameMenu != null && parentGameMenu.name == "MainMenu"))
+            {
+                HideMainMenuElements();
+            }
 
             // If transitions are enabled, start the zoom-in animation
             if (EnableTransition)
@@ -220,7 +252,13 @@ namespace RocketLib.Menus.Core
             }
             else
             {
-                // Normal immediate activation
+                // Normal immediate activation (no transitions)
+                // Deactivate parent game menu if present
+                if (parentGameMenu != null)
+                {
+                    parentGameMenu.gameObject.SetActive(false);
+                }
+
                 RefreshLayout();
                 RestoreFocus();
 
@@ -433,21 +471,51 @@ namespace RocketLib.Menus.Core
             }
             else if (parentGameMenu != null)
             {
-                parentGameMenu.gameObject.SetActive(true);
+                if (EnableTransition && parentGameMenu.name == "MainMenu")
+                {
+                    var mainMenu = parentGameMenu as MainMenu;
+                    if (mainMenu != null && MainMenu.instance != null)
+                    {
+                        mainMenu.Show();
+                    }
+                }
+                else
+                {
+                    parentGameMenu.gameObject.SetActive(true);
+                }
+
                 activeMenu = null;
                 gameObject.SetActive(false);
             }
             else
             {
                 var allMenus = FindObjectsOfType<Menu>();
+                Menu foundMainMenu = null;
                 foreach (var menu in allMenus)
                 {
                     if (menu.name == "MainMenu")
                     {
-                        menu.gameObject.SetActive(true);
+                        foundMainMenu = menu;
                         break;
                     }
                 }
+
+                if (foundMainMenu != null)
+                {
+                    if (EnableTransition)
+                    {
+                        var mainMenu = foundMainMenu as MainMenu;
+                        if (mainMenu != null && MainMenu.instance != null)
+                        {
+                            mainMenu.Show();
+                        }
+                    }
+                    else
+                    {
+                        foundMainMenu.gameObject.SetActive(true);
+                    }
+                }
+
                 activeMenu = null;
                 gameObject.SetActive(false);
             }
@@ -588,7 +656,10 @@ namespace RocketLib.Menus.Core
                 }
                 else if (parentGame != null)
                 {
-                    parentGame.gameObject.SetActive(false);
+                    if (!(menu.EnableTransition && parentGame.name == "MainMenu"))
+                    {
+                        parentGame.gameObject.SetActive(false);
+                    }
                 }
 
                 if (activeMenu != null && activeMenu != menu)
@@ -604,7 +675,9 @@ namespace RocketLib.Menus.Core
 
             string goName = instanceId == "default" ? type.Name : $"{type.Name}_{instanceId}";
             var go = new GameObject(goName);
+            go.SetActive(false);
             var newMenu = go.AddComponent<T>();
+
             newMenu.InstanceId = instanceId;
             instances[key] = newMenu;
             newMenu.parentFlexMenu = parentFlex;
@@ -618,10 +691,6 @@ namespace RocketLib.Menus.Core
                     parentFlex.submenuTriggerElement = parentFlex.navigationManager.FocusedElement;
                 }
                 parentFlex.gameObject.SetActive(false);
-            }
-            else if (parentGame != null)
-            {
-                parentGame.gameObject.SetActive(false);
             }
 
             if (activeMenu != null)

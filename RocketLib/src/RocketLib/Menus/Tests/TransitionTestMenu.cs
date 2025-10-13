@@ -1,4 +1,3 @@
-using System;
 using RocketLib.Menus.Core;
 using RocketLib.Menus.Elements;
 using RocketLib.Menus.Layout;
@@ -11,7 +10,7 @@ namespace RocketLib.Menus.Tests
     /// </summary>
     public class TransitionTestMenu : FlexMenu
     {
-        private TextElement titleText;
+        private readonly TextElement titleText;
         private TextElement statusText;
         private ActionButton transitionToggle;
 
@@ -194,12 +193,6 @@ namespace RocketLib.Menus.Tests
             statusText.TextColor = EnableTransition ? Color.green : Color.red;
 
             Main.logger?.Log($"[TransitionTestMenu] Transitions: {EnableTransition}");
-        }
-
-
-        public static TransitionTestMenu Show(Menu parentMenu = null)
-        {
-            return FlexMenu.Show<TransitionTestMenu>(parentGame: parentMenu);
         }
     }
 }
