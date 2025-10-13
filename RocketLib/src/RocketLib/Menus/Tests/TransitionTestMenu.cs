@@ -23,10 +23,6 @@ namespace RocketLib.Menus.Tests
             base.InitializeContainer();
 
             EnableTransition = true;
-            EnableStarfield = false;
-
-            // Use default Lobby Canvas transition settings
-            // (TransitionSpeed = 3f, Shake damping = 15f, etc.)
 
             rootContainer = new VerticalLayoutContainer
             {

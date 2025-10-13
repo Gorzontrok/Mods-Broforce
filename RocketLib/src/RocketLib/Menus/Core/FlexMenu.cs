@@ -31,7 +31,6 @@ namespace RocketLib.Menus.Core
         // Transition settings (defaults match Lobby Canvas)
         public bool EnableTransition { get; set; } = false;
         public bool EnableDebugOutput { get; set; } = false;
-        public bool EnableStarfield { get; set; } = false;
         public AnimationCurve TransitionCurve { get; set; }
         public float TransitionSpeed { get; set; } = 3f;
         public float TransitionDelay { get; set; } = 0.5f;
@@ -78,7 +77,11 @@ namespace RocketLib.Menus.Core
                 highlight.SetBoundsImmediate(bounds);
             }
 
-            // Wait 0.5 seconds before starting the zoom (matches ZoomIn delay)
+            if (MainMenu.instance != null && MainMenu.instance.starFieldAnimation != null)
+            {
+                MainMenu.instance.starFieldAnimation.Play("starfieldLobbyTransition");
+            }
+
             yield return new WaitForSeconds(TransitionDelay);
 
             // Find and trigger MainMenu hide if we're transitioning from it
