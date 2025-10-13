@@ -127,11 +127,5 @@ namespace RocketLib.Menus.Tests
             // CRITICAL: Must refresh layout after adding all elements
             RefreshLayout();
         }
-
-        // Convenience static method following the pattern
-        public static BasicFlexMenuExample Show(Menu parentMenu = null)
-        {
-            return FlexMenu.Show<BasicFlexMenuExample>(parentGame: parentMenu);
-        }
     }
 }

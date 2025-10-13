@@ -54,31 +54,5 @@ namespace RocketLib.Menus.Tests
         {
             OnMenuClosed();
         }
-
-        public static ModOptionsExample Show(Menu parentMenu)
-        {
-            var existingMenu = GameObject.FindObjectOfType<ModOptionsExample>();
-            if (existingMenu != null)
-            {
-                existingMenu.MenuActive = true;
-                existingMenu.OnMenuOpened();
-                return existingMenu;
-            }
-
-            var menuGameObject = new GameObject("ModOptionsExample");
-            var menu = menuGameObject.AddComponent<ModOptionsExample>();
-            menu.Initialize(parentMenu);
-
-            if (parentMenu != null)
-            {
-                parentMenu.MenuActive = false;
-            }
-
-            menu.MenuActive = true;
-            menu.TransitionIn();
-            menu.OnMenuOpened();
-
-            return menu;
-        }
     }
 }

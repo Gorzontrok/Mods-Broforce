@@ -34,31 +34,5 @@ namespace RocketLib.Menus.Tests
         {
             OnMenuClosed();
         }
-
-        public static VanillaSubmenuExample Show(Menu parentMenu)
-        {
-            var existingMenu = GameObject.FindObjectOfType<VanillaSubmenuExample>();
-            if (existingMenu != null)
-            {
-                existingMenu.MenuActive = true;
-                existingMenu.OnMenuOpened();
-                return existingMenu;
-            }
-
-            var menuGameObject = new GameObject("VanillaSubmenuExample");
-            var menu = menuGameObject.AddComponent<VanillaSubmenuExample>();
-            menu.Initialize(parentMenu);
-
-            if (parentMenu != null)
-            {
-                parentMenu.MenuActive = false;
-            }
-
-            menu.MenuActive = true;
-            menu.TransitionIn();
-            menu.OnMenuOpened();
-
-            return menu;
-        }
     }
 }

@@ -141,10 +141,5 @@ namespace RocketLib.Menus.Tests
 
             RefreshLayout();
         }
-
-        public static PaginatedGridExample Show(Menu parentMenu = null)
-        {
-            return FlexMenu.Show<PaginatedGridExample>(parentGame: parentMenu);
-        }
     }
 }

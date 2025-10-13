@@ -95,10 +95,5 @@ namespace RocketLib.Menus.Tests
 
             RefreshLayout();
         }
-
-        public static GridLayoutExample Show(Menu parentMenu = null)
-        {
-            return FlexMenu.Show<GridLayoutExample>(parentGame: parentMenu);
-        }
     }
 }
