@@ -101,7 +101,7 @@ namespace RocketLib.Menus.Elements
 
                 if (menuTransform != null)
                 {
-                    gameObject.transform.SetParent(menuTransform, false);
+                    gameObject.transform.SetParentAndResetScale(menuTransform);
                 }
 
                 // Create avatar display
@@ -129,13 +129,12 @@ namespace RocketLib.Menus.Elements
                     typeof(MeshFilter),
                     typeof(SpriteSM)
                 });
-                avatarGO.transform.SetParent(gameObject.transform);
 
                 // Position avatar in upper portion of card
                 float avatarSize = ActualSize.x * AVATAR_SIZE_RATIO;
                 float avatarY = ActualSize.y * 0.15f;  // A bit higher in the card
                 float avatarX = 4f;  // Offset to the right for better visual centering
-                avatarGO.transform.localPosition = new Vector3(avatarX, avatarY, 0.1f);
+                avatarGO.transform.SetParentAndResetScale(gameObject.transform, new Vector3(avatarX, avatarY, 0.1f));
 
                 // Get components
                 avatarSprite = avatarGO.GetComponent<SpriteSM>();
@@ -176,11 +175,10 @@ namespace RocketLib.Menus.Elements
             try
             {
                 nameGO = new GameObject("Name");
-                nameGO.transform.SetParent(gameObject.transform);
                 nameGO.layer = LayerMask.NameToLayer("UI");
 
                 float nameY = -(ActualSize.y * 0.38f);
-                nameGO.transform.localPosition = new Vector3(0, nameY, 0.1f);
+                nameGO.transform.SetParentAndResetScale(gameObject.transform, new Vector3(0, nameY, 0.1f));
 
                 var meshRenderer = nameGO.AddComponent<MeshRenderer>();
                 nameText = nameGO.AddComponent<TextMesh>();
@@ -249,14 +247,13 @@ namespace RocketLib.Menus.Elements
             try
             {
                 spawnIndicatorGO = new GameObject("SpawnIndicator");
-                spawnIndicatorGO.transform.SetParent(gameObject.transform);
                 spawnIndicatorGO.layer = LayerMask.NameToLayer("UI");
 
                 // Position indicator in top-right corner
                 float indicatorSize = ActualSize.x * INDICATOR_SIZE_RATIO;
                 float indicatorX = ActualSize.x * 0.35f;
                 float indicatorY = ActualSize.y * 0.35f;
-                spawnIndicatorGO.transform.localPosition = new Vector3(indicatorX, indicatorY, 0.05f);
+                spawnIndicatorGO.transform.SetParentAndResetScale(gameObject.transform, new Vector3(indicatorX, indicatorY, 0.05f));
 
                 // Add sprite renderer
                 spawnIndicatorSprite = spawnIndicatorGO.AddComponent<SpriteRenderer>();

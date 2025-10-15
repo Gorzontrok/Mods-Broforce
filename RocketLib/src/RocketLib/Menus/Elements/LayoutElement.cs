@@ -139,7 +139,7 @@ namespace RocketLib.Menus.Elements
             menuTransform = transform;
             if (gameObject != null && menuTransform != null)
             {
-                gameObject.transform.SetParent(menuTransform, false);
+                gameObject.transform.SetParentAndResetScale(menuTransform);
             }
         }
 

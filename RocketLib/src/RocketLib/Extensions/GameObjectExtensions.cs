@@ -76,5 +76,18 @@ namespace RocketLib
             stringBuilder.Insert(0, new StringBuilder(self.scene.name).Append('/'));
             return stringBuilder.ToString();
         }
+
+        /// <summary>
+        /// Sets the parent and resets localScale to Vector3.one to prevent inheriting parent's scale.
+        /// </summary>
+        public static void SetParentAndResetScale(this Transform transform, Transform parent, Vector3? localPosition = null)
+        {
+            transform.SetParent(parent);
+            transform.localScale = Vector3.one;
+            if (localPosition.HasValue)
+            {
+                transform.localPosition = localPosition.Value;
+            }
+        }
     }
 }

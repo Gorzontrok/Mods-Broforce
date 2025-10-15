@@ -165,4 +165,37 @@ namespace RocketLib.Menus.Core
         }
 
     }
+
+    [HarmonyPatch(typeof(MainMenu), "Start")]
+    static class MainMenu_Start_Patch
+    {
+        static bool Prefix(MainMenu __instance)
+        {
+            try
+            {
+                if (FlexMenu.HasReturnTargetOverride())
+                {
+                    var targetMenu = FlexMenu.GetReturnTarget();
+
+                    FlexMenu.ClearReturnTarget();
+
+                    if (targetMenu != null)
+                    {
+                        Traverse.Create(__instance).Method("InitializeMenu").GetValue();
+
+                        targetMenu.gameObject.SetActive(true);
+                        FlexMenu.activeMenu = targetMenu;
+
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Main.logger.Error($"Error in MainMenu_Start_Prefix: {ex}");
+            }
+
+            return true;
+        }
+    }
 }

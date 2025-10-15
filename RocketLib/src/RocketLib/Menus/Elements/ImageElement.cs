@@ -87,7 +87,7 @@ namespace RocketLib.Menus.Elements
                     gameObject = new GameObject(Name);
                     if (menuTransform != null)
                     {
-                        gameObject.transform.SetParent(menuTransform);
+                        gameObject.transform.SetParentAndResetScale(menuTransform);
                     }
                 }
 
@@ -113,8 +113,7 @@ namespace RocketLib.Menus.Elements
                                 typeof(MeshFilter),
                                 typeof(SpriteSM)
                             });
-                            spriteGO.transform.SetParent(gameObject.transform);
-                            spriteGO.transform.localPosition = Vector3.zero;
+                            spriteGO.transform.SetParentAndResetScale(gameObject.transform, Vector3.zero);
 
                             spriteSM = spriteGO.GetComponent<SpriteSM>();
                             meshRenderer = spriteGO.GetComponent<MeshRenderer>();

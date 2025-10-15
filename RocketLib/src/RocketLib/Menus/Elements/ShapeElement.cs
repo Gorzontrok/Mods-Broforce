@@ -39,7 +39,7 @@ namespace RocketLib.Menus.Elements
                     gameObject = new GameObject(Name);
                     if (menuTransform != null)
                     {
-                        gameObject.transform.SetParent(menuTransform);
+                        gameObject.transform.SetParentAndResetScale(menuTransform);
                     }
                 }
 
@@ -60,8 +60,7 @@ namespace RocketLib.Menus.Elements
                     if (spriteGO == null)
                     {
                         spriteGO = new GameObject("Sprite");
-                        spriteGO.transform.SetParent(gameObject.transform);
-                        spriteGO.transform.localPosition = Vector3.zero;
+                        spriteGO.transform.SetParentAndResetScale(gameObject.transform, Vector3.zero);
 
                         spriteRenderer = spriteGO.AddComponent<SpriteRenderer>();
                         spriteRenderer.sortingOrder = 100; // Ensure it renders above background

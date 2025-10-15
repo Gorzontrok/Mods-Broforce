@@ -704,6 +704,11 @@
             <typeparam name="T">The component type.</typeparam>
             <param name="self"></param>
         </member>
+        <member name="M:RocketLib.GameObjectExtensions.SetParentAndResetScale(UnityEngine.Transform,UnityEngine.Transform,System.Nullable{UnityEngine.Vector3})">
+            <summary>
+            Sets the parent and resets localScale to Vector3.one to prevent inheriting parent's scale.
+            </summary>
+        </member>
         <member name="M:RocketLib.StringExtensions.Dye(System.String,UnityEngine.Color)">
             <summary>
             Surround string with xml "color" tag

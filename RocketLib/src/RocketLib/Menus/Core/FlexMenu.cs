@@ -27,6 +27,11 @@ namespace RocketLib.Menus.Core
         private static readonly Dictionary<string, FlexMenu> instances = new Dictionary<string, FlexMenu>();
         public static FlexMenu activeMenu;
 
+        // Menu return override system (replicates GameState.immediatelyGoToCustomCampaign pattern)
+        private static bool returnToFlexMenuOverride = false;
+        private static System.Type returnTargetMenuType = null;
+        private static string returnTargetMenuInstanceId = null;
+
         public string InstanceId { get; protected set; } = "default";
 
         // Transition settings (defaults match Lobby Canvas)
@@ -45,7 +50,7 @@ namespace RocketLib.Menus.Core
 
         private Coroutine transitionCoroutine;
         private Shake shakeComponent;
-        
+
         private System.Collections.IEnumerator TransitionInRoutine()
         {
             if (parentGameMenu != null && parentGameMenu.name == "MainMenu" && !hasStoredMainMenuState)
@@ -72,6 +77,22 @@ namespace RocketLib.Menus.Core
             // Set initial scale to zero (matches ZoomIn behavior)
             transform.localScale = Vector3.zero;
 
+            // Disable ZoomInCamera animation if present - it interferes with FlexMenu transitions
+            var mainCam = Camera.main;
+            if (mainCam != null)
+            {
+                var zoomInCamera = mainCam.GetComponent("ZoomInCamera");
+                if (zoomInCamera != null)
+                {
+                    var enabledProp = zoomInCamera.GetType().GetProperty("enabled");
+                    if (enabledProp != null)
+                    {
+                        enabledProp.SetValue(zoomInCamera, false, null);
+                        mainCam.orthographicSize = 160f;
+                    }
+                }
+            }
+
             // Get or add Shake component
             if (shakeComponent == null)
             {
@@ -88,7 +109,6 @@ namespace RocketLib.Menus.Core
             shakeComponent.damping = ShakeDamping;
             shakeComponent.freqDamping = ShakeFreqDamping;
 
-            // Refresh layout and restore focus BEFORE transition starts
             RefreshLayout();
             RestoreFocus();
 
@@ -104,7 +124,7 @@ namespace RocketLib.Menus.Core
                 MainMenu.instance.starFieldAnimation.Play("starfieldLobbyTransition");
             }
 
-            if (parentGameMenu != null && parentGameMenu.name == "MainMenu")
+            if (parentGameMenu != null && parentGameMenu.name == "MainMenu" && parentGameMenu.gameObject.activeSelf)
             {
                 var mainMenu = parentGameMenu as MainMenu;
                 if (mainMenu != null)
@@ -634,20 +654,65 @@ namespace RocketLib.Menus.Core
             return null;
         }
 
-        public static T Show<T>(FlexMenu parentFlex = null, Menu parentGame = null, string instanceId = "default") where T : FlexMenu
+        public static void SetReturnTarget(FlexMenu target)
         {
-            var type = typeof(T);
-            string key = $"{type.Name}:{instanceId}";
+            if (target == null)
+            {
+                ClearReturnTarget();
+                return;
+            }
+
+            returnToFlexMenuOverride = true;
+            returnTargetMenuType = target.GetType();
+            returnTargetMenuInstanceId = target.InstanceId;
+        }
+
+        public static void ClearReturnTarget()
+        {
+            returnToFlexMenuOverride = false;
+            returnTargetMenuType = null;
+            returnTargetMenuInstanceId = null;
+        }
+
+        public static bool HasReturnTargetOverride()
+        {
+            return returnToFlexMenuOverride && returnTargetMenuType != null;
+        }
+
+        public static FlexMenu GetReturnTarget()
+        {
+            if (!HasReturnTargetOverride())
+            {
+                return null;
+            }
+
+            string key = $"{returnTargetMenuType.Name}:{returnTargetMenuInstanceId}";
 
             if (instances.TryGetValue(key, out FlexMenu existing))
             {
-                T menu = existing as T;
-                menu.parentFlexMenu = parentFlex;
-                menu.parentGameMenu = parentGame;
+                return existing;
+            }
+
+            return Show(returnTargetMenuType, null, MainMenu.instance, returnTargetMenuInstanceId);
+        }
+
+        public static FlexMenu Show(System.Type menuType, FlexMenu parentFlex = null, Menu parentGame = null, string instanceId = "default")
+        {
+            if (!typeof(FlexMenu).IsAssignableFrom(menuType))
+            {
+                Main.logger.Error($"[FlexMenu.Show] Type {menuType.Name} does not inherit from FlexMenu");
+                return null;
+            }
+
+            string key = $"{menuType.Name}:{instanceId}";
+
+            if (instances.TryGetValue(key, out FlexMenu existing))
+            {
+                existing.parentFlexMenu = parentFlex;
+                existing.parentGameMenu = parentGame;
 
                 if (parentFlex != null)
                 {
-                    // Save the parent's currently focused element as the submenu trigger
                     if (parentFlex.navigationManager != null)
                     {
                         parentFlex.submenuTriggerElement = parentFlex.navigationManager.FocusedElement;
@@ -656,27 +721,27 @@ namespace RocketLib.Menus.Core
                 }
                 else if (parentGame != null)
                 {
-                    if (!(menu.EnableTransition && parentGame.name == "MainMenu"))
+                    if (!(existing.EnableTransition && parentGame.name == "MainMenu"))
                     {
                         parentGame.gameObject.SetActive(false);
                     }
                 }
 
-                if (activeMenu != null && activeMenu != menu)
+                if (activeMenu != null && activeMenu != existing)
                 {
                     activeMenu.gameObject.SetActive(false);
                 }
 
-                menu.gameObject.SetActive(true);
-                activeMenu = menu;
+                existing.gameObject.SetActive(true);
+                activeMenu = existing;
 
-                return menu;
+                return existing;
             }
 
-            string goName = instanceId == "default" ? type.Name : $"{type.Name}_{instanceId}";
+            string goName = instanceId == "default" ? menuType.Name : $"{menuType.Name}_{instanceId}";
             var go = new GameObject(goName);
             go.SetActive(false);
-            var newMenu = go.AddComponent<T>();
+            var newMenu = go.AddComponent(menuType) as FlexMenu;
 
             newMenu.InstanceId = instanceId;
             instances[key] = newMenu;
@@ -685,7 +750,6 @@ namespace RocketLib.Menus.Core
 
             if (parentFlex != null)
             {
-                // Save the parent's currently focused element as the submenu trigger
                 if (parentFlex.navigationManager != null)
                 {
                     parentFlex.submenuTriggerElement = parentFlex.navigationManager.FocusedElement;
@@ -702,6 +766,11 @@ namespace RocketLib.Menus.Core
             activeMenu = newMenu;
 
             return newMenu;
+        }
+
+        public static T Show<T>(FlexMenu parentFlex = null, Menu parentGame = null, string instanceId = "default") where T : FlexMenu
+        {
+            return Show(typeof(T), parentFlex, parentGame, instanceId) as T;
         }
     }
 }

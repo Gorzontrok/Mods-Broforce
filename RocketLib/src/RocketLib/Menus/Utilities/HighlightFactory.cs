@@ -22,9 +22,7 @@ namespace RocketLib.Menus.Utilities
             GameObject highlightObject = new GameObject("MenuHighlight", new Type[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(SpriteSM), typeof(MenuHighlightTween) });
 
             highlightObject.layer = layer;
-            highlightObject.transform.SetParent(parent);
-            highlightObject.transform.localScale = Vector3.one;
-            highlightObject.transform.localPosition = new Vector3(0f, -27f, 15.5f);
+            highlightObject.transform.SetParentAndResetScale(parent, new Vector3(0f, -27f, 15.5f));
 
             SpriteSM highlightSprite = highlightObject.GetComponent<SpriteSM>();
 
@@ -74,9 +72,7 @@ namespace RocketLib.Menus.Utilities
             GameObject highlightObject = new GameObject("GridMenuHighlight", new Type[] { typeof(GridMenuHighlight) });
 
             highlightObject.layer = layer;
-            highlightObject.transform.SetParent(parent);
-            highlightObject.transform.localScale = Vector3.one;
-            highlightObject.transform.localPosition = Vector3.zero;
+            highlightObject.transform.SetParentAndResetScale(parent, Vector3.zero);
 
             GridMenuHighlight gridHighlight = highlightObject.GetComponent<GridMenuHighlight>();
 
@@ -88,9 +84,7 @@ namespace RocketLib.Menus.Utilities
 
             GameObject lensFlareObject = new GameObject("LensFlare", new Type[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(SpriteSM) });
             lensFlareObject.layer = layer;
-            lensFlareObject.transform.SetParent(highlightObject.transform);
-            lensFlareObject.transform.localScale = Vector3.one;
-            lensFlareObject.transform.localPosition = new Vector3(0f, 0f, 40f);
+            lensFlareObject.transform.SetParentAndResetScale(highlightObject.transform, new Vector3(0f, 0f, 40f));
 
             SpriteSM lensFlareSprite = lensFlareObject.GetComponent<SpriteSM>();
             SetupSprite(lensFlareSprite, lensFlareTexture, new Vector2(3072f, 0f), new Vector2(512f, 64f), 478.5214f, 43.44803f, Vector3.zero, SpriteBase.ANCHOR_METHOD.MIDDLE_CENTER);
@@ -127,10 +121,8 @@ namespace RocketLib.Menus.Utilities
         {
             GameObject boxObject = new GameObject(name, new Type[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(SpriteSM) });
 
-            boxObject.transform.SetParent(parent.transform);
-            boxObject.transform.localScale = Vector3.one;
             boxObject.layer = layer;
-            boxObject.transform.localPosition = Vector3.zero;
+            boxObject.transform.SetParentAndResetScale(parent.transform, Vector3.zero);
 
             SpriteSM boxSprite = boxObject.GetComponent<SpriteSM>();
 
@@ -151,10 +143,8 @@ namespace RocketLib.Menus.Utilities
 
             GameObject boxObject = new GameObject(name, new Type[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(SpriteSM) });
 
-            boxObject.transform.SetParent(parent.transform);
-            boxObject.transform.localScale = Vector3.one;
             boxObject.layer = layer;
-            boxObject.transform.localPosition = localPos;
+            boxObject.transform.SetParentAndResetScale(parent.transform, localPos);
 
             SpriteSM boxSprite = boxObject.GetComponent<SpriteSM>();
 
