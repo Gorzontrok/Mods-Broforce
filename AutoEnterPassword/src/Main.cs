@@ -1,5 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using HarmonyLib;
+using System;
+using System.Linq;
+using System.Reflection;
 using UnityModManagerNet;
 
 namespace AutoEnterPassword
@@ -12,17 +14,23 @@ namespace AutoEnterPassword
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
-            modEntry.OnGUI = OnGUI;
+            mod = modEntry;
+
+            modEntry.OnGUI = ModUI.OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
             modEntry.OnToggle = OnToggle;
+
+            // Load Settings
             settings = Settings.Load<Settings>(modEntry);
-            mod = modEntry;
+            if (settings.VanillaLoadOnStart.IsNullOrEmpty())
+                settings.VanillaLoadOnStart = new bool[Mod.VANILLA_PASSWORD_COUNT];
 
             try
             {
-                if(settings.autoLoad.IsNullOrEmpty())
-                    settings.autoLoad = new string[0];
                 Mod.Initialize();
+                var harmony = new Harmony(modEntry.Info.Id);
+                var assembly = Assembly.GetExecutingAssembly();
+                harmony.PatchAll(assembly);
             }
             catch (Exception ex)
             {
@@ -32,39 +40,9 @@ namespace AutoEnterPassword
             return true;
         }
 
-        static void OnGUI(UnityModManager.ModEntry modEntry)
-        {
-            GUILayout.Label("Vanilla Password :");
-            GUILayout.BeginHorizontal();
-
-            foreach(var vanilla in Mod.vanillaPasswords)
-            {
-                Mod.GamePasswordUI(vanilla);
-            }
-
-            GUILayout.EndHorizontal();
-
-            if (Mod.passwords.Count <= 0) return;
-
-            GUILayout.Label("RocketLib Password :");
-            for (int i = 0; i < Mod.passwords.Count; i++)
-            {
-                if (i == 0)
-                {
-                    GUILayout.BeginHorizontal();
-                }
-
-                Mod.GamePasswordUI(Mod.passwords[i]);
-
-                if (i % 5 == 0 || i == Mod.passwords.Count)
-                {
-                    GUILayout.EndHorizontal();
-                }
-            }
-        }
-
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
         {
+            settings.LoadOnStartRocketLib = Mod.passwordsLoadOnStart.Where(kv => kv.Value).Select(kv => kv.Key).ToArray();
             settings.Save(modEntry);
         }
 
@@ -82,12 +60,24 @@ namespace AutoEnterPassword
 
     public class Settings : UnityModManager.ModSettings
     {
-        public string[] autoLoad;
+        public bool[] VanillaLoadOnStart;
+        public string[] LoadOnStartRocketLib;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
-            autoLoad = Mod.autoLoadSession.ToArray();
             Save(this, modEntry);
+        }
+    }
+
+    [HarmonyPatch(typeof(UnityModManager.UI), "Awake")]
+    public static class AfterLoadedMods_Patch
+    {
+        static void Prefix()
+        {
+            if (!Main.enabled)
+                return;
+
+            Mod.StartLoadPasswords();
         }
     }
 }

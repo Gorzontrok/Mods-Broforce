@@ -1,95 +1,109 @@
 ﻿using RocketLib;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 namespace AutoEnterPassword
 {
     public static class Mod
     {
-        public const string THE_LONG_ONE = "IThinkPuttingMyTesticalsInSomeoneElseFaceWithoutTheirConsentIsOkay";
-        public const string ALASKAN_PIPELINE = "alaskanpipeline";
-        public const string SEAGULL = "seagull";
-        public const string MR_ANDERBRO = "mranderbro";
-        public const string ABRAHAM_LINCOLN = "abrahamlincoln";
-        public const string SMOKING_GUN = "smokinggun";
-        public const string I_LOVE_AMERICA = "iloveamerica";
+        public const int VANILLA_PASSWORD_COUNT = 7;
+        public static string[] vanillaPasswords;
 
-        internal static List<string> autoLoadSession = new List<string>();
-        internal static List<Password> passwords = new List<Password>();
-        internal static VanillaPassword[] vanillaPasswords;
+        public static Dictionary<string, bool> passwordsLoadOnStart = new Dictionary<string, bool>();
 
         private static bool _hasInitialized = false;
+        public static bool hasLoadedOnStartup = false;
 
         public static void Initialize()
         {
-            if (_hasInitialized) return;
+            if (_hasInitialized) 
+                return;
 
-            CreateVanillaPassword();
-            GetRocketLibPasswords();
-            AutoLoad();
+            vanillaPasswords = new string[VANILLA_PASSWORD_COUNT] { GamePassword.THE_LONG_ONE, GamePassword.ALASKAN_PIPELINE, GamePassword.SEAGULL,
+                GamePassword.MR_ANDERBRO, GamePassword.ABRAHAM_LINCOLN, GamePassword.SMOKING_GUN, GamePassword.I_LOVE_AMERICA
+            };
+            passwordsLoadOnStart = new Dictionary<string, bool>();
+
+            //StartLoadPasswords();
+
+            _hasInitialized = true;
         }
 
-        public static void GamePasswordUI(Password password)
+        public static void CallVanillaPassword(string password)
         {
-            GUILayout.BeginVertical();
-            if (GUILayout.Button(password.GetName()))
+            bool flag = false;
+            switch (password)
             {
-                password.DoAction();
+                case GamePassword.THE_LONG_ONE:
+                    TestVanDammeAnim.teaBagCheatEnabled = true;
+                    flag = true; break;
+                case GamePassword.ALASKAN_PIPELINE:
+                    HeroUnlockController.UnlockAllBros();
+                    PlayerProgress.Save(true);
+                    flag = true; break;
+                case GamePassword.SEAGULL:
+                    HeroUnlockController.UnlockEverythingButBroheart();
+                    flag = true; break;
+                case GamePassword.MR_ANDERBRO:
+                    Map.SetTryReduceLoadingTimes(true);
+                    flag = true; break;
+                case GamePassword.ABRAHAM_LINCOLN:
+                    GameModeController.CheatsEnabled = true;
+                    flag = true; break;
+                case GamePassword.SMOKING_GUN:
+                    LevelEditorGUI.hackedEditorOn = true;
+                    flag = true; break;
+                case GamePassword.I_LOVE_AMERICA:
+                    HeroUnlockController.UnlockAllBros();
+                    WorldTerritory3D.unlockAllTerritories = true;
+                    PlayerProgress.Save(true);
+                    flag = true; break;
             }
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            password.autoLoad = GUILayout.Toggle(password.autoLoad, "AutoLoad");
-            if (password.autoLoad)
-                AddPasswordToAutoLoad(password.GetName());
-            else
-                RemovePasswordFromAutoLoad(password.GetName());
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-        }
-        private static void AddPasswordToAutoLoad(string password)
-        {
-            if (!autoLoadSession.Contains(password))
-                autoLoadSession.Add(password);
-        }
-        private static void RemovePasswordFromAutoLoad(string password)
-        {
-            if (autoLoadSession.Contains(password))
-                autoLoadSession.Remove(password);
-        }
-        private static void CreateVanillaPassword()
-        {
-            var temp = new List<VanillaPassword>();
-            temp.Add(new VanillaPassword(THE_LONG_ONE));
-            temp.Add(new VanillaPassword(ALASKAN_PIPELINE));
-            temp.Add(new VanillaPassword(SEAGULL));
-            temp.Add(new VanillaPassword(MR_ANDERBRO));
-            temp.Add(new VanillaPassword(ABRAHAM_LINCOLN));
-            temp.Add(new VanillaPassword(SMOKING_GUN));
-            temp.Add(new VanillaPassword(I_LOVE_AMERICA));
-            vanillaPasswords = temp.ToArray();
+            if (flag)
+                Main.Log($"'{password}' loaded.");
         }
 
-        private static void GetRocketLibPasswords()
+        public static void StartLoadPasswords()
         {
-            foreach (var password in GamePasswordController.GamePasswords)
+            if (hasLoadedOnStartup)
+                return;
+            hasLoadedOnStartup = true;
+            Main.Log("--- Starting to load after startup. ---");
+            int i;
+            if (Main.settings.VanillaLoadOnStart.IsNotNullOrEmpty())
             {
-                passwords.Add(new Password(password));
-            }
-        }
-
-        private static void AutoLoad()
-        {
-            autoLoadSession = Main.settings.autoLoad.ToList();
-            List<Password> passwordList = new List<Password>(passwords);
-            passwordList.AddRange(vanillaPasswords);
-
-            foreach (var password in passwordList)
-            {
-                if (autoLoadSession.Contains(password.GetName()))
+                for (i = 0; i < VANILLA_PASSWORD_COUNT; i++)
                 {
-                    password.DoAction();
+                    if (Main.settings.VanillaLoadOnStart[i])
+                    {
+                        CallVanillaPassword(vanillaPasswords[i]);
+                    }
+                }
+            }
+
+            if (Main.settings.LoadOnStartRocketLib.IsNullOrEmpty())
+            {
+                Main.Log("--- Ended loading after startup. ---");
+                return;
+            }
+
+            for (i = 0; i < Main.settings.LoadOnStartRocketLib.Length; i++)
+            {
+                passwordsLoadOnStart.Add(Main.settings.LoadOnStartRocketLib[i], true);
+            }
+
+            if (GamePassword.Passwords.IsNullOrEmpty())
+            {
+                Main.Log("--- Ended loading after startup. ---");
+                return;
+            }
+
+            for (i = 0; i < GamePassword.Passwords.Length; i++)
+            {
+                GamePassword gamePassword = GamePassword.Passwords[i];
+                if (passwordsLoadOnStart.ContainsKey(gamePassword.password) && passwordsLoadOnStart[gamePassword.password])
+                {
+                    gamePassword.action?.Invoke();
+                    Main.Log($"'{gamePassword.password}' loaded.");
                 }
             }
         }
