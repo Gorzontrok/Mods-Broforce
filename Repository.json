@@ -1,6 +1,7 @@
 {
     "Releases":
     [
+        {"Id": "0000_ActivateModsOnline", "Version": "1.0.1", "DownloadUrl": "https://github.com/Gorzontrok/Mods-Broforce/raw/main/ActivateModsOnline/Releases/ActivateModsOnline-1.0.1.zip"},
         {"Id": "007_Patch", "Version": "2.0.0", "DownloadUrl": "https://github.com/Gorzontrok/Mods-Broforce/raw/main/007_Patch/Release/DoubleBroSevenTrained.zip"},
         {"Id": "AutoEnterPassword", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzontrok/Mods-Broforce/raw/main/AutoEnterPassword/Release/AutoEnterPassword.zip"},
         {"Id": "AvatarFaceHuggerMod", "Version": "1.1.0", "DownloadUrl": "https://github.com/Gorzontrok/Mods-Broforce/raw/main/AvatarFaceHugger/Release/AvatarFaceHuggerMod.zip"},
