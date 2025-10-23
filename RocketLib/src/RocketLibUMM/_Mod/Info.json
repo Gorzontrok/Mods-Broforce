@@ -1,9 +1,0 @@
-{
-  "Id": "RocketLib",
-  "DisplayName": "RocketLib - UMM",
-  "Author": "Gorzontrok",
-  "Version": "2.4.0",
-  "AssemblyName": "RocketLibUMM.dll",
-  "EntryMethod": "RocketLibUMM.Main.Load",
-  "Repository": "https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/main/Repository.json"
-}
