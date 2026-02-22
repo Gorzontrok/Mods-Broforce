@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RocketLib">
-      <HintPath>E:\SteamLibrary\steamapps\common\Broforce\Mods\RocketLib\RocketLib.dll</HintPath>
+      <HintPath>$(RocketLibPath)</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -41,25 +41,25 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="0Harmony">
-      <HintPath>..\..\lib\0Harmony.dll</HintPath>
+      <HintPath>$(LibPath)\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(LibPath)\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\lib\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(LibPath)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\lib\UnityEngine.dll</HintPath>
+      <HintPath>$(LibPath)\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\lib\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>$(LibPath)\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityModManager">
-      <HintPath>..\..\lib\UnityModManager.dll</HintPath>
+      <HintPath>$(LibPath)\UnityModManager.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\lib\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>$(LibPath)\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -77,7 +77,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(ProjectDir)\_Mod\$(ProjectName).dll*"
-start XCOPY /Y /I "$(ProjectDir)_Mod\*.*" "E:\SteamLibrary\steamapps\common\Broforce\Mods\$(ProjectName)\"</PostBuildEvent>
+    <ModContentFolder>_Mod</ModContentFolder>
   </PropertyGroup>
+  <Import Project="..\..\Scripts\BroforceModBuild.targets" />
 </Project>

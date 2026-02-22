@@ -5,7 +5,7 @@
     "Version": "2.0.1",
     "Requirements": ["RocketLib"],
     "LoadAfter": ["RocketLib", "CustomHeroNameMod"],
-    "AssemblyName": "FilteredBrosMod.dll",
+    "AssemblyName": "FilteredBros.dll",
     "EntryMethod": "FilteredBros.Main.Load",
     "Repository": "https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/main/Repository.json"
 }
