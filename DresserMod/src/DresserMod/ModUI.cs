@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RocketLib.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -182,7 +183,7 @@ namespace DresserMod
 
         public static string PathWithBroforceAtFirst(string path)
         {
-            int startIndex = Directory.GetParent(Directory.GetCurrentDirectory()).FullName.Length;
+            int startIndex = Directory.GetParent(RocketLibUtils.GetRootDirectory()).FullName.Length;
             return path.Substring(startIndex, path.Length - startIndex);
         }
     }

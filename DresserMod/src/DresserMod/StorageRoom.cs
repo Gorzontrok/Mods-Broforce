@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RocketLib.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +22,7 @@ namespace DresserMod
         static StorageRoom()
         {
             AssetDirectory = Path.Combine(Main.mod.Path, "assets");
-            WardrobesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "DM_Wardrobes");
+            WardrobesDirectory = Path.Combine(RocketLibUtils.GetRootDirectory(), "DM_Wardrobes");
 
             subscribers = new List<string>();
             subscribers.Add(AssetDirectory);

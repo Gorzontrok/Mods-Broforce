@@ -1,0 +1,11 @@
+{
+  "name": "DresserMod",
+  "author": "Gorzontrok",
+  "version_number": "1.2.1",
+  "website_url": "https://github.com/Gorzontrok/Mods-Broforce",
+  "description": "Change most of the game's textures with custom wardrobes.",
+  "dependencies": [
+    "UMM-UMM-1.1.0",
+    "RocketLib-RocketLib-2.4.3"
+  ]
+}
