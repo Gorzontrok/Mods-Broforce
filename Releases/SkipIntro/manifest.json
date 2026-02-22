@@ -1,0 +1,10 @@
+{
+  "name": "SkipIntro",
+  "author": "Gorzontrok",
+  "version_number": "1.0.1",
+  "website_url": "https://github.com/Gorzontrok/Mods-Broforce",
+  "description": "Skip the two intro sequences at game startup",
+  "dependencies": [
+    "UMM-UMM-1.1.0"
+  ]
+}
