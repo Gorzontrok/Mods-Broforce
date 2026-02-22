@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\DLL\0Harmony.dll</HintPath>
+      <HintPath>$(LibPath)\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\DLL\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(LibPath)\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,19 +44,19 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\DLL\UnityEngine.dll</HintPath>
+      <HintPath>$(LibPath)\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\..\..\DLL\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>$(LibPath)\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\DLL\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(LibPath)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\DLL\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>$(LibPath)\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityModManager">
-      <HintPath>..\..\..\DLL\UnityModManager.dll</HintPath>
+      <HintPath>$(LibPath)\UnityModManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -72,7 +72,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>start XCOPY /Y /R "$(TargetPath)" "$(ProjectDir)\_Mod\$(ProjectName).dll*"
-start XCOPY /I /Y /S "$(ProjectDir)_Mod\" "E:\SteamLibrary\steamapps\common\Broforce\Mods\ExpendaBrosInGame\"</PostBuildEvent>
+    <ModContentFolder>_Mod</ModContentFolder>
   </PropertyGroup>
+  <Import Project="..\..\Scripts\BroforceModBuild.targets" />
 </Project>
