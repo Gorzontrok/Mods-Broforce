@@ -1,7 +1,7 @@
 {
   "name": "FilteredBros",
   "author": "Gorzontrok",
-  "version_number": "1.0.0",
+  "version_number": "2.0.1",
   "website_url": "https://github.com/Gorzontrok/Mods-Broforce",
   "description": "Choose which bros can spawn. Toggle Expendabros and unused bros.",
   "dependencies": [
