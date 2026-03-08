@@ -2,6 +2,7 @@
 using UnityEngine;
 using World.LevelEdit;
 using UnityModManagerNet;
+using HarmonyLib;
 
 namespace FilteredBros
 {
@@ -9,6 +10,7 @@ namespace FilteredBros
     {
         public static int boxHeight = 135;
         public static int spaceBetweenGroups = 20;
+        public static int maxWidth = 0;
 
         private static string _search = string.Empty;
         private static FuzzySearcher<BroToggle> _fuzzySearcher = new FuzzySearcher<BroToggle>();
@@ -20,14 +22,16 @@ namespace FilteredBros
         {
             if (_fuzzySearcher == null)
                 _fuzzySearcher = new FuzzySearcher<BroToggle>();
+            if (maxWidth < 1)
+                maxWidth = 940;
 
-            GUILayout.BeginHorizontal();
+            GUILayout.BeginHorizontal(GUILayout.MaxWidth(maxWidth));
 
-            GUILayout.BeginVertical("box", GUILayout.Height(boxHeight));
+            GUILayout.BeginVertical("box", GUILayout.Height(boxHeight), GUILayout.ExpandWidth(false));
             Main.settings.mod.Draw(modEntry);
             GUILayout.EndVertical();
 
-            GUILayout.BeginVertical("box", GUILayout.Height(boxHeight));
+            GUILayout.BeginVertical("box", GUILayout.Height(boxHeight), GUILayout.ExpandWidth(false));
             Main.settings.ui.Draw(modEntry);
             GUILayout.EndVertical();
 

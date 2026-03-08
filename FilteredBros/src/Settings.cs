@@ -21,10 +21,10 @@ namespace FilteredBros
     public class UISettings : IDrawable
     {
         [Header("UI Settings")]
-        [Draw(Type = DrawType.Slider, Label = "Bros per line", Min = 1, Max = 15)]
+        [Draw(Type = DrawType.Slider, Label = "Bros per line", Min = 1, Max = 12)]
         public int numberOfBroPerLine = 6;
-        [Draw(Type = DrawType.Slider, Label = "Names Width", Min = 10, Max = 500)]
-        public int toggleWidth = 130;
+        [Draw(Type = DrawType.Slider, Label = "Names Width", Min = 86, Max = 256)]
+        public int toggleWidth = 128;
 
         public void OnChange()
         { }
