@@ -1,25 +1,19 @@
-# 007 Trained
+# 007_Patch
 
-![Showcase](https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/main/007_Patch/.img/showcase-2.jpg)
+It's a patch that add the 5th special of 007, a teargas.  
 
-Adds tear gas special ability to Double Bro Seven.
+[NexusMods Page](https://www.nexusmods.com/broforce/mods/12)
 
-![Balaclava on HUD](https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/main/007_Patch/.img/balaclava-hud.png)
+The Tear Gas is a cancelled 5th special for Double Bro Seven that will stunt the enemies.
 
-Adds a balaclava on the head of the character.
+When DoubleBroSeven uses the Balaclava it is going to appear on the player avatar.
 
-## Installation Instructions
+![hud](https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/refs/heads/main/007_Patch/.img/balaclava-hud.png)
 
-Detailed installation instructions can be found [here](https://steamcommunity.com/sharedfiles/filedetails/?id=2434812447).
+![teargas hud](https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/refs/heads/main/007_Patch/.img/showcase-1.png)
 
-## Bugs and Issues
+![teargas](https://raw.githubusercontent.com/Gorzontrok/Mods-Broforce/refs/heads/main/007_Patch/.img/showcase-2.png)
 
-If you run into any bugs or have any issues with the mod, please join the [Free Lives Discord](https://discord.com/invite/freelives) and post in the bf-mods channel.
+## Know Issue
 
-## Known Issues
-
-- Some enemies invisible in tear gas due to missing animations
-
-## Source Code
-
-The source code for this mod can be found [here](https://github.com/Gorzontrok/Mods-Broforce).
+* The Tear Gas can make some enemies invisibles because they do not have an animation for it. (yet, maybe)

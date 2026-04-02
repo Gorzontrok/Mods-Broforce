@@ -1,0 +1,11 @@
+{
+  "name": "AutoEnterPassword",
+  "author": "Gorzontrok",
+  "version_number": "1.2.0",
+  "website_url": "https://github.com/Gorzontrok/Mods-Broforce/tree/main/AutoEnterPassword",
+  "description": "You can enter a game's password by clicking on it instead of writing it each time.",
+  "dependencies": [
+    "UMM-UMM-1.1.0",
+    "RocketLib-RocketLib-2.4.3"
+  ]
+}

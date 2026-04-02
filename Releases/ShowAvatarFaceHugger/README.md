@@ -1,8 +1,6 @@
-# Dresser Mod
+# ShowAvatarFaceHugger
 
-Change most of the game's textures with custom wardrobes.
-
-[Instructions](https://github.com/Gorzontrok/Mods-Broforce/blob/main/DresserMod/INSTRUCTIONS.md)
+Display the Facehugger on the Bro avatar when attacked by a Facehugger
 
 ## Installation Instructions
 
@@ -12,6 +10,10 @@ Detailed installation instructions can be found [here](https://steamcommunity.co
 
 If you run into any bugs or have any issues with the mod, please join the [Free Lives Discord](https://discord.com/invite/freelives) and post in the bf-mods channel.
 
+## Current Features
+
+*Describe your mod's features here*
+
 ## Source Code
 
-The source code for this mod can be found [here](https://github.com/Gorzontrok/Mods-Broforce).
+The source code for this mod can be found [here](https://github.com/Gorzontrok/Mods-Broforce/tree/main/ShowAvatarFaceHugger).

@@ -1,0 +1,10 @@
+{
+  "name": "SearchLocalCampaignFaster",
+  "author": "Gorzontrok",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/Gorzontrok/Mods-Broforce/tree/main/SearchLocalCampaignFaster",
+  "description": "In the Custom Campaign Menu, if you go to the OFFLINE tab, the loading takes some times and can be extremly long if you have a lot of levels. This mod aim to fix this loading time so it is now a lot more faster.",
+  "dependencies": [
+    "UMM-UMM-1.1.0"
+  ]
+}

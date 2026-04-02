@@ -1,0 +1,10 @@
+{
+  "name": "SmallerHUD",
+  "author": "Gorzontrok",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/Gorzontrok/Mods-Broforce/tree/main/SmallerHUD",
+  "description": "Change the player HUD size",
+  "dependencies": [
+    "UMM-UMM-1.1.0"
+  ]
+}
