@@ -1,11 +1,11 @@
 {
-  "name": "007_Trained",
+  "name": "DoubleBroSeven Trained",
   "author": "Gorzontrok",
   "version_number": "2.0.0",
   "website_url": "https://github.com/Gorzontrok/Mods-Broforce",
   "description": "Adds tear gas special ability to Double Bro Seven.",
   "dependencies": [
-    "UMM-UMM-1.0.2",
-    "RocketLib-RocketLib-2.4.0"
+    "UMM-UMM-1.1.0",
+    "RocketLib-RocketLib-2.4.3"
   ]
 }
