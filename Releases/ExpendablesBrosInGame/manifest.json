@@ -1,10 +1,10 @@
 {
   "name": "ExpendablesBrosInGame",
   "author": "Gorzontrok",
-  "version_number": "1.0.0",
+  "version_number": "1.3.0",
   "website_url": "https://github.com/Gorzontrok/Mods-Broforce",
   "description": "Play as the Expendabros in Broforce, including Brondfly. Includes fixes for the Expendabros.",
   "dependencies": [
-    "UMM-UMM-1.0.2"
+    "UMM-UMM-1.1.0"
   ]
 }
