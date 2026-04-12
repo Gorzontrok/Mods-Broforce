@@ -37,8 +37,7 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>$(LibPath)\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="BitCode.AssetManagement, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BitCode.AssetManagement">
       <HintPath>$(LibPath)\BitCode.AssetManagement.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -66,5 +65,5 @@
   <PropertyGroup>
     <ModContentFolder>_Mod</ModContentFolder>
   </PropertyGroup>
-  <Import Project="..\..\Scripts\BroforceModBuild.targets" />
+  <Import Project="..\Scripts\BroforceModBuild.targets" />
 </Project>
