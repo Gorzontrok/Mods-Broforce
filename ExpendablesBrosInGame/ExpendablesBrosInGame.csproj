@@ -74,5 +74,5 @@
   <PropertyGroup>
     <ModContentFolder>_Mod</ModContentFolder>
   </PropertyGroup>
-  <Import Project="..\..\Scripts\BroforceModBuild.targets" />
+  <Import Project="..\Scripts\BroforceModBuild.targets" />
 </Project>
