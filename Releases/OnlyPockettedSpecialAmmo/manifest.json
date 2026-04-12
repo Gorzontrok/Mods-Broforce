@@ -1,0 +1,11 @@
+{
+  "name": "OnlyPockettedSpecialAmmo",
+  "author": "Gorzontrok",
+  "version_number": "1.1.0",
+  "website_url": "https://github.com/Gorzontrok/Mods-Broforce",
+  "description": "Play only with pocketed special ammo. (Slow Motion, Stero\u00efds, Mech Drop, ect.)",
+  "dependencies": [
+    "UMM-UMM-1.1.0",
+    "RocketLib-RocketLib-2.4.3"
+  ]
+}
