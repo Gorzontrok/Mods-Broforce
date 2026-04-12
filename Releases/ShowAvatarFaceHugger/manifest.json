@@ -1,7 +1,7 @@
 {
-  "name": "ShowAvatarFaceHugger",
+  "name": "Show_Avatar_FaceHugger",
   "author": "Gorzontrok",
-  "version_number": "1.0.0",
+  "version_number": "1.1.0",
   "website_url": "https://github.com/Gorzontrok/Mods-Broforce/tree/main/ShowAvatarFaceHugger",
   "description": "Display the Facehugger on the Bro avatar when attacked by a Facehugger",
   "dependencies": [
