@@ -8,8 +8,6 @@ namespace DresserMod
 {
     public static class StorageRoom
     {
-        [Obsolete("Use 'WardrobesDirectory' instead")]
-        public static readonly string AssetDirectory;
         public static readonly string WardrobesDirectory;
 
         [Obsolete("Not use since 'FuturisticAttires")]
@@ -21,11 +19,9 @@ namespace DresserMod
 
         static StorageRoom()
         {
-            AssetDirectory = Path.Combine(Main.mod.Path, "assets");
             WardrobesDirectory = Path.Combine(RocketLibUtils.GetRootDirectory(), "DM_Wardrobes");
 
             subscribers = new List<string>();
-            subscribers.Add(AssetDirectory);
             subscribers.Add(WardrobesDirectory);
         }
 
@@ -149,10 +145,6 @@ namespace DresserMod
 
         private static void CheckDirectory()
         {
-            if (!Directory.Exists(AssetDirectory))
-            {
-                Directory.CreateDirectory(AssetDirectory);
-            }
             if (!Directory.Exists(WardrobesDirectory))
             {
                 Directory.CreateDirectory(WardrobesDirectory);
