@@ -5,12 +5,9 @@ using System.Runtime.InteropServices;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 [assembly: AssemblyTitle("DoubleBroSevenTrained")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("https://github.com/Gorzontrok/Mods-Broforce/")]
 [assembly: AssemblyProduct("DoubleBroSevenTrained")]
-[assembly: AssemblyCopyright("Copyright © Gorzontrok 2023")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © Gorzontrok 2025")]
 [assembly: AssemblyCulture("Neutral")]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly
